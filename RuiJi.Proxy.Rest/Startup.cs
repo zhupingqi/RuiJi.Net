@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace RuiJi.Proxy.Rest
+namespace RuiJi.Crawler.Proxy.Rest
 {
     public class Startup
     {

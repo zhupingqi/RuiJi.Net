@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace RuiJi.Proxy.Rest
+namespace RuiJi.Crawler.Proxy.Rest
 {
     public class Program
     {
