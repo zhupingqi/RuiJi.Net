@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Crawler.Proxy", "RuiJ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RuiJi.Crawler.Proxy.Rest", "RuiJi.Crawler.Proxy.Rest\RuiJi.Crawler.Proxy.Rest.csproj", "{66B4BF15-58B4-44B1-BEA1-4CCD622E5F44}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Extracter", "RuiJi.Extracter\RuiJi.Extracter.csproj", "{4A2E4CD6-E790-48F3-9948-11AEA19A50A6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{66B4BF15-58B4-44B1-BEA1-4CCD622E5F44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66B4BF15-58B4-44B1-BEA1-4CCD622E5F44}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66B4BF15-58B4-44B1-BEA1-4CCD622E5F44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A2E4CD6-E790-48F3-9948-11AEA19A50A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A2E4CD6-E790-48F3-9948-11AEA19A50A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A2E4CD6-E790-48F3-9948-11AEA19A50A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A2E4CD6-E790-48F3-9948-11AEA19A50A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -70,6 +76,7 @@ Global
 		{C27F269B-4AE3-4196-A1C4-D43083FCA3D7} = {EF984FBE-9984-45C1-9A4C-07620FF73867}
 		{512EF484-B1AE-42DA-8E4B-BA5A5291EEA4} = {314B52B6-5612-4FD5-9CA8-214B65E06357}
 		{66B4BF15-58B4-44B1-BEA1-4CCD622E5F44} = {314B52B6-5612-4FD5-9CA8-214B65E06357}
+		{4A2E4CD6-E790-48F3-9948-11AEA19A50A6} = {29A84303-8260-4B61-9879-58904A264F5F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {834EA42F-75D3-4A0B-B97E-7528C47B9B58}
