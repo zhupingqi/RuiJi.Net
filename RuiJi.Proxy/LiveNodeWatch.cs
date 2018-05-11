@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ZooKeeperNet;
 
-namespace RuiJi.Proxy
+namespace RuiJi.Crawler.Proxy
 {
     public class LiveNodeWatch : IWatcher
     {
