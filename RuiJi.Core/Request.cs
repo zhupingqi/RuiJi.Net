@@ -10,6 +10,8 @@ namespace RuiJi.Core
 {
     public class Request
     {
+        public string Ip { get; set; }
+
         public string Cookie { get; set; }
 
         public NameValueCollection Data { get; set; }
@@ -36,14 +38,10 @@ namespace RuiJi.Core
             Headers = new WebHeaderCollection();
         }
 
-        public Request(string url) : this()
+        public Request(string url,string ip = "") : this()
         {
             this.Uri = new Uri(url);
-        }
-
-        public static Request Create(string url)
-        {
-            return new Request(url);
+            this.Ip = ip;
         }
     }
 }
