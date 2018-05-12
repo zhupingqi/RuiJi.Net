@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{38676AB4-4262-4CCE-8AE5-C67694C1A376}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>RuiJi.Crawler.Cmd</RootNamespace>
-    <AssemblyName>RuiJi.Crawler.Cmd</AssemblyName>
+    <RootNamespace>RuiJi.Cmd</RootNamespace>
+    <AssemblyName>RuiJi.Cmd</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -77,6 +77,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RuiJi.Crawler.Proxy\RuiJi.Crawler.Proxy.csproj">
+      <Project>{512ef484-b1ae-42da-8e4b-ba5a5291eea4}</Project>
+      <Name>RuiJi.Crawler.Proxy</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RuiJi.Crawler\RuiJi.Crawler.csproj">
       <Project>{9e801b3b-d8f8-4b7a-bfc0-feee17b0e754}</Project>
       <Name>RuiJi.Crawler</Name>

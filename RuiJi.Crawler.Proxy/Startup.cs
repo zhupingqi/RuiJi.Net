@@ -11,7 +11,7 @@ using System.Web.Http;
 using Microsoft.Owin.StaticFiles;
 using Microsoft.Owin;
 
-namespace RuiJi.Crawler
+namespace RuiJi.Crawler.Proxy
 {
     public class Startup
     {
@@ -23,7 +23,7 @@ namespace RuiJi.Crawler
             app.UseFileServer(new FileServerOptions()
             {
                 RequestPath = PathString.Empty,
-                FileSystem = new PhysicalFileSystem(@".\www\crawler"),
+                FileSystem = new PhysicalFileSystem(@".\www\proxy"),
             });
 
             app.UseWelcomePage("/");

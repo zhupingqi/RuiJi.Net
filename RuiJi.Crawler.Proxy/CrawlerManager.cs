@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Crawler.Proxy
 {
-    public class CrawlProxy
+    public class CrawlerManager
     {
         internal class HostVisit
         {
@@ -21,7 +21,7 @@ namespace RuiJi.Crawler.Proxy
             public string ClientIp { get; set; }
         }
 
-        private static CrawlProxy _elector = null;
+        private static CrawlerManager _elector = null;
         private static object _lck = new object();
 
         private List<HostVisit> visits = new List<HostVisit>();
@@ -29,7 +29,7 @@ namespace RuiJi.Crawler.Proxy
         private Dictionary<string, ulong> hostMap = new Dictionary<string, ulong>();
         private List<Server> serverMap = new List<Server>();
 
-        public static CrawlProxy Instance
+        public static CrawlerManager Instance
         {
             get
             {
@@ -37,12 +37,12 @@ namespace RuiJi.Crawler.Proxy
             }
         }
 
-        static CrawlProxy()
+        static CrawlerManager()
         {
-            _elector = new CrawlProxy();
+            _elector = new CrawlerManager();
         }
 
-        private CrawlProxy()
+        private CrawlerManager()
         {
         }
 
@@ -76,9 +76,9 @@ namespace RuiJi.Crawler.Proxy
             }
         }
 
-        public void AddCrawlerServer(string serverIp, List<string> ips)
+        public void AddServer(string serverIp, string[] ips)
         {
-            RemoveCrawlerServer(serverIp);
+            RemoveServer(serverIp);
 
             lock (_lck)
             {
@@ -93,7 +93,7 @@ namespace RuiJi.Crawler.Proxy
             }
         }
 
-        public void RemoveCrawlerServer(string serverIp)
+        public void RemoveServer(string serverIp)
         {
             lock (_lck)
             {
