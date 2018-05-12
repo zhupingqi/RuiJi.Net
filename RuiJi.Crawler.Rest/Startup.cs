@@ -25,7 +25,7 @@ namespace RuiJi.Crawler.Rest
 
             var setting = Configuration.GetSection("nodeSetting") as NodeSetting;
 
-            CrawlServer.Instance.Start(setting);
+            CrawlNode.Instance.Start(setting);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

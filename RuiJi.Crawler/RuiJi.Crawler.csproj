@@ -95,7 +95,7 @@
     <Compile Include="NodeConfig.cs" />
     <Compile Include="NodeAppSetting.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CrawlServer.cs" />
+    <Compile Include="CrawlNode.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>

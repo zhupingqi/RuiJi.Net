@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Owin.Hosting;
+using System.Configuration;
 
 namespace RuiJi.Crawler.Cmd
 {
@@ -12,14 +13,17 @@ namespace RuiJi.Crawler.Cmd
     {
         static void Main(string[] args)
         {
-            var baseUrl = System.Configuration.ConfigurationManager.AppSettings.Get("baseUrl");
-            //AppDomain.CurrentDomain.Load(typeof(Microsoft.Owin.Host.HttpListener.OwinHttpListener).Assembly.GetName());
-            //启动监听
+            var baseUrl = ConfigurationManager.AppSettings.Get("baseUrl");
+
             using (WebApp.Start<Startup>(baseUrl))
             {
                 Console.WriteLine("Server Start!");
+
+                CrawlNode.Instance.Start();
                 Process.Start(baseUrl);
+
                 Console.ReadLine();
+                CrawlNode.Instance.Stop();
             }
         }
     }
