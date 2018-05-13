@@ -93,8 +93,11 @@ namespace RuiJi.Crawler
 
         public void Stop()
         {
-            zookeeper.Dispose();
-            zookeeper = null;
+            if (zookeeper != null)
+            {
+                zookeeper.Dispose();
+                zookeeper = null;
+            }
         }
 
         class SessionWatcher : IWatcher

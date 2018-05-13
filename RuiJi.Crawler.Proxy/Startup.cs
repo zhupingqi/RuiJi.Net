@@ -17,6 +17,8 @@ namespace RuiJi.Crawler.Proxy
     {
         public void Configuration(IAppBuilder app)
         {
+            app.UseErrorPage();
+
             var config = GetWebApiConfig();
             app.UseWebApi(config);
 
@@ -26,7 +28,7 @@ namespace RuiJi.Crawler.Proxy
                 FileSystem = new PhysicalFileSystem(@".\www\proxy"),
             });
 
-            app.UseWelcomePage("/");
+            app.UseWelcomePage();
         }
 
         private HttpConfiguration GetWebApiConfig()

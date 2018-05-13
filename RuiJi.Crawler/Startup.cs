@@ -10,23 +10,31 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.Owin.StaticFiles;
 using Microsoft.Owin;
+using Microsoft.Owin.Host.HttpListener;
 
 namespace RuiJi.Crawler
 {
     public class Startup
     {
+        static Startup()
+        {
+            OwinServerFactory.Initialize(new Dictionary<string,object>());
+        }
+
         public void Configuration(IAppBuilder app)
         {
+            app.UseErrorPage();
+
             var config = GetWebApiConfig();
             app.UseWebApi(config);
 
             app.UseFileServer(new FileServerOptions()
             {
                 RequestPath = PathString.Empty,
-                FileSystem = new PhysicalFileSystem(@".\www\crawler"),
+                FileSystem = new PhysicalFileSystem(@".\www\crawler")
             });
 
-            app.UseWelcomePage("/");
+            app.UseWelcomePage();
         }
 
         private HttpConfiguration GetWebApiConfig()

@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RuiJi.Core</RootNamespace>
     <AssemblyName>RuiJi.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,7 +47,7 @@
       <HintPath>..\packages\UDE.CSharp.1.1.0\lib\Ude.dll</HintPath>
     </Reference>
     <Reference Include="UniversalTypeConverter, Version=1.0.3.1, Culture=neutral, PublicKeyToken=2f110abc75e7903d, processorArchitecture=MSIL">
-      <HintPath>..\packages\UniversalTypeConverter.1.0.5\lib\net45\UniversalTypeConverter.dll</HintPath>
+      <HintPath>..\packages\UniversalTypeConverter.1.0.5\lib\net46\UniversalTypeConverter.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
