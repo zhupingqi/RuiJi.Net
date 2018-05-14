@@ -12,48 +12,21 @@ using ZooKeeperNet;
 
 namespace RuiJi.Crawler.Proxy
 {
-    public class ProxyNode
+    public class CrawlerProxyNodeService : ServiceBase
     {
-        private static ProxyNode _instance;
-        private ZooKeeper zookeeper;
-        private string zkServer;
-        private string baseUrl;
-        private string clientIp;
-        private string clientPort;
+        private static CrawlerProxyNodeService _instance;
 
-        protected ManualResetEvent restEvent;
-
-        static ProxyNode()
+        static CrawlerProxyNodeService()
         {
-            _instance = new ProxyNode();
+            _instance = new CrawlerProxyNodeService();
         }
 
-        private ProxyNode()
+        private CrawlerProxyNodeService()
         {
-            LoadConfig();
+            
         }
 
-        public void LoadConfig()
-        {
-            zkServer = ConfigurationManager.AppSettings.Get("zkServer");
-            baseUrl = ConfigurationManager.AppSettings.Get("baseUrl");
-
-            if (!Uri.IsWellFormedUriString(baseUrl, UriKind.Absolute))
-            {
-                throw new ConfigurationErrorsException("baseUrl is not well formed!");
-            }
-
-            var u = new Uri(baseUrl);
-            clientIp = u.Host.ToLower();
-            clientPort = u.Port.ToString();
-
-            if (!IPHelper.IsHostIPAddress(IPAddress.Parse(clientIp)))
-            {
-                throw new ConfigurationErrorsException("baseUrl is not allowed to use localhost or 127.0.0.1!");
-            }
-        }
-
-        public static ProxyNode Instance
+        public static CrawlerProxyNodeService Instance
         {
             get
             {
@@ -61,17 +34,17 @@ namespace RuiJi.Crawler.Proxy
             }
         }
 
-        public void Start()
+        public override void Start()
         {
-            restEvent = new ManualResetEvent(false);
+            ResetEvent = new ManualResetEvent(false);
 
             try
             {
-                Console.WriteLine("proxy " + clientIp + " ready to startup!");
-                Console.WriteLine("try connect to zookeeper server : " + zkServer);
+                Console.WriteLine("proxy " + BaseUrl + " ready to startup!");
+                Console.WriteLine("try connect to zookeeper server : " + ZkServer);
 
-                zookeeper = new ZooKeeper(zkServer, TimeSpan.FromSeconds(3), new SessionWatcher());
-                restEvent.WaitOne();
+                zookeeper = new ZooKeeper(ZkServer, TimeSpan.FromSeconds(3), new SessionWatcher());
+                ResetEvent.WaitOne();
 
                 CreateNode();
                 LoadLiveNodes();
@@ -82,7 +55,7 @@ namespace RuiJi.Crawler.Proxy
             }
         }
 
-        public void Stop()
+        public override void Stop()
         {
             zookeeper.Dispose();
             zookeeper = null;
@@ -90,24 +63,35 @@ namespace RuiJi.Crawler.Proxy
 
         private void CreateNode()
         {
-            var stat = zookeeper.Exists("/live_nodes", false);
+            CreateCommonNode();
+
+            var path = BaseUrl + "_crawlerproxy";
+
+            var stat = zookeeper.Exists("/live_nodes/" + path, false);
             if (stat == null)
-                zookeeper.Create("/live_nodes", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
-            stat = zookeeper.Exists("/config", false);
+                zookeeper.Create("/live_nodes/" + path, null, Ids.OPEN_ACL_UNSAFE, CreateMode.Ephemeral);
+
+            stat = zookeeper.Exists("/config/" + path, false);
             if (stat == null)
-                zookeeper.Create("/config", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+            {
+                zookeeper.Create("/config/" + path, null, Ids.READ_ACL_UNSAFE, CreateMode.Persistent);
+            }
         }
 
         public void LoadLiveNodes()
         {
             CrawlerManager.Instance.Clear();
 
-            var lives = zookeeper.GetChildren("/live_nodes", false);
+            var nodes = zookeeper.GetChildren("/live_nodes", false);
 
-            foreach (var ip in lives)
+            foreach (var node in nodes)
             {
-                var ips = GetCrawlerIps(ip);
-                CrawlerManager.Instance.AddServer(ip,ips);
+                if (node.EndsWith("_crawler"))
+                {
+                    var ip = node.Split('/')[1].Replace("_crawler","");
+                    var ips = GetCrawlerIps(ip);
+                    CrawlerManager.Instance.AddServer(ip, ips);
+                }
             }
         }
 
@@ -154,13 +138,13 @@ namespace RuiJi.Crawler.Proxy
                         case KeeperState.Expired:
                             {
                                 Console.WriteLine("connected expired! reconnect!");
-                                ProxyNode.Instance.Start();
+                                CrawlerProxyNodeService.Instance.Start();
                                 break;
                             }
                         case KeeperState.SyncConnected:
                             {
                                 Console.WriteLine("zookeeper server connected!");
-                                ProxyNode.Instance.restEvent.Set();
+                                CrawlerProxyNodeService.Instance.ResetEvent.Set();
                                 break;
                             }
                         case KeeperState.NoSyncConnected:
@@ -184,7 +168,7 @@ namespace RuiJi.Crawler.Proxy
                 {
                     case EventType.NodeCreated:
                         {
-                            var ips = ProxyNode.Instance.GetCrawlerIps(clientIp);
+                            var ips = CrawlerProxyNodeService.Instance.GetCrawlerIps(clientIp);
                             CrawlerManager.Instance.AddServer(clientIp, ips);
                             break;
                         }
@@ -209,7 +193,7 @@ namespace RuiJi.Crawler.Proxy
                             {
                                 if(segments[2] == "ips.txt")
                                 {
-                                    var ips = ProxyNode.Instance.GetCrawlerIps(clientIp);
+                                    var ips = CrawlerProxyNodeService.Instance.GetCrawlerIps(clientIp);
                                     CrawlerManager.Instance.AddServer(clientIp, ips);
                                 }
                                 

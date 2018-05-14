@@ -8,31 +8,17 @@ using System.Text;
 using System.Threading.Tasks;
 using ZooKeeperNet;
 using System.Threading;
+using RuiJi.Core;
+using Newtonsoft.Json;
 
 namespace RuiJi.Crawler
 {
-    public class CrawlNode
+    public class CrawlerNodeService : ServiceBase
     {
-        private static CrawlNode _instance;
-        private ZooKeeper zookeeper;
-        private string zkServer;
-        private string baseUrl;
-        private string clientIp;
-        private string clientPort;
+        private static CrawlerNodeService _instance;
 
-        protected ManualResetEvent restEvent;
 
-        static CrawlNode()
-        {
-            _instance = new CrawlNode();
-        }
-
-        private CrawlNode()
-        {
-            LoadConfig();
-        }
-
-        public static CrawlNode Instance
+        public static CrawlerNodeService Instance
         {
             get
             {
@@ -40,41 +26,47 @@ namespace RuiJi.Crawler
             }
         }
 
-        public void LoadConfig()
+        static CrawlerNodeService()
         {
-            zkServer = ConfigurationManager.AppSettings.Get("zkServer");
-            baseUrl = ConfigurationManager.AppSettings.Get("baseUrl");
-
-            if (!Uri.IsWellFormedUriString(baseUrl, UriKind.Absolute))
-            {
-                throw new ConfigurationErrorsException("baseUrl is not well formed!");
-            }
-
-            var u = new Uri(baseUrl);
-            clientIp = u.Host.ToLower();
-            clientPort = u.Port.ToString();
-
-            if (!IPHelper.IsHostIPAddress(IPAddress.Parse(clientIp)))
-            {
-                throw new ConfigurationErrorsException("baseUrl is not allowed to use localhost or 127.0.0.1!");
-            }
+            _instance = new CrawlerNodeService();
         }
 
-        public void Start()
+        private CrawlerNodeService()
         {
-            restEvent = new ManualResetEvent(false);
+            
+        }
+
+        public string[] GetNodeIps()
+        {
+            if (zookeeper != null && zookeeper.State == ZooKeeper.States.CONNECTED)
+            {
+                var b = zookeeper.GetData("/config/" + BaseUrl + "/ips.txt", false, null);
+                var r = System.Text.Encoding.UTF8.GetString(b);
+
+                return r.Split('\n');
+            }
+
+            return new string[0];
+        }
+
+        public override void Start()
+        {
+            if (string.IsNullOrEmpty(BaseUrl) || string.IsNullOrEmpty(ZkServer))
+                throw new Exception("before call start method must call setup method");
+
+            ResetEvent = new ManualResetEvent(false);
 
             try
             {
-                Console.WriteLine("crawler " + clientIp + " ready to startup!");
-                Console.WriteLine("try connect to zookeeper server : " + zkServer);
+                Console.WriteLine("crawler " + BaseUrl + " ready to startup!");
+                Console.WriteLine("try connect to zookeeper server : " + ZkServer);
 
-                zookeeper = new ZooKeeper(zkServer, TimeSpan.FromSeconds(3), new SessionWatcher());
-                restEvent.WaitOne();
+                zookeeper = new ZooKeeper(ZkServer, TimeSpan.FromSeconds(3), new SessionWatcher());
+                ResetEvent.WaitOne();
 
                 CreateNode();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -82,16 +74,26 @@ namespace RuiJi.Crawler
 
         private void CreateNode()
         {
-            var stat = zookeeper.Exists("/live_nodes", false);
-            if (stat == null)
-                zookeeper.Create("/live_nodes", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+            CreateCommonNode();
 
-            stat = zookeeper.Exists("/live_nodes/" + clientIp, false);
+            var path = BaseUrl + "_crawler";
+
+            var stat = zookeeper.Exists("/live_nodes/" + path, false);
             if (stat == null)
-                zookeeper.Create("/live_nodes/" + clientIp, null, Ids.READ_ACL_UNSAFE, CreateMode.Ephemeral);
+                zookeeper.Create("/live_nodes/" + path, null, Ids.READ_ACL_UNSAFE, CreateMode.Ephemeral);
+
+            stat = zookeeper.Exists("/config/" + path, false);
+            if (stat == null)
+            {
+                var d = new {
+                    proxy = ProxyUrl,
+                    ips = new string[0]
+                };
+                zookeeper.Create("/config/" + path, JsonConvert.SerializeObject(d).GetBytes(), Ids.READ_ACL_UNSAFE, CreateMode.Persistent);
+            }
         }
 
-        public void Stop()
+        public override void Stop()
         {
             if (zookeeper != null)
             {
@@ -107,7 +109,7 @@ namespace RuiJi.Crawler
                 if (@event.Type != EventType.None)
                     return;
 
-                switch(@event.State)
+                switch (@event.State)
                 {
                     case KeeperState.Disconnected:
                         {
@@ -118,13 +120,13 @@ namespace RuiJi.Crawler
                     case KeeperState.Expired:
                         {
                             Console.WriteLine("connected expired! reconnect!");
-                            CrawlNode.Instance.Start();
+                            CrawlerNodeService.Instance.Start();
                             break;
                         }
                     case KeeperState.SyncConnected:
                         {
                             Console.WriteLine("zookeeper server connected!");
-                            CrawlNode.Instance.restEvent.Set();
+                            CrawlerNodeService.Instance.ResetEvent.Set();
                             break;
                         }
                     case KeeperState.NoSyncConnected:
@@ -139,5 +141,5 @@ namespace RuiJi.Crawler
                 }
             }
         }
-    }    
+    }
 }

@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Extracter", "RuiJi.Ex
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Cmd", "RuiJi.Cmd\RuiJi.Cmd.csproj", "{38676AB4-4262-4CCE-8AE5-C67694C1A376}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Owin", "RuiJi.Owin\RuiJi.Owin.csproj", "{0E98716C-4A38-45D4-8B53-7705A342AA42}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{38676AB4-4262-4CCE-8AE5-C67694C1A376}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38676AB4-4262-4CCE-8AE5-C67694C1A376}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38676AB4-4262-4CCE-8AE5-C67694C1A376}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E98716C-4A38-45D4-8B53-7705A342AA42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E98716C-4A38-45D4-8B53-7705A342AA42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E98716C-4A38-45D4-8B53-7705A342AA42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E98716C-4A38-45D4-8B53-7705A342AA42}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

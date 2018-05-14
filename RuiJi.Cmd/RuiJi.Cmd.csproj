@@ -51,6 +51,9 @@
     <StartupObject>RuiJi.Cmd.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommandLine, Version=2.2.1.0, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommandLineParser.2.2.1\lib\net45\CommandLine.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -68,8 +71,13 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RuiJi.Core\RuiJi.Core.csproj">
+      <Project>{a27677e3-1ce8-4a8c-b041-9f7a812546f2}</Project>
+      <Name>RuiJi.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RuiJi.Crawler.Proxy\RuiJi.Crawler.Proxy.csproj">
       <Project>{512ef484-b1ae-42da-8e4b-ba5a5291eea4}</Project>
       <Name>RuiJi.Crawler.Proxy</Name>
@@ -77,6 +85,10 @@
     <ProjectReference Include="..\RuiJi.Crawler\RuiJi.Crawler.csproj">
       <Project>{9e801b3b-d8f8-4b7a-bfc0-feee17b0e754}</Project>
       <Name>RuiJi.Crawler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RuiJi.Owin\RuiJi.Owin.csproj">
+      <Project>{0e98716c-4a38-45d4-8b53-7705a342aa42}</Project>
+      <Name>RuiJi.Owin</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

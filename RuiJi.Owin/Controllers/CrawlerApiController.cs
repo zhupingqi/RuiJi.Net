@@ -1,4 +1,6 @@
 ﻿using RuiJi.Core;
+using RuiJi.Core.Utils;
+using RuiJi.Crawler;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +9,9 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web.Http;
 
-namespace RuiJi.Crawler
+namespace RuiJi.Owin.Controllers
 {
-    public class CrawlApiController : ApiController
+    public class CrawlerApiController : ApiController
     {
         [HttpPost]
         [WebApiCacheAttribute(Duration = 10)]
@@ -55,10 +57,18 @@ namespace RuiJi.Crawler
         }
 
         [HttpGet]
-        public object T()
+        public object ServerInfo()
         {
-            return new {
-                msg = "success"
+            var inst = CrawlerNodeService.Instance;
+
+            return new
+            {
+                name = "RuiJi_Crawler_" + inst.BaseUrl,
+                baseUrl = inst.BaseUrl,
+                zkServer = inst.ZkServer,
+                zkState = CrawlerNodeService.Instance.States,
+                ips = IPHelper.GetHostIPAddress().Select(m => m.ToString()).ToArray(),
+                cips = CrawlerNodeService.Instance.GetNodeIps()
             };
         }
     }

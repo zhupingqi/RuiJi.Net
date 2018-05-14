@@ -12,7 +12,7 @@ using Microsoft.Owin.StaticFiles;
 using Microsoft.Owin;
 using Microsoft.Owin.Host.HttpListener;
 
-namespace RuiJi.Crawler
+namespace RuiJi.Owin
 {
     public class Startup
     {
@@ -31,10 +31,10 @@ namespace RuiJi.Crawler
             app.UseFileServer(new FileServerOptions()
             {
                 RequestPath = PathString.Empty,
-                FileSystem = new PhysicalFileSystem(@".\www\crawler")
+                FileSystem = new PhysicalFileSystem(@".\www")
             });
 
-            app.UseWelcomePage();
+            app.UseWelcomePage("");
         }
 
         private HttpConfiguration GetWebApiConfig()
@@ -45,6 +45,18 @@ namespace RuiJi.Crawler
                 name: "Default",
                 routeTemplate: "api/{controller}/{action}",
                 defaults: new { id = RouteParameter.Optional }
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "Request",
+                routeTemplate: "api/crawler/request",
+                defaults: new { controller = "CrawlerApi", action = "request" }
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "ServerInfo",
+                routeTemplate: "api/crawler/server/info",
+                defaults: new { controller = "CrawlerApi", action = "serverinfo" }
             );
 
             //config.Formatters.JsonFormatter.MediaTypeMappings.Add(new QueryStringMapping("datatype", "json", "application/json"));

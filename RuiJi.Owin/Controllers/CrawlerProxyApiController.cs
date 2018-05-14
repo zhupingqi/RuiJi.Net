@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 
-namespace RuiJi.Crawler.Proxy
+namespace RuiJi.Owin.Controllers
 {
-    public class ProxyApiController : ApiController
+    public class CrawlerProxyApiController : ApiController
     {
 
     }

@@ -1,0 +1,26 @@
+﻿{
+  "crawler": {
+    "crawler_proxy_192.168.31.196:8918": {
+      "base_url": "http://192.168.31.196:8918",
+      "state": "active",
+      "shards": {
+        "crawler_shard_192.168.31.196:8919": {
+          "base_url": "http://192.168.31.196:8919",
+          "state": "active"
+        }
+      }
+    }
+  },
+  "extracter": {
+    "extracter_proxy_192.168.31.196:9918": {
+      "base_url": "http://192.168.31.196:9918",
+      "state": "active",
+      "shards": {
+        "extracter_shard_192.168.31.196:9919": {
+          "base_url": "http://192.168.31.196:9919",
+          "state": "active"
+        }
+      }
+    }
+  }
+}
