@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27428.2005
+VisualStudioVersion = 15.0.26403.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Crawler", "RuiJi.Crawler\RuiJi.Crawler.csproj", "{9E801B3B-D8F8-4B7A-BFC0-FEEE17B0E754}"
 EndProject
@@ -26,6 +26,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Extracter", "RuiJi.Extracter\RuiJi.Extracter.csproj", "{4A2E4CD6-E790-48F3-9948-11AEA19A50A6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Cmd", "RuiJi.Cmd\RuiJi.Cmd.csproj", "{38676AB4-4262-4CCE-8AE5-C67694C1A376}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.ChromePlugin", "RuiJi.ChromePlugin\RuiJi.ChromePlugin.csproj", "{524EECEB-E3D1-4921-9D3C-3EDAF039EAFB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +55,10 @@ Global
 		{38676AB4-4262-4CCE-8AE5-C67694C1A376}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38676AB4-4262-4CCE-8AE5-C67694C1A376}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38676AB4-4262-4CCE-8AE5-C67694C1A376}.Release|Any CPU.Build.0 = Release|Any CPU
+		{524EECEB-E3D1-4921-9D3C-3EDAF039EAFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{524EECEB-E3D1-4921-9D3C-3EDAF039EAFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{524EECEB-E3D1-4921-9D3C-3EDAF039EAFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{524EECEB-E3D1-4921-9D3C-3EDAF039EAFB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -63,6 +69,7 @@ Global
 		{C27F269B-4AE3-4196-A1C4-D43083FCA3D7} = {EF984FBE-9984-45C1-9A4C-07620FF73867}
 		{512EF484-B1AE-42DA-8E4B-BA5A5291EEA4} = {477EA79D-F6C4-4F94-8B15-A3DCACFD7F89}
 		{4A2E4CD6-E790-48F3-9948-11AEA19A50A6} = {29A84303-8260-4B61-9879-58904A264F5F}
+		{524EECEB-E3D1-4921-9D3C-3EDAF039EAFB} = {2FE9F3E2-D370-45B8-873D-4BB690C715F8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {834EA42F-75D3-4A0B-B97E-7528C47B9B58}
