@@ -46,6 +46,8 @@ namespace RuiJi.Crawler
             response.IsRaw = request.IsRaw;
             response.Method = request.Method;
 
+            IpCookieManager.Instance.Update(request.Ip, request.Uri.ToString(), httpResponse.Headers.Get("setCookie"));
+
             if (request.IsRaw)
             {
                 response.Data = buff;
@@ -69,10 +71,14 @@ namespace RuiJi.Crawler
             httpRequest.MaximumAutomaticRedirections = 3;
             httpRequest.Timeout = request.Timeout > 0 ? request.Timeout : 100000;
             httpRequest.ReadWriteTimeout = 60000;
-            if (!string.IsNullOrEmpty(request.Cookie))
+
+            var cookie = string.IsNullOrEmpty(request.Cookie) ? IpCookieManager.Instance.Get(request.Ip, request.Uri.ToString()) : request.Cookie;
+
+            if (!string.IsNullOrEmpty(cookie))
             {
-                httpRequest.Headers.Add("Cookie", request.Cookie);
+                httpRequest.Headers.Add("Cookie", cookie);
             }
+
             if (httpRequest.Method == "POST" && !string.IsNullOrEmpty(request.PostParam))
             {
                 byte[] bs = Encoding.ASCII.GetBytes(request.PostParam);

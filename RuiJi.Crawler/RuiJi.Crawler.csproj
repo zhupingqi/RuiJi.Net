@@ -56,7 +56,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IpCookieManager.cs" />
     <Compile Include="IPCrawler.cs" />
+    <Compile Include="ManagedCookie.cs" />
     <Compile Include="NodeConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CrawlerNodeService.cs" />
