@@ -96,16 +96,13 @@
       <Project>{a27677e3-1ce8-4a8c-b041-9f7a812546f2}</Project>
       <Name>RuiJi.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\RuiJi.Crawler.Proxy\RuiJi.Crawler.Proxy.csproj">
-      <Project>{512ef484-b1ae-42da-8e4b-ba5a5291eea4}</Project>
-      <Name>RuiJi.Crawler.Proxy</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RuiJi.Crawler\RuiJi.Crawler.csproj">
-      <Project>{9e801b3b-d8f8-4b7a-bfc0-feee17b0e754}</Project>
-      <Name>RuiJi.Crawler</Name>
+    <ProjectReference Include="..\RuiJi.Node\RuiJi.Node.csproj">
+      <Project>{97673817-f983-4ce8-919e-d2e43e46144c}</Project>
+      <Name>RuiJi.Node</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="conf\config\online_proxy.txt" />
     <Content Include="www\crawler.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -115,6 +112,12 @@
     <Content Include="www\crawler_proxy.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="conf\config\crawler\" />
+    <Folder Include="conf\config\extracter\" />
+    <Folder Include="conf\config\proxy\" />
+    <Folder Include="conf\live_nodes\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -5,38 +5,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
-using RuiJi.Crawler;
-using RuiJi.Crawler.Proxy;
+using RuiJi.Core.Crawler;
 using RuiJi.Core;
 using RuiJi.Owin;
 using CommandLine.Text;
 using CommandLine;
+using RuiJi.Node.Crawler;
+using RuiJi.Node.CrawlerProxy;
+using RuiJi.Node;
+using RuiJi.Node.Extracter;
+using RuiJi.Node.ExtracterProxy;
+using System.Threading;
 
 namespace RuiJi.Cmd
 {
-    class Program
+    public class Program
     {
         static WebApiServer _server;
 
         static Program()
         {
-
+            
         }
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            args = new string[] {
-                "start",
-                "-u",
-                "192.168.31.196:39001",
-                "-t",
-                "c",
-                "-p",
-                "192.168.31.196:39000",
-                "-z",
-                "192.168.31.196:2181"
-            };
-
             if (args.Length == 0)
             {
                 Console.WriteLine("please input args");
@@ -52,40 +45,41 @@ namespace RuiJi.Cmd
 
                         _server = new WebApiServer();
                         _server.Start("http://" + opt.BaseUrl, opt.Type, opt.ZkServer);
-                        Process.Start("http://" + opt.BaseUrl);
+                        //Process.Start("http://" + opt.BaseUrl);
 
                         //need run in thread
+                        ServiceBase serviceBase = null;
                         switch (opt.Type)
                         {
                             case "c":
                                 {
-                                    if (string.IsNullOrEmpty(opt.Proxy))
-                                        Console.WriteLine("need proxy argment");
-                                    else
-                                    {
-                                        CrawlerNodeService.Instance.Setup(opt.BaseUrl, opt.ZkServer, opt.Proxy);
-                                        CrawlerNodeService.Instance.Start();
-                                    }
+                                    serviceBase = new CrawlerNodeService(opt.BaseUrl, opt.ZkServer, opt.Proxy);
                                     break;
                                 }
                             case "cp":
                                 {
-                                    CrawlerProxyNodeService.Instance.Setup(opt.BaseUrl, opt.ZkServer);
-                                    CrawlerProxyNodeService.Instance.Start();
+                                    serviceBase = new CrawlerProxyNodeService(opt.BaseUrl, opt.ZkServer);
                                     break;
                                 }
                             case "e":
                                 {
+                                    serviceBase = new ExtracterNodeService(opt.BaseUrl, opt.ZkServer, opt.Proxy);
                                     break;
                                 }
                             case "ep":
                                 {
+                                    serviceBase = new ExtracterProxyNodeService(opt.BaseUrl, opt.ZkServer);
                                     break;
                                 }
                             case "f":
                                 {
                                     break;
                                 }
+                        }
+
+                        if (serviceBase != null)
+                        {
+                            serviceBase.Start();
                         }
                     });
                 }

@@ -31,14 +31,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CsQuery, Version=1.3.3.249, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CsQuery.1.3.4\lib\net40\CsQuery.dll</HintPath>
+    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.4.369, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <HintPath>..\packages\ICSharpCode.SharpZipLib.dll.0.85.4.369\lib\net20\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -52,22 +57,57 @@
     <Reference Include="UniversalTypeConverter, Version=1.0.3.1, Culture=neutral, PublicKeyToken=2f110abc75e7903d, processorArchitecture=MSIL">
       <HintPath>..\packages\UniversalTypeConverter.1.0.5\lib\net46\UniversalTypeConverter.dll</HintPath>
     </Reference>
-    <Reference Include="ZooKeeperNet, Version=3.4.6.1, Culture=neutral, PublicKeyToken=fefd2c046da35b56, processorArchitecture=MSIL">
-      <HintPath>..\packages\ZooKeeper.Net.3.4.6.2\lib\net40\ZooKeeperNet.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ServiceBase.cs" />
-    <Compile Include="Request.cs" />
+    <Compile Include="Cookie\IpCookieManager.cs" />
+    <Compile Include="Cookie\ManagedCookie.cs" />
+    <Compile Include="Crawler\IPCrawler.cs" />
+    <Compile Include="Crawler\ProxyCrawler.cs" />
+    <Compile Include="Extracter\ExtractParameter.cs" />
+    <Compile Include="Extracter\ExtractResult.cs" />
+    <Compile Include="Extracter\Processor\JsonProcessor.cs" />
+    <Compile Include="Extracter\Processor\XPathProcessor.cs" />
+    <Compile Include="Extracter\ProcessResult.cs" />
+    <Compile Include="Extracter\RuiJiExtracter.cs" />
+    <Compile Include="Extracter\ExtractSelector.cs" />
+    <Compile Include="Extracter\ExtractSelecterCollection.cs" />
+    <Compile Include="Extracter\Processor\CssProcessor.cs" />
+    <Compile Include="Extracter\Processor\ExcludeProcessor.cs" />
+    <Compile Include="Extracter\Processor\IProcessor.cs" />
+    <Compile Include="Extracter\Processor\RegexProcessor.cs" />
+    <Compile Include="Extracter\Processor\RegexSplitProcessor.cs" />
+    <Compile Include="Extracter\Processor\ReplaceProcessor.cs" />
+    <Compile Include="Extracter\Processor\ProcessorBase.cs" />
+    <Compile Include="Extracter\Processor\ProcessorFactory.cs" />
+    <Compile Include="Extracter\Processor\TextProcessor.cs" />
+    <Compile Include="Extracter\Selector\CssSelector.cs" />
+    <Compile Include="Extracter\Enum\ClearEnum.cs" />
+    <Compile Include="Extracter\Enum\CssTypeEnum.cs" />
+    <Compile Include="Extracter\Enum\ExcludeTypeEnum.cs" />
+    <Compile Include="Extracter\Enum\SelectorTypeEnum.cs" />
+    <Compile Include="Extracter\Selector\ExcludeSelector.cs" />
+    <Compile Include="Extracter\Selector\ISelector.cs" />
+    <Compile Include="Extracter\Selector\JsonSelector.cs" />
+    <Compile Include="Extracter\Selector\RegexSelector.cs" />
+    <Compile Include="Extracter\Selector\RegexSplitSelector.cs" />
+    <Compile Include="Extracter\Selector\ReplaceSelector.cs" />
+    <Compile Include="Extracter\Selector\SelectorBase.cs" />
+    <Compile Include="Extracter\Selector\TextSelector.cs" />
+    <Compile Include="Extracter\Selector\XPathSelector.cs" />
+    <Compile Include="Crawler\Request.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Response.cs" />
+    <Compile Include="Crawler\Response.cs" />
     <Compile Include="Utils\DecodeResult.cs" />
     <Compile Include="Utils\Decoding.cs" />
     <Compile Include="Utils\IPHelper.cs" />
     <Compile Include="WebApiCacheAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Extensions\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

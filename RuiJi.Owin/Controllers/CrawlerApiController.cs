@@ -1,6 +1,7 @@
 ﻿using RuiJi.Core;
+using RuiJi.Core.Crawler;
 using RuiJi.Core.Utils;
-using RuiJi.Crawler;
+using RuiJi.Node.Crawler;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,17 +60,19 @@ namespace RuiJi.Owin.Controllers
         [HttpGet]
         public object ServerInfo()
         {
-            var inst = CrawlerNodeService.Instance;
+            //var inst = CrawlerNodeService.Instance;
 
-            return new
-            {
-                name = "RuiJi_Crawler_" + inst.BaseUrl,
-                baseUrl = inst.BaseUrl,
-                zkServer = inst.ZkServer,
-                zkState = CrawlerNodeService.Instance.States,
-                ips = IPHelper.GetHostIPAddress().Select(m => m.ToString()).ToArray(),
-                cips = CrawlerNodeService.Instance.GetNodeIps()
-            };
+            //return new
+            //{
+            //    name = "RuiJi_Crawler_" + inst.BaseUrl,
+            //    baseUrl = inst.BaseUrl,
+            //    zkServer = inst.ZkServer,
+            //    zkState = CrawlerNodeService.Instance.States,
+            //    ips = IPHelper.GetHostIPAddress().Select(m => m.ToString()).ToArray(),
+            //    cips = CrawlerNodeService.Instance.GetNodeConfig()
+            //};
+
+            return new { };
         }
     }
 }

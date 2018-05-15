@@ -3,31 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2005
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Crawler", "RuiJi.Crawler\RuiJi.Crawler.csproj", "{9E801B3B-D8F8-4B7A-BFC0-FEEE17B0E754}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Core", "RuiJi.Core\RuiJi.Core.csproj", "{A27677E3-1CE8-4A8C-B041-9F7A812546F2}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CrawlerCluster", "CrawlerCluster", "{477EA79D-F6C4-4F94-8B15-A3DCACFD7F89}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExtracterCluster", "ExtracterCluster", "{EF984FBE-9984-45C1-9A4C-07620FF73867}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extracter", "Extracter", "{29A84303-8260-4B61-9879-58904A264F5F}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Proxy", "Proxy", "{C27F269B-4AE3-4196-A1C4-D43083FCA3D7}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Feeds", "Feeds", "{0D67100B-0BD7-4B80-A735-0E7723ECAD9F}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{7552C616-AA48-41E8-80AB-71CE76D4E79C}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ChromePlugin", "ChromePlugin", "{2FE9F3E2-D370-45B8-873D-4BB690C715F8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Crawler.Proxy", "RuiJi.Crawler.Proxy\RuiJi.Crawler.Proxy.csproj", "{512EF484-B1AE-42DA-8E4B-BA5A5291EEA4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Extracter", "RuiJi.Extracter\RuiJi.Extracter.csproj", "{4A2E4CD6-E790-48F3-9948-11AEA19A50A6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Cmd", "RuiJi.Cmd\RuiJi.Cmd.csproj", "{38676AB4-4262-4CCE-8AE5-C67694C1A376}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Owin", "RuiJi.Owin\RuiJi.Owin.csproj", "{0E98716C-4A38-45D4-8B53-7705A342AA42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Node", "RuiJi.Node\RuiJi.Node.csproj", "{97673817-F983-4CE8-919E-D2E43E46144C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.ChromePlugin", "RuiJi.ChromePlugin\RuiJi.ChromePlugin.csproj", "{524EECEB-E3D1-4921-9D3C-3EDAF039EAFB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Net.Test", "RuiJi.Net.Test\RuiJi.Net.Test.csproj", "{D32C632B-0AC9-468C-8C44-73679E17BA10}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,22 +21,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9E801B3B-D8F8-4B7A-BFC0-FEEE17B0E754}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9E801B3B-D8F8-4B7A-BFC0-FEEE17B0E754}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9E801B3B-D8F8-4B7A-BFC0-FEEE17B0E754}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9E801B3B-D8F8-4B7A-BFC0-FEEE17B0E754}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A27677E3-1CE8-4A8C-B041-9F7A812546F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A27677E3-1CE8-4A8C-B041-9F7A812546F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A27677E3-1CE8-4A8C-B041-9F7A812546F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A27677E3-1CE8-4A8C-B041-9F7A812546F2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{512EF484-B1AE-42DA-8E4B-BA5A5291EEA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{512EF484-B1AE-42DA-8E4B-BA5A5291EEA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{512EF484-B1AE-42DA-8E4B-BA5A5291EEA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{512EF484-B1AE-42DA-8E4B-BA5A5291EEA4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4A2E4CD6-E790-48F3-9948-11AEA19A50A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4A2E4CD6-E790-48F3-9948-11AEA19A50A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4A2E4CD6-E790-48F3-9948-11AEA19A50A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4A2E4CD6-E790-48F3-9948-11AEA19A50A6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{38676AB4-4262-4CCE-8AE5-C67694C1A376}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{38676AB4-4262-4CCE-8AE5-C67694C1A376}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38676AB4-4262-4CCE-8AE5-C67694C1A376}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -59,16 +33,21 @@ Global
 		{0E98716C-4A38-45D4-8B53-7705A342AA42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E98716C-4A38-45D4-8B53-7705A342AA42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E98716C-4A38-45D4-8B53-7705A342AA42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97673817-F983-4CE8-919E-D2E43E46144C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97673817-F983-4CE8-919E-D2E43E46144C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97673817-F983-4CE8-919E-D2E43E46144C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97673817-F983-4CE8-919E-D2E43E46144C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{524EECEB-E3D1-4921-9D3C-3EDAF039EAFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{524EECEB-E3D1-4921-9D3C-3EDAF039EAFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{524EECEB-E3D1-4921-9D3C-3EDAF039EAFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{524EECEB-E3D1-4921-9D3C-3EDAF039EAFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D32C632B-0AC9-468C-8C44-73679E17BA10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D32C632B-0AC9-468C-8C44-73679E17BA10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D32C632B-0AC9-468C-8C44-73679E17BA10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D32C632B-0AC9-468C-8C44-73679E17BA10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{9E801B3B-D8F8-4B7A-BFC0-FEEE17B0E754} = {477EA79D-F6C4-4F94-8B15-A3DCACFD7F89}
-		{29A84303-8260-4B61-9879-58904A264F5F} = {EF984FBE-9984-45C1-9A4C-07620FF73867}
-		{C27F269B-4AE3-4196-A1C4-D43083FCA3D7} = {EF984FBE-9984-45C1-9A4C-07620FF73867}
-		{512EF484-B1AE-42DA-8E4B-BA5A5291EEA4} = {477EA79D-F6C4-4F94-8B15-A3DCACFD7F89}
-		{4A2E4CD6-E790-48F3-9948-11AEA19A50A6} = {29A84303-8260-4B61-9879-58904A264F5F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {834EA42F-75D3-4A0B-B97E-7528C47B9B58}
