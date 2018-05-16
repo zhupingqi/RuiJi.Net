@@ -11,16 +11,16 @@ namespace RuiJi.Core.Extracter.Processor
 {
     public abstract class ProcessorBase : IProcessor
     {
-        public ProcessResult Process(ISelector sel, string html, params object[] args)
+        public ProcessResult Process(ISelector selector, string content, params object[] args)
         {
-            if (sel.Remove)
-                return ProcessRemove(sel, html, args);
+            if (selector.Remove)
+                return ProcessRemove(selector, content, args);
             else
-                return ProcessNeed(sel, html, args);
+                return ProcessNeed(selector, content, args);
         }
 
-        public abstract ProcessResult ProcessNeed(ISelector sel, string html, params object[] args);
+        public abstract ProcessResult ProcessNeed(ISelector selector, string content, params object[] args);
 
-        public abstract ProcessResult ProcessRemove(ISelector sel, string html, params object[] args);
+        public abstract ProcessResult ProcessRemove(ISelector selector, string content, params object[] args);
     }
 }

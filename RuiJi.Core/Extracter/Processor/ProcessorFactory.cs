@@ -19,13 +19,27 @@ namespace RuiJi.Core.Extracter.Processor
             processors.Add(SelectorTypeEnum.Regex, new RegexProcessor());
             processors.Add(SelectorTypeEnum.Exclude, new ExcludeProcessor());
             processors.Add(SelectorTypeEnum.RegexSplit, new RegexSelectorProcessor());
-            processors.Add(SelectorTypeEnum.Text, new TextProcessor());
-            processors.Add(SelectorTypeEnum.Replace, new ReplaceProcessor());
+            processors.Add(SelectorTypeEnum.Text, new TextRangeProcessor());
+            processors.Add(SelectorTypeEnum.Replace, new RegexReplaceProcessor());
         }
 
         public static IProcessor GetProcessor(ISelector selector)
         {
-            return processors.Keys.Contains(selector.SelectorType) ? processors[selector.SelectorType] : null;
+            return processors[selector.SelectorType];
+        }
+
+        public static ProcessResult Process(string content,List<ISelector> selectors)
+        {
+            var result = new ProcessResult();
+
+            foreach (var selector in selectors)
+            {
+                var processer = ProcessorFactory.GetProcessor(selector);
+                result = processer.Process(selector, content);
+                content = result.Content;
+            }
+
+            return result;
         }
     }
 }

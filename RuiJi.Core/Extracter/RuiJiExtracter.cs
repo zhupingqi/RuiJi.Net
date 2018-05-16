@@ -1,5 +1,7 @@
 ﻿using CsQuery;
 using RuiJi.Core.Extracter.Processor;
+using RuiJi.Core.Extracter.Selector;
+using RuiJi.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -18,46 +20,84 @@ namespace RuiJi.Core.Extracter
 
         }
 
-        public List<ExtractResult> Extract(string html, List<ExtractSelector> selectors, bool clear = true, int group = 0)
+        public ExtractResult Extract(string content, ExtractBlock block)
         {
-            var results = new List<ExtractResult>();
+            var pr = ProcessorFactory.Process(content, block.Selectors);
 
-            foreach (var selector in selectors)
+            var result = new ExtractResult
             {
-                var remain = html;
-                var pr = new ProcessResult();
+                Name = block.Name,
+                Content = pr.Content
+            };
 
-                foreach (var sel in selector.Selectors)
+            if(block.Blocks!=null && block.Blocks.Count > 0)
+            {
+                result.Blocks = Extract(result.Content, block.Blocks);
+            }
+
+            if (block.TileSelector!= null && block.TileSelector.Selectors.Count > 0)
+            {
+                result.Tiles = ExtractTile(pr.Content, block.TileSelector);
+            }
+
+            if(block.Metas.Count > 0)
+            {
+                result.Metas = ExtractMeta(pr.Content, block.Metas);
+            }
+
+            return result;
+        }
+
+        public ExtractResultCollection Extract(string content, ExtractBlockCollection collection)
+        {
+            var results = new ExtractResultCollection();
+
+            foreach (var block in collection.Blocks)
+            {
+                var r = Extract(content, block);
+                results.Add(r);
+            }
+
+            return results;
+        }
+
+        public ExtractResultCollection ExtractSelector(string content, List<ISelector> selectors)
+        {
+            var pr = ProcessorFactory.Process(content, selectors);
+
+            var results = new ExtractResultCollection();
+
+            foreach (var m in pr.Matches)
+            {
+                var result = new ExtractResult
                 {
-                    if (sel == null)
-                        continue;
+                    Name = "tile",
+                    Content = m
+                };
 
-                    var processer = ProcessorFactory.GetProcessor(sel);
-                    pr = processer.Process(sel, remain);
-                    remain = pr.Html;
-                }
-                
-                if (clear && !string.IsNullOrEmpty(remain))
+                results.Add(result);
+            }
+
+            return results;
+        }
+
+        public ExtractResultCollection ExtractTile(string content, ExtractTile tile)
+        {
+            var pr = ProcessorFactory.Process(content, tile.Selectors);
+
+            var results = new ExtractResultCollection();
+
+            foreach (var m in pr.Matches)
+            {
+                var result = new ExtractResult
                 {
-                    remain = ClearTag(remain);
-                    var ccq = CQ.Create(remain, HtmlParsingMode.Auto,HtmlParsingOptions.IgnoreComments);
-                    remain = ccq.Render();
-                    remain = HttpUtility.HtmlDecode(remain);
-                }
+                    Name = "tile",
+                    Content = m
+                };
 
-                var result = new ExtractResult();
-                result.Name = selector.Name;
-                result.Value = remain;
-                result.Group = group;
-
-                if (selector.HasTile)
+                if(tile.Metas.Count > 0)
                 {
-                    if (pr.Matches.Count > 1)
-                    {
-                        result.Tiles = Extract(pr.Matches, selector.TileSelectors, false);
-                    }
-                    else
-                        result.Tiles = Extract(remain, selector.TileSelectors, false);
+                    result.Metas = ExtractMeta(m, tile.Metas);
                 }
 
                 results.Add(result);
@@ -66,42 +106,18 @@ namespace RuiJi.Core.Extracter
             return results;
         }
 
-        public List<ExtractResult> Extract(List<string> htmls, List<ExtractSelector> selectors, bool clear = true)
+        public Dictionary<string, ExtractResult> ExtractMeta(string content, Dictionary<string, List<ISelector>> metas)
         {
-            var results = new List<ExtractResult>();
-            var index = 0;
+            var results = new Dictionary<string, ExtractResult>();
 
-            foreach (var html in htmls)
+            foreach (var key in metas.Keys)
             {
-                var r = Extract(html, selectors, clear, index++);
-                results.AddRange(r);
+                var value = ExtractSelector(content, metas[key]);
+                if(value.Count > 0)
+                    results.Add(key, value[0]);
             }
 
             return results;
-        }
-
-        public List<ExtractResult> Extract(string html, ExtractSelecterCollection collection, bool clear = true)
-        {
-            return Extract(html, collection.Selectors, clear);
-        }
-
-        private string ClearTag(string input)
-        {
-            input = Regex.Replace(input, "<script.*?>.*?</script>", "", RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            input = Regex.Replace(input, "<style.*?>.*?</style>", "", RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            input = Regex.Replace(input, "<iframe.*?>.*?</iframe>", "", RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            input = Regex.Replace(input, "< type=\"text/javascript\">.*?</script>", "", RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            input = Regex.Replace(input, @"<div>\s*</div>", "", RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            input = Regex.Replace(input, "<input.*?>", "", RegexOptions.IgnoreCase);
-            input = Regex.Replace(input, "<input.*?/>", "", RegexOptions.IgnoreCase);
-            input = Regex.Replace(input, "<textarea.*?>.*?</textarea>", "<textarea></textarea>", RegexOptions.IgnoreCase);
-            input = Regex.Replace(input, "<!--.*?-->", "", RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            input = Regex.Replace(input, "<form.*?>", "", RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            input = Regex.Replace(input, "</form>", "", RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            //input = Regex.Replace(input, "<font.*?>", "", RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            //input = Regex.Replace(input, "</font>", "", RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            input = Regex.Replace(input, "<select.*?>.*?</select>", "", RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            return input.Trim();
         }
     }
 }

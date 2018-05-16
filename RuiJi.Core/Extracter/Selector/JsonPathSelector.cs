@@ -7,11 +7,11 @@ using RuiJi.Core.Extracter.Enum;
 
 namespace RuiJi.Core.Extracter.Selector
 {
-    public class JsonSelector : SelectorBase
+    public class JsonPathSelector : SelectorBase
     {
         protected override SelectorTypeEnum SetSelectType()
         {
-            throw new NotImplementedException();
+            return SelectorTypeEnum.Json;
         }
     }
 }

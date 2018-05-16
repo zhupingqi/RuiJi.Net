@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Core.Extracter.Processor
 {
-    class JsonProcessor : ProcessorBase
+    class JsonPathProcessor : ProcessorBase
     {
-        public override ProcessResult ProcessNeed(ISelector sel, string html, params object[] args)
+        public override ProcessResult ProcessNeed(ISelector selector, string html, params object[] args)
         {
             //JObject obj = JObject.Parse(content);
             //JToken token = obj.SelectToken(property);
@@ -23,7 +23,7 @@ namespace RuiJi.Core.Extracter.Processor
             throw new NotImplementedException();
         }
 
-        public override ProcessResult ProcessRemove(ISelector sel, string html, params object[] args)
+        public override ProcessResult ProcessRemove(ISelector selector, string html, params object[] args)
         {
             throw new NotImplementedException();
         }

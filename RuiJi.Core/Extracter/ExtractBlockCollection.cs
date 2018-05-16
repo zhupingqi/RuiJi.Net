@@ -8,24 +8,32 @@ using RuiJi.Core.Extracter.Selector;
 
 namespace RuiJi.Core.Extracter
 {
-    public class ExtractSelecterCollection
+    public class ExtractBlockCollection
     {
-        private Dictionary<string, ExtractSelector> selectors;
+        private Dictionary<string, ExtractBlock> selectors;
 
         [JsonProperty("selectors")]
-        public List<ExtractSelector> Selectors
+        public List<ExtractBlock> Blocks
         {
             set;
             get;
         }
 
-        public ExtractSelecterCollection()
+        public int Count
         {
-            selectors = new Dictionary<string, ExtractSelector>();
-            Selectors = new List<ExtractSelector>();
+            get
+            {
+                return Blocks.Count;
+            }
         }
 
-        public ExtractSelecterCollection(ExtractSelecterCollection selectCollection)
+        public ExtractBlockCollection()
+        {
+            selectors = new Dictionary<string, ExtractBlock>();
+            Blocks = new List<ExtractBlock>();
+        }
+
+        public ExtractBlockCollection(ExtractBlockCollection selectCollection)
         {
             this.selectors = selectCollection.selectors;
         }
@@ -38,7 +46,7 @@ namespace RuiJi.Core.Extracter
             }
         }
 
-        public ExtractSelector this[string name]
+        public ExtractBlock this[string name]
         {
             get
             {
@@ -46,15 +54,15 @@ namespace RuiJi.Core.Extracter
             }
         }
 
-        public void Add(ExtractSelector selectRule)
+        public void Add(ExtractBlock selectRule)
         {
             selectors.Add(selectRule.Name, selectRule);
-            Selectors.Add(selectRule);
+            Blocks.Add(selectRule);
         }
 
         public void Add(string name, List<ISelector> selectors)
         {
-            var selector = new ExtractSelector()
+            var selector = new ExtractBlock()
             {
                 Name = name,
                 Selectors = selectors
@@ -63,9 +71,14 @@ namespace RuiJi.Core.Extracter
             Add(selector);
         }
 
-        public void Update(ExtractSelector selector)
+        public void Update(ExtractBlock selector)
         {
             selectors[selector.Name] = selector;
+        }
+
+        public bool ContainsKey(string name)
+        {
+            return AllKeys.Contains(name);
         }
 
         public void Clear()

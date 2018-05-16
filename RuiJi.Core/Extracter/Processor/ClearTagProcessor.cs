@@ -1,21 +1,22 @@
-﻿using RuiJi.Core.Extracter;
-using RuiJi.Core.Extracter.Selector;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using RuiJi.Core.Extracter.Selector;
+using RuiJi.Core.Utils;
 
 namespace RuiJi.Core.Extracter.Processor
 {
-    public class ReplaceProcessor : ProcessorBase
+    public class ClearTagProcessor : ProcessorBase
     {
         public override ProcessResult ProcessNeed(ISelector sel, string html, params object[] args)
         {
+            var spSelector = sel as ClearTagSelector;
+
             var pr = new ProcessResult();
-            var spSelector = sel as ReplaceSelector;
-            pr.Matches.Add(Regex.Replace(html, spSelector.Value, spSelector.NewChar));
+            pr.Matches.Add(HtmlHelper.ClearTag(html));
+
             return pr;
         }
 

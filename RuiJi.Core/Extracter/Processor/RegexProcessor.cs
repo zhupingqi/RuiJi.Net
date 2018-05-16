@@ -11,11 +11,11 @@ namespace RuiJi.Core.Extracter.Processor
 {
     public class RegexProcessor : ProcessorBase
     {
-        public override ProcessResult ProcessNeed(ISelector sel, string html, params object[] args)
+        public override ProcessResult ProcessNeed(ISelector selector, string content, params object[] args)
         {
-            var spSelector = sel as RegexSelector;
+            var spSelector = selector as RegexSelector;
             var regex = new Regex(spSelector.Value);
-            var m = regex.Match(html);
+            var m = regex.Match(content);
 
             var results = new List<string>();
 
@@ -31,12 +31,12 @@ namespace RuiJi.Core.Extracter.Processor
             return pr;
         }
 
-        public override ProcessResult ProcessRemove(ISelector sel, string html, params object[] args)
+        public override ProcessResult ProcessRemove(ISelector selector, string content, params object[] args)
         {
-            var spSelector = sel as RegexSelector;
+            var spSelector = selector as RegexSelector;
 
             var pr = new ProcessResult();
-            pr.Matches.Add(Regex.Replace(html, spSelector.Value, ""));
+            pr.Matches.Add(Regex.Replace(content, spSelector.Value, ""));
 
             return pr;
         }

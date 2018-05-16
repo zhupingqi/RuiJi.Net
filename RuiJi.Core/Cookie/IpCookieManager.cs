@@ -23,6 +23,7 @@ namespace RuiJi.Core.Cookie
         private IpCookieManager()
         {
             cookies = new Dictionary<string, ManagedCookie>();
+            Reload();
         }
 
         public static IpCookieManager Instance
@@ -46,7 +47,7 @@ namespace RuiJi.Core.Cookie
                     var host = file.Substring(file.LastIndexOf(@"\")+1);
                     host = host.Substring(0,host.LastIndexOf("."));
                     host = "http://" + host + "/";
-                    cookie.Update(host, cookie.SetCookie);
+                    cookie.Update(host, cookie.Cookie);
 
                     if (!cookies.ContainsKey(cookie.Ip))
                         cookies.Add(cookie.Ip, cookie);

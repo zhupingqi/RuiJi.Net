@@ -16,6 +16,7 @@ namespace RuiJi.Core.Extracter.Enum
         Include,
         Replace,
         Json,
-        XPath
+        XPath,
+        ClearTag
     }
 }

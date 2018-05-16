@@ -19,22 +19,25 @@ namespace RuiJi.Core.Crawler
 
         private IPAddress ip;
 
-        public IPCrawler(IPAddress ip)
-        {
-            if (!IPHelper.IsHostIPAddress(ip))
-            {
-                throw new Exception("无效IP地址");
-            }
-            this.ip = ip;
-        }
-
-        public IPCrawler(string ip) : this(IPAddress.Parse(ip))
+        public IPCrawler()
         {
 
         }
 
         public Response Request(Request request)
         {
+            if(!string.IsNullOrEmpty(request.Ip))
+            {
+                if (!IPHelper.IsHostIPAddress(IPAddress.Parse(request.Ip)))
+                {
+                    return new Response {
+                        IsRaw = false,
+                        StatusCode = HttpStatusCode.BadRequest,
+                        Data = "specified Ip is invalid!"
+                    };
+                }
+            }
+
             var httpResponse = GetHttpWebResponse(request);
             var buff = GetResponseBuff(httpResponse);
 
@@ -47,7 +50,8 @@ namespace RuiJi.Core.Crawler
             response.IsRaw = request.IsRaw;
             response.Method = request.Method;
 
-            IpCookieManager.Instance.Update(request.Ip, request.Uri.ToString(), httpResponse.Headers.Get("setCookie"));
+            if(request.UseCookie)
+                SetCookie(request, httpResponse.Headers.Get("Set-Cookie"));
 
             if (request.IsRaw)
             {
@@ -73,13 +77,6 @@ namespace RuiJi.Core.Crawler
             httpRequest.Timeout = request.Timeout > 0 ? request.Timeout : 100000;
             httpRequest.ReadWriteTimeout = 60000;
 
-            var cookie = string.IsNullOrEmpty(request.Cookie) ? IpCookieManager.Instance.Get(request.Ip, request.Uri.ToString()) : request.Cookie;
-
-            if (!string.IsNullOrEmpty(cookie))
-            {
-                httpRequest.Headers.Add("Cookie", cookie);
-            }
-
             if (httpRequest.Method == "POST" && !string.IsNullOrEmpty(request.PostParam))
             {
                 byte[] bs = Encoding.ASCII.GetBytes(request.PostParam);
@@ -96,14 +93,24 @@ namespace RuiJi.Core.Crawler
             SimulateBrowser(httpRequest);
             PreprocessHeader(httpRequest, request.Headers);
 
-            httpRequest.ServicePoint.BindIPEndPointDelegate = (ServicePoint servicePoint, IPEndPoint remoteEndPoint, int retryCount) =>
+            var cookie = GetCookie(request);
+
+            if (!string.IsNullOrEmpty(cookie) && request.UseCookie)
             {
-                if (retryCount > 3)
+                httpRequest.Headers.Add("Cookie", cookie);
+            }
+
+            if (!string.IsNullOrEmpty(request.Ip))
+            {
+                httpRequest.ServicePoint.BindIPEndPointDelegate = (ServicePoint servicePoint, IPEndPoint remoteEndPoint, int retryCount) =>
                 {
-                    return null;
-                }
-                return new IPEndPoint(ip, 0);
-            };
+                    if (retryCount > 3)
+                    {
+                        return null;
+                    }
+                    return new IPEndPoint(IPAddress.Parse(request.Ip), 0);
+                };
+            }
 
             try
             {
@@ -127,6 +134,34 @@ namespace RuiJi.Core.Crawler
             destination.Close();
 
             return buff;
+        }
+
+        private string GetCookie(Request request)
+        {
+            if (!string.IsNullOrEmpty(request.Cookie))
+                return request.Cookie;
+
+            var ip = request.Ip;
+            if(string.IsNullOrEmpty(request.Ip))
+            {
+                ip = IPHelper.GetDefaultIPAddress().ToString();
+            }
+
+            return IpCookieManager.Instance.Get(ip, request.Uri.ToString());
+        }
+
+        private void SetCookie(Request request,string setCookie)
+        {
+            if (string.IsNullOrEmpty(setCookie))
+                return;
+
+            var ip = request.Ip;
+            if (string.IsNullOrEmpty(request.Ip))
+            {
+                ip = IPHelper.GetDefaultIPAddress().ToString();
+            }
+
+            IpCookieManager.Instance.Update(ip, request.Uri.ToString(), setCookie);
         }
 
         private void PreprocessHeader(HttpWebRequest request, WebHeaderCollection headers)

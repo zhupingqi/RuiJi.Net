@@ -10,7 +10,7 @@ namespace RuiJi.Core.Extracter
     public class ExtractParameter
     {
         [JsonProperty("collection")]
-        public ExtractSelecterCollection SelectCollection { get; set; }
+        public ExtractBlockCollection SelectCollection { get; set; }
 
         [JsonProperty("html")]
         public string Html { get; set; }

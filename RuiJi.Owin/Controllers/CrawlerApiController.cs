@@ -18,7 +18,7 @@ namespace RuiJi.Owin.Controllers
         [WebApiCacheAttribute(Duration = 10)]
         public new Response Request(Request request)
         {
-            var crawler = new IPCrawler(request.Ip);
+            var crawler = new IPCrawler();
             var response = crawler.Request(request);
 
             var maxRefresh = 5;
@@ -26,7 +26,7 @@ namespace RuiJi.Owin.Controllers
 
             while (HasRefreshMeta(response, out refreshUrl) && maxRefresh > 0)
             {
-                crawler = new IPCrawler(request.Ip);
+                crawler = new IPCrawler();
                 request.Uri = new Uri(refreshUrl);
                 response = crawler.Request(request);
 

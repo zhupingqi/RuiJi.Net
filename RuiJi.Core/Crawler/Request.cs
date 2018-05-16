@@ -32,6 +32,8 @@ namespace RuiJi.Core.Crawler
 
         public string PostParam { get; set; }
 
+        public bool UseCookie { get; set; }
+
         public Request()
         {
             Method = "GET";

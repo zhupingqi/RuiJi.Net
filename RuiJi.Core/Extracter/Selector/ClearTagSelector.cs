@@ -7,11 +7,16 @@ using RuiJi.Core.Extracter.Enum;
 
 namespace RuiJi.Core.Extracter.Selector
 {
-    public class XPathSelector : SelectorBase
+    public class ClearTagSelector : SelectorBase
     {
+        public ClearTagSelector()
+        {
+            
+        }
+
         protected override SelectorTypeEnum SetSelectType()
         {
-            return SelectorTypeEnum.XPath;
+            return SelectorTypeEnum.ClearTag;
         }
     }
 }

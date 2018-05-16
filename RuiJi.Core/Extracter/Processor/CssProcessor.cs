@@ -2,6 +2,7 @@
 using RuiJi.Core.Extracter;
 using RuiJi.Core.Extracter.Enum;
 using RuiJi.Core.Extracter.Selector;
+using RuiJi.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,9 +26,9 @@ namespace RuiJi.Core.Extracter.Processor
             html = "<doc>" + html + "</doc>";
             CssSelector selector = sel as CssSelector;
             if (selector.Type == CssTypeEnum.Text)
-                html = ClearTag(html);
-            CQ cq = CQ.Create(html, HtmlParsingMode.Auto);
+                html = HtmlHelper.ClearTag(html);
 
+            CQ cq = CQ.Create(html, HtmlParsingMode.Auto);
             var elems = cq.Find(selector.Value);
 
             pr = ProResult(elems, selector);
@@ -95,25 +96,6 @@ namespace RuiJi.Core.Extracter.Processor
                 }
             }
             return pr;
-        }
-
-        private string ClearTag(string input)
-        {
-            input = Regex.Replace(input, "<script.*?>.*?</script>", "", RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            input = Regex.Replace(input, "<style.*?>.*?</style>", "", RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            input = Regex.Replace(input, "<iframe.*?>.*?</iframe>", "", RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            input = Regex.Replace(input, "< type=\"text/javascript\">.*?</script>", "", RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            input = Regex.Replace(input, @"<div>\s*</div>", "", RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            input = Regex.Replace(input, "<input.*?>", "", RegexOptions.IgnoreCase);
-            input = Regex.Replace(input, "<input.*?/>", "", RegexOptions.IgnoreCase);
-            input = Regex.Replace(input, "<textarea.*?>.*?</textarea>", "<textarea></textarea>", RegexOptions.IgnoreCase);
-            input = Regex.Replace(input, "<!--.*?-->", "", RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            input = Regex.Replace(input, "<form.*?>", "", RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            input = Regex.Replace(input, "</form>", "", RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            //input = Regex.Replace(input, "<font.*?>", "", RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            //input = Regex.Replace(input, "</font>", "", RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            input = Regex.Replace(input, "<select.*?>.*?</select>", "", RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            return input.Trim();
-        }
+        }        
     }
 }

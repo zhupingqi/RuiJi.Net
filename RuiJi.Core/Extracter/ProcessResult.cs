@@ -10,7 +10,7 @@ namespace RuiJi.Core.Extracter
     {
         public List<string> Matches { get; set; }
 
-        public string Html
+        public string Content
         {
             get
             {

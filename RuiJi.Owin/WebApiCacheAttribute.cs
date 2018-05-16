@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http.Filters;
 
-namespace RuiJi.Core
+namespace RuiJi.Owin
 {
     public class WebApiCacheAttribute : ActionFilterAttribute
     {

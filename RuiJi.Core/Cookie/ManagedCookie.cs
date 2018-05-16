@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -10,19 +11,14 @@ namespace RuiJi.Core.Cookie
 {
     public class ManagedCookie
     {
+        [JsonProperty("ip")]
         public string Ip { get; set; }
 
-        private string _setCookie;
-        public string SetCookie
+        [JsonProperty("cookie")]
+        public string Cookie
         {
-            get
-            {
-                return _setCookie;
-            }
-            private set
-            {
-                _setCookie = value;
-            }
+            get;
+            private set;
         }
 
         private CookieContainer _container;
@@ -71,7 +67,7 @@ namespace RuiJi.Core.Cookie
                 tmp.Add(cookie.Name + "=" + cookie.Value + ";expires=" + cookie.Expires.ToString("r") + "; domain=" + cookie.Domain + "; path=" + cookie.Path);
             }
 
-            _setCookie = string.Join(",", tmp.ToArray());
+            Cookie = string.Join(",", tmp.ToArray());
         }
 
         public string GetCookie(string url)

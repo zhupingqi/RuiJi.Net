@@ -8,12 +8,12 @@ using RuiJi.Core.Extracter.Enum;
 
 namespace RuiJi.Core.Extracter.Selector
 {
-    public class ReplaceSelector : SelectorBase
+    public class RegexReplaceSelector : SelectorBase
     {
         [JsonProperty("newChar")]
         public string NewChar { get; set; }
 
-        public ReplaceSelector(string value, string newChar)
+        public RegexReplaceSelector(string value, string newChar)
         {
             this.NewChar = newChar;
             this.Value = value;

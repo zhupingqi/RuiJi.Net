@@ -9,12 +9,12 @@ using RuiJi.Core.Extracter;
 
 namespace RuiJi.Core.Extracter.Processor
 {
-    public class TextProcessor : ProcessorBase
+    public class TextRangeProcessor : ProcessorBase
     {
         public override ProcessResult ProcessNeed(ISelector sel, string html, params object[] args)
         {
             var pr = new ProcessResult();
-            var spSelector = sel as TextSelector;
+            var spSelector = sel as TextRangeSelector;
 
             var b = Regex.Matches(html, spSelector.Begin);
             var e = Regex.Matches(html, spSelector.End, RegexOptions.RightToLeft);
@@ -40,7 +40,7 @@ namespace RuiJi.Core.Extracter.Processor
 
         public override ProcessResult ProcessRemove(ISelector sel, string html, params object[] args)
         {
-            var spSelector = sel as TextSelector;
+            var spSelector = sel as TextRangeSelector;
             var pr = new ProcessResult();
             var b = Regex.Matches(html, spSelector.Begin);
             var e = Regex.Matches(html, spSelector.End, RegexOptions.RightToLeft);

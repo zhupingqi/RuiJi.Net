@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Core.Extracter.Selector
 {
-    public class TextSelector : SelectorBase
+    public class TextRangeSelector : SelectorBase
     {
         [JsonIgnore]
         public new string Value { get; set; }
@@ -19,14 +19,14 @@ namespace RuiJi.Core.Extracter.Selector
         [JsonProperty("end")]
         public string End { get; set; }
 
-        public TextSelector(string begin, string end, bool remove = false)
+        public TextRangeSelector(string begin, string end, bool remove = false)
         {
             this.Begin = begin;
             this.End = end;
             this.Remove = remove;
         }
 
-        public TextSelector()
+        public TextRangeSelector()
         { }
 
         protected override SelectorTypeEnum SetSelectType()
