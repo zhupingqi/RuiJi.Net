@@ -59,6 +59,12 @@ namespace RuiJi.Owin
                 defaults: new { controller = "CrawlerApi", action = "serverinfo" }
             );
 
+            config.Routes.MapHttpRoute(
+                name: "ServerInfo",
+                routeTemplate: "api/proxy/request",
+                defaults: new { controller = "CrawlerProxyApi", action = "request" }
+            );
+
             //config.Formatters.JsonFormatter.MediaTypeMappings.Add(new QueryStringMapping("datatype", "json", "application/json"));
 
             config.Formatters.Remove(config.Formatters.XmlFormatter);

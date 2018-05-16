@@ -27,7 +27,6 @@ namespace RuiJi.Net.Test
                 Program.Main(args);
             }).Start();
 
-
             // start crawler
             new Thread(() =>
             {
