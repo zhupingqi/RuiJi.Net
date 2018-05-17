@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RuiJi.Core.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,9 +31,9 @@ namespace RuiJi.Node
 
         public ServiceBase(string baseUrl, string zkServer,string proxyUrl = "")
         {
-            this.BaseUrl = baseUrl;
-            this.ZkServer = zkServer;
-            this.ProxyUrl = proxyUrl;
+            this.BaseUrl = FixUrl(baseUrl);
+            this.ZkServer = FixUrl(zkServer);
+            this.ProxyUrl = FixUrl(proxyUrl);
         }
 
         public virtual void Start()
@@ -110,6 +111,19 @@ namespace RuiJi.Node
             stat = ZooKeeper.Exists("/config/proxy", false);
             if (stat == null)
                 ZooKeeper.Create("/config/proxy", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+        }
+
+        private string FixUrl(string baseUrl)
+        {
+            if (string.IsNullOrEmpty(baseUrl))
+                return "";
+
+            if (baseUrl.ToLower().StartsWith("localhost") || baseUrl.StartsWith("127.0.0.1"))
+            {
+                baseUrl = IPHelper.GetDefaultIPAddress().ToString() + ":" + baseUrl.Split(':')[1];
+            }
+
+            return baseUrl;
         }
 
         protected virtual void Process(WatchedEvent @event)

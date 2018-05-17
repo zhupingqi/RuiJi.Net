@@ -60,7 +60,7 @@ namespace RuiJi.Owin
             );
 
             config.Routes.MapHttpRoute(
-                name: "ServerInfo",
+                name: "ProxyRequest",
                 routeTemplate: "api/proxy/request",
                 defaults: new { controller = "CrawlerProxyApi", action = "request" }
             );

@@ -18,11 +18,11 @@ namespace RuiJi.Net.Test
                 var args = new string[] {
                 "start",
                 "-u",
-                "192.168.31.196:38000",
+                "localhost:36000",
                 "-t",
                 "cp",
                 "-z",
-                "192.168.31.196:2181"
+                "localhost:2181"
                 };
                 Program.Main(args);
             }).Start();
@@ -33,13 +33,13 @@ namespace RuiJi.Net.Test
                 var args = new string[] {
                 "start",
                 "-u",
-                "192.168.31.196:39001",
+                "localhost:36001",
                 "-t",
                 "c",
                 "-p",
-                "192.168.31.196:38000",
+                "localhost:36000",
                 "-z",
-                "192.168.31.196:2181"
+                "localhost:2181"
                 };
                 Program.Main(args);
             }).Start();
@@ -50,13 +50,13 @@ namespace RuiJi.Net.Test
                 var args = new string[] {
                 "start",
                 "-u",
-                "192.168.31.196:39002",
+                "localhost:36002",
                 "-t",
                 "c",
                 "-p",
-                "192.168.31.196:38000",
+                "localhost:36000",
                 "-z",
-                "192.168.31.196:2181"
+                "localhost:2181"
                 };
                 Program.Main(args);
             }).Start();
@@ -67,11 +67,11 @@ namespace RuiJi.Net.Test
                 var args = new string[] {
                 "start",
                 "-u",
-                "192.168.31.196:36000",
+                "localhost:37000",
                 "-t",
                 "ep",
                 "-z",
-                "192.168.31.196:2181"
+                "localhost:2181"
                 };
                 Program.Main(args);
             }).Start();
@@ -82,13 +82,13 @@ namespace RuiJi.Net.Test
                 var args = new string[] {
                 "start",
                 "-u",
-                "192.168.31.196:37001",
+                "localhost:37001",
                 "-t",
                 "e",
                 "-p",
-                "192.168.31.196:36000",
+                "localhost:37000",
                 "-z",
-                "192.168.31.196:2181"
+                "localhost:2181"
                 };
                 Program.Main(args);
             }).Start();
@@ -99,13 +99,13 @@ namespace RuiJi.Net.Test
                 var args = new string[] {
                 "start",
                 "-u",
-                "192.168.31.196:37002",
+                "localhost:37002",
                 "-t",
                 "e",
                 "-p",
-                "192.168.31.196:36000",
+                "localhost:37000",
                 "-z",
-                "192.168.31.196:2181"
+                "localhost:2181"
                 };
                 Program.Main(args);
             }).Start();

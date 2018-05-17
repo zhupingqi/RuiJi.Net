@@ -108,7 +108,9 @@ namespace RuiJi.Cmd
                 }
             }
 
-            Console.ReadLine();
+            Console.ReadKey(true);
+            //Application.Run();
+            //new ManualResetEvent(false).WaitOne();
         }
 
         ~Program()
