@@ -21,7 +21,7 @@ namespace RuiJi.Owin.Controllers
             var crawler = new IPCrawler();
             var response = crawler.Request(request);
 
-            var maxRefresh = 5;
+            var maxRefresh = 2;
             string refreshUrl;
 
             while (HasRefreshMeta(response, out refreshUrl) && maxRefresh > 0)

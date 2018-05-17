@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace RuiJi.Core.Crawler
 {
@@ -17,7 +19,7 @@ namespace RuiJi.Core.Crawler
 
         public object Data { get; set; }
 
-        public WebHeaderCollection Headers { get; set; }
+        public List<WebHeader> Headers { get; set; }
 
         public HttpStatusCode StatusCode { get; set; }
 

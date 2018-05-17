@@ -6,7 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RuiJi.Core.Utils
+namespace RuiJi.Net
 {
     public class IPHelper
     {

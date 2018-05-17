@@ -17,7 +17,7 @@ namespace RuiJi.Net
 
         public object Data { get; set; }
 
-        public WebHeaderCollection Headers { get; set; }
+        public List<WebHeader> Headers { get; set; }
 
         public HttpStatusCode StatusCode { get; set; }
 

@@ -50,12 +50,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Crawler.cs" />
+    <Compile Include="IPHelper.cs" />
     <Compile Include="ProxyManager.cs" />
     <Compile Include="Extracter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Request.cs" />
     <Compile Include="Response.cs" />
     <Compile Include="RuiJiProxy.cs" />
+    <Compile Include="WebHeader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -27,7 +27,7 @@ namespace RuiJi.Net
             ConfigurationManager.AppSettings["cp"].Split(',').ToList().ForEach(m=> {
                 proxys.Add(new RuiJiProxy {
                     Type = ProxyTypeEnum.Crawler,
-                    BaseUrl = m,
+                    BaseUrl = IPHelper.FixLocalUrl(m),
                     Active = false
                 });
             });
@@ -36,7 +36,7 @@ namespace RuiJi.Net
                 proxys.Add(new RuiJiProxy
                 {
                     Type = ProxyTypeEnum.Extracter,
-                    BaseUrl = m,
+                    BaseUrl = IPHelper.FixLocalUrl(m),
                     Active = false
                 });
             });
@@ -87,7 +87,9 @@ namespace RuiJi.Net
                 if (proxy.Type == ProxyTypeEnum.Extracter)
                     resource = "api/ep/ping";
 
-                var client = new RestClient("http://" + proxy.BaseUrl);
+                var baseUrl = IPHelper.FixLocalUrl(proxy.BaseUrl);
+
+                var client = new RestClient("http://" + baseUrl);
                 var restRequest = new RestRequest(resource);
                 restRequest.Method = Method.GET;
                 restRequest.Timeout = 15000;

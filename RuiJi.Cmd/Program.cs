@@ -16,6 +16,7 @@ using RuiJi.Node;
 using RuiJi.Node.Extracter;
 using RuiJi.Node.ExtracterProxy;
 using System.Threading;
+using RuiJi.Core.Utils;
 
 namespace RuiJi.Cmd
 {
@@ -44,7 +45,8 @@ namespace RuiJi.Cmd
                     {
 
                         _server = new WebApiServer();
-                        _server.Start("http://" + opt.BaseUrl, opt.Type, opt.ZkServer);
+                        var baseUrl = IPHelper.FixLocalUrl(opt.BaseUrl);
+                        _server.Start("http://" + baseUrl, opt.Type, opt.ZkServer);
                         //Process.Start("http://" + opt.BaseUrl);
 
                         //need run in thread

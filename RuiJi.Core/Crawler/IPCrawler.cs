@@ -3,6 +3,7 @@ using RuiJi.Core.Cookie;
 using RuiJi.Core.Utils;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -44,7 +45,7 @@ namespace RuiJi.Core.Crawler
             var response = new Response();
 
             response.StatusCode = httpResponse.StatusCode;
-            response.Headers = httpResponse.Headers;
+            response.Headers = WebHeader.FromWebHeader(httpResponse.Headers);
             response.RequestUri = request.Uri;
             response.ResponseUri = httpResponse.ResponseUri;
             response.IsRaw = request.IsRaw;

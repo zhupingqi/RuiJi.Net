@@ -1,4 +1,5 @@
 ﻿using Microsoft.Owin.Hosting;
+using RuiJi.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
