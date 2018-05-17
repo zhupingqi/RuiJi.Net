@@ -13,9 +13,9 @@ using Newtonsoft.Json;
 
 namespace RuiJi.Node.Crawler
 {
-    public class CrawlerNodeService : ServiceBase
+    public class CrawlerNode : NodeBase
     {
-        public CrawlerNodeService(string baseUrl, string zkServer, string proxyUrl) : base(baseUrl, zkServer, proxyUrl)
+        public CrawlerNode(string baseUrl, string zkServer, string proxyUrl) : base(baseUrl, zkServer, proxyUrl)
         {
 
         }

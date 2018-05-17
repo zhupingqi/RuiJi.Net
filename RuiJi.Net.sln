@@ -13,8 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Node", "RuiJi.Node\Ru
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.ChromePlugin", "RuiJi.ChromePlugin\RuiJi.ChromePlugin.csproj", "{524EECEB-E3D1-4921-9D3C-3EDAF039EAFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Net.Test", "RuiJi.Net.Test\RuiJi.Net.Test.csproj", "{D32C632B-0AC9-468C-8C44-73679E17BA10}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{53DD9533-82ED-43BB-935F-C60394EE6B2E}"
 	ProjectSection(SolutionItems) = preProject
 		LICENSE.txt = LICENSE.txt
@@ -22,6 +20,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Net", "RuiJi.Net\RuiJi.Net.csproj", "{934BEB73-E7C2-4C70-B697-A5FB2066C17E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SDK", "SDK", "{2DE1C5EE-1965-43AC-ADAC-8C090B1CE487}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Test", "RuiJi.Test\RuiJi.Test.csproj", "{D32C632B-0AC9-468C-8C44-73679E17BA10}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Net.Test", "RuiJi.Net.Test\RuiJi.Net.Test.csproj", "{58F8B8EC-F5DB-4653-84DF-BF4C81ACA8ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,17 +53,25 @@ Global
 		{524EECEB-E3D1-4921-9D3C-3EDAF039EAFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{524EECEB-E3D1-4921-9D3C-3EDAF039EAFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{524EECEB-E3D1-4921-9D3C-3EDAF039EAFB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D32C632B-0AC9-468C-8C44-73679E17BA10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D32C632B-0AC9-468C-8C44-73679E17BA10}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D32C632B-0AC9-468C-8C44-73679E17BA10}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D32C632B-0AC9-468C-8C44-73679E17BA10}.Release|Any CPU.Build.0 = Release|Any CPU
 		{934BEB73-E7C2-4C70-B697-A5FB2066C17E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{934BEB73-E7C2-4C70-B697-A5FB2066C17E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{934BEB73-E7C2-4C70-B697-A5FB2066C17E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{934BEB73-E7C2-4C70-B697-A5FB2066C17E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D32C632B-0AC9-468C-8C44-73679E17BA10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D32C632B-0AC9-468C-8C44-73679E17BA10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D32C632B-0AC9-468C-8C44-73679E17BA10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D32C632B-0AC9-468C-8C44-73679E17BA10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58F8B8EC-F5DB-4653-84DF-BF4C81ACA8ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58F8B8EC-F5DB-4653-84DF-BF4C81ACA8ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58F8B8EC-F5DB-4653-84DF-BF4C81ACA8ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58F8B8EC-F5DB-4653-84DF-BF4C81ACA8ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{934BEB73-E7C2-4C70-B697-A5FB2066C17E} = {2DE1C5EE-1965-43AC-ADAC-8C090B1CE487}
+		{58F8B8EC-F5DB-4653-84DF-BF4C81ACA8ED} = {2DE1C5EE-1965-43AC-ADAC-8C090B1CE487}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {834EA42F-75D3-4A0B-B97E-7528C47B9B58}

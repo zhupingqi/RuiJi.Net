@@ -14,9 +14,9 @@ using ZooKeeperNet;
 
 namespace RuiJi.Node.ExtracterProxy
 {
-    public class ExtracterProxyNodeService : ServiceBase
+    public class ExtracterProxyNode : NodeBase
     {
-        public ExtracterProxyNodeService(string baseUrl, string zkServer) : base(baseUrl, zkServer)
+        public ExtracterProxyNode(string baseUrl, string zkServer) : base(baseUrl, zkServer)
         {
             
         }

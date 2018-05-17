@@ -1,4 +1,6 @@
-﻿using RuiJi.Core.Crawler;
+﻿using Newtonsoft.Json;
+using RestSharp;
+using RuiJi.Core.Crawler;
 using RuiJi.Node.CrawlerProxy;
 using System;
 using System.Collections.Generic;
@@ -12,13 +14,35 @@ namespace RuiJi.Owin.Controllers
     public class CrawlerProxyApiController : ApiController
     {
         [HttpPost]
-        [WebApiCacheAttribute(Duration = 10)]
+        //[WebApiCacheAttribute(Duration = 10)]
         public new Response Request(Request request)
         {
             var result = CrawlerManager.Instance.ElectIP(request.Uri);
+            if (result == null)
+                return new Response {
+                    StatusCode = System.Net.HttpStatusCode.Conflict,
+                    Data = "no clrawler ip elect!"
+                };
+
             request.Ip = result.ClientIp;
 
-            return null;
+            var client = new RestClient("http://" + result.BaseUrl);
+            var restRequest = new RestRequest("api/request");
+            restRequest.Method = Method.POST;
+            restRequest.AddJsonBody(request);
+            restRequest.Timeout = request.Timeout;
+
+            var restResponse = client.Execute(restRequest);
+
+            var response = JsonConvert.DeserializeObject<Response>(restResponse.Content);
+
+            return response;
+        }
+
+        [HttpGet]
+        public bool Ping()
+        {
+            return true;
         }
     }
 }

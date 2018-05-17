@@ -8,7 +8,7 @@ namespace RuiJi.Node.CrawlerProxy
 {
     public class ElectResult
     {
-        public string ServerIp { get; set; }
+        public string BaseUrl { get; set; }
         public string ClientIp { get; set; }
     }
 }

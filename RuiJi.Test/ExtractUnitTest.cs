@@ -6,7 +6,7 @@ using RuiJi.Core.Extracter;
 using RuiJi.Core.Extracter.Enum;
 using RuiJi.Core.Extracter.Selector;
 
-namespace RuiJi.Net.Test
+namespace RuiJi.Test
 {
     [TestClass]
     public class ExtractUnitTest

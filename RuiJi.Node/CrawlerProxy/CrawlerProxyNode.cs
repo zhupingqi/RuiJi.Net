@@ -14,10 +14,10 @@ using ZooKeeperNet;
 
 namespace RuiJi.Node.CrawlerProxy
 {
-    public class CrawlerProxyNodeService : ServiceBase
+    public class CrawlerProxyNode : NodeBase
     {
 
-        public CrawlerProxyNodeService(string baseUrl, string zkServer) : base(baseUrl, zkServer)
+        public CrawlerProxyNode(string baseUrl, string zkServer) : base(baseUrl, zkServer)
         {
 
         }

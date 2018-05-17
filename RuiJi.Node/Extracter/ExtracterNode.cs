@@ -13,9 +13,9 @@ using Newtonsoft.Json;
 
 namespace RuiJi.Node.Extracter
 {
-    public class ExtracterNodeService : ServiceBase
+    public class ExtracterNode : NodeBase
     {
-        public ExtracterNodeService(string baseUrl, string zkServer, string proxyUrl) : base(baseUrl, zkServer, proxyUrl)
+        public ExtracterNode(string baseUrl, string zkServer, string proxyUrl) : base(baseUrl, zkServer, proxyUrl)
         {
             
         }

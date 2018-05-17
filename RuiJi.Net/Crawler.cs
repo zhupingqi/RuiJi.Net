@@ -13,9 +13,12 @@ namespace RuiJi.Net
     {
         public static Response Request(Request request)
         {
-            var baseUrl = ProxyManager.Instance.Elect(ProxyTypeEnum.Crawler);
+            var proxyUrl = ProxyManager.Instance.Elect(ProxyTypeEnum.Crawler);
 
-            var client = new RestClient(baseUrl);
+            if (string.IsNullOrEmpty(proxyUrl))
+                throw new Exception("no available proxy servers");
+
+            var client = new RestClient("http://" + proxyUrl);
             var restRequest = new RestRequest("api/proxy/request");
             restRequest.Method = Method.POST;
             restRequest.AddJsonBody(request);
@@ -24,8 +27,10 @@ namespace RuiJi.Net
             var restResponse = client.Execute(restRequest);
 
             var response = JsonConvert.DeserializeObject<Response>(restResponse.Content);
-            if (response == null || restResponse.StatusCode != System.Net.HttpStatusCode.OK)
-                response = new Response();
+            if (restResponse.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                ProxyManager.Instance.MarkDown(proxyUrl);
+            }
 
             return response;
         }

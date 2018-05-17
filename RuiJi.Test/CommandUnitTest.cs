@@ -4,7 +4,7 @@ using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RuiJi.Cmd;
 
-namespace RuiJi.Net.Test
+namespace RuiJi.Test
 {
     [TestClass]
     public class CommandUnitTest

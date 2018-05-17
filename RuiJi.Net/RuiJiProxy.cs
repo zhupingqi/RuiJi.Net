@@ -16,8 +16,10 @@ namespace RuiJi.Net
     {
         public ProxyTypeEnum Type { get; set; }
 
-        public string baseUrl { get; set; }
+        public string BaseUrl { get; set; }
 
         public bool Active { get; set; }
+
+        public ulong Counts { get; set; }
     }
 }

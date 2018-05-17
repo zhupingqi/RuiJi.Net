@@ -53,15 +53,15 @@
     <Compile Include="CrawlerProxy\CrawlerManager.cs" />
     <Compile Include="CrawlerProxy\CrawlerProxyNodeModeEnum.cs" />
     <Compile Include="CrawlerProxy\ElectResult.cs" />
-    <Compile Include="Crawler\CrawlerNodeService.cs" />
-    <Compile Include="CrawlerProxy\CrawlerProxyNodeService.cs" />
+    <Compile Include="Crawler\CrawlerNode.cs" />
+    <Compile Include="CrawlerProxy\CrawlerProxyNode.cs" />
     <Compile Include="Crawler\CrawlerConfig.cs" />
     <Compile Include="ExtracterProxy\ExtracterManager.cs" />
-    <Compile Include="ExtracterProxy\ExtracterProxyNodeService.cs" />
+    <Compile Include="ExtracterProxy\ExtracterProxyNode.cs" />
     <Compile Include="Extracter\ExtracterConfig.cs" />
-    <Compile Include="Extracter\ExtracterNodeService.cs" />
+    <Compile Include="Extracter\ExtracterNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceBase.cs" />
+    <Compile Include="NodeBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -48,27 +48,27 @@ namespace RuiJi.Cmd
                         //Process.Start("http://" + opt.BaseUrl);
 
                         //need run in thread
-                        ServiceBase serviceBase = null;
+                        NodeBase serviceBase = null;
                         switch (opt.Type)
                         {
                             case "c":
                                 {
-                                    serviceBase = new CrawlerNodeService(opt.BaseUrl, opt.ZkServer, opt.Proxy);
+                                    serviceBase = new CrawlerNode(opt.BaseUrl, opt.ZkServer, opt.Proxy);
                                     break;
                                 }
                             case "cp":
                                 {
-                                    serviceBase = new CrawlerProxyNodeService(opt.BaseUrl, opt.ZkServer);
+                                    serviceBase = new CrawlerProxyNode(opt.BaseUrl, opt.ZkServer);
                                     break;
                                 }
                             case "e":
                                 {
-                                    serviceBase = new ExtracterNodeService(opt.BaseUrl, opt.ZkServer, opt.Proxy);
+                                    serviceBase = new ExtracterNode(opt.BaseUrl, opt.ZkServer, opt.Proxy);
                                     break;
                                 }
                             case "ep":
                                 {
-                                    serviceBase = new ExtracterProxyNodeService(opt.BaseUrl, opt.ZkServer);
+                                    serviceBase = new ExtracterProxyNode(opt.BaseUrl, opt.ZkServer);
                                     break;
                                 }
                             case "f":

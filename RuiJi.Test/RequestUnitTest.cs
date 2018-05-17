@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RuiJi.Core.Crawler;
 
-namespace RuiJi.Net.Test
+namespace RuiJi.Test
 {
     [TestClass]
     public class RequestUnitTest

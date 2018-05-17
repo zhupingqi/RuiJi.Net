@@ -9,7 +9,7 @@ using ZooKeeperNet;
 
 namespace RuiJi.Node
 {
-    public abstract class ServiceBase
+    public abstract class NodeBase
     {
         protected ZooKeeper ZooKeeper { get; private set; }
 
@@ -29,7 +29,7 @@ namespace RuiJi.Node
 
         public ManualResetEvent ResetEvent { get; protected set; }
 
-        public ServiceBase(string baseUrl, string zkServer,string proxyUrl = "")
+        public NodeBase(string baseUrl, string zkServer,string proxyUrl = "")
         {
             this.BaseUrl = FixUrl(baseUrl);
             this.ZkServer = FixUrl(zkServer);
@@ -133,9 +133,9 @@ namespace RuiJi.Node
 
         class SessionWatcher : IWatcher
         {
-            ServiceBase service;
+            NodeBase service;
 
-            public SessionWatcher(ServiceBase service)
+            public SessionWatcher(NodeBase service)
             {
                 this.service = service;
             }

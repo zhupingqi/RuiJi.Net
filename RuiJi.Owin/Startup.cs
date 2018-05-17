@@ -18,7 +18,7 @@ namespace RuiJi.Owin
     {
         static Startup()
         {
-            OwinServerFactory.Initialize(new Dictionary<string,object>());
+            OwinServerFactory.Initialize(new Dictionary<string, object>());
         }
 
         public void Configuration(IAppBuilder app)
@@ -41,21 +41,16 @@ namespace RuiJi.Owin
         {
 
             HttpConfiguration config = new HttpConfiguration();
-            config.Routes.MapHttpRoute(
-                name: "Default",
-                routeTemplate: "api/{controller}/{action}",
-                defaults: new { id = RouteParameter.Optional }
-            );
 
             config.Routes.MapHttpRoute(
                 name: "Request",
-                routeTemplate: "api/crawler/request",
+                routeTemplate: "api/request",
                 defaults: new { controller = "CrawlerApi", action = "request" }
             );
 
             config.Routes.MapHttpRoute(
                 name: "ServerInfo",
-                routeTemplate: "api/crawler/server/info",
+                routeTemplate: "api/crawler/info",
                 defaults: new { controller = "CrawlerApi", action = "serverinfo" }
             );
 
@@ -64,6 +59,25 @@ namespace RuiJi.Owin
                 routeTemplate: "api/proxy/request",
                 defaults: new { controller = "CrawlerProxyApi", action = "request" }
             );
+
+            config.Routes.MapHttpRoute(
+                name: "PingCP",
+                routeTemplate: "api/cp/ping",
+                defaults: new { controller = "CrawlerProxyApi", action = "Ping" }
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "PingEP",
+                routeTemplate: "api/ep/ping",
+                defaults: new { controller = "CrawlerProxyApi", action = "Ping" }
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "Default",
+                routeTemplate: "api/{controller}/{action}",
+                defaults: new { id = RouteParameter.Optional }
+            );
+
 
             //config.Formatters.JsonFormatter.MediaTypeMappings.Add(new QueryStringMapping("datatype", "json", "application/json"));
 

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -22,19 +24,19 @@ namespace RuiJi.Net
         {
             proxys = new List<RuiJiProxy>();
 
-            ConfigurationManager.AppSettings["crawler"].Split(',').ToList().ForEach(m=> {
+            ConfigurationManager.AppSettings["cp"].Split(',').ToList().ForEach(m=> {
                 proxys.Add(new RuiJiProxy {
                     Type = ProxyTypeEnum.Crawler,
-                    baseUrl = m,
+                    BaseUrl = m,
                     Active = false
                 });
             });
 
-            ConfigurationManager.AppSettings["extracter"].Split(',').ToList().ForEach(m => {
+            ConfigurationManager.AppSettings["ep"].Split(',').ToList().ForEach(m => {
                 proxys.Add(new RuiJiProxy
                 {
                     Type = ProxyTypeEnum.Extracter,
-                    baseUrl = m,
+                    BaseUrl = m,
                     Active = false
                 });
             });
@@ -50,19 +52,57 @@ namespace RuiJi.Net
             }
         }
 
-        public void MarkDown(string baseUrl)
+        public void MarkDown(string proxyUrl)
         {
-            
+            var proxy = proxys.SingleOrDefault(m=>m.BaseUrl == proxyUrl);
+            if (proxy != null)
+                proxy.Active = false;
         }
 
         public string Elect(ProxyTypeEnum proxyType)
         {
-            throw new NotImplementedException();
+            var p = proxys.Where(m => m.Type == proxyType && m.Active).OrderBy(m => m.Counts).FirstOrDefault();
+            if(p != null)
+            {
+                p.Counts++;
+                return p.BaseUrl;
+            }
+
+            return null;
         }
 
         public void RefreshStatus()
         {
-            throw new NotImplementedException();
+            proxys.Where(m => m.Active == false).ToList().ForEach(m => {
+                if (Ping(m))
+                    m.Active = true;
+            });
+        }
+
+        private bool Ping(RuiJiProxy proxy)
+        {
+            try
+            {
+                var resource = "api/cp/ping";
+                if (proxy.Type == ProxyTypeEnum.Extracter)
+                    resource = "api/ep/ping";
+
+                var client = new RestClient("http://" + proxy.BaseUrl);
+                var restRequest = new RestRequest(resource);
+                restRequest.Method = Method.GET;
+                restRequest.Timeout = 15000;
+
+                var restResponse = client.Execute(restRequest);
+
+                if (restResponse.StatusCode == System.Net.HttpStatusCode.OK)
+                    return true;
+
+                return false;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
         }
     }
 }

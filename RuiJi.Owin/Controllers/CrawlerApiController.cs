@@ -15,7 +15,7 @@ namespace RuiJi.Owin.Controllers
     public class CrawlerApiController : ApiController
     {
         [HttpPost]
-        [WebApiCacheAttribute(Duration = 10)]
+        //[WebApiCacheAttribute(Duration = 10)]
         public new Response Request(Request request)
         {
             var crawler = new IPCrawler();

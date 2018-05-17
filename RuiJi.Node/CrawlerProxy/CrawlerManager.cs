@@ -17,7 +17,7 @@ namespace RuiJi.Node.CrawlerProxy
 
         internal class Server
         {
-            public string ServerIp { get; set; }
+            public string BaseUrl { get; set; }
             public string ClientIp { get; set; }
         }
 
@@ -50,6 +50,9 @@ namespace RuiJi.Node.CrawlerProxy
         {
             lock (_lck)
             {
+                if (serverMap.Count == 0)
+                    return null;
+
                 if (!hostMap.ContainsKey(uri.Host))
                     hostMap.Add(uri.Host, 0);
                 else
@@ -59,7 +62,7 @@ namespace RuiJi.Node.CrawlerProxy
 
                 return new ElectResult()
                 {
-                    ServerIp = server.ServerIp,
+                    BaseUrl = server.BaseUrl,
                     ClientIp = server.ClientIp
                 };
             }
@@ -85,7 +88,7 @@ namespace RuiJi.Node.CrawlerProxy
                 foreach (var ip in ips)
                 {
                     var svr = new Server();
-                    svr.ServerIp = baseUrl;
+                    svr.BaseUrl = baseUrl;
                     svr.ClientIp = ip;
 
                     serverMap.Add(svr);
@@ -97,7 +100,7 @@ namespace RuiJi.Node.CrawlerProxy
         {
             lock (_lck)
             {
-                serverMap.RemoveAll(m => m.ServerIp == serverIp);
+                serverMap.RemoveAll(m => m.BaseUrl == serverIp);
             }
         }
 
