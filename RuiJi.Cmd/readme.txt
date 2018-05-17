@@ -43,3 +43,17 @@ clientPort=2181
 
 run bin/zkServer.cmd to start zookeeper
 --------------------------------------------------------------------
+
+Open the console to run startup.cmd
+
+You can see the following information
+
+Server Start At http://xxx.xxx.xxx.xxx:xxxx
+proxy 192.168.31.196:37002 ready to startup!
+try connect to zookeeper server : 192.168.31.196:2181
+zookeeper server connected!
+
+Now the service startup is complete!
+
+Notice 
+The RuiJi.cmd.ext have to run as an administrator!
