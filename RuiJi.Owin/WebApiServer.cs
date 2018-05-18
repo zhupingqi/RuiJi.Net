@@ -1,5 +1,6 @@
 ﻿using Microsoft.Owin.Hosting;
 using RuiJi.Core.Utils;
+using RuiJi.Node;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -13,9 +14,11 @@ namespace RuiJi.Owin
     public class WebApiServer
     {
         private static IDisposable app;
+        private NodeBase nodeBase;
 
-        public void Start(string baseUrl,string nodeType,string zkServer)
+        public void Start(NodeBase nodeBase, string baseUrl, string nodeType, string zkServer)
         {
+            this.nodeBase = nodeBase;
             app = WebApp.Start<Startup>(baseUrl);
             Console.WriteLine("Server Start At " + baseUrl);
         }
@@ -27,6 +30,8 @@ namespace RuiJi.Owin
                 app.Dispose();
                 app = null;
             }
+
+            nodeBase.Stop();
         }
     }
 }

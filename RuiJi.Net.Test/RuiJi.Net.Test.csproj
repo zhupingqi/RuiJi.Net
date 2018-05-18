@@ -48,14 +48,23 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CrawlerProxyUnitTest.cs" />
+    <Compile Include="CommandUnitTest.cs" />
+    <Compile Include="Common.cs" />
+    <Compile Include="ExtractUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RequestUnitTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RuiJi.Cmd\RuiJi.Cmd.csproj">
+      <Project>{38676ab4-4262-4cce-8ae5-c67694c1a376}</Project>
+      <Name>RuiJi.Cmd</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RuiJi.Core\RuiJi.Core.csproj">
       <Project>{A27677E3-1CE8-4A8C-B041-9F7A812546F2}</Project>
       <Name>RuiJi.Core</Name>
@@ -63,10 +72,6 @@
     <ProjectReference Include="..\RuiJi.Net\RuiJi.Net.csproj">
       <Project>{934beb73-e7c2-4c70-b697-a5fb2066c17e}</Project>
       <Name>RuiJi.Net</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RuiJi.Test\RuiJi.Test.csproj">
-      <Project>{d32c632b-0ac9-468c-8c44-73679e17ba10}</Project>
-      <Name>RuiJi.Test</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
