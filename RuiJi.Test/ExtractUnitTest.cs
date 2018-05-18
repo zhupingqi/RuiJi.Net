@@ -49,5 +49,12 @@ namespace RuiJi.Test
             Assert.IsTrue(r.Tiles.Count > 0);
 
         }
+
+        public void TestParserExtractExpression()
+        {
+            var exp = "{{ block }} {{ tile }} {{ end tile }} {{ end block }}";
+
+            exp = "/b()";
+        }
     }
 }

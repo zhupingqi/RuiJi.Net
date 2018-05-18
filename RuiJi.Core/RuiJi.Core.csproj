@@ -116,5 +116,8 @@
   <ItemGroup>
     <Folder Include="Extensions\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Extracter\expression.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

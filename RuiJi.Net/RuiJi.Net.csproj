@@ -34,12 +34,16 @@
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Quartz, Version=3.0.4.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Quartz.3.0.4\lib\net452\Quartz.dll</HintPath>
+    </Reference>
     <Reference Include="RestSharp, Version=106.2.2.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.106.2.2\lib\net452\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -51,6 +55,8 @@
   <ItemGroup>
     <Compile Include="Crawler.cs" />
     <Compile Include="IPHelper.cs" />
+    <Compile Include="LTS\ProxyPingJob.cs" />
+    <Compile Include="LTS\ProxyStatusScheduler.cs" />
     <Compile Include="ProxyManager.cs" />
     <Compile Include="Extracter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

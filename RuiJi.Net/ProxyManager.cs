@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Regards.Web.Seed;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -41,7 +42,14 @@ namespace RuiJi.Net
                 });
             });
 
-            RefreshStatus();
+            PingProxy();
+
+            ProxyStatusScheduler.Start();
+        }
+
+        ~ProxyManager()
+        {
+            ProxyStatusScheduler.Stop();
         }
 
         public static ProxyManager Instance
@@ -71,9 +79,24 @@ namespace RuiJi.Net
             return null;
         }
 
-        public void RefreshStatus()
+        public async Task RefreshStatus()
         {
-            proxys.Where(m => m.Active == false).ToList().ForEach(m => {
+            await Task.Run(() => PingProxy());
+
+            //var task = new Task(() => {
+            //    PingProxy();
+            //});
+
+            //task.Start();
+            //await task.ConfigureAwait(false);
+
+            //await task;
+        }
+
+        private void PingProxy()
+        {
+            proxys.Where(m => m.Active == false).ToList().ForEach(m =>
+            {
                 if (Ping(m))
                     m.Active = true;
             });

@@ -18,8 +18,6 @@ namespace RuiJi.Core.Crawler
             "Host", "Connection"
         };
 
-        private IPAddress ip;
-
         public IPCrawler()
         {
 

@@ -28,15 +28,22 @@ namespace RuiJi.Core.Extracter.Processor
             return processors[selector.SelectorType];
         }
 
-        public static ProcessResult Process(string content,List<ISelector> selectors)
+        public static ProcessResult Process(string content, List<ISelector> selectors)
         {
             var result = new ProcessResult();
 
-            foreach (var selector in selectors)
+            if (selectors.Count == 0)
             {
-                var processer = ProcessorFactory.GetProcessor(selector);
-                result = processer.Process(selector, content);
-                content = result.Content;
+                result.Matches = new List<string>() { content };
+            }
+            else
+            {
+                foreach (var selector in selectors)
+                {
+                    var processer = ProcessorFactory.GetProcessor(selector);
+                    result = processer.Process(selector, content);
+                    content = result.Content;
+                }
             }
 
             return result;
