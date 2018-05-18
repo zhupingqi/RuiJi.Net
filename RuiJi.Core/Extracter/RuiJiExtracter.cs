@@ -52,7 +52,7 @@ namespace RuiJi.Core.Extracter
         {
             var results = new ExtractResultCollection();
 
-            foreach (var block in collection.Blocks)
+            foreach (var block in collection)
             {
                 var r = Extract(content, block);
                 results.Add(r);

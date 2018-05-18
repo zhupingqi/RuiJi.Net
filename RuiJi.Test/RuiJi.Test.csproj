@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandUnitTest.cs" />
+    <Compile Include="Common.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RequestUnitTest.cs" />
     <Compile Include="ExtractUnitTest.cs" />

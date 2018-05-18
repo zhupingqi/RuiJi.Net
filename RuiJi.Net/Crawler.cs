@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
+using RuiJi.Core.Crawler;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -16,10 +17,10 @@ namespace RuiJi.Net
             var proxyUrl = ProxyManager.Instance.Elect(ProxyTypeEnum.Crawler);
 
             if (string.IsNullOrEmpty(proxyUrl))
-                throw new Exception("no available proxy servers");
+                throw new Exception("no available crawler proxy servers");
 
             var client = new RestClient("http://" + proxyUrl);
-            var restRequest = new RestRequest("api/proxy/request");
+            var restRequest = new RestRequest("api/cp/crawl");
             restRequest.Method = Method.POST;
             restRequest.AddJsonBody(request);
             restRequest.Timeout = request.Timeout;

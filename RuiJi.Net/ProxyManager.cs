@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Regards.Web.Seed;
 using RestSharp;
+using RuiJi.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Configuration;

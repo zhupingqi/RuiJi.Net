@@ -15,7 +15,7 @@ namespace RuiJi.Owin.Controllers
     {
         [HttpPost]
         //[WebApiCacheAttribute(Duration = 10)]
-        public new Response Request(Request request)
+        public Response Crawl(Request request)
         {
             var result = CrawlerManager.Instance.ElectIP(request.Uri);
             if (result == null)
@@ -27,7 +27,7 @@ namespace RuiJi.Owin.Controllers
             request.Ip = result.ClientIp;
 
             var client = new RestClient("http://" + result.BaseUrl);
-            var restRequest = new RestRequest("api/request");
+            var restRequest = new RestRequest("api/crawl");
             restRequest.Method = Method.POST;
             restRequest.AddJsonBody(request);
             restRequest.Timeout = request.Timeout;

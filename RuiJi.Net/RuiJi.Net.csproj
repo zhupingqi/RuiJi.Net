@@ -54,19 +54,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Crawler.cs" />
-    <Compile Include="IPHelper.cs" />
     <Compile Include="LTS\ProxyPingJob.cs" />
     <Compile Include="LTS\ProxyStatusScheduler.cs" />
     <Compile Include="ProxyManager.cs" />
     <Compile Include="Extracter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Request.cs" />
-    <Compile Include="Response.cs" />
     <Compile Include="RuiJiProxy.cs" />
-    <Compile Include="WebHeader.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RuiJi.Core\RuiJi.Core.csproj">
+      <Project>{a27677e3-1ce8-4a8c-b041-9f7a812546f2}</Project>
+      <Name>RuiJi.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

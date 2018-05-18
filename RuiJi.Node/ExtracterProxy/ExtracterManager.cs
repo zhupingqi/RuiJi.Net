@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RuiJi.Node.CrawlerProxy;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,8 @@ namespace RuiJi.Node.ExtracterProxy
         private static object _lck = new object();
 
         private List<string> serverMap = new List<string>();
+
+        private ulong count = 0;
 
         public static ExtracterManager Instance
         {
@@ -28,6 +31,22 @@ namespace RuiJi.Node.ExtracterProxy
 
         private ExtracterManager()
         {
+        }
+
+        public ElectResult Elect()
+        {
+            lock (_lck)
+            {
+                if (serverMap.Count == 0)
+                    return null;
+
+                var server = serverMap[Convert.ToInt32(count++ % (ulong)serverMap.Count)];
+
+                return new ElectResult()
+                {
+                    BaseUrl = server
+                };
+            }
         }
 
         public void AddServer(string baseUrl)

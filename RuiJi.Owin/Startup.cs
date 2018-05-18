@@ -43,9 +43,9 @@ namespace RuiJi.Owin
             HttpConfiguration config = new HttpConfiguration();
 
             config.Routes.MapHttpRoute(
-                name: "Request",
-                routeTemplate: "api/request",
-                defaults: new { controller = "CrawlerApi", action = "request" }
+                name: "Crawl",
+                routeTemplate: "api/crawl",
+                defaults: new { controller = "CrawlerApi", action = "crawl" }
             );
 
             config.Routes.MapHttpRoute(
@@ -55,10 +55,23 @@ namespace RuiJi.Owin
             );
 
             config.Routes.MapHttpRoute(
-                name: "ProxyRequest",
-                routeTemplate: "api/proxy/request",
-                defaults: new { controller = "CrawlerProxyApi", action = "request" }
+                name: "Extract",
+                routeTemplate: "api/extract",
+                defaults: new { controller = "ExtracterApi", action = "extract" }
             );
+
+            #region Proxy Api
+            config.Routes.MapHttpRoute(
+                    name: "ProxyRequest",
+                    routeTemplate: "api/cp/crawl",
+                    defaults: new { controller = "CrawlerProxyApi", action = "crawl" }
+                );
+
+            config.Routes.MapHttpRoute(
+                name: "ProxyExtract",
+                routeTemplate: "api/ep/extract",
+                defaults: new { controller = "ExtracterProxyApi", action = "extract" }
+            ); 
 
             config.Routes.MapHttpRoute(
                 name: "PingCP",
@@ -71,13 +84,13 @@ namespace RuiJi.Owin
                 routeTemplate: "api/ep/ping",
                 defaults: new { controller = "CrawlerProxyApi", action = "Ping" }
             );
+            #endregion
 
             config.Routes.MapHttpRoute(
                 name: "Default",
                 routeTemplate: "api/{controller}/{action}",
                 defaults: new { id = RouteParameter.Optional }
             );
-
 
             //config.Formatters.JsonFormatter.MediaTypeMappings.Add(new QueryStringMapping("datatype", "json", "application/json"));
 

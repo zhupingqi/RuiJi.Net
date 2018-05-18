@@ -16,7 +16,7 @@ namespace RuiJi.Owin.Controllers
     {
         [HttpPost]
         //[WebApiCacheAttribute(Duration = 10)]
-        public new Response Request(Request request)
+        public Response Crawl(Request request)
         {
             var crawler = new IPCrawler();
             var response = crawler.Request(request);

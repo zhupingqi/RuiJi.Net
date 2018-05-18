@@ -56,9 +56,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RuiJi.Core\RuiJi.Core.csproj">
+      <Project>{A27677E3-1CE8-4A8C-B041-9F7A812546F2}</Project>
+      <Name>RuiJi.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RuiJi.Net\RuiJi.Net.csproj">
       <Project>{934beb73-e7c2-4c70-b697-a5fb2066c17e}</Project>
       <Name>RuiJi.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RuiJi.Test\RuiJi.Test.csproj">
+      <Project>{d32c632b-0ac9-468c-8c44-73679e17ba10}</Project>
+      <Name>RuiJi.Test</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
