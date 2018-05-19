@@ -44,5 +44,11 @@ namespace RuiJi.Owin.Controllers
         {
             return true;
         }
+
+        [HttpGet]
+        public object Crawlers()
+        {
+            return CrawlerManager.Instance.ServerMap;
+        }
     }
 }

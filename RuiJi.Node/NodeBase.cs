@@ -27,8 +27,6 @@ namespace RuiJi.Node
             }
         }
 
-        public ManualResetEvent ResetEvent { get; protected set; }
-
         public NodeBase(string baseUrl, string zkServer,string proxyUrl = "")
         {
             this.BaseUrl = IPHelper.FixLocalUrl(baseUrl);
@@ -41,17 +39,16 @@ namespace RuiJi.Node
             if (string.IsNullOrEmpty(BaseUrl) || string.IsNullOrEmpty(ZkServer))
                 throw new Exception("BaseUrl and ZkServer must be set,call setup method!");
 
-            ResetEvent = new ManualResetEvent(false);
+            var resetEvent = new ManualResetEvent(false);
+            var watcher = new SessionWatcher(this, resetEvent);
 
             try
             {
-                Console.WriteLine("proxy " + BaseUrl + " ready to startup!");
-                Console.WriteLine("try connect to zookeeper server : " + ZkServer);
+                Console.WriteLine("node " + BaseUrl + " ready to startup!");
+                Console.WriteLine("try connect to zookeeper server : " + ZkServer);                
 
-                var watcher = new SessionWatcher(this);
-
-                ZooKeeper = new ZooKeeper(ZkServer, TimeSpan.FromSeconds(3), watcher);
-                ResetEvent.WaitOne();
+                ZooKeeper = new ZooKeeper(ZkServer, TimeSpan.FromSeconds(30), watcher);
+                resetEvent.WaitOne();
 
                 CreateCommonNode();
                 OnStartup();
@@ -71,10 +68,7 @@ namespace RuiJi.Node
             }
         }
 
-        protected virtual void OnStartup()
-        {
-
-        }
+        protected abstract void OnStartup();
 
         protected void CreateCommonNode()
         {
@@ -113,18 +107,17 @@ namespace RuiJi.Node
                 ZooKeeper.Create("/config/proxy", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
         }
 
-        protected virtual void Process(WatchedEvent @event)
-        {
-
-        }
+        protected abstract void Process(WatchedEvent @event);
 
         class SessionWatcher : IWatcher
         {
             NodeBase service;
+            ManualResetEvent resetEvent;
 
-            public SessionWatcher(NodeBase service)
+            public SessionWatcher(NodeBase service, ManualResetEvent resetEvent)
             {
                 this.service = service;
+                this.resetEvent = resetEvent;
             }
 
             public void Process(WatchedEvent @event)
@@ -147,7 +140,7 @@ namespace RuiJi.Node
                         case KeeperState.SyncConnected:
                             {
                                 Console.WriteLine("zookeeper server connected!");
-                                service.ResetEvent.Set();
+                                resetEvent.Set();
                                 break;
                             }
                         case KeeperState.NoSyncConnected:
@@ -161,8 +154,12 @@ namespace RuiJi.Node
                             }
                     }
                 }
+                else
+                {
+                    service.Process(@event);
+                }
 
-                service.Process(@event);
+                //service.ZooKeeper.Register(this);
             }
         }
     }

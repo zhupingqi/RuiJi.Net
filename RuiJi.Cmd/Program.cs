@@ -22,12 +22,10 @@ namespace RuiJi.Cmd
 {
     public class Program
     {
-        static List<WebApiServer> servers;
         static List<Thread> threads;
 
         static Program()
         {
-            servers = new List<WebApiServer>();
             threads = new List<Thread>();
         }
 
@@ -35,81 +33,40 @@ namespace RuiJi.Cmd
         {
             LogManager.GetCurrentLoggers().First().Info("Program started!");
 
-            StartNodes();
+            StartServers();
 
             while (true)
             {
                 var cmd = Console.ReadLine();
                 if (cmd == "quit")
-                    break;
-            }
-        }
-
-        ~Program()
-        {
-            foreach (var server in servers)
-            {
-                if (server != null)
                 {
-                    server.Stop();
+                    ServerManager.Inst.Stop();
+                    break;
                 }
             }
         }
 
-        public static void StartNodes()
+        public static void StartServers()
         {
             NodeConfigurationSection.Settings.ForEach(m =>
             {
                 Task.Run(() =>
                 {
-                    StartNode(m);
+                    StartServer(m);
+                    Console.WriteLine();
                 });
 
                 Thread.Sleep(1000);
             });
         }
 
-        static void StartNode(NodeConfigurationElement node)
+        static void StartServer(NodeConfigurationElement node)
         {
             try
             {
                 var t = new Thread(() =>
                 {
-                    NodeBase serviceBase = null;
-                    switch (node.Type)
-                    {
-                        case "c":
-                            {
-                                serviceBase = new CrawlerNode(node.BaseUrl, node.ZkServer, node.Proxy);
-                                break;
-                            }
-                        case "cp":
-                            {
-                                serviceBase = new CrawlerProxyNode(node.BaseUrl, node.ZkServer);
-                                break;
-                            }
-                        case "e":
-                            {
-                                serviceBase = new ExtracterNode(node.BaseUrl, node.ZkServer, node.Proxy);
-                                break;
-                            }
-                        case "ep":
-                            {
-                                serviceBase = new ExtracterProxyNode(node.BaseUrl, node.ZkServer);
-                                break;
-                            }
-                    }
-
-                    serviceBase.Start();
-
-                    var server = new WebApiServer();
-
-                    var baseUrl = IPHelper.FixLocalUrl(node.BaseUrl);
-                    server.Start(serviceBase, "http://" + baseUrl, node.Type, node.ZkServer);
-
-                    servers.Add(server);
-
-                    Console.ReadLine();
+                    ServerManager.Inst.Start(node);
                 });
                 t.Start();
 

@@ -87,6 +87,7 @@
     <Compile Include="Controllers\ExtracterProxyApiController.cs" />
     <Compile Include="Controllers\ExtracterApiController.cs" />
     <Compile Include="Controllers\CrawlerApiController.cs" />
+    <Compile Include="ServerManager.cs" />
     <Compile Include="WebApiCacheAttribute.cs" />
     <Compile Include="WebApiServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

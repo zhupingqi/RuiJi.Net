@@ -1,6 +1,10 @@
 ﻿using Microsoft.Owin.Hosting;
 using RuiJi.Core.Utils;
 using RuiJi.Node;
+using RuiJi.Node.Crawler;
+using RuiJi.Node.CrawlerProxy;
+using RuiJi.Node.Extracter;
+using RuiJi.Node.ExtracterProxy;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -13,14 +17,53 @@ namespace RuiJi.Owin
 {
     public class WebApiServer
     {
-        private static IDisposable app;
-        private NodeBase nodeBase;
+        private IDisposable app;
 
-        public void Start(NodeBase nodeBase, string baseUrl, string nodeType, string zkServer)
+        public string Port
         {
-            this.nodeBase = nodeBase;
-            app = WebApp.Start<Startup>(baseUrl);
-            Console.WriteLine("Server Start At " + baseUrl);
+            get;
+            private set;
+        }
+        public NodeBase NodeBase
+        {
+            get;
+            internal set;
+        }
+
+        public void Start(string baseUrl, string nodeType, string zkServer, string proxy = "")
+        {            
+            this.Port = baseUrl.Split(':')[1];
+
+            baseUrl = IPHelper.FixLocalUrl(baseUrl);
+
+            app = WebApp.Start<Startup>("http://" + baseUrl);
+            Console.WriteLine("Web Api Server Start At http://" + baseUrl + " with " + nodeType + " node");
+
+            switch (nodeType)
+            {
+                case "c":
+                    {
+                        NodeBase = new CrawlerNode(baseUrl, zkServer, proxy);
+                        break;
+                    }
+                case "cp":
+                    {
+                        NodeBase = new CrawlerProxyNode(baseUrl, zkServer);
+                        break;
+                    }
+                case "e":
+                    {
+                        NodeBase = new ExtracterNode(baseUrl, zkServer, proxy);
+                        break;
+                    }
+                case "ep":
+                    {
+                        NodeBase = new ExtracterProxyNode(baseUrl, zkServer);
+                        break;
+                    }
+            }
+
+            NodeBase.Start();
         }
 
         public void Stop()
@@ -31,7 +74,7 @@ namespace RuiJi.Owin
                 app = null;
             }
 
-            nodeBase.Stop();
+            NodeBase.Stop();
         }
     }
 }

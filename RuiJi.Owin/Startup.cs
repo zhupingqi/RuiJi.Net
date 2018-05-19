@@ -68,6 +68,12 @@ namespace RuiJi.Owin
                 );
 
             config.Routes.MapHttpRoute(
+                    name: "ProxyCrawlers",
+                    routeTemplate: "api/cp/crawlers",
+                    defaults: new { controller = "CrawlerProxyApi", action = "Crawlers" }
+                );
+
+            config.Routes.MapHttpRoute(
                 name: "ProxyExtract",
                 routeTemplate: "api/ep/extract",
                 defaults: new { controller = "ExtracterProxyApi", action = "extract" }

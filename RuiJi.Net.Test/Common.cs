@@ -12,7 +12,7 @@ namespace RuiJi.Net.Test
     {
         public static void StartupNodes()
         {
-            Program.StartNodes();
+            Program.StartServers();
         }
     }
 }

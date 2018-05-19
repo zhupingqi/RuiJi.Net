@@ -15,7 +15,7 @@ namespace RuiJi.Node.CrawlerProxy
             public long LastVisitDate { get; set; }
         }
 
-        internal class Server
+        public class Server
         {
             public string BaseUrl { get; set; }
             public string ClientIp { get; set; }
@@ -27,7 +27,8 @@ namespace RuiJi.Node.CrawlerProxy
         private List<HostVisit> visits = new List<HostVisit>();
         private Dictionary<string, List<string>> ipMap = new Dictionary<string, List<string>>();
         private Dictionary<string, ulong> hostMap = new Dictionary<string, ulong>();
-        private List<Server> serverMap = new List<Server>();
+
+        public List<Server> ServerMap { get; private set; }
 
         public static CrawlerManager Instance
         {
@@ -44,13 +45,14 @@ namespace RuiJi.Node.CrawlerProxy
 
         private CrawlerManager()
         {
+            ServerMap = new List<Server>();
         }
 
         public ElectResult ElectIP(Uri uri)
         {
             lock (_lck)
             {
-                if (serverMap.Count == 0)
+                if (ServerMap.Count == 0)
                     return null;
 
                 if (!hostMap.ContainsKey(uri.Host))
@@ -58,7 +60,7 @@ namespace RuiJi.Node.CrawlerProxy
                 else
                     hostMap[uri.Host]++;
 
-                var server = serverMap[Convert.ToInt32(hostMap[uri.Host] % (ulong)serverMap.Count)];
+                var server = ServerMap[Convert.ToInt32(hostMap[uri.Host] % (ulong)ServerMap.Count)];
 
                 return new ElectResult()
                 {
@@ -91,7 +93,7 @@ namespace RuiJi.Node.CrawlerProxy
                     svr.BaseUrl = baseUrl;
                     svr.ClientIp = ip;
 
-                    serverMap.Add(svr);
+                    ServerMap.Add(svr);
                 }
             }
         }
@@ -100,7 +102,7 @@ namespace RuiJi.Node.CrawlerProxy
         {
             lock (_lck)
             {
-                serverMap.RemoveAll(m => m.BaseUrl == serverIp);
+                ServerMap.RemoveAll(m => m.BaseUrl == serverIp);
             }
         }
 
@@ -108,7 +110,7 @@ namespace RuiJi.Node.CrawlerProxy
         {
             lock (_lck)
             {
-                serverMap.Clear();
+                ServerMap.Clear();
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RuiJi.Core.Crawler;
 using RuiJi.Core.Extracter;
@@ -52,11 +53,15 @@ namespace RuiJi.Net.Test
         [TestMethod]
         public void TestNodeExtract()
         {
-            //Common.StartupNodes();
+            Common.StartupNodes();
 
             var request = new Request("http://www.ruijihg.com/%e5%bc%80%e5%8f%91/");
 
             var response = Crawler.Request(request);
+
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                return;
+
             var content = response.Data.ToString();
 
             var block = new ExtractBlock();

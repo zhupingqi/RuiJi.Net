@@ -47,5 +47,10 @@ namespace RuiJi.Node.Extracter
                 ZooKeeper.Create("/config/extracter/" + BaseUrl, JsonConvert.SerializeObject(d).GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
             }
         }
+
+        protected override void Process(WatchedEvent @event)
+        {
+            
+        }
     }
 }

@@ -32,7 +32,7 @@ namespace RuiJi.Node.Crawler
         {
             if (ZooKeeper != null && ZooKeeper.State == ZooKeeper.States.CONNECTED)
             {
-                var b = ZooKeeper.GetData("/config/crawler" + BaseUrl, false, null);
+                var b = ZooKeeper.GetData("/config/crawler/" + BaseUrl, false, null);
                 var r = System.Text.Encoding.UTF8.GetString(b);
 
                 return JsonConvert.DeserializeObject<CrawlerConfig>(r);
@@ -61,6 +61,11 @@ namespace RuiJi.Node.Crawler
                 };
                 ZooKeeper.Create("/config/crawler/" + BaseUrl, JsonConvert.SerializeObject(d).GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
             }
+        }
+
+        protected override void Process(WatchedEvent @event)
+        {
+            
         }
     }
 }

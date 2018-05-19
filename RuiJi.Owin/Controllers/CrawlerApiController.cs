@@ -72,7 +72,11 @@ namespace RuiJi.Owin.Controllers
             //    cips = CrawlerNodeService.Instance.GetNodeConfig()
             //};
 
-            return new { };
+
+
+            var node = ServerManager.Inst.GetNode(Request.RequestUri.Port.ToString()) as CrawlerNode;
+
+            return node.GetNodeConfig();
         }
     }
 }
