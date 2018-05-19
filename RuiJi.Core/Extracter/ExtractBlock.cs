@@ -16,9 +16,13 @@ namespace RuiJi.Core.Extracter
         [JsonProperty("blocks")]
         public ExtractBlockCollection Blocks { get; set; }
 
+        [JsonProperty("metas")]
+        public ExtractMetaCollection Metas { get; set; }
+
         public ExtractBlock(string name = "") : base(name)
         {
             Blocks = new ExtractBlockCollection();
+            Metas = new ExtractMetaCollection();
         }
     }
 }

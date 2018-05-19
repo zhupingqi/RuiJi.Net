@@ -72,11 +72,12 @@
     <Compile Include="Crawler\ProxyCrawler.cs" />
     <Compile Include="Crawler\WebHeader.cs" />
     <Compile Include="Extensions\NewtonJsonSerializer.cs" />
-    <Compile Include="ExtractBase.cs" />
+    <Compile Include="Extracter\ExtractBase.cs" />
     <Compile Include="Extracter\ExtractRequest.cs" />
     <Compile Include="Extracter\ExtractResult.cs" />
     <Compile Include="Extracter\ExtractResultCollection.cs" />
     <Compile Include="Extracter\ExtractTile.cs" />
+    <Compile Include="Extracter\ExtractMetaCollection.cs" />
     <Compile Include="Extracter\Processor\ClearTagProcessor.cs" />
     <Compile Include="Extracter\Processor\JsonPathProcessor.cs" />
     <Compile Include="Extracter\Processor\XPathProcessor.cs" />

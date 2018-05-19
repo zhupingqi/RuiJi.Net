@@ -42,15 +42,16 @@ clientPort=2181
 
 
 run bin/zkServer.cmd to start zookeeper
+Please confirm whether the Java runtime environment is installed
 --------------------------------------------------------------------
 
-Open the console to run ruiji.cmd.exe
+run ruiji.cmd.exe 
 
 You can see the following information
 
-Server Start At http://xxx.xxx.xxx.xxx:xxxx
-proxy 192.168.31.196:37002 ready to startup!
-try connect to zookeeper server : 192.168.31.196:2181
+Server Start At http://x.x.x.x:x
+proxy x.x.x.x:37002 ready to startup!
+try connect to zookeeper server : x.x.x.x:2181
 zookeeper server connected!
 
 Now the service startup is complete!

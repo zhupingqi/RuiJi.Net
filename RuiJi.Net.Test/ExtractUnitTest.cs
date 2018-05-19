@@ -35,11 +35,27 @@ namespace RuiJi.Net.Test
                 }
             };
 
-            block.TileSelector.Metas.Add("title",new List<ISelector> {
+            //block.TileSelector.Metas.AddMeta(new ExtractBase {
+            //    Name = "title",
+            //    Selectors = new List<ISelector> {
+            //        new CssSelector(".pt-cv-title")
+            //    }
+            //});
+
+            //block.TileSelector.Metas.AddMeta(new ExtractBase
+            //{
+            //    Name = "url",
+            //    Selectors = new List<ISelector> {
+            //       new CssSelector(".pt-cv-readmore","href")
+            //    }
+            //});
+
+
+            block.TileSelector.Metas.AddMeta("title",new List<ISelector> {
                 new CssSelector(".pt-cv-title")
             });
 
-            block.TileSelector.Metas.Add("url", new List<ISelector> {
+            block.TileSelector.Metas.AddMeta("url", new List<ISelector> {
                 new CssSelector(".pt-cv-readmore","href")
             });
 
@@ -78,11 +94,11 @@ namespace RuiJi.Net.Test
                 }
             };
 
-            block.TileSelector.Metas.Add("title", new List<ISelector> {
+            block.TileSelector.Metas.AddMeta("title", new List<ISelector> {
                 new CssSelector(".pt-cv-title")
             });
 
-            block.TileSelector.Metas.Add("url", new List<ISelector> {
+            block.TileSelector.Metas.AddMeta("url", new List<ISelector> {
                 new CssSelector(".pt-cv-readmore","href")
             });
 

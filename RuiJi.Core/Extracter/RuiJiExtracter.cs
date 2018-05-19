@@ -61,9 +61,9 @@ namespace RuiJi.Core.Extracter
             return results;
         }
 
-        public ExtractResultCollection ExtractSelector(string content, List<ISelector> selectors)
+        public ExtractResultCollection ExtractSelector(string content, ExtractBase extractBase)
         {
-            var pr = ProcessorFactory.Process(content, selectors);
+            var pr = ProcessorFactory.Process(content, extractBase.Selectors);
 
             var results = new ExtractResultCollection();
 
@@ -106,7 +106,7 @@ namespace RuiJi.Core.Extracter
             return results;
         }
 
-        public Dictionary<string, ExtractResult> ExtractMeta(string content, Dictionary<string, List<ISelector>> metas)
+        public Dictionary<string, ExtractResult> ExtractMeta(string content, ExtractMetaCollection metas)
         {
             var results = new Dictionary<string, ExtractResult>();
 
