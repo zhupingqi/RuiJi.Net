@@ -43,22 +43,6 @@ The project is under development.
                 }
             };
 
-            //block.TileSelector.Metas.AddMeta(new ExtractBase {
-            //    Name = "title",
-            //    Selectors = new List<ISelector> {
-            //        new CssSelector(".pt-cv-title")
-            //    }
-            //});
-
-            //block.TileSelector.Metas.AddMeta(new ExtractBase
-            //{
-            //    Name = "url",
-            //    Selectors = new List<ISelector> {
-            //       new CssSelector(".pt-cv-readmore","href")
-            //    }
-            //});
-
-
             block.TileSelector.Metas.AddMeta("title",new List<ISelector> {
                 new CssSelector(".pt-cv-title")
             });
