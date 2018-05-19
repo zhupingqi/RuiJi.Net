@@ -15,7 +15,7 @@ The project is under development.
 
 ## About extract structure
 
- ![Image text](/extract_structure.png)
+ ![Image text](/RuiJi.ChromePlugin/extract_structure.png)
 
 
 ## Examples
