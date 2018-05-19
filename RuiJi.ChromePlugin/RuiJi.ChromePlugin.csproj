@@ -41,5 +41,8 @@
     <Folder Include="plugin1.0\lib\" />
     <Folder Include="plugin1.0\scripts\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="extract_structure.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
