@@ -107,8 +107,6 @@ namespace RuiJi.Node
                 zooKeeper.Create("/config/proxy", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
         }
 
-        protected abstract void Process(WatchedEvent @event);
-
         class SessionWatcher : IWatcher
         {
             NodeBase service;
@@ -153,10 +151,6 @@ namespace RuiJi.Node
                                 break;
                             }
                     }
-                }
-                else
-                {
-                    service.Process(@event);
                 }
             }
         }

@@ -58,6 +58,18 @@ namespace RuiJi.Node.ExtracterProxy
             }
         }
 
+        public void ClearAndAddServer(string[] baseUrls)
+        {
+            lock (_lck)
+            {
+                serverMap.Clear();
+                foreach (var baseUrl in baseUrls)
+                {
+                    serverMap.Add(baseUrl);
+                }
+            }
+        }
+
         public void RemoveServer(string baseUrl)
         {
             lock (_lck)

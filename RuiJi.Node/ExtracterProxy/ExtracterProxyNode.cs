@@ -57,38 +57,7 @@ namespace RuiJi.Node.ExtracterProxy
 
             var nodes = zooKeeper.GetChildren("/live_nodes/extracter", new LiveExtracterWatcher(this));
 
-            foreach (var node in nodes)
-            {
-                ExtracterManager.Instance.AddServer(node);
-            }
-        }
-
-        protected override void Process(WatchedEvent @event)
-        {
-
-        }
-
-        private void ProcessConfig(WatchedEvent @event, string[] segments)
-        {
-            if (segments.Length == 3)
-            {
-                var baseUrl = segments[2];
-
-                switch (@event.Type)
-                {
-                    case EventType.NodeDataChanged:
-                        {
-                            var d = GetExtracterConfig(baseUrl);
-                            ExtracterManager.Instance.AddServer(baseUrl);
-
-                            break;
-                        }
-                    case EventType.NodeDeleted:
-                        {
-                            break;
-                        }
-                }
-            }
+            ExtracterManager.Instance.ClearAndAddServer(nodes.ToArray());
         }
 
         class LiveExtracterWatcher : IWatcher

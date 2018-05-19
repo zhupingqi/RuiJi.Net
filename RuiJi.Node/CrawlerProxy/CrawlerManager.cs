@@ -83,10 +83,10 @@ namespace RuiJi.Node.CrawlerProxy
 
         public void AddServer(string baseUrl, string[] ips)
         {
-            RemoveServer(baseUrl);
-
             lock (_lck)
             {
+                ServerMap.RemoveAll(m => m.BaseUrl == baseUrl);
+
                 foreach (var ip in ips)
                 {
                     var svr = new Server();
@@ -98,11 +98,11 @@ namespace RuiJi.Node.CrawlerProxy
             }
         }
 
-        public void RemoveServer(string serverIp)
+        public void RemoveServer(string baseUrl)
         {
             lock (_lck)
             {
-                ServerMap.RemoveAll(m => m.BaseUrl == serverIp);
+                ServerMap.RemoveAll(m => m.BaseUrl == baseUrl);
             }
         }
 

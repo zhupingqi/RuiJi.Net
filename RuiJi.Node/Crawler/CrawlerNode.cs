@@ -62,10 +62,5 @@ namespace RuiJi.Node.Crawler
                 zooKeeper.Create("/config/crawler/" + BaseUrl, JsonConvert.SerializeObject(d).GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
             }
         }
-
-        protected override void Process(WatchedEvent @event)
-        {
-            
-        }
     }
 }

@@ -69,11 +69,6 @@ namespace RuiJi.Node.CrawlerProxy
             return d;
         }
 
-        protected override void Process(WatchedEvent @event)
-        {
-            
-        }
-
         class LiveCrawlerWatcher : IWatcher
         {
             CrawlerProxyNode node;

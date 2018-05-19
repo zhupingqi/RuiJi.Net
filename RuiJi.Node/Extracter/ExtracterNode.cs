@@ -34,7 +34,7 @@ namespace RuiJi.Node.Extracter
             if (stat == null)
                 zooKeeper.Create("/live_nodes/extracter/" + BaseUrl, null, Ids.OPEN_ACL_UNSAFE, CreateMode.Ephemeral);
 
-            //create crawler config in zookeeper
+            //create extreacter config in zookeeper
             stat = zooKeeper.Exists("/config/extracter/" + BaseUrl, false);
             if (stat == null)
             {
@@ -46,11 +46,6 @@ namespace RuiJi.Node.Extracter
                 };
                 zooKeeper.Create("/config/extracter/" + BaseUrl, JsonConvert.SerializeObject(d).GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
             }
-        }
-
-        protected override void Process(WatchedEvent @event)
-        {
-            
         }
     }
 }
