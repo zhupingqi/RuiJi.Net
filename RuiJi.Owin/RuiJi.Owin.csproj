@@ -98,6 +98,14 @@
     <None Include="app.config" />
     <None Include="conf\clusterstate.json" />
     <None Include="packages.config" />
+    <None Include="www\fonts\fontawesome-webfont.eot" />
+    <None Include="www\fonts\fontawesome-webfont.ttf" />
+    <None Include="www\fonts\fontawesome-webfont.woff" />
+    <None Include="www\fonts\fontawesome-webfont.woff2" />
+    <None Include="www\fonts\FontAwesome.otf" />
+    <None Include="www\fonts\jsglyph.eot" />
+    <None Include="www\fonts\jsglyph.ttf" />
+    <None Include="www\fonts\jsglyph.woff" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RuiJi.Core\RuiJi.Core.csproj">
@@ -114,12 +122,24 @@
     <Content Include="www\crawler.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="www\fonts\fontawesome-webfont.svg" />
+    <Content Include="www\fonts\jsglyph.svg" />
     <Content Include="www\index.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="www\crawler_proxy.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="www\misc\main.js" />
+    <Content Include="www\misc\v1\entry.js" />
+    <Content Include="www\scripts\css.min.js" />
+    <Content Include="www\scripts\jquery-3.1.1.min.js" />
+    <Content Include="www\scripts\require-tabs\require.tabs.js" />
+    <Content Include="www\scripts\require-tabs\tabs.css" />
+    <Content Include="www\scripts\require.js" />
+    <Content Include="www\scripts\template-web.js" />
+    <Content Include="www\scripts\template.helper.js" />
+    <Content Include="www\scripts\template.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="conf\config\crawler\" />

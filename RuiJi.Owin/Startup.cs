@@ -11,6 +11,8 @@ using System.Web.Http;
 using Microsoft.Owin.StaticFiles;
 using Microsoft.Owin;
 using Microsoft.Owin.Host.HttpListener;
+using System.Web.Http.Routing;
+using Microsoft.Owin.Diagnostics;
 
 namespace RuiJi.Owin
 {
@@ -23,7 +25,12 @@ namespace RuiJi.Owin
 
         public void Configuration(IAppBuilder app)
         {
-            app.UseErrorPage();
+            app.UseErrorPage(new ErrorPageOptions() {
+                ShowSourceCode = true,
+                ShowEnvironment = true,
+                ShowExceptionDetails = true,
+                ShowQuery = true
+            });
 
             var config = GetWebApiConfig();
             app.UseWebApi(config);
@@ -31,16 +38,16 @@ namespace RuiJi.Owin
             app.UseFileServer(new FileServerOptions()
             {
                 RequestPath = PathString.Empty,
-                FileSystem = new PhysicalFileSystem(@".\www")
+                FileSystem = new PhysicalFileSystem(@".\www")                
             });
-
-            app.UseWelcomePage("");
         }
 
         private HttpConfiguration GetWebApiConfig()
         {
 
             HttpConfiguration config = new HttpConfiguration();
+
+            //config.Routes.IgnoreRoute("js", "{anything}.js/{*pathInfo}");
 
             config.Routes.MapHttpRoute(
                 name: "Crawl",

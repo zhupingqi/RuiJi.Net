@@ -42,8 +42,6 @@ namespace RuiJi.Node.CrawlerProxy
             }
 
             LoadLiveCrawler();
-
-            //zooKeeper.Exists("/live_nodes/crawler", new LiveCrawlerWatcher(this));
         }
 
         protected void LoadLiveCrawler()
