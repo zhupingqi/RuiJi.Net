@@ -24,6 +24,7 @@ namespace RuiJi.Owin
             get;
             private set;
         }
+
         public NodeBase NodeBase
         {
             get;

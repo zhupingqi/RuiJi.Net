@@ -11,7 +11,7 @@ namespace RuiJi.Node
 {
     public abstract class NodeBase
     {
-        protected ZooKeeper ZooKeeper { get; private set; }
+        protected ZooKeeper zooKeeper;
 
         public string ZkServer { get; protected set; }
 
@@ -23,7 +23,7 @@ namespace RuiJi.Node
         {
             get
             {
-                return ZooKeeper.State.State;
+                return zooKeeper.State.State;
             }
         }
 
@@ -47,7 +47,7 @@ namespace RuiJi.Node
                 Console.WriteLine("node " + BaseUrl + " ready to startup!");
                 Console.WriteLine("try connect to zookeeper server : " + ZkServer);                
 
-                ZooKeeper = new ZooKeeper(ZkServer, TimeSpan.FromSeconds(30), watcher);
+                zooKeeper = new ZooKeeper(ZkServer, TimeSpan.FromSeconds(3), watcher);
                 resetEvent.WaitOne();
 
                 CreateCommonNode();
@@ -61,10 +61,10 @@ namespace RuiJi.Node
 
         public virtual void Stop()
         {
-            if (ZooKeeper != null)
+            if (zooKeeper != null)
             {
-                ZooKeeper.Dispose();
-                ZooKeeper = null;
+                zooKeeper.Dispose();
+                zooKeeper = null;
             }
         }
 
@@ -73,38 +73,38 @@ namespace RuiJi.Node
         protected void CreateCommonNode()
         {
             //live_nodes node
-            var stat = ZooKeeper.Exists("/live_nodes", false);
+            var stat = zooKeeper.Exists("/live_nodes", false);
             if (stat == null)
-                ZooKeeper.Create("/live_nodes", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+                zooKeeper.Create("/live_nodes", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
 
-            stat = ZooKeeper.Exists("/live_nodes/crawler", false);
+            stat = zooKeeper.Exists("/live_nodes/crawler", false);
             if (stat == null)
-                ZooKeeper.Create("/live_nodes/crawler", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+                zooKeeper.Create("/live_nodes/crawler", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
 
-            stat = ZooKeeper.Exists("/live_nodes/extracter", false);
+            stat = zooKeeper.Exists("/live_nodes/extracter", false);
             if (stat == null)
-                ZooKeeper.Create("/live_nodes/extracter", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+                zooKeeper.Create("/live_nodes/extracter", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
 
-            stat = ZooKeeper.Exists("/live_nodes/proxy", false);
+            stat = zooKeeper.Exists("/live_nodes/proxy", false);
             if (stat == null)
-                ZooKeeper.Create("/live_nodes/proxy", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+                zooKeeper.Create("/live_nodes/proxy", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
 
             //config node
-            stat = ZooKeeper.Exists("/config", false);
+            stat = zooKeeper.Exists("/config", false);
             if (stat == null)
-                ZooKeeper.Create("/config", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+                zooKeeper.Create("/config", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
 
-            stat = ZooKeeper.Exists("/config/crawler", false);
+            stat = zooKeeper.Exists("/config/crawler", false);
             if (stat == null)
-                ZooKeeper.Create("/config/crawler", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+                zooKeeper.Create("/config/crawler", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
 
-            stat = ZooKeeper.Exists("/config/extracter", false);
+            stat = zooKeeper.Exists("/config/extracter", false);
             if (stat == null)
-                ZooKeeper.Create("/config/extracter", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+                zooKeeper.Create("/config/extracter", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
 
-            stat = ZooKeeper.Exists("/config/proxy", false);
+            stat = zooKeeper.Exists("/config/proxy", false);
             if (stat == null)
-                ZooKeeper.Create("/config/proxy", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+                zooKeeper.Create("/config/proxy", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
         }
 
         protected abstract void Process(WatchedEvent @event);
@@ -158,8 +158,6 @@ namespace RuiJi.Node
                 {
                     service.Process(@event);
                 }
-
-                //service.ZooKeeper.Register(this);
             }
         }
     }

@@ -23,12 +23,12 @@ namespace RuiJi.Node.ExtracterProxy
 
         protected override void OnStartup()
         {
-            var stat = ZooKeeper.Exists("/live_nodes/proxy/" + BaseUrl, false);
+            var stat = zooKeeper.Exists("/live_nodes/proxy/" + BaseUrl, false);
             if (stat == null)
-                ZooKeeper.Create("/live_nodes/proxy/" + BaseUrl, "extracter proxy".GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Ephemeral);
+                zooKeeper.Create("/live_nodes/proxy/" + BaseUrl, "extracter proxy".GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Ephemeral);
 
             //create crawler proxy config in zookeeper
-            stat = ZooKeeper.Exists("/config/proxy/" + BaseUrl, false);
+            stat = zooKeeper.Exists("/config/proxy/" + BaseUrl, false);
             if (stat == null)
             {
                 var d = new 
@@ -36,26 +36,26 @@ namespace RuiJi.Node.ExtracterProxy
                     type = "extracter"
                 };
 
-                ZooKeeper.Create("/config/proxy/" + BaseUrl, JsonConvert.SerializeObject(d).GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+                zooKeeper.Create("/config/proxy/" + BaseUrl, JsonConvert.SerializeObject(d).GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
             }
 
-            LoadNodes();
+            LoadLiveExtracter();
         }
 
         public ExtracterConfig GetExtracterConfig(string baseUrl)
         {
-            var b = ZooKeeper.GetData("/config/crawler/" + baseUrl, false, null);
+            var b = zooKeeper.GetData("/config/crawler/" + baseUrl, false, null);
             var r = System.Text.Encoding.UTF8.GetString(b);
             var d = JsonConvert.DeserializeObject<ExtracterConfig>(r);
 
             return d;
         }
 
-        protected void LoadNodes()
+        protected void LoadLiveExtracter()
         {
             ExtracterManager.Instance.Clear();
 
-            var nodes = ZooKeeper.GetChildren("/live_nodes/extracter", false);
+            var nodes = zooKeeper.GetChildren("/live_nodes/extracter", new LiveExtracterWatcher(this));
 
             foreach (var node in nodes)
             {
@@ -65,43 +65,7 @@ namespace RuiJi.Node.ExtracterProxy
 
         protected override void Process(WatchedEvent @event)
         {
-            if (@event.Type != EventType.None)
-            {
-                var segments = @event.Path.TrimStart('/').Split('/');
 
-                switch (segments[0])
-                {
-                    case "live_nodes":
-                        {
-                            ProcessLiveNodes(@event, segments);
-                            break;
-                        }
-                    case "config":
-                        {
-                            ProcessConfig(@event, segments);
-                            break;
-                        }
-                }
-            }
-        }
-
-        private void ProcessLiveNodes(WatchedEvent @event, string[] segments)
-        {
-            var baseUrl = segments[2];
-
-            switch (@event.Type)
-            {
-                case EventType.NodeCreated:
-                    {
-                        ExtracterManager.Instance.AddServer(baseUrl);
-                        break;
-                    }
-                case EventType.NodeDeleted:
-                    {
-                        ExtracterManager.Instance.RemoveServer(baseUrl);
-                        break;
-                    }
-            }
         }
 
         private void ProcessConfig(WatchedEvent @event, string[] segments)
@@ -121,6 +85,29 @@ namespace RuiJi.Node.ExtracterProxy
                         }
                     case EventType.NodeDeleted:
                         {
+                            break;
+                        }
+                }
+            }
+        }
+
+        class LiveExtracterWatcher : IWatcher
+        {
+            ExtracterProxyNode node;
+
+            public LiveExtracterWatcher(ExtracterProxyNode node)
+            {
+                this.node = node;
+            }
+
+            public void Process(WatchedEvent @event)
+            {
+                switch (@event.Type)
+                {
+                    case EventType.NodeChildrenChanged:
+                        {
+                            node.LoadLiveExtracter();
+                            Console.WriteLine("detected extracter node change");
                             break;
                         }
                 }

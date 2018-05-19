@@ -52,8 +52,11 @@ namespace RuiJi.Owin
                 servers.ForEach(m =>
                 {
                     m.Stop();
+                    Console.WriteLine("server port with " + m.Port + " stop!");
                 });
                 servers.Clear();
+
+                Console.WriteLine("all server stop!");
             }
             else
             {
@@ -62,6 +65,8 @@ namespace RuiJi.Owin
                 {
                     server.Stop();
                     servers.Remove(server);
+
+                    Console.WriteLine("server port with " + port + " stop!");
                 }
             }
         }

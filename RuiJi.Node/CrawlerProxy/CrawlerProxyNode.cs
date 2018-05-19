@@ -24,12 +24,12 @@ namespace RuiJi.Node.CrawlerProxy
 
         protected override void OnStartup()
         {
-            var stat = ZooKeeper.Exists("/live_nodes/proxy/" + BaseUrl, false);
+            var stat = zooKeeper.Exists("/live_nodes/proxy/" + BaseUrl, false);
             if (stat == null)
-                ZooKeeper.Create("/live_nodes/proxy/" + BaseUrl, "crawler proxy".GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Ephemeral);
+                zooKeeper.Create("/live_nodes/proxy/" + BaseUrl, "crawler proxy".GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Ephemeral);
 
             //create crawler proxy config in zookeeper
-            stat = ZooKeeper.Exists("/config/proxy/" + BaseUrl, false);
+            stat = zooKeeper.Exists("/config/proxy/" + BaseUrl, false);
             if (stat == null)
             {
                 var d = new
@@ -38,17 +38,19 @@ namespace RuiJi.Node.CrawlerProxy
                     mode = CrawlerProxyNodeModeEnum.MIX
                 };
 
-                ZooKeeper.Create("/config/proxy/" + BaseUrl, JsonConvert.SerializeObject(d).GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+                zooKeeper.Create("/config/proxy/" + BaseUrl, JsonConvert.SerializeObject(d).GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
             }
 
-            LoadNodes();
+            LoadLiveCrawler();
+
+            //zooKeeper.Exists("/live_nodes/crawler", new LiveCrawlerWatcher(this));
         }
 
-        private void LoadNodes()
+        protected void LoadLiveCrawler()
         {
             CrawlerManager.Instance.Clear();
 
-            var nodes = ZooKeeper.GetChildren("/live_nodes/crawler", false);
+            var nodes = zooKeeper.GetChildren("/live_nodes/crawler", new LiveCrawlerWatcher(this));
 
             foreach (var node in nodes)
             {
@@ -60,7 +62,7 @@ namespace RuiJi.Node.CrawlerProxy
 
         public CrawlerConfig GetCrawlerConfig(string baseUrl)
         {
-            var b = ZooKeeper.GetData("/config/crawler/" + baseUrl, false, null);
+            var b = zooKeeper.GetData("/config/crawler/" + baseUrl, new CrawlerConfigWatcher(this), null);
             var r = System.Text.Encoding.UTF8.GetString(b);
             var d = JsonConvert.DeserializeObject<CrawlerConfig>(r);
 
@@ -69,60 +71,50 @@ namespace RuiJi.Node.CrawlerProxy
 
         protected override void Process(WatchedEvent @event)
         {
-            if (@event.Type != EventType.None)
-            {
-                var segments = @event.Path.TrimStart('/').Split('/');
-
-                switch (segments[0])
-                {
-                    case "live_nodes":
-                        {
-                            ProcessLiveNodes(@event, segments);
-                            break;
-                        }
-                    case "config":
-                        {
-                            ProcessConfig(@event, segments);
-                            break;
-                        }
-                }
-            }
+            
         }
 
-        private void ProcessLiveNodes(WatchedEvent @event, string[] segments)
+        class LiveCrawlerWatcher : IWatcher
         {
-            if (segments.Length == 3)
-            {
-                var baseUrl = segments[2];
+            CrawlerProxyNode node;
 
+            public LiveCrawlerWatcher(CrawlerProxyNode node)
+            {
+                this.node = node;
+            }
+
+            public void Process(WatchedEvent @event)
+            {
                 switch (@event.Type)
                 {
-                    case EventType.NodeCreated:
+                    case EventType.NodeChildrenChanged:
                         {
-                            var d = GetCrawlerConfig(baseUrl);
-                            CrawlerManager.Instance.AddServer(baseUrl, d.Ips);
-                            break;
-                        }
-                    case EventType.NodeDeleted:
-                        {
-                            CrawlerManager.Instance.RemoveServer(baseUrl);
+                            node.LoadLiveCrawler();
+                            Console.WriteLine("detected crawler node change");
                             break;
                         }
                 }
             }
         }
 
-        private void ProcessConfig(WatchedEvent @event, string[] segments)
+        class CrawlerConfigWatcher : IWatcher
         {
-            if (segments.Length == 3)
+            CrawlerProxyNode node;
+
+            public CrawlerConfigWatcher(CrawlerProxyNode node)
             {
-                var baseUrl = segments[2];
+                this.node = node;
+            }
+
+            public void Process(WatchedEvent @event)
+            {
+                var baseUrl = @event.Path.Split('/')[2];
 
                 switch (@event.Type)
                 {
                     case EventType.NodeDataChanged:
                         {
-                            var d = GetCrawlerConfig(baseUrl);
+                            var d = node.GetCrawlerConfig(baseUrl);
                             CrawlerManager.Instance.AddServer(baseUrl, d.Ips);
 
                             break;

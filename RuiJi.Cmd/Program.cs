@@ -37,11 +37,25 @@ namespace RuiJi.Cmd
 
             while (true)
             {
+                Console.WriteLine();
+                Console.WriteLine("please type stop [port], quit or start port");
                 var cmd = Console.ReadLine();
                 if (cmd == "quit")
                 {
                     ServerManager.Inst.Stop();
                     break;
+                }
+
+                if(cmd.StartsWith("stop"))
+                {
+                    var port = cmd.Split(' ')[1];
+                    ServerManager.Inst.Stop(port);
+                }
+
+                if (cmd.StartsWith("start"))
+                {
+                    var port = cmd.Split(' ')[1];
+                    ServerManager.Inst.Stop(port);
                 }
             }
         }

@@ -30,9 +30,9 @@ namespace RuiJi.Node.Crawler
 
         public CrawlerConfig GetNodeConfig()
         {
-            if (ZooKeeper != null && ZooKeeper.State == ZooKeeper.States.CONNECTED)
+            if (zooKeeper != null && zooKeeper.State == ZooKeeper.States.CONNECTED)
             {
-                var b = ZooKeeper.GetData("/config/crawler/" + BaseUrl, false, null);
+                var b = zooKeeper.GetData("/config/crawler/" + BaseUrl, false, null);
                 var r = System.Text.Encoding.UTF8.GetString(b);
 
                 return JsonConvert.DeserializeObject<CrawlerConfig>(r);
@@ -43,12 +43,12 @@ namespace RuiJi.Node.Crawler
 
         protected override void OnStartup()
         {
-            var stat = ZooKeeper.Exists("/live_nodes/crawler/" + BaseUrl, false);
+            var stat = zooKeeper.Exists("/live_nodes/crawler/" + BaseUrl, false);
             if (stat == null)
-                ZooKeeper.Create("/live_nodes/crawler/" + BaseUrl, null, Ids.OPEN_ACL_UNSAFE, CreateMode.Ephemeral);
+                zooKeeper.Create("/live_nodes/crawler/" + BaseUrl, null, Ids.OPEN_ACL_UNSAFE, CreateMode.Ephemeral);
 
             //create crawler config in zookeeper
-            stat = ZooKeeper.Exists("/config/crawler/" + BaseUrl, false);
+            stat = zooKeeper.Exists("/config/crawler/" + BaseUrl, false);
             if (stat == null)
             {
                 var d = new CrawlerConfig()
@@ -59,7 +59,7 @@ namespace RuiJi.Node.Crawler
                     Ips = new string[0],
                     UseCookie = true
                 };
-                ZooKeeper.Create("/config/crawler/" + BaseUrl, JsonConvert.SerializeObject(d).GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+                zooKeeper.Create("/config/crawler/" + BaseUrl, JsonConvert.SerializeObject(d).GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
             }
         }
 
