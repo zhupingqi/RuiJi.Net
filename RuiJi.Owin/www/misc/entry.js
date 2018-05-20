@@ -4,6 +4,7 @@
             tabs.init({
                 container: '#main_menu_tabs',
                 direction: 'vertical',
+                current : 0,
                 click: function (tab) {
                     
                 }

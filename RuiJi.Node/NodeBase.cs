@@ -1,4 +1,5 @@
-﻿using RuiJi.Core.Utils;
+﻿using Newtonsoft.Json;
+using RuiJi.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +52,8 @@ namespace RuiJi.Node
                 resetEvent.WaitOne();
 
                 CreateCommonNode();
+                RunForLeaderNode();
+                CreateOverseerNode();
                 OnStartup();
             }
             catch (Exception ex)
@@ -104,7 +107,44 @@ namespace RuiJi.Node
 
             stat = zooKeeper.Exists("/config/proxy", false);
             if (stat == null)
-                zooKeeper.Create("/config/proxy", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+                zooKeeper.Create("/config/proxy", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent); 
+
+            stat = zooKeeper.Exists("/overseer", false);
+            if (stat == null)
+                zooKeeper.Create("/overseer", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+
+            stat = zooKeeper.Exists("/overseer/election", false);
+            if (stat == null)
+                zooKeeper.Create("/overseer/election", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+        }
+
+        private void CreateOverseerNode()
+        {
+            var nodes = zooKeeper.GetChildren("/overseer/election", null);
+            if (nodes.Count(m => m.IndexOf(BaseUrl) != -1) > 0)
+                return;
+            zooKeeper.Create("/overseer/election/" + BaseUrl + "_", null, Ids.OPEN_ACL_UNSAFE, CreateMode.EphemeralSequential);
+        }
+
+        protected void RunForLeaderNode()
+        {
+            try
+            {
+                var stat = zooKeeper.Exists("/overseer/leader", new LeaderNodeDeleteWatcher(this));
+                if (stat == null)
+                {
+                    var d = JsonConvert.SerializeObject(new
+                    {
+                        baseUrl = BaseUrl
+                    });
+                    zooKeeper.Create("/overseer/leader", d.GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Ephemeral);
+                    Console.WriteLine("current leader is " + BaseUrl);
+                }
+            }
+            catch (ZooKeeperNet.KeeperException.NodeExistsException ex)
+            {
+                Console.WriteLine(BaseUrl + " run for leader failed!");
+            }
         }
 
         class SessionWatcher : IWatcher
@@ -151,6 +191,24 @@ namespace RuiJi.Node
                                 break;
                             }
                     }
+                }
+            }
+        }
+
+        class LeaderNodeDeleteWatcher : IWatcher
+        {
+            NodeBase service;
+            public LeaderNodeDeleteWatcher(NodeBase service)
+            {
+                this.service = service;
+            }
+
+            public void Process(WatchedEvent @event)
+            {
+                if(@event.Type == EventType.NodeDeleted)
+                {
+                    Console.WriteLine("leader offline, run for leader");
+                    service.RunForLeaderNode();
                 }
             }
         }

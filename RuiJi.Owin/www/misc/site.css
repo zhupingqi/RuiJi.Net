@@ -1,0 +1,16 @@
+﻿#header
+{
+    height:50px;
+}
+
+#wrapper {
+    position: relative;
+}
+
+#main_menu_tabs > ul > li > a{
+    width:100%;
+}
+
+#main_menu_tabs > div {
+    padding:0px 10px
+}

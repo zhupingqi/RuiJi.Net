@@ -119,9 +119,7 @@ define(['jquery'], function ($) {
                 if (opt.direction) {
                     $container.addClass("ui-require-tabs-" + opt.direction);
                 }
-                if (opt.current) {
-                    ul.find("li").eq(opt.current).trigger("click");
-                }
+                
             }
 
             ul.addClass("ui-require-tabs-nav");
@@ -131,7 +129,7 @@ define(['jquery'], function ($) {
                 opt.ready();
             }
 
-            ul.find("li a").click(function (e) {
+            ul.find("li").click(function (e) {
                 var li = $(this).parent();
                 var tab = li.data("tab");
                 var href = $(this).attr("href");
@@ -242,6 +240,8 @@ define(['jquery'], function ($) {
             if ($.isFunction(fn)) {
                 fn();
             }
+
+
         },
         requestHash: function (tabs, href, prefix) {
             if (href !== "" && href.substr(0, 1) == "#") {

@@ -16,4 +16,4 @@
     }
 });
 
-require(['/misc/v1/entry.js']);
+require(['/misc/entry.js']);

@@ -131,7 +131,17 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="www\misc\main.js" />
-    <Content Include="www\misc\v1\entry.js" />
+    <Content Include="www\misc\proto.js" />
+    <Content Include="www\misc\site.css" />
+    <Content Include="www\misc\utils.js" />
+    <Content Include="www\misc\entry.js" />
+    <Content Include="www\misc\langs\core.js" />
+    <Content Include="www\misc\langs\de.js" />
+    <Content Include="www\misc\langs\en.js" />
+    <Content Include="www\misc\langs\fra.js" />
+    <Content Include="www\misc\langs\jp.js" />
+    <Content Include="www\misc\langs\kor.js" />
+    <Content Include="www\misc\langs\zh.js" />
     <Content Include="www\scripts\css.min.js" />
     <Content Include="www\scripts\jquery-3.1.1.min.js" />
     <Content Include="www\scripts\require-tabs\require.tabs.js" />
@@ -148,4 +158,8 @@
     <Folder Include="conf\live_nodes\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(ProjectDir)\www\*.*" "$(SolutionDir)\RuiJi.Cmd\bin\debug\www\*.*" ;
+copy "$(ProjectDir)\www\misc\*.*" "$(SolutionDir)\RuiJi.Cmd\bin\debug\www\misc\*.*" ;</PostBuildEvent>
+  </PropertyGroup>
 </Project>
