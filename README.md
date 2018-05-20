@@ -13,6 +13,29 @@ Building, who can help me...
 
 The project is under development.
 
+## Features
+
+#### Crawler
+
+| Feature | Support |
+| :-: | :-:  |
+| webheader |  custom  |
+| method | get/post |
+| auto redirection | support |
+| cookie | managed/custom |
+| service point ip | auto/custom Bind |
+| encoding | auto detect/by specify |
+| response | raw/string |
+| proxy | future additions |
+
+#### Extracter
+
+| Feature | Support |
+| :-: | :-:  |
+| selector |  css/xpath/regex/json/text range/exclude text/clear  |
+| extrac structure | block/tile/meta |
+| jsonconvert | extractblock |
+
 ## About extract structure
 
  ![Image text](/RuiJi.ChromePlugin/extract_structure.png)
