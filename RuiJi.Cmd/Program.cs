@@ -33,7 +33,7 @@ namespace RuiJi.Cmd
         {
             LogManager.GetCurrentLoggers().First().Info("Program started!");
 
-            StartServers();
+            ServerManager.StartServers();
 
             while (true)
             {
@@ -42,54 +42,22 @@ namespace RuiJi.Cmd
                 var cmd = Console.ReadLine();
                 if (cmd == "quit")
                 {
-                    ServerManager.Inst.Stop();
                     break;
                 }
 
                 if(cmd.StartsWith("stop"))
                 {
                     var port = cmd.Split(' ')[1];
-                    ServerManager.Inst.Stop(port);
+                    ServerManager.Stop(port);
                 }
 
                 if (cmd.StartsWith("start"))
                 {
-                    var port = cmd.Split(' ')[1];
-                    ServerManager.Inst.Stop(port);
+                    var port = cmd.Split(' ')[1];                    
                 }
             }
-        }
 
-        public static void StartServers()
-        {
-            NodeConfigurationSection.Settings.ForEach(m =>
-            {
-                Task.Run(() =>
-                {
-                    StartServer(m);
-                    Console.WriteLine();
-                });
-
-                Thread.Sleep(1000);
-            });
-        }
-
-        static void StartServer(NodeConfigurationElement node)
-        {
-            try
-            {
-                var t = new Thread(() =>
-                {
-                    ServerManager.Inst.Start(node);
-                });
-                t.Start();
-
-                threads.Add(t);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+            ServerManager.StopAll();
         }
     }
 }

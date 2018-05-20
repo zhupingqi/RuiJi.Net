@@ -106,6 +106,19 @@ namespace RuiJi.Node.CrawlerProxy
             }
         }
 
+        public ElectResult GetServer(string ip)
+        {
+            var server = ServerMap.FirstOrDefault(m => m.ClientIp == ip);
+            if (server == null)
+                return null;
+
+            return new ElectResult
+            {
+                BaseUrl = server.BaseUrl,
+                ClientIp = ip
+            };
+        }
+
         public void Clear()
         {
             lock (_lck)

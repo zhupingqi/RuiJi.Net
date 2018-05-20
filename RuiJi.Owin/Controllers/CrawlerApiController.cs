@@ -74,7 +74,7 @@ namespace RuiJi.Owin.Controllers
 
 
 
-            var node = ServerManager.Inst.GetNode(Request.RequestUri.Port.ToString()) as CrawlerNode;
+            var node = ServerManager.GetNode(Request.RequestUri.Port.ToString()) as CrawlerNode;
 
             return node.GetNodeConfig();
         }

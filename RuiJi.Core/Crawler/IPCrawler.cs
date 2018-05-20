@@ -61,6 +61,7 @@ namespace RuiJi.Core.Crawler
                 var result = Decoding.GetStringFromBuff(buff, httpResponse, request.Charset);
                 response.Charset = result.CharSet;
                 response.Data = result.Body;
+                response.Cookie = GetCookie(request);
             }
             httpResponse.Close();
 

@@ -17,12 +17,21 @@ namespace RuiJi.Owin.Controllers
         //[WebApiCacheAttribute(Duration = 10)]
         public Response Crawl(Request request)
         {
-            var result = CrawlerManager.Instance.ElectIP(request.Uri);
-            if (result == null)
-                return new Response {
-                    StatusCode = System.Net.HttpStatusCode.Conflict,
-                    Data = "no clrawler ip elect!"
-                };
+            ElectResult result;
+
+            if (!string.IsNullOrEmpty(request.Ip))
+            {
+                result = CrawlerManager.Instance.GetServer(request.Ip);
+            }
+            else
+            {
+                result = CrawlerManager.Instance.ElectIP(request.Uri);
+                if (result == null)
+                    return new Response {
+                        StatusCode = System.Net.HttpStatusCode.Conflict,
+                        Data = "no clrawler ip elect!"
+                    };
+            }
 
             request.Ip = result.ClientIp;
 
@@ -35,6 +44,7 @@ namespace RuiJi.Owin.Controllers
             var restResponse = client.Execute(restRequest);
 
             var response = JsonConvert.DeserializeObject<Response>(restResponse.Content);
+            response.ElectInfo = result.BaseUrl + "/" + result.ClientIp;
 
             return response;
         }

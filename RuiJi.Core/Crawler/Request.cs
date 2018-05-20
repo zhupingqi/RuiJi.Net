@@ -38,6 +38,7 @@ namespace RuiJi.Core.Crawler
         {
             Method = "GET";
             Headers = new WebHeaderCollection();
+            UseCookie = true;
         }
 
         public Request(string url,string ip = "") : this()

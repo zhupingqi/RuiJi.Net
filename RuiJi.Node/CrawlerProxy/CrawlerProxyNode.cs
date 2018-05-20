@@ -101,6 +101,9 @@ namespace RuiJi.Node.CrawlerProxy
 
             public void Process(WatchedEvent @event)
             {
+                if (string.IsNullOrEmpty(@event.Path))
+                    return;
+
                 var baseUrl = @event.Path.Split('/')[2];
 
                 switch (@event.Type)

@@ -6,6 +6,7 @@ using RuiJi.Core.Crawler;
 using RuiJi.Core.Extracter;
 using RuiJi.Core.Extracter.Enum;
 using RuiJi.Core.Extracter.Selector;
+using RuiJi.Owin;
 
 namespace RuiJi.Net.Test
 {
@@ -69,11 +70,11 @@ namespace RuiJi.Net.Test
         [TestMethod]
         public void TestNodeExtract()
         {
-            Common.StartupNodes();
+            ServerManager.StartServers();
 
             var request = new Request("http://www.ruijihg.com/%e5%bc%80%e5%8f%91/");
 
-            var response = Crawler.Request(request);
+            var response = new Crawler().Request(request);
 
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 return;

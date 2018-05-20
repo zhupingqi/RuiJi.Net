@@ -78,7 +78,7 @@ The project is under development.
             var r = ext.Extract(content, block);
 
 
-#### Crawl and Extract width cluster 
+#### Crawl and Extract with cluster 
 
 1. downloaded ZooKeeper from Apache mirrors http://mirrors.hust.edu.cn/apache/zookeeper/zookeeper-3.4.12/
 

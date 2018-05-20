@@ -12,7 +12,12 @@ namespace RuiJi.Net
 {
     public class Crawler
     {
-        public static Response Request(Request request)
+        public Crawler()
+        {
+
+        }
+
+        public Response Request(Request request)
         {
             var proxyUrl = ProxyManager.Instance.Elect(ProxyTypeEnum.Crawler);
 

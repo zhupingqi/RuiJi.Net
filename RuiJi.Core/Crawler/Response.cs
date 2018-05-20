@@ -21,6 +21,8 @@ namespace RuiJi.Core.Crawler
 
         public List<WebHeader> Headers { get; set; }
 
+        public string Cookie { get; set; }
+
         public HttpStatusCode StatusCode { get; set; }
 
         public Uri ResponseUri { get; set; }

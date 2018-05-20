@@ -5,73 +5,48 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace RuiJi.Owin
 {
     public class ServerManager
     {
-        private static ServerManager manager;
-        private List<WebApiServer> servers;
+        private static List<Thread> threads;
+        private static List<WebApiServer> servers;
 
         static ServerManager()
         {
-            manager = new ServerManager();
-        }
-
-        private ServerManager()
-        {
             servers = new List<WebApiServer>();
+            threads = new List<Thread>();
         }
 
         ~ServerManager()
         {
-            Stop();
+            StopAll();
         }
 
-        public static ServerManager Inst
-        {
-            get
-            {
-                return manager;
-            }
-        }
-
-        public void Start(NodeConfigurationElement config)
+        public static void Start(string baseUrl, string type, string zkServer, string proxy = "")
         {
             var server = new WebApiServer();
-            server.Start(config.BaseUrl, config.Type, config.ZkServer, config.Proxy);
+            server.Start(baseUrl, type, zkServer, proxy);
 
             servers.Add(server);
         }
 
-        public void Stop(string port = "")
+        public static void Stop(string port = "")
         {
-            if (string.IsNullOrEmpty(port))
+            var server = servers.SingleOrDefault(m => m.Port == port);
+            if (server != null)
             {
-                servers.ForEach(m =>
-                {
-                    m.Stop();
-                    Console.WriteLine("server port with " + m.Port + " stop!");
-                });
-                servers.Clear();
+                server.Stop();
+                servers.Remove(server);
 
-                Console.WriteLine("all server stop!");
-            }
-            else
-            {
-                var server = servers.SingleOrDefault(m => m.Port == port);
-                if (server != null)
-                {
-                    server.Stop();
-                    servers.Remove(server);
-
-                    Console.WriteLine("server port with " + port + " stop!");
-                }
+                Console.WriteLine("server port with " + port + " stop!");
             }
         }
 
-        internal NodeBase GetNode(string port)
+        internal static NodeBase GetNode(string port)
         {
             var server = servers.SingleOrDefault(m => m.Port == port);
             if (server != null)
@@ -80,6 +55,46 @@ namespace RuiJi.Owin
             }
 
             return null;
+        }
+
+        public static void StartServers()
+        {
+            NodeConfigurationSection.Settings.ForEach(m =>
+            {
+                Task.Run(() =>
+                {
+                    try
+                    {
+                        var t = new Thread(() =>
+                        {
+                            ServerManager.Start(m.BaseUrl, m.Type, m.ZkServer, m.Proxy);
+                        });
+                        t.Start();
+
+                        threads.Add(t);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+
+                    Console.WriteLine();
+                });
+
+                Thread.Sleep(1000);
+            });
+        }
+
+        public static void StopAll()
+        {
+            servers.ForEach(m =>
+            {
+                m.Stop();
+                Console.WriteLine("server port with " + m.Port + " stop!");
+            });
+            servers.Clear();
+
+            Console.WriteLine("all server stop!");
         }
     }
 }
