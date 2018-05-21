@@ -83,7 +83,7 @@ namespace RuiJi.Owin
             config.Routes.MapHttpRoute(
                 name: "ProxyExtract",
                 routeTemplate: "api/ep/extract",
-                defaults: new { controller = "ExtracterProxyApi", action = "extract" }
+                defaults: new { controller = "ExtracterProxyApi", action = "Extract" }
             ); 
 
             config.Routes.MapHttpRoute(
@@ -98,6 +98,12 @@ namespace RuiJi.Owin
                 defaults: new { controller = "CrawlerProxyApi", action = "Ping" }
             );
             #endregion
+
+            config.Routes.MapHttpRoute(
+                name: "Zook",
+                routeTemplate: "api/zoo/tree",
+                defaults: new { controller = "ZooApi", action = "Tree" }
+            );
 
             config.Routes.MapHttpRoute(
                 name: "Default",

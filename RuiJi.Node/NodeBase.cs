@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
+using Org.Apache.Zookeeper.Data;
 using RuiJi.Core.Utils;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -20,6 +22,8 @@ namespace RuiJi.Node
 
         public string ProxyUrl { get; protected set; }
 
+        public string LeaderBaseUrl { get; protected set; }
+
         public string States
         {
             get
@@ -27,6 +31,8 @@ namespace RuiJi.Node
                 return zooKeeper.State.State;
             }
         }
+
+        public bool IsLeader { get; private set; }
 
         public NodeBase(string baseUrl, string zkServer,string proxyUrl = "")
         {
@@ -133,18 +139,69 @@ namespace RuiJi.Node
                 var stat = zooKeeper.Exists("/overseer/leader", new LeaderNodeDeleteWatcher(this));
                 if (stat == null)
                 {
-                    var d = JsonConvert.SerializeObject(new
-                    {
-                        baseUrl = BaseUrl
-                    });
-                    zooKeeper.Create("/overseer/leader", d.GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Ephemeral);
+                    zooKeeper.Create("/overseer/leader", BaseUrl.GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Ephemeral);
+                    IsLeader = true;
                     Console.WriteLine("current leader is " + BaseUrl);
                 }
             }
             catch (ZooKeeperNet.KeeperException.NodeExistsException ex)
             {
+                IsLeader = false;
                 Console.WriteLine(BaseUrl + " run for leader failed!");
             }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            LeaderBaseUrl = GetLeader();
+        }
+
+        protected string GetLeader()
+        {
+            try
+            {
+                var stat = new Org.Apache.Zookeeper.Data.Stat();
+                var b = zooKeeper.GetData("/overseer/leader", false, stat);
+                if (b != null)
+                {
+                    return Encoding.UTF8.GetString(b);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(BaseUrl + " read leader failed!");                
+            }
+
+            return null;
+        }
+
+        public NameValueCollection GetChildren(string path)
+        {
+            try
+            {
+                var nv = new NameValueCollection();
+
+                var nodes = zooKeeper.GetChildren(path, null);
+                foreach (var node in nodes)
+                {
+                    var n = path == "/" ? path + node : path + "/" + node;
+
+                    var stat = zooKeeper.Exists(n, false);
+                    nv.Add(n, stat.NumChildren.ToString());
+                }
+
+                return nv;
+            }
+            catch
+            {
+                return new NameValueCollection();
+            }
+        }
+
+        public void SetData(string path,string data)
+        {
+            zooKeeper.SetData(path, data.GetBytes(), 0);
         }
 
         class SessionWatcher : IWatcher

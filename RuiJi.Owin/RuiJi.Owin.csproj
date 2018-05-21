@@ -87,6 +87,7 @@
     <Compile Include="Controllers\ExtracterProxyApiController.cs" />
     <Compile Include="Controllers\ExtracterApiController.cs" />
     <Compile Include="Controllers\CrawlerApiController.cs" />
+    <Compile Include="Controllers\ZooApiController.cs" />
     <Compile Include="ServerManager.cs" />
     <Compile Include="WebApiCacheAttribute.cs" />
     <Compile Include="WebApiServer.cs" />
@@ -131,6 +132,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="www\misc\main.js" />
+    <Content Include="www\misc\node.js" />
     <Content Include="www\misc\proto.js" />
     <Content Include="www\misc\site.css" />
     <Content Include="www\misc\utils.js" />
@@ -144,6 +146,18 @@
     <Content Include="www\misc\langs\zh.js" />
     <Content Include="www\scripts\css.min.js" />
     <Content Include="www\scripts\jquery-3.1.1.min.js" />
+    <Content Include="www\scripts\jstree\jstree.js" />
+    <Content Include="www\scripts\jstree\jstree.min.js" />
+    <Content Include="www\scripts\jstree\themes\default-dark\32px.png" />
+    <Content Include="www\scripts\jstree\themes\default-dark\40px.png" />
+    <Content Include="www\scripts\jstree\themes\default-dark\style.css" />
+    <Content Include="www\scripts\jstree\themes\default-dark\style.min.css" />
+    <Content Include="www\scripts\jstree\themes\default-dark\throbber.gif" />
+    <Content Include="www\scripts\jstree\themes\default\32px.png" />
+    <Content Include="www\scripts\jstree\themes\default\40px.png" />
+    <Content Include="www\scripts\jstree\themes\default\style.css" />
+    <Content Include="www\scripts\jstree\themes\default\style.min.css" />
+    <Content Include="www\scripts\jstree\themes\default\throbber.gif" />
     <Content Include="www\scripts\require-tabs\require.tabs.js" />
     <Content Include="www\scripts\require-tabs\tabs.css" />
     <Content Include="www\scripts\require.js" />

@@ -96,5 +96,14 @@ namespace RuiJi.Owin
 
             Console.WriteLine("all server stop!");
         }
+
+        public static NodeBase GetLeader()
+        {
+            var server = servers.SingleOrDefault(m=>m.NodeBase.IsLeader);
+            if (server != null)
+                return server.NodeBase;
+
+            return null;
+        }
     }
 }

@@ -16,6 +16,9 @@ define(['jquery'], function ($) {
             var ul;
 
             $container.addClass("ui-require-tabs");
+            if (opt.direction) {
+                $container.addClass("ui-require-tabs-" + opt.direction);
+            }
 
             if (opt.container && opt.tabs) {
                 ul = $("<ul />");
@@ -115,11 +118,7 @@ define(['jquery'], function ($) {
             }
 
             if (opt.container && !opt.tabs) {
-                ul = $container.find(">ul:first");
-                if (opt.direction) {
-                    $container.addClass("ui-require-tabs-" + opt.direction);
-                }
-                
+                ul = $container.find(">ul:first");              
             }
 
             ul.addClass("ui-require-tabs-nav");
@@ -129,16 +128,10 @@ define(['jquery'], function ($) {
                 opt.ready();
             }
 
-            ul.find("li").click(function (e) {
+            ul.find("li a").click(function (e) {
                 var li = $(this).parent();
                 var tab = li.data("tab");
                 var href = $(this).attr("href");
-
-                if (!tab) {
-                    tab = {
-                        type: 'fn'
-                    };
-                }
 
                 if ($.isFunction(opt.before)) {
                     opt.before(tab);

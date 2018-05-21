@@ -35,8 +35,7 @@
             text-decoration: none;
             display: inline-block;
             height: 100%;
-            padding-left: 20px;
-            padding-right: 20px;
+            text-indent: 20px;
         }
 
         .ui-require-tabs-nav li.current a {

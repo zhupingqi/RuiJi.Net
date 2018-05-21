@@ -4,10 +4,27 @@
             tabs.init({
                 container: '#main_menu_tabs',
                 direction: 'vertical',
-                current : 0,
-                click: function (tab) {
-                    
-                }
+                current: 0,
+                tabs: [
+                    {
+                        id: 'status',
+                        text: '状态',
+                        type: 'lib',
+                        lib : 'status'
+                    },
+                    {
+                        id: 'node',
+                        text: '节点',
+                        type: 'lib',
+                        lib: 'node'
+                    },
+                    {
+                        id: 'log',
+                        text: '日志',
+                        type: 'lib',
+                        lib: 'log'
+                    }
+                ]
             });
         }
     };

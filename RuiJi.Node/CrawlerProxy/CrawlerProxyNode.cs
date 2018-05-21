@@ -61,7 +61,7 @@ namespace RuiJi.Node.CrawlerProxy
         public CrawlerConfig GetCrawlerConfig(string baseUrl)
         {
             var b = zooKeeper.GetData("/config/crawler/" + baseUrl, new CrawlerConfigWatcher(this), null);
-            var r = System.Text.Encoding.UTF8.GetString(b);
+            var r = Encoding.UTF8.GetString(b);
             var d = JsonConvert.DeserializeObject<CrawlerConfig>(r);
 
             return d;

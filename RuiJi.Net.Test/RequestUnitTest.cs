@@ -50,5 +50,10 @@ namespace RuiJi.Net.Test
 
             ServerManager.StopAll();
         }
+
+        public void TestPhantomjs()
+        {
+
+        }
     }
 }
