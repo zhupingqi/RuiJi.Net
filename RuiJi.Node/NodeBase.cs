@@ -201,7 +201,33 @@ namespace RuiJi.Node
 
         public void SetData(string path,string data)
         {
-            zooKeeper.SetData(path, data.GetBytes(), 0);
+            try
+            {
+                zooKeeper.SetData(path, data.GetBytes(), 0);
+            }
+            catch { }
+        }
+
+        public NodeData GetData(string path)
+        {
+            try
+            {
+                var stat = new Stat();
+
+                var b = zooKeeper.GetData(path, null, stat);
+                if (b == null)
+                    b = new byte[0];
+
+                return new NodeData
+                {
+                    Stat = stat,
+                    Data = Encoding.UTF8.GetString(b)
+                };
+
+            }
+            catch { }
+
+            return null;
         }
 
         class SessionWatcher : IWatcher

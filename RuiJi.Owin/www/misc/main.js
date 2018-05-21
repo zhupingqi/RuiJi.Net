@@ -3,8 +3,9 @@
     baseUrl : "/misc",
     paths: {
         jquery: '/scripts/jquery-3.1.1.min',
+        template: '/scripts/template-web',
         'tabs': '/scripts/require-tabs/require.tabs',
-        'tree':'/scripts/jstree/jstree.min'
+        'tree': '/scripts/jstree/jstree.min'
     },
     map: {
         '*': {
@@ -21,4 +22,5 @@
     }
 });
 
-require(['/misc/entry.js']);
+require(['proto']);
+require(['entry']);

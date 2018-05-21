@@ -1,4 +1,4 @@
-﻿define('utils', ['jquery', 'langs/core', 'template'], function ($, langs, templateJs) {
+﻿define('utils', ['jquery', 'template'], function ($, templateJs) {
     var templates = {};
 
     return {
@@ -14,7 +14,6 @@
                     url: url,
                     async: false,
                     success: function (res) {
-                        res = langs.trans(res);
                         templates[url] = res;
                         if (auto) {
                             if ($("#templates").length == 0) {
@@ -34,7 +33,7 @@
             else
                 html = templateJs(s)();
 
-            return langs.trans(html);
+            return html;
         },
         alert: function (content) {
             swal(langs.trans(content));

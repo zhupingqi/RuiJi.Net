@@ -13,6 +13,7 @@ using Microsoft.Owin;
 using Microsoft.Owin.Host.HttpListener;
 using System.Web.Http.Routing;
 using Microsoft.Owin.Diagnostics;
+using Microsoft.Owin.Cors;
 
 namespace RuiJi.Owin
 {
@@ -32,7 +33,10 @@ namespace RuiJi.Owin
                 ShowQuery = true
             });
 
+            app.UseCors(CorsOptions.AllowAll);
+
             var config = GetWebApiConfig();
+            
             app.UseWebApi(config);
 
             app.UseFileServer(new FileServerOptions()
@@ -100,9 +104,15 @@ namespace RuiJi.Owin
             #endregion
 
             config.Routes.MapHttpRoute(
-                name: "Zook",
+                name: "ZooTree",
                 routeTemplate: "api/zoo/tree",
                 defaults: new { controller = "ZooApi", action = "Tree" }
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "ZooNodeData",
+                routeTemplate: "api/zoo/node",
+                defaults: new { controller = "ZooApi", action = "NodeData" }
             );
 
             config.Routes.MapHttpRoute(

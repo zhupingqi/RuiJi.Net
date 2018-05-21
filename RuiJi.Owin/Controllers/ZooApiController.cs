@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
+using RuiJi.Node;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +40,36 @@ namespace RuiJi.Owin.Controllers
                 var restResponse = client.Execute(restRequest);
 
                 var response = JsonConvert.DeserializeObject<string[]>(restResponse.Content);
+
+                return response;
+            }
+        }
+
+        [HttpGet]
+        public object NodeData(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+                return null;
+
+            var auth = Request.RequestUri.Authority;
+            var leaderNode = ServerManager.GetLeader();
+
+            if (leaderNode == null)
+                return new string[0];
+
+            if (leaderNode.BaseUrl == auth)
+            {
+                return leaderNode.GetData(path);
+            }
+            else
+            {
+                var client = new RestClient("http://" + leaderNode.BaseUrl);
+                var restRequest = new RestRequest("api/zoo/tree?path=" + path);
+                restRequest.Method = Method.GET;
+
+                var restResponse = client.Execute(restRequest);
+
+                var response = JsonConvert.DeserializeObject<NodeData>(restResponse.Content);
 
                 return response;
             }

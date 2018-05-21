@@ -12,5 +12,9 @@
 }
 
 #main_menu_tabs > div {
-    padding:0px 10px
+    padding:0;
+}
+
+#tree {
+    width:400px;
 }
