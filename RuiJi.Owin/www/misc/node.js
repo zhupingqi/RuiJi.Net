@@ -5,6 +5,25 @@
             $("#tab_panel_node").html(tmp);
             $("#node_set").hide();
 
+            $(document).on("click", "#save_ips", function () {
+                var ips = $("#tab_panel_node :checked").map(function () {
+                    return $(this).val()
+                }).get();
+
+                var crawler = $("#active_node").text();
+                var url = "http://" + crawler + "/api/crawler/ips/set";
+
+                $.ajax({
+                    url: url,
+                    data: JSON.stringify(ips),
+                    type: 'POST',
+                    contentType: "application/json",
+                    success: function (res) {
+                        alert("完成");
+                    }
+                });
+            });
+
             $('#tree')
                 .on('changed.jstree', function (e, data) {
                     $("#node_set").hide();
@@ -25,12 +44,14 @@
                         if (path.startWith("/config/crawler/")) {
                             $("#node_set").show();
                             var crawler = path.replace("/config/crawler/", "");
-                            var url = "http://" + crawler + "/api/crawler/info";
+                            var url = "http://" + crawler + "/api/crawler/ips";
 
-                            $.getJSON(url, function (info) {
+                            $("#active_node").text(crawler);
+
+                            $.getJSON(url, function (cips) {
                                 var ips = $.parseJSON(d.data).ips;
 
-                                $.map(info.ips, function (ip) {
+                                $.map(cips, function (ip) {
                                     var input = $("<div><input type='checkbox' value='" + ip + "' />" + ip + "</div>");
                                     if ($.inArray(ip, ips) != -1) {
                                         input.find("input").attr("checked", "checked");

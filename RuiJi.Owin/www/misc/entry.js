@@ -19,6 +19,12 @@
                         lib: 'node'
                     },
                     {
+                        id: 'cluster',
+                        text: '集群',
+                        type: 'lib',
+                        lib: 'cluster'
+                    },
+                    {
                         id: 'log',
                         text: '日志',
                         type: 'lib',

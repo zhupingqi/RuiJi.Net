@@ -137,6 +137,8 @@
     <Content Include="www\crawler_proxy.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="www\misc\cluster.html" />
+    <Content Include="www\misc\cluster.js" />
     <Content Include="www\misc\main.js" />
     <Content Include="www\misc\node.html" />
     <Content Include="www\misc\node.js" />
@@ -152,6 +154,7 @@
     <Content Include="www\misc\langs\kor.js" />
     <Content Include="www\misc\langs\zh.js" />
     <Content Include="www\scripts\css.min.js" />
+    <Content Include="www\scripts\echarts.min.js" />
     <Content Include="www\scripts\jquery-3.1.1.min.js" />
     <Content Include="www\scripts\jstree\jstree.js" />
     <Content Include="www\scripts\jstree\jstree.min.js" />

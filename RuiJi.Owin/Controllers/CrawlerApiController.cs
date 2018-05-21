@@ -1,4 +1,5 @@
-﻿using RuiJi.Core;
+﻿using Newtonsoft.Json;
+using RuiJi.Core;
 using RuiJi.Core.Crawler;
 using RuiJi.Core.Utils;
 using RuiJi.Node.Crawler;
@@ -60,23 +61,27 @@ namespace RuiJi.Owin.Controllers
         [HttpGet]
         public object ServerInfo()
         {
-            //var inst = CrawlerNodeService.Instance;
-
-            //return new
-            //{
-            //    name = "RuiJi_Crawler_" + inst.BaseUrl,
-            //    baseUrl = inst.BaseUrl,
-            //    zkServer = inst.ZkServer,
-            //    zkState = CrawlerNodeService.Instance.States,
-            //    ips = IPHelper.GetHostIPAddress().Select(m => m.ToString()).ToArray(),
-            //    cips = CrawlerNodeService.Instance.GetNodeConfig()
-            //};
-
-
-
             var node = ServerManager.GetNode(Request.RequestUri.Port.ToString()) as CrawlerNode;
 
             return node.GetNodeConfig();
+        }
+
+        [HttpGet]
+        public string[] Ips()
+        {
+            return IPHelper.GetHostIPAddress().Select(m=>m.ToString()).ToArray();
+        }
+
+        [HttpPost]
+        public void SetIps([FromBody]string[] ips)
+        {
+            var node = ServerManager.GetNode(Request.RequestUri.Port.ToString()) as CrawlerNode;
+            var path = "/config/crawler/" + Request.RequestUri.Authority;
+
+            var data = node.GetData("/config/crawler/" + Request.RequestUri.Authority);
+            var config = JsonConvert.DeserializeObject<CrawlerConfig>(data.Data);
+            config.Ips = ips;
+            node.SetData(path,JsonConvert.SerializeObject(config));
         }
     }
 }

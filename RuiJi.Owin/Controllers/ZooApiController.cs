@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RestSharp;
 using RuiJi.Node;
 using System;
@@ -39,7 +40,7 @@ namespace RuiJi.Owin.Controllers
 
                 var restResponse = client.Execute(restRequest);
 
-                var response = JsonConvert.DeserializeObject<string[]>(restResponse.Content);
+                var response = JsonConvert.DeserializeObject<object>(restResponse.Content);
 
                 return response;
             }
@@ -69,7 +70,34 @@ namespace RuiJi.Owin.Controllers
 
                 var restResponse = client.Execute(restRequest);
 
-                var response = JsonConvert.DeserializeObject<NodeData>(restResponse.Content);
+                var response = JsonConvert.DeserializeObject<object>(restResponse.Content);
+
+                return response;
+            }
+        }
+
+        [HttpGet]
+        public object Cluster()
+        {
+            var auth = Request.RequestUri.Authority;
+            var leaderNode = ServerManager.GetLeader();
+
+            if (leaderNode == null)
+                return new { };
+
+            if (leaderNode.BaseUrl == auth)
+            {
+                return leaderNode.GetCluster();
+            }
+            else
+            {
+                var client = new RestClient("http://" + leaderNode.BaseUrl);
+                var restRequest = new RestRequest("api/zoo/cluster");
+                restRequest.Method = Method.GET;
+
+                var restResponse = client.Execute(restRequest);
+
+                var response = JsonConvert.DeserializeObject<object>(restResponse.Content);
 
                 return response;
             }

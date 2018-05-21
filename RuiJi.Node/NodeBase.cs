@@ -199,11 +199,11 @@ namespace RuiJi.Node
             }
         }
 
-        public void SetData(string path,string data)
+        public void SetData(string path,string data,int version = -1)
         {
             try
             {
-                zooKeeper.SetData(path, data.GetBytes(), 0);
+                zooKeeper.SetData(path, data.GetBytes(), version);
             }
             catch { }
         }
@@ -221,13 +221,37 @@ namespace RuiJi.Node
                 return new NodeData
                 {
                     Stat = stat,
-                    Data = Encoding.UTF8.GetString(b)
+                    Data = Encoding.UTF8.GetString(b),
+                    Path = path
                 };
 
             }
             catch { }
 
             return null;
+        }
+
+        public List<NodeData> GetCluster()
+        {
+            var results = new List<NodeData>();
+
+            var nodes = new List<string>();
+
+            nodes.AddRange(GetChildren("/config/proxy").AllKeys);
+            nodes.AddRange(GetChildren("/config/crawler").AllKeys);
+            nodes.AddRange(GetChildren("/config/extracter").AllKeys);
+
+            nodes.AddRange(GetChildren("/live_nodes/proxy").AllKeys);
+            nodes.AddRange(GetChildren("/live_nodes/crawler").AllKeys);
+            nodes.AddRange(GetChildren("/live_nodes/extracter").AllKeys);
+
+            foreach (var node in nodes)
+            {
+                var data = GetData(node);
+                results.Add(data);
+            }
+
+            return results;
         }
 
         class SessionWatcher : IWatcher

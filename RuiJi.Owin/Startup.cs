@@ -26,7 +26,8 @@ namespace RuiJi.Owin
 
         public void Configuration(IAppBuilder app)
         {
-            app.UseErrorPage(new ErrorPageOptions() {
+            app.UseErrorPage(new ErrorPageOptions()
+            {
                 ShowSourceCode = true,
                 ShowEnvironment = true,
                 ShowExceptionDetails = true,
@@ -36,13 +37,13 @@ namespace RuiJi.Owin
             app.UseCors(CorsOptions.AllowAll);
 
             var config = GetWebApiConfig();
-            
+
             app.UseWebApi(config);
 
             app.UseFileServer(new FileServerOptions()
             {
                 RequestPath = PathString.Empty,
-                FileSystem = new PhysicalFileSystem(@".\www")                
+                FileSystem = new PhysicalFileSystem(@".\www")
             });
         }
 
@@ -53,6 +54,7 @@ namespace RuiJi.Owin
 
             //config.Routes.IgnoreRoute("js", "{anything}.js/{*pathInfo}");
 
+            #region Crawler Api
             config.Routes.MapHttpRoute(
                 name: "Crawl",
                 routeTemplate: "api/crawl",
@@ -64,6 +66,19 @@ namespace RuiJi.Owin
                 routeTemplate: "api/crawler/info",
                 defaults: new { controller = "CrawlerApi", action = "serverinfo" }
             );
+
+            config.Routes.MapHttpRoute(
+                name: "CrawlerIps",
+                routeTemplate: "api/crawler/ips",
+                defaults: new { controller = "CrawlerApi", action = "Ips" }
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "SetCrawlerIps",
+                routeTemplate: "api/crawler/ips/set",
+                defaults: new { controller = "CrawlerApi", action = "SetIps" }
+            );
+            #endregion
 
             config.Routes.MapHttpRoute(
                 name: "Extract",
@@ -88,7 +103,7 @@ namespace RuiJi.Owin
                 name: "ProxyExtract",
                 routeTemplate: "api/ep/extract",
                 defaults: new { controller = "ExtracterProxyApi", action = "Extract" }
-            ); 
+            );
 
             config.Routes.MapHttpRoute(
                 name: "PingCP",
@@ -103,17 +118,25 @@ namespace RuiJi.Owin
             );
             #endregion
 
+            #region Zoo Api
             config.Routes.MapHttpRoute(
-                name: "ZooTree",
-                routeTemplate: "api/zoo/tree",
-                defaults: new { controller = "ZooApi", action = "Tree" }
-            );
+                    name: "ZooTree",
+                    routeTemplate: "api/zoo/tree",
+                    defaults: new { controller = "ZooApi", action = "Tree" }
+                );
 
             config.Routes.MapHttpRoute(
                 name: "ZooNodeData",
                 routeTemplate: "api/zoo/node",
                 defaults: new { controller = "ZooApi", action = "NodeData" }
             );
+
+            config.Routes.MapHttpRoute(
+                name: "NodeCluster",
+                routeTemplate: "api/zoo/cluster",
+                defaults: new { controller = "ZooApi", action = "Cluster" }
+            );
+            #endregion
 
             config.Routes.MapHttpRoute(
                 name: "Default",

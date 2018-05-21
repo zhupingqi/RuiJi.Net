@@ -15,5 +15,8 @@ namespace RuiJi.Node
 
         [JsonProperty("data")]
         public string Data { get; set; }
+
+        [JsonProperty("path")]
+        public string Path { get; set; }
     }
 }
