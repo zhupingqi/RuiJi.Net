@@ -65,7 +65,7 @@ namespace RuiJi.Owin.Controllers
             else
             {
                 var client = new RestClient("http://" + leaderNode.BaseUrl);
-                var restRequest = new RestRequest("api/zoo/tree?path=" + path);
+                var restRequest = new RestRequest("api/zoo/node?path=" + path);
                 restRequest.Method = Method.GET;
 
                 var restResponse = client.Execute(restRequest);

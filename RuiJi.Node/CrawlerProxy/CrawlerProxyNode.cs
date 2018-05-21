@@ -60,11 +60,17 @@ namespace RuiJi.Node.CrawlerProxy
 
         public CrawlerConfig GetCrawlerConfig(string baseUrl)
         {
-            var b = zooKeeper.GetData("/config/crawler/" + baseUrl, new CrawlerConfigWatcher(this), null);
-            var r = Encoding.UTF8.GetString(b);
-            var d = JsonConvert.DeserializeObject<CrawlerConfig>(r);
+            try
+            {
+                var b = zooKeeper.GetData("/config/crawler/" + baseUrl, new CrawlerConfigWatcher(this), null);
+                var r = Encoding.UTF8.GetString(b);
+                var d = JsonConvert.DeserializeObject<CrawlerConfig>(r);
 
-            return d;
+                return d;
+            }
+            catch { }
+
+            return null;
         }
 
         class LiveCrawlerWatcher : IWatcher
@@ -104,7 +110,7 @@ namespace RuiJi.Node.CrawlerProxy
                 if (string.IsNullOrEmpty(@event.Path))
                     return;
 
-                var baseUrl = @event.Path.Split('/')[2];
+                var baseUrl = @event.Path.Split('/')[3];
 
                 switch (@event.Type)
                 {
