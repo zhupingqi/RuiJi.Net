@@ -1,0 +1,10 @@
+open source projects that may be possible to use in the future
+
+cassandra
+Cassandra is a high performance distributed key value store.
+Install-Package Cassandra -Version 2.2.5	
+
+Phantomjs
+PhantomJS is a headless WebKit scriptable with a JavaScript API. It has fast and native support for various web standards: DOM handling, CSS selector, JSON, Canvas, and SVG.
+Install-Package PhantomJS -Version 2.1.1
+

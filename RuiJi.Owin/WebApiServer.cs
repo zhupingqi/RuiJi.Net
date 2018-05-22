@@ -11,6 +11,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace RuiJi.Owin
@@ -18,6 +19,22 @@ namespace RuiJi.Owin
     public class WebApiServer
     {
         private IDisposable app;
+
+        private ManualResetEvent resetEvent;
+
+        public bool Running
+        {
+            get;
+            private set;
+        }
+
+        private string baseUrl;
+
+        private string nodeType;
+
+        private string zkServer;
+
+        private string proxy;
 
         public string Port
         {
@@ -32,13 +49,21 @@ namespace RuiJi.Owin
         }
 
         public void Start(string baseUrl, string nodeType, string zkServer, string proxy = "")
-        {            
+        {
+            Running = true;
+
             this.Port = baseUrl.Split(':')[1];
+
+            this.baseUrl = baseUrl;
+            this.nodeType = nodeType;
+            this.zkServer = zkServer;
+            this.proxy = proxy;
 
             baseUrl = IPHelper.FixLocalUrl(baseUrl);
 
             app = WebApp.Start<Startup>("http://" + baseUrl);
             Console.WriteLine("Web Api Server Start At http://" + baseUrl + " with " + nodeType + " node");
+            Console.WriteLine();
 
             switch (nodeType)
             {
@@ -65,6 +90,14 @@ namespace RuiJi.Owin
             }
 
             NodeBase.Start();
+
+            resetEvent = new ManualResetEvent(false);
+            resetEvent.WaitOne();
+        }
+
+        public void Restart()
+        {
+            Start(baseUrl, nodeType, zkServer, proxy);
         }
 
         public void Stop()
@@ -76,6 +109,9 @@ namespace RuiJi.Owin
             }
 
             NodeBase.Stop();
+            resetEvent.Set();
+
+            Running = false;
         }
     }
 }

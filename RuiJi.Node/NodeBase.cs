@@ -24,6 +24,8 @@ namespace RuiJi.Node
 
         public string LeaderBaseUrl { get; protected set; }
 
+        private bool force;
+
         public string States
         {
             get
@@ -70,6 +72,8 @@ namespace RuiJi.Node
 
         public virtual void Stop()
         {
+            force = true;
+
             if (zooKeeper != null)
             {
                 zooKeeper.Dispose();
@@ -274,6 +278,9 @@ namespace RuiJi.Node
                         case KeeperState.Disconnected:
                             {
                                 Console.WriteLine("disconnected with zookeeper server");
+                                if(!service.force)
+                                    service.Start();
+                                service.force = false;
                                 break;
                             }
                         case KeeperState.Expired:

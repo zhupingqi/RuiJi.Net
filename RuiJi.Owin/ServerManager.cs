@@ -12,13 +12,13 @@ namespace RuiJi.Owin
 {
     public class ServerManager
     {
-        private static List<Thread> threads;
+        private static List<Task> tasks;
         private static List<WebApiServer> servers;
 
         static ServerManager()
         {
             servers = new List<WebApiServer>();
-            threads = new List<Thread>();
+            tasks = new List<Task>();
         }
 
         ~ServerManager()
@@ -29,9 +29,9 @@ namespace RuiJi.Owin
         public static void Start(string baseUrl, string type, string zkServer, string proxy = "")
         {
             var server = new WebApiServer();
-            server.Start(baseUrl, type, zkServer, proxy);
-
             servers.Add(server);
+
+            server.Start(baseUrl, type, zkServer, proxy);
         }
 
         public static void Stop(string port = "")
@@ -40,49 +40,72 @@ namespace RuiJi.Owin
             if (server != null)
             {
                 server.Stop();
-                servers.Remove(server);
+                //servers.Remove(server);
 
                 Console.WriteLine("server port with " + port + " stop!");
             }
+
+            tasks.RemoveAll(m=>m.Status != TaskStatus.Running);
         }
 
-        internal static NodeBase GetNode(string port)
+        internal static WebApiServer GetNode(string port)
         {
-            var server = servers.SingleOrDefault(m => m.Port == port);
-            if (server != null)
-            {
-                return server.NodeBase;
-            }
-
-            return null;
+            return servers.SingleOrDefault(m => m.Port == port);
         }
 
         public static void StartServers()
         {
             NodeConfigurationSection.Settings.ForEach(m =>
             {
-                Task.Run(() =>
+                var t = Task.Factory.StartNew(() =>
                 {
                     try
                     {
-                        var t = new Thread(() =>
-                        {
-                            ServerManager.Start(m.BaseUrl, m.Type, m.ZkServer, m.Proxy);
-                        });
-                        t.Start();
-
-                        threads.Add(t);
+                        ServerManager.Start(m.BaseUrl, m.Type, m.ZkServer, m.Proxy);
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex.Message);
                     }
-
-                    Console.WriteLine();
                 });
 
+                tasks.Add(t);
                 Thread.Sleep(1000);
             });
+        }
+
+        public static void Start(string port)
+        {
+            var server = servers.SingleOrDefault(m => m.Port == port);
+            if (server != null)
+            {
+                if (server.Running)
+                {
+                    Console.WriteLine("server " + server.NodeBase.BaseUrl + " already running!");
+                }
+                else
+                {
+                    var t = Task.Factory.StartNew(() =>
+                    {
+                        try
+                        {
+                            server.Restart();
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
+                    });
+
+                    tasks.Add(t);
+                    
+                    Console.WriteLine("server " + server.NodeBase.BaseUrl + " restart!");
+                }
+            }
+            else
+            {
+                Console.WriteLine("server not find");
+            }
         }
 
         public static void StopAll()
@@ -99,7 +122,7 @@ namespace RuiJi.Owin
 
         public static NodeBase GetLeader()
         {
-            var server = servers.SingleOrDefault(m=>m.NodeBase.IsLeader);
+            var server = servers.SingleOrDefault(m => m.NodeBase.IsLeader);
             if (server != null)
                 return server.NodeBase;
 

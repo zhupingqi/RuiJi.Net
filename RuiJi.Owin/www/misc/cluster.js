@@ -48,7 +48,8 @@
                         label: {
                             position: 'right',
                             verticalAlign: 'middle',
-                            align: 'left'
+                            align: 'left',
+                            fontWeight: module.fontWeight(d, name)
                         },
                         children: d.where(function (m) {
                             return m.data.indexOf("\"proxy\":\"" + name + "\"") != -1;
@@ -56,7 +57,10 @@
                             var name = m.path.split("/").last();
 
                             return {
-                                "name": name
+                                "name": name,
+                                label: {
+                                    fontWeight: module.fontWeight(d, name)
+                                }
                             };
                         })
                     };
@@ -72,7 +76,8 @@
                         label: {
                             position: 'right',
                             verticalAlign: 'middle',
-                            align: 'left'
+                            align: 'left',
+                            fontWeight: module.fontWeight(d, name)
                         },
                         children: d.where(function (m) {
                             return m.data.indexOf("\"proxy\":\"" + name + "\"") != -1;
@@ -80,7 +85,10 @@
                             var name = m.path.split("/").last();
 
                             return {
-                                "name": name
+                                "name": name,
+                                label: {
+                                    fontWeight: module.fontWeight(d, name)
+                                }
                             };
                         })
                     };
@@ -132,6 +140,14 @@
                         window.location = "http://" + params.name;
                 });
             });
+        },
+        fontWeight: function (data, name) {
+            var node = data.where(function (m) {
+                if (m.path.indexOf("/live_nodes/") != -1 && m.path.indexOf(name) != -1)
+                    return m;
+            });
+
+            return node.length > 0 ? "bold" : "normal";
         }
     };
 
