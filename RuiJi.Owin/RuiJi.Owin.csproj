@@ -113,6 +113,12 @@
     <None Include="www\fonts\jsglyph.eot" />
     <None Include="www\fonts\jsglyph.ttf" />
     <None Include="www\fonts\jsglyph.woff" />
+    <None Include="www\scripts\bootstrap-3.3.5\css\bootstrap-theme.css.map" />
+    <None Include="www\scripts\bootstrap-3.3.5\css\bootstrap.css.map" />
+    <None Include="www\scripts\bootstrap-3.3.5\fonts\glyphicons-halflings-regular.eot" />
+    <None Include="www\scripts\bootstrap-3.3.5\fonts\glyphicons-halflings-regular.ttf" />
+    <None Include="www\scripts\bootstrap-3.3.5\fonts\glyphicons-halflings-regular.woff" />
+    <None Include="www\scripts\bootstrap-3.3.5\fonts\glyphicons-halflings-regular.woff2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RuiJi.Core\RuiJi.Core.csproj">
@@ -126,24 +132,29 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="conf\config\online_proxy.txt" />
-    <Content Include="www\crawler.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="www\fonts\fontawesome-webfont.svg" />
     <Content Include="www\fonts\jsglyph.svg" />
     <Content Include="www\index.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="www\crawler_proxy.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="www\misc\cluster.html" />
     <Content Include="www\misc\cluster.js" />
+    <Content Include="www\misc\feed.js" />
+    <Content Include="www\misc\feeds.html" />
+    <Content Include="www\misc\feeds.js" />
+    <Content Include="www\misc\font-awesome.min.css" />
+    <Content Include="www\misc\log.js" />
     <Content Include="www\misc\main.js" />
     <Content Include="www\misc\node.html" />
     <Content Include="www\misc\node.js" />
+    <Content Include="www\misc\plugin.js" />
     <Content Include="www\misc\proto.js" />
+    <Content Include="www\misc\rules.js" />
+    <Content Include="www\misc\setting.js" />
     <Content Include="www\misc\site.css" />
+    <Content Include="www\misc\statistics.js" />
+    <Content Include="www\misc\status.html" />
+    <Content Include="www\misc\status.js" />
     <Content Include="www\misc\utils.js" />
     <Content Include="www\misc\entry.js" />
     <Content Include="www\misc\langs\core.js" />
@@ -153,6 +164,188 @@
     <Content Include="www\misc\langs\jp.js" />
     <Content Include="www\misc\langs\kor.js" />
     <Content Include="www\misc\langs\zh.js" />
+    <Content Include="www\scripts\bootstrap-3.3.5\css\bootstrap-theme.css" />
+    <Content Include="www\scripts\bootstrap-3.3.5\css\bootstrap-theme.min.css" />
+    <Content Include="www\scripts\bootstrap-3.3.5\css\bootstrap.css" />
+    <Content Include="www\scripts\bootstrap-3.3.5\css\bootstrap.min.css" />
+    <Content Include="www\scripts\bootstrap-3.3.5\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="www\scripts\bootstrap-3.3.5\img\glyphicons-halflings-white.png" />
+    <Content Include="www\scripts\bootstrap-3.3.5\img\glyphicons-halflings.png" />
+    <Content Include="www\scripts\bootstrap-3.3.5\js\bootstrap.js" />
+    <Content Include="www\scripts\bootstrap-3.3.5\js\bootstrap.min.js" />
+    <Content Include="www\scripts\bootstrap-3.3.5\js\npm.js" />
+    <Content Include="www\scripts\bootstrap-table\bootstrap-table-locale-all.js" />
+    <Content Include="www\scripts\bootstrap-table\bootstrap-table-locale-all.min.js" />
+    <Content Include="www\scripts\bootstrap-table\bootstrap-table.css" />
+    <Content Include="www\scripts\bootstrap-table\bootstrap-table.js" />
+    <Content Include="www\scripts\bootstrap-table\bootstrap-table.min.css" />
+    <Content Include="www\scripts\bootstrap-table\bootstrap-table.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\accent-neutralise\bootstrap-table-accent-neutralise.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\accent-neutralise\bootstrap-table-accent-neutralise.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\angular\bootstrap-table-angular.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\angular\bootstrap-table-angular.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\auto-refresh\bootstrap-table-auto-refresh.css" />
+    <Content Include="www\scripts\bootstrap-table\extensions\auto-refresh\bootstrap-table-auto-refresh.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\auto-refresh\bootstrap-table-auto-refresh.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\click-edit-row\bootstrap-table-click-edit-row.css" />
+    <Content Include="www\scripts\bootstrap-table\extensions\click-edit-row\bootstrap-table-click-edit-row.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\click-edit-row\bootstrap-table-click-edit-row.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\cookie\bootstrap-table-cookie.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\cookie\bootstrap-table-cookie.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\copy-rows\bootstrap-table-copy-rows.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\copy-rows\bootstrap-table-copy-rows.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\defer-url\bootstrap-table-defer-url.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\defer-url\bootstrap-table-defer-url.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\editable\bootstrap-table-editable.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\editable\bootstrap-table-editable.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\export\bootstrap-table-export.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\export\bootstrap-table-export.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\filter-control\bootstrap-table-filter-control.css" />
+    <Content Include="www\scripts\bootstrap-table\extensions\filter-control\bootstrap-table-filter-control.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\filter-control\bootstrap-table-filter-control.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\filter\bootstrap-table-filter.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\filter\bootstrap-table-filter.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\flat-json\bootstrap-table-flat-json.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\flat-json\bootstrap-table-flat-json.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\group-by-v2\bootstrap-table-group-by.css" />
+    <Content Include="www\scripts\bootstrap-table\extensions\group-by-v2\bootstrap-table-group-by.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\group-by-v2\bootstrap-table-group-by.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\group-by\bootstrap-table-group-by.css" />
+    <Content Include="www\scripts\bootstrap-table\extensions\group-by\bootstrap-table-group-by.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\group-by\bootstrap-table-group-by.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\i18n-enhance\bootstrap-table-i18n-enhance.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\i18n-enhance\bootstrap-table-i18n-enhance.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\key-events\bootstrap-table-key-events.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\key-events\bootstrap-table-key-events.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\mobile\bootstrap-table-mobile.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\mobile\bootstrap-table-mobile.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\multi-column-toggle\bootstrap-table-multi-toggle.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\multi-column-toggle\bootstrap-table-multi-toggle.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\multiple-search\bootstrap-table-multiple-search.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\multiple-search\bootstrap-table-multiple-search.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\multiple-selection-row\bootstrap-table-multiple-selection-row.css" />
+    <Content Include="www\scripts\bootstrap-table\extensions\multiple-selection-row\bootstrap-table-multiple-selection-row.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\multiple-selection-row\bootstrap-table-multiple-selection-row.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\multiple-sort\bootstrap-table-multiple-sort.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\multiple-sort\bootstrap-table-multiple-sort.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\natural-sorting\bootstrap-table-natural-sorting.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\natural-sorting\bootstrap-table-natural-sorting.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\page-jumpto\bootstrap-table-jumpto.css" />
+    <Content Include="www\scripts\bootstrap-table\extensions\page-jumpto\bootstrap-table-jumpto.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\page-jumpto\bootstrap-table-jumpto.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\print\bootstrap-table-print.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\print\bootstrap-table-print.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\reorder-columns\bootstrap-table-reorder-columns.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\reorder-columns\bootstrap-table-reorder-columns.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\reorder-rows\bootstrap-table-reorder-rows.css" />
+    <Content Include="www\scripts\bootstrap-table\extensions\reorder-rows\bootstrap-table-reorder-rows.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\reorder-rows\bootstrap-table-reorder-rows.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\resizable\bootstrap-table-resizable.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\resizable\bootstrap-table-resizable.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\select2-filter\bootstrap-table-select2-filter.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\select2-filter\bootstrap-table-select2-filter.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\sticky-header\bootstrap-table-sticky-header.css" />
+    <Content Include="www\scripts\bootstrap-table\extensions\sticky-header\bootstrap-table-sticky-header.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\sticky-header\bootstrap-table-sticky-header.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\toolbar\bootstrap-table-toolbar.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\toolbar\bootstrap-table-toolbar.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\tree-column\bootstrap-table-tree-column.css" />
+    <Content Include="www\scripts\bootstrap-table\extensions\tree-column\bootstrap-table-tree-column.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\tree-column\bootstrap-table-tree-column.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\treegrid\bootstrap-table-treegrid.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\treegrid\bootstrap-table-treegrid.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-af-ZA.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-af-ZA.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ar-SA.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ar-SA.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ca-ES.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ca-ES.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-cs-CZ.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-cs-CZ.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-da-DK.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-da-DK.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-de-DE.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-de-DE.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-el-GR.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-el-GR.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-en-US.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-en-US.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-es-AR.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-es-AR.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-es-CL.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-es-CL.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-es-CR.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-es-CR.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-es-ES.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-es-ES.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-es-MX.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-es-MX.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-es-NI.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-es-NI.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-es-SP.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-es-SP.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-et-EE.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-et-EE.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-eu-EU.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-eu-EU.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-fa-IR.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-fa-IR.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-fr-BE.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-fr-BE.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-fr-FR.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-fr-FR.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-he-IL.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-he-IL.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-hr-HR.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-hr-HR.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-hu-HU.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-hu-HU.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-id-ID.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-id-ID.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-it-IT.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-it-IT.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ja-JP.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ja-JP.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ka-GE.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ka-GE.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ko-KR.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ko-KR.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ms-MY.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ms-MY.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-nb-NO.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-nb-NO.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-nl-NL.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-nl-NL.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-pl-PL.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-pl-PL.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-pt-BR.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-pt-BR.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-pt-PT.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-pt-PT.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ro-RO.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ro-RO.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ru-RU.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ru-RU.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-sk-SK.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-sk-SK.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-sv-SE.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-sv-SE.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-th-TH.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-th-TH.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-tr-TR.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-tr-TR.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-uk-UA.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-uk-UA.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ur-PK.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ur-PK.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-uz-Latn-UZ.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-uz-Latn-UZ.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-vi-VN.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-vi-VN.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-zh-CN.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-zh-CN.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-zh-TW.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-zh-TW.min.js" />
     <Content Include="www\scripts\css.min.js" />
     <Content Include="www\scripts\echarts.min.js" />
     <Content Include="www\scripts\jquery-3.1.1.min.js" />
@@ -180,10 +373,14 @@
     <Folder Include="conf\config\extracter\" />
     <Folder Include="conf\config\proxy\" />
     <Folder Include="conf\live_nodes\" />
+    <Folder Include="www\misc\plugin\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(ProjectDir)\www\*.*" "$(SolutionDir)\RuiJi.Cmd\bin\debug\www\*.*" ;
-copy "$(ProjectDir)\www\misc\*.*" "$(SolutionDir)\RuiJi.Cmd\bin\debug\www\misc\*.*" ;</PostBuildEvent>
+    <PostBuildEvent>xcopy "$(ProjectDir)www" "$(SolutionDir)RuiJi.Cmd\bin\debug\www" /E /Y</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
 </Project>

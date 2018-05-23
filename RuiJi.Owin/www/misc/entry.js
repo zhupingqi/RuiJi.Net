@@ -29,6 +29,12 @@
                         text: '日志',
                         type: 'lib',
                         lib: 'log'
+                    },
+                    {
+                        id: 'feed',
+                        text: '新闻源',
+                        type: 'lib',
+                        lib: 'feed'
                     }
                 ]
             });
