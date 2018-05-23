@@ -1,22 +1,22 @@
-﻿using RuiJi.Node.CrawlerProxy;
+﻿using RuiJi.Node.Crawler;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RuiJi.Node.ExtracterProxy
+namespace RuiJi.Node.Feed
 {
-    public class ExtracterManager
+    public class FeedManager
     {
-        private static ExtracterManager _elector = null;
+        private static FeedManager _elector = null;
         private static object _lck = new object();
 
         private List<string> serverMap = new List<string>();
 
         private ulong count = 0;
 
-        public static ExtracterManager Instance
+        public static FeedManager Instance
         {
             get
             {
@@ -24,29 +24,13 @@ namespace RuiJi.Node.ExtracterProxy
             }
         }
 
-        static ExtracterManager()
+        static FeedManager()
         {
-            _elector = new ExtracterManager();
+            _elector = new FeedManager();
         }
 
-        private ExtracterManager()
+        private FeedManager()
         {
-        }
-
-        public ElectResult Elect()
-        {
-            lock (_lck)
-            {
-                if (serverMap.Count == 0)
-                    return null;
-
-                var server = serverMap[Convert.ToInt32(count++ % (ulong)serverMap.Count)];
-
-                return new ElectResult()
-                {
-                    BaseUrl = server
-                };
-            }
         }
 
         public void AddServer(string baseUrl)

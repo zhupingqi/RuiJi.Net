@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
 using RuiJi.Core.Crawler;
-using RuiJi.Node.CrawlerProxy;
+using RuiJi.Node.Crawler;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -122,11 +122,20 @@ namespace RuiJi.Owin
 
         public static NodeBase GetLeader()
         {
-            var server = servers.SingleOrDefault(m => m.NodeBase.IsLeader);
+            var server = servers.FirstOrDefault();
             if (server != null)
                 return server.NodeBase;
 
             return null;
         }
+
+        //public static NodeBase GetFeedProxyNode()
+        //{
+        //    var server = servers.SingleOrDefault(m => m.NodeBase.);
+        //    if (server != null)
+        //        return server.NodeBase;
+
+        //    return null;
+        //}
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RuiJi.Node.CrawlerProxy
+namespace RuiJi.Node.Crawler
 {
     public class ElectResult
     {

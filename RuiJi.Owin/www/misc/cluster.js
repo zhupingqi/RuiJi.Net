@@ -34,6 +34,15 @@
                                 verticalAlign: 'middle',
                                 align: 'left'
                             }
+                        },
+                        {
+                            name: 'feed proxy',
+                            children: [],
+                            label: {
+                                position: 'right',
+                                verticalAlign: 'middle',
+                                align: 'left'
+                            }
                         }
                     ]
                 };
@@ -68,6 +77,34 @@
 
                 data.children[1].children = d.where(function (m) {
                     return m.path.indexOf("proxy") != -1 && m.data == "extracter proxy";
+                }).select(function (m) {
+                    var name = m.path.split("/").last();
+
+                    return {
+                        "name": name,
+                        label: {
+                            position: 'right',
+                            verticalAlign: 'middle',
+                            align: 'left',
+                            fontWeight: module.fontWeight(d, name)
+                        },
+                        children: d.where(function (m) {
+                            return m.data.indexOf("\"proxy\":\"" + name + "\"") != -1;
+                        }).select(function (m) {
+                            var name = m.path.split("/").last();
+
+                            return {
+                                "name": name,
+                                label: {
+                                    fontWeight: module.fontWeight(d, name)
+                                }
+                            };
+                        })
+                    };
+                });
+
+                data.children[2].children = d.where(function (m) {
+                    return m.path.indexOf("proxy") != -1 && m.data == "feed proxy";
                 }).select(function (m) {
                     var name = m.path.split("/").last();
 

@@ -12,7 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ZooKeeperNet;
 
-namespace RuiJi.Node.CrawlerProxy
+namespace RuiJi.Node.Crawler
 {
     public class CrawlerProxyNode : NodeBase
     {

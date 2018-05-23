@@ -7,17 +7,8 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Node.Crawler
 {
-    public class CrawlerConfig
+    public class CrawlerConfig : NodeConfig
     {
-        [JsonProperty("name")]
-        public string Name { get; set; }
-
-        [JsonProperty("proxy")]
-        public string Proxy { get; set; }
-
-        [JsonProperty("baseUrl")]
-        public string baseUrl { get; set; }
-
         [JsonProperty("ips")]
         public string[] Ips { get; set; }
 

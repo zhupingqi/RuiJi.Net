@@ -80,11 +80,13 @@ namespace RuiJi.Owin
             );
             #endregion
 
+            #region Extracter Api
             config.Routes.MapHttpRoute(
                 name: "Extract",
                 routeTemplate: "api/extract",
                 defaults: new { controller = "ExtracterApi", action = "extract" }
             );
+            #endregion
 
             #region Proxy Api
             config.Routes.MapHttpRoute(
@@ -136,6 +138,15 @@ namespace RuiJi.Owin
                 routeTemplate: "api/zoo/cluster",
                 defaults: new { controller = "ZooApi", action = "Cluster" }
             );
+            #endregion
+
+            #region Feed Api
+            config.Routes.MapHttpRoute(
+                    name: "FeedList",
+                    routeTemplate: "api/feeds",
+                    defaults: new { controller = "FeedApi", action = "Feeds" }
+                );
+
             #endregion
 
             config.Routes.MapHttpRoute(

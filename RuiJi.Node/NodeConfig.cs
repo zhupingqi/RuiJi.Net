@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RuiJi.Node.Extracter
+namespace RuiJi.Node
 {
-    public class ExtracterConfig
+    public class NodeConfig
     {
         [JsonProperty("name")]
         public string Name { get; set; }

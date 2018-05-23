@@ -93,6 +93,7 @@
     <Compile Include="Controllers\ExtracterProxyApiController.cs" />
     <Compile Include="Controllers\ExtracterApiController.cs" />
     <Compile Include="Controllers\CrawlerApiController.cs" />
+    <Compile Include="Controllers\FeedApiController.cs" />
     <Compile Include="Controllers\ZooApiController.cs" />
     <Compile Include="ServerManager.cs" />
     <Compile Include="WebApiCacheAttribute.cs" />

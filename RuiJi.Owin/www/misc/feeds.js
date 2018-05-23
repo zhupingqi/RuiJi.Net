@@ -5,8 +5,6 @@
             $("#tab_panel_feeds").html(tmp);
 
             $('#tb_feeds').bootstrapTable({
-                url: '/Home/GetDepartment',
-                method: 'get',
                 toolbar: '#toolbar',
                 striped: true,
                 cache: false,
@@ -26,45 +24,45 @@
                 uniqueId: "ID",
                 showToggle: true,
                 cardView: false,
-                detailView: false,
-                columns: [{
-                    checkbox: true
-                },
-                {
-                    field: 'siteName',
-                    title: 'SiteName'
-                },
-                {
-                    field: 'railling',
-                    title: 'Railling'
-                },
-                {
-                    field: 'address',
-                    title: 'Address'
-                },
-                {
-                    field: 'type',
-                    title: 'Type'
-                },
-                {
-                    field: 'method',
-                    title: 'Method'
-                },
-                {
-                    field: 'rules',
-                    title: 'Rules'
-                    },
-                    {
-                        field: 'scheduling',
-                        title: 'Scheduling'
-                    },
-                {
-                    field: 'status',
-                    title: 'Status'
-                },
-                {
-                    title: 'Actions'
-                }]
+                detailView: false//,
+                //columns: [{
+                //    checkbox: true
+                //},
+                //{
+                //    field: 'siteName',
+                //    title: 'SiteName'
+                //},
+                //{
+                //    field: 'railling',
+                //    title: 'Railling'
+                //},
+                //{
+                //    field: 'address',
+                //    title: 'Address'
+                //},
+                //{
+                //    field: 'type',
+                //    title: 'Type'
+                //},
+                //{
+                //    field: 'method',
+                //    title: 'Method'
+                //},
+                //{
+                //    field: 'rules',
+                //    title: 'Rules'
+                //    },
+                //    {
+                //        field: 'scheduling',
+                //        title: 'Scheduling'
+                //    },
+                //{
+                //    field: 'status',
+                //    title: 'Status'
+                //},
+                //{
+                //    title: 'Actions'
+                //}]
             });
         },
         queryParams: function (params) {

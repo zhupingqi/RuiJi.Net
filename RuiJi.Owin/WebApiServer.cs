@@ -2,9 +2,8 @@
 using RuiJi.Core.Utils;
 using RuiJi.Node;
 using RuiJi.Node.Crawler;
-using RuiJi.Node.CrawlerProxy;
 using RuiJi.Node.Extracter;
-using RuiJi.Node.ExtracterProxy;
+using RuiJi.Node.Feed;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -85,6 +84,16 @@ namespace RuiJi.Owin
                 case "ep":
                     {
                         NodeBase = new ExtracterProxyNode(baseUrl, zkServer);
+                        break;
+                    }
+                case "f":
+                    {
+                        NodeBase = new FeedNode(baseUrl, zkServer, proxy);
+                        break;
+                    }
+                case "fp":
+                    {
+                        NodeBase = new FeedProxyNode(baseUrl, zkServer);
                         break;
                     }
             }
