@@ -14,13 +14,10 @@ namespace RuiJi.Core.Extracter.Selector
         public string Value { get; set; }
 
         [JsonProperty("remove")]
-        public bool Remove { get; set; }
+        public RemoveEnum Remove { get; set; }
 
         [JsonProperty("type")]
         public SelectorTypeEnum SelectorType { get; private set; }
-
-        [JsonProperty("flag")]
-        public ClearEnum Flag { get; set; }
 
         protected abstract SelectorTypeEnum SetSelectType();
 

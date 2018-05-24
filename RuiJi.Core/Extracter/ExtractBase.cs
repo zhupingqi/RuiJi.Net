@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RuiJi.Core.Extensions;
 using RuiJi.Core.Extracter.Selector;
 using System;
 using System.Collections.Generic;
@@ -10,10 +11,10 @@ namespace RuiJi.Core.Extracter
 {
     public class ExtractBase
     {
-        [JsonProperty("name")]
+        [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
         public string Name { get; set; }
 
-        [JsonProperty("selectors")]
+        [JsonProperty("selectors",ItemConverterType = typeof(ISelectorConverter))]
         public List<ISelector> Selectors { get; set; }
 
         public ExtractBase(string name = "")

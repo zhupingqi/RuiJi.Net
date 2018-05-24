@@ -21,12 +21,7 @@ namespace RuiJi.Owin.Controllers
         public ExtractResult Extract([FromBody]string json)
         {
             var ext = new RuiJiExtracter();
-            var setting = new JsonSerializerSettings()
-            {
-                TypeNameHandling = TypeNameHandling.Objects
-            };
-
-            var request = JsonConvert.DeserializeObject<ExtractRequest>(json, setting);
+            var request = JsonConvert.DeserializeObject<ExtractRequest>(json);
 
             var result = ext.Extract(request.Content, request.Block);
             return result;

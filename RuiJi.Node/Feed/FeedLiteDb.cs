@@ -16,9 +16,9 @@ namespace RuiJi.Node.Feed
             {
                 var col = db.GetCollection<FeedModel>("feeds");
 
-                page.Count = col.Count(m => m.Rules >= 0);
+                page.Count = col.Count();
 
-                return col.Find(m=>m.Rules >= 0, page.Start, page.PageSize).ToList();                
+                return col.Find(m => true, page.Start, page.PageSize).ToList();
             }
         }
 
@@ -28,23 +28,20 @@ namespace RuiJi.Node.Feed
             {
                 var col = db.GetCollection<FeedModel>("feeds");
 
-                //feed = new FeedModel();
-                ////feed.Id = Guid.NewGuid().ToString("N");
-                //feed.SiteName = "新华网";
-                //feed.Railling = "财经 滚动";
-                //feed.Address = "http://www.news.cn/fortune/gd.htm";
-                //feed.Domain = new Uri(feed.Address).Host;
-                //feed.Type = FeedTypeEnum.HTML;
-                //feed.Method = AddressExtractMethodEnum.AUTO;
-                //feed.Status = FeedStatus.ON;
+                col.Insert(feed);
+            }
+        }
 
-                //col.EnsureIndex(m => m.SiteName);
-                //col.EnsureIndex(m => m.Rules);
-                //col.EnsureIndex(m => m.Status);
-                //col.EnsureIndex(m => m.Type);
-                //col.EnsureIndex(m => m.Method);
-
-                //col.Insert(feed);
+        public static void CreateIndex()
+        {
+            using (var db = new LiteDatabase(@"Feeds.db"))
+            {
+                var col = db.GetCollection<FeedModel>("feeds");
+                col.EnsureIndex(m => m.SiteName);
+                col.EnsureIndex(m => m.Rules);
+                col.EnsureIndex(m => m.Status);
+                col.EnsureIndex(m => m.Type);
+                col.EnsureIndex(m => m.Method);
             }
         }
     }

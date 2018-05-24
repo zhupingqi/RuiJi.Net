@@ -13,14 +13,14 @@ namespace RuiJi.Core.Extracter.Selector
         [JsonProperty("index")]
         public int[] Index { get; set; }
 
-        public RegexSelector(string value, int index = 0, bool remove = false)
+        public RegexSelector(string value, int index = 0, RemoveEnum remove = RemoveEnum.NO)
         {
             this.Index = new int[] { index };
             this.Value = value;
             this.Remove = remove;
         }
 
-        public RegexSelector(string value, int[] index, bool remove = false)
+        public RegexSelector(string value, int[] index, RemoveEnum remove = RemoveEnum.NO)
         {
             this.Index = index;
             this.Value = value;

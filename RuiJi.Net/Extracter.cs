@@ -24,12 +24,7 @@ namespace RuiJi.Net
             restRequest.Method = Method.POST;
             restRequest.JsonSerializer = new NewtonJsonSerializer();
 
-            var setting = new JsonSerializerSettings()
-            {
-                TypeNameHandling = TypeNameHandling.Objects
-            };
-
-            var json = JsonConvert.SerializeObject(request, setting);
+            var json = JsonConvert.SerializeObject(request);
 
 
             restRequest.AddJsonBody(json);
