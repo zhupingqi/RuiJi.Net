@@ -20,13 +20,9 @@ namespace RuiJi.Owin.Controllers
             if (string.IsNullOrEmpty(path))
                 path = "/";
 
-            var auth = Request.RequestUri.Authority;
-            var leaderNode = ServerManager.GetLeader();
+            var leaderNode = GetLeader();
 
-            if (leaderNode == null)
-                return new string[0];
-
-            if (leaderNode.BaseUrl == auth)
+            if (leaderNode != null)
             {
                 var nv = leaderNode.GetChildren(path);
 
@@ -34,7 +30,9 @@ namespace RuiJi.Owin.Controllers
             }
             else
             {
-                var client = new RestClient("http://" + leaderNode.BaseUrl);
+                var leaderBaseUrl = ServerManager.GetNode(Request.RequestUri.Port.ToString()).NodeBase.LeaderBaseUrl;
+
+                var client = new RestClient("http://" + leaderBaseUrl);
                 var restRequest = new RestRequest("api/zoo/tree?path=" + path);
                 restRequest.Method = Method.GET;
 
@@ -49,22 +47,17 @@ namespace RuiJi.Owin.Controllers
         [HttpGet]
         public object NodeData(string path)
         {
-            if (string.IsNullOrEmpty(path))
-                return null;
+            var leaderNode = GetLeader();
 
-            var auth = Request.RequestUri.Authority;
-            var leaderNode = ServerManager.GetLeader();
-
-            if (leaderNode == null)
-                return new string[0];
-
-            if (leaderNode.BaseUrl == auth)
+            if (leaderNode != null)
             {
                 return leaderNode.GetData(path);
             }
             else
             {
-                var client = new RestClient("http://" + leaderNode.BaseUrl);
+                var leaderBaseUrl = ServerManager.GetNode(Request.RequestUri.Port.ToString()).NodeBase.LeaderBaseUrl;
+
+                var client = new RestClient("http://" + leaderBaseUrl);
                 var restRequest = new RestRequest("api/zoo/node?path=" + path);
                 restRequest.Method = Method.GET;
 
@@ -79,19 +72,17 @@ namespace RuiJi.Owin.Controllers
         [HttpGet]
         public object Cluster()
         {
-            var auth = Request.RequestUri.Authority;
-            var leaderNode = ServerManager.GetLeader();
+            var leaderNode = GetLeader();
 
-            if (leaderNode == null)
-                return new { };
-
-            if (leaderNode.BaseUrl == auth)
+            if (leaderNode!=null)
             {
                 return leaderNode.GetCluster();
             }
             else
             {
-                var client = new RestClient("http://" + leaderNode.BaseUrl);
+                var leaderBaseUrl = ServerManager.GetNode(Request.RequestUri.Port.ToString()).NodeBase.LeaderBaseUrl;
+
+                var client = new RestClient("http://" + leaderBaseUrl);
                 var restRequest = new RestRequest("api/zoo/cluster");
                 restRequest.Method = Method.GET;
 
@@ -101,6 +92,53 @@ namespace RuiJi.Owin.Controllers
 
                 return response;
             }
+        }
+
+        [HttpGet]
+        public object FeedProxy()
+        {
+            var leaderNode = GetLeader();
+
+            if (leaderNode != null)
+            {
+                var nv = leaderNode.GetChildren("/config/proxy");
+                foreach (var n in nv.AllKeys)
+                {
+                    var d = leaderNode.GetData(n);
+                    if (d.Data == "{\"type\":\"feed\"}") {
+                        return n.Split('/').Last();
+                    }
+                }
+
+                return "";
+            }
+            else
+            {
+                var leaderBaseUrl = ServerManager.GetNode(Request.RequestUri.Port.ToString()).NodeBase.LeaderBaseUrl;
+
+                var client = new RestClient("http://" + leaderBaseUrl);
+                var restRequest = new RestRequest("api/zoo/feedproxy");
+                restRequest.Method = Method.GET;
+
+                var restResponse = client.Execute(restRequest);
+
+                var response = JsonConvert.DeserializeObject<object>(restResponse.Content);
+
+                return response;
+            }
+        }
+
+        private NodeBase GetLeader()
+        {
+            var auth = Request.RequestUri.Authority;
+            var leaderNode = ServerManager.GetLeader();
+
+            if (leaderNode != null && leaderNode.BaseUrl == auth)
+            {
+                return leaderNode;
+            }
+
+            return null;
         }
     }
 }

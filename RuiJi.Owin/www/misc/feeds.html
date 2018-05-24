@@ -1,85 +1,87 @@
-﻿<div id="toolbar">
-    <div class="btn-group">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            批量操作 <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-            <li><a href="javascript:;">停用</a></li>
-            <li><a href="javascript:;">移至回收站</a></li>
-        </ul>
+﻿<div>
+    <div id="toolbar">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                批量操作 <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="javascript:;">停用</a></li>
+                <li><a href="javascript:;">移至回收站</a></li>
+            </ul>
+        </div>
+        <button type="submit" class="btn btn-default">应用</button>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="text" class="form-control" style="display: inline-block; width: auto;" placeholder="Search">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                类型 <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="javascript:;">全部</a></li>
+                <li><a href="javascript:;">HTML</a></li>
+                <li><a href="javascript:;">XML</a></li>
+                <li><a href="javascript:;">JSON</a></li>
+                <li><a href="javascript:;">JSONP</a></li>
+            </ul>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                提取方式 <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="javascript:;">全部</a></li>
+                <li><a href="javascript:;">自动</a></li>
+                <li><a href="javascript:;">表达式</a></li>
+                <li><a href="javascript:;">正则</a></li>
+            </ul>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                状态 <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="javascript:;">全部</a></li>
+                <li><a href="javascript:;">启用</a></li>
+                <li><a href="javascript:;">停用</a></li>
+            </ul>
+        </div>
+        <button type="submit" class="btn btn-default">筛选</button>
     </div>
-    <button type="submit" class="btn btn-default">应用</button>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    <input type="text" class="form-control" style="display: inline-block; width: auto;" placeholder="Search">
-    <div class="btn-group">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            类型 <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-            <li><a href="javascript:;">全部</a></li>
-            <li><a href="javascript:;">HTML</a></li>
-            <li><a href="javascript:;">XML</a></li>
-            <li><a href="javascript:;">JSON</a></li>
-            <li><a href="javascript:;">JSONP</a></li>
-        </ul>
+    <div id="feeds_list">
+        <table id="tb_feeds" data-toggle="table" data-url="">
+            <thead>
+                <tr>
+                    <th data-checkbox="true" data-width="30px">&nbsp;</th>
+                    <th data-field="sitename">SiteName</th>
+                    <th data-field="railling">Railling</th>
+                    <th data-field="address">Address</th>
+                    <th data-field="type" data-width="60px">Type</th>
+                    <th data-field="method" data-width="60px">Method</th>
+                    <th data-field="rules" data-width="60px">Rules</th>
+                    <th data-field="scheduling" data-width="100px">Scheduling</th>
+                    <th data-field="status" data-width="60px">Status</th>
+                    <th data-width="110px">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="checkbox" /></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <i class="fa fa-edit"></i>
+                        <i class="fa fa-eye"></i>
+                        <i class="fa fa-history"></i>
+                        <i class="fa fa-random"></i>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-    <div class="btn-group">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            提取方式 <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-            <li><a href="javascript:;">全部</a></li>
-            <li><a href="javascript:;">自动</a></li>
-            <li><a href="javascript:;">表达式</a></li>
-            <li><a href="javascript:;">正则</a></li>
-        </ul>
-    </div>
-    <div class="btn-group">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            状态 <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-            <li><a href="javascript:;">全部</a></li>
-            <li><a href="javascript:;">启用</a></li>
-            <li><a href="javascript:;">停用</a></li>
-        </ul>
-    </div>
-    <button type="submit" class="btn btn-default">筛选</button>
-</div>
-<div id="feeds_list">
-    <table id="tb_feeds" data-toggle="table" data-url="/api/feeds">
-        <thead>
-            <tr>
-                <th data-checkbox="true" data-width="30px">&nbsp;</th>
-                <th data-field="sitename">SiteName</th>
-                <th data-field="railling">Railling</th>
-                <th data-field="address">Address</th>
-                <th data-field="type" data-width="60px">Type</th>
-                <th data-field="method" data-width="60px">Method</th>
-                <th data-field="rules" data-width="60px">Rules</th>
-                <th data-field="scheduling" data-width="100px">Scheduling</th>
-                <th data-field="status" data-width="60px">Status</th>
-                <th data-width="110px">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><input type="checkbox" /></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>
-                    <i class="fa fa-edit"></i>
-                    <i class="fa fa-eye"></i>
-                    <i class="fa fa-history"></i>
-                    <i class="fa fa-random"></i>
-                </td>
-            </tr>
-        </tbody>
-    </table>
 </div>

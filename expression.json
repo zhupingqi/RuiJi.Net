@@ -1,0 +1,13 @@
+[
+  {
+    "feature": [],
+    "block": [],
+    "railling": [
+      {
+        "csquery": [ false, "#locat", "", "text" ],
+        "exclude": [ false, "(\\s+)?您当前的位置 ：", "start" ],
+        "exclude": [ false, "(\\s+)?正文(\\s+)?", "start" ]
+      }
+    ]
+  }
+]

@@ -138,6 +138,12 @@ namespace RuiJi.Owin
                 routeTemplate: "api/zoo/cluster",
                 defaults: new { controller = "ZooApi", action = "Cluster" }
             );
+
+            config.Routes.MapHttpRoute(
+                name: "FeedProxyUrl",
+                routeTemplate: "api/zoo/feedproxy",
+                defaults: new { controller = "ZooApi", action = "FeedProxy" }
+            );
             #endregion
 
             #region Feed Api
