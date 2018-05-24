@@ -10,7 +10,7 @@
 
                 $("#tab_panel_feeds").html(tmp.prop("outerHTML"));
 
-                $('#tb_feeds').bootstrapTable({
+                var $table = $('#tb_feeds').bootstrapTable({
                     toolbar: '#toolbar',
                     striped: true,
                     cache: false,
@@ -30,53 +30,21 @@
                     uniqueId: "ID",
                     showToggle: true,
                     cardView: false,
-                    detailView: false//,
-                    //columns: [{
-                    //    checkbox: true
-                    //},
-                    //{
-                    //    field: 'siteName',
-                    //    title: 'SiteName'
-                    //},
-                    //{
-                    //    field: 'railling',
-                    //    title: 'Railling'
-                    //},
-                    //{
-                    //    field: 'address',
-                    //    title: 'Address'
-                    //},
-                    //{
-                    //    field: 'type',
-                    //    title: 'Type'
-                    //},
-                    //{
-                    //    field: 'method',
-                    //    title: 'Method'
-                    //},
-                    //{
-                    //    field: 'rules',
-                    //    title: 'Rules'
-                    //    },
-                    //    {
-                    //        field: 'scheduling',
-                    //        title: 'Scheduling'
-                    //    },
-                    //{
-                    //    field: 'status',
-                    //    title: 'Status'
-                    //},
-                    //{
-                    //    title: 'Actions'
-                    //}]
+                    detailView: false,
+                    onPostBody: function (e) {
+                        if (e.length > 0) {
+                            $('#tb_feeds > tbody > tr').map(function (i,m) {
+                                $(m).find("td:last").html("<i class='fa fa-edit'></i><i class='fa fa-eye'></i><i class='fa fa-history'></i><i class='fa fa-random'></i>");
+                            });
+                        }
+                    }
                 });
-
             });
         },
         queryParams: function (params) {
-            var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
-                limit: params.limit,   //页面大小
-                offset: params.offset,  //页码
+            var temp = {
+                limit: params.limit,
+                offset: params.offset,
                 departmentname: $("#txt_search_departmentname").val(),
                 statu: $("#txt_search_statu").val()
             };

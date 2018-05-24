@@ -9,6 +9,14 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Node.Rule
 {
+    public enum RuleTypeEnum
+    {
+        HTML,
+        JSON,
+        JSONP,
+        XML
+    }
+
     public class RuleModel
     {
         [JsonProperty("id")]
@@ -16,6 +24,9 @@ namespace RuiJi.Node.Rule
 
         [JsonProperty("domain")]
         public string Domain { get; set; }
+
+        [JsonProperty("type")]
+        public RuleTypeEnum Type { get; set; }
 
         [JsonProperty("expression")]
         public string Expression { get; set; }

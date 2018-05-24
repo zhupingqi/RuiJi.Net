@@ -150,6 +150,7 @@
     <Content Include="www\misc\node.js" />
     <Content Include="www\misc\plugin.js" />
     <Content Include="www\misc\proto.js" />
+    <Content Include="www\misc\rules.html" />
     <Content Include="www\misc\rules.js" />
     <Content Include="www\misc\setting.js" />
     <Content Include="www\misc\site.css" />

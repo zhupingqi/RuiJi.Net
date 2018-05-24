@@ -18,7 +18,7 @@ namespace RuiJi.Node.Feed
 
                 page.Count = col.Count();
 
-                return col.Find(m => true, page.Start, page.PageSize).ToList();
+                return col.Find(Query.All(), page.Start, page.PageSize).ToList();
             }
         }
 

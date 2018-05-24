@@ -11,13 +11,15 @@ namespace RuiJi.Node.Rule
 {
     public class RuleLiteDB
     {
-        public static List<RuleModel> GetRuleModels(string host)
+        public static List<RuleModel> GetRuleModels(Paging page)
         {
             using (var db = new LiteDatabase(@"Rules.db"))
             {
                 var col = db.GetCollection<RuleModel>("rules");
 
-                return col.Find(Query.Where("host", m => m.AsString == host)).ToList();
+                page.Count = col.Count();
+
+                return col.Find(Query.All(), page.Start, page.PageSize).ToList();
             }
         }
 

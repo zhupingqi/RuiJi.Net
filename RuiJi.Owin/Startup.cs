@@ -153,6 +153,11 @@ namespace RuiJi.Owin
                     defaults: new { controller = "FeedApi", action = "Feeds" }
                 );
 
+            config.Routes.MapHttpRoute(
+                    name: "RuleList",
+                    routeTemplate: "api/rules",
+                    defaults: new { controller = "FeedApi", action = "Rules" }
+                );
             #endregion
 
             config.Routes.MapHttpRoute(
