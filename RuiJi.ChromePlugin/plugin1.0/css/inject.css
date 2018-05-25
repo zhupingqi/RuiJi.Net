@@ -1,0 +1,133 @@
+﻿div.jsPanel-content {
+    padding: 5px 20px;
+}
+
+div.jsPanel-ftr > div {
+    display: block;
+    width: 100%;
+    font-size: 16px;
+}
+
+div.jsPanel-ftr span {
+    margin: 2px;
+    cursor: pointer;
+}
+
+div.jsPanel-ftr > div > div:nth-child(1) {
+    float: left;
+}
+
+div.jsPanel-ftr > div > div:nth-child(2) {
+    float: right;
+}
+
+    div.jsPanel-ftr > div > div:nth-child(2) span {
+        border: 1px solid rgb(204,204,204);
+        padding: 2px;
+        color: rgb(85,85,85);
+    }
+
+div.select-actions {
+    margin-left: -15px;
+}
+
+    div.select-actions button {
+        font-size: 16px;
+        margin: 10px 0px;
+    }
+
+div.inject-row {
+    overflow: visible;
+}
+
+    div.inject-row div.inject-input-group:nth-child(1n+2) {
+        padding-left: 81px;
+    }
+
+        div.inject-row div.inject-input-group:nth-child(1n+2) span.inject-input-group-addon {
+            display: none;
+        }
+
+    div.inject-row div.inject-input-group:nth-child(1) span.fa-minus-square {
+        display: none;
+    }
+
+    div.inject-row div.inject-input-group span.fa-minus-square {
+        float: left;
+        margin-left: -20px;
+        margin-top: 10px;
+        cursor: pointer;
+    }
+
+    div.inject-row div.inject-input-group span.isremove {
+        color: red;
+    }
+
+input.input-item-6 {
+    width: 50% !important;
+}
+
+input.input-item-4 {
+    width: 33% !important;
+}
+
+input.input-item-5 {
+    width: 42% !important;
+}
+
+span.input-group-addon {
+    width: 80px;
+}
+
+div.inject-row div.inject-input-group:first-child li:last-child {
+    display: none;
+}
+
+div.inject-row div.inject-input-group:nth-child(1n+2) li:nth-last-child(2) {
+    display: none;
+}
+
+.inject-selected {
+    border: 1px solid red;
+}
+
+#inject-bootscrap {
+    position: absolute;
+}
+
+.inject-list .active {
+    background-color: #a2a2a2;
+}
+
+
+div.csquery-result-type {
+    position: absolute;
+    right: 92px;
+    top: 8px;
+    z-index: 3;
+    cursor: pointer;
+}
+
+i.csquery-result-html:before {
+    content: "\f1dc";
+}
+
+i.csquery-result-text:before {
+    content: "\f035";
+}
+
+i.csquery-result-attr:before {
+    content: "\f031";
+}
+
+.inject-hide {
+    display: none;
+}
+
+/*.inject-item-type-ul
+{
+    
+    opacity: 1;
+    transform: scale(1.0);
+}*/
+
