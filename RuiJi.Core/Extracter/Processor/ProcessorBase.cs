@@ -13,7 +13,7 @@ namespace RuiJi.Core.Extracter.Processor
     {
         public ProcessResult Process(ISelector selector, string content, params object[] args)
         {
-            if (selector.Remove)
+            if (selector.Remove == Enum.RemoveEnum.YES)
                 return ProcessRemove(selector, content, args);
             else
                 return ProcessNeed(selector, content, args);

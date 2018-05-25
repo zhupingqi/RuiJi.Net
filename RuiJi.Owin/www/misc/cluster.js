@@ -34,6 +34,15 @@
                                 verticalAlign: 'middle',
                                 align: 'left'
                             }
+                        },
+                        {
+                            name: 'feed proxy',
+                            children: [],
+                            label: {
+                                position: 'right',
+                                verticalAlign: 'middle',
+                                align: 'left'
+                            }
                         }
                     ]
                 };
@@ -48,7 +57,8 @@
                         label: {
                             position: 'right',
                             verticalAlign: 'middle',
-                            align: 'left'
+                            align: 'left',
+                            fontWeight: module.fontWeight(d, name)
                         },
                         children: d.where(function (m) {
                             return m.data.indexOf("\"proxy\":\"" + name + "\"") != -1;
@@ -56,7 +66,10 @@
                             var name = m.path.split("/").last();
 
                             return {
-                                "name": name
+                                "name": name,
+                                label: {
+                                    fontWeight: module.fontWeight(d, name)
+                                }
                             };
                         })
                     };
@@ -72,7 +85,8 @@
                         label: {
                             position: 'right',
                             verticalAlign: 'middle',
-                            align: 'left'
+                            align: 'left',
+                            fontWeight: module.fontWeight(d, name)
                         },
                         children: d.where(function (m) {
                             return m.data.indexOf("\"proxy\":\"" + name + "\"") != -1;
@@ -80,7 +94,38 @@
                             var name = m.path.split("/").last();
 
                             return {
-                                "name": name
+                                "name": name,
+                                label: {
+                                    fontWeight: module.fontWeight(d, name)
+                                }
+                            };
+                        })
+                    };
+                });
+
+                data.children[2].children = d.where(function (m) {
+                    return m.path.indexOf("proxy") != -1 && m.data == "feed proxy";
+                }).select(function (m) {
+                    var name = m.path.split("/").last();
+
+                    return {
+                        "name": name,
+                        label: {
+                            position: 'right',
+                            verticalAlign: 'middle',
+                            align: 'left',
+                            fontWeight: module.fontWeight(d, name)
+                        },
+                        children: d.where(function (m) {
+                            return m.data.indexOf("\"proxy\":\"" + name + "\"") != -1;
+                        }).select(function (m) {
+                            var name = m.path.split("/").last();
+
+                            return {
+                                "name": name,
+                                label: {
+                                    fontWeight: module.fontWeight(d, name)
+                                }
                             };
                         })
                     };
@@ -132,6 +177,14 @@
                         window.location = "http://" + params.name;
                 });
             });
+        },
+        fontWeight: function (data, name) {
+            var node = data.where(function (m) {
+                if (m.path.indexOf("/live_nodes/") != -1 && m.path.indexOf(name) != -1)
+                    return m;
+            });
+
+            return node.length > 0 ? "bold" : "normal";
         }
     };
 

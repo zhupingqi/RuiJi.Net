@@ -10,7 +10,7 @@ namespace RuiJi.Core.Extracter.Selector
 {
     public class ExcludeSelector : SelectorBase
     {
-        [JsonProperty("type")]
+        [JsonProperty("etype")]
         public ExcludeTypeEnum Type { get; set; }
 
         protected override SelectorTypeEnum SetSelectType()

@@ -1,19 +1,43 @@
-﻿<table width="100%">
-    <tr>
-        <td width="400px" valign="top">
-            <div id='tree'></div>
-        </td>
-        <td valign="top">
-            <div id='node_stat'></div>
-            <div>&nbsp;</div>
-            <div id='node_data'></div>
-            <div>&nbsp;</div>
-            <div id="node_set">
-                <div id="active_node"></div>
-                <div>从下面选择该节点可以使用的IP</div>
-                <div id="ips_set"></div>
-                <div><input type="button" value="确认" id="save_ips" /></div>
-            </div>
-        </td>
-    </tr>
-</table>
+﻿<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="row">
+            <table width="100%">
+                <tr>
+                    <td width="400px" valign="top">
+                        <div id='tree'></div>
+                    </td>
+                    <td valign="top" style="padding:5px">
+                        <div><span>Node Stat</span></div>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div id='node_stat'></div>
+                            </div>
+                        </div>                        
+                        <div><span>Node Data</span></div>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div id='node_data'></div>
+                            </div>
+                        </div>                        
+                        <div id="node_set">
+                            <div><span>Node Ip Setting</span></div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div id="node_set_panel">
+                                        <div>
+                                            <span>当前节点</span> <span id="active_node"></span>
+                                        </div>                                        
+                                        <div>请从下面选择该节点可以使用的IP</div>
+                                        <div id="ips_set"></div>
+                                        <div><input type="button" value="确认" id="save_ips" /></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

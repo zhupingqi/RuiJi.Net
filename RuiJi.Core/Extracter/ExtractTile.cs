@@ -10,7 +10,7 @@ namespace RuiJi.Core.Extracter
 {
     public class ExtractTile : ExtractBase
     {
-        [JsonProperty("metas")]
+        [JsonProperty("metas", NullValueHandling = NullValueHandling.Ignore)]
         public ExtractMetaCollection Metas { get; set; }
 
         public ExtractTile(string name = "") : base(name)

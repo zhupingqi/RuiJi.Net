@@ -38,7 +38,7 @@ namespace RuiJi.Node.Extracter
             stat = zooKeeper.Exists("/config/extracter/" + BaseUrl, false);
             if (stat == null)
             {
-                var d = new ExtracterConfig()
+                var d = new NodeConfig()
                 {
                     Name = BaseUrl,
                     baseUrl = BaseUrl,

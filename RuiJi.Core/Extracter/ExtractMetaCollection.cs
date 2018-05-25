@@ -9,8 +9,6 @@ namespace RuiJi.Core.Extracter
 {
     public class ExtractMetaCollection : Dictionary<string, ExtractBase>
     {
-        //public Dictionary<string, ExtractBase> Metas { get; set; }
-
         public void AddMeta(ExtractBase selectors)
         {
             if (ContainsKey(selectors.Name))

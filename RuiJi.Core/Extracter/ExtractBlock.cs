@@ -10,19 +10,20 @@ namespace RuiJi.Core.Extracter
 {
     public class ExtractBlock : ExtractBase
     {
-        [JsonProperty("tiles")]
+        [JsonProperty("tiles",NullValueHandling = NullValueHandling.Ignore)]
         public ExtractTile TileSelector { get; set; }
 
-        [JsonProperty("blocks")]
+        [JsonProperty("blocks", NullValueHandling = NullValueHandling.Ignore)]
         public ExtractBlockCollection Blocks { get; set; }
 
-        [JsonProperty("metas")]
+        [JsonProperty("metas", NullValueHandling = NullValueHandling.Ignore)]
         public ExtractMetaCollection Metas { get; set; }
 
         public ExtractBlock(string name = "") : base(name)
         {
             Blocks = new ExtractBlockCollection();
             Metas = new ExtractMetaCollection();
+            TileSelector = new ExtractTile();
         }
     }
 }

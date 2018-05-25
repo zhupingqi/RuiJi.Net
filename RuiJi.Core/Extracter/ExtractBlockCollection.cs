@@ -12,8 +12,7 @@ namespace RuiJi.Core.Extracter
     {
         public ExtractBlockCollection()
         {
-            //selectors = new Dictionary<string, ExtractBlock>();
-            //Blocks = new List<ExtractBlock>();
+            
         }
     }
 }

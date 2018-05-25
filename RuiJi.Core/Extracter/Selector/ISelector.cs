@@ -11,10 +11,8 @@ namespace RuiJi.Core.Extracter.Selector
     {
         SelectorTypeEnum SelectorType { get; }
 
-        bool Remove { get; set; }
+        RemoveEnum Remove { get; set; }
 
         string Value { get; set; }
-
-        ClearEnum Flag { get; set; }
     }
 }

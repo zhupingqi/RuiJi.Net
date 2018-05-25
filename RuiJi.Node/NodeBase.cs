@@ -24,6 +24,8 @@ namespace RuiJi.Node
 
         public string LeaderBaseUrl { get; protected set; }
 
+        private bool force;
+
         public string States
         {
             get
@@ -70,6 +72,8 @@ namespace RuiJi.Node
 
         public virtual void Stop()
         {
+            force = true;
+
             if (zooKeeper != null)
             {
                 zooKeeper.Dispose();
@@ -94,6 +98,10 @@ namespace RuiJi.Node
             if (stat == null)
                 zooKeeper.Create("/live_nodes/extracter", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
 
+            stat = zooKeeper.Exists("/live_nodes/feed", false);
+            if (stat == null)
+                zooKeeper.Create("/live_nodes/feed", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+
             stat = zooKeeper.Exists("/live_nodes/proxy", false);
             if (stat == null)
                 zooKeeper.Create("/live_nodes/proxy", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
@@ -113,7 +121,11 @@ namespace RuiJi.Node
 
             stat = zooKeeper.Exists("/config/proxy", false);
             if (stat == null)
-                zooKeeper.Create("/config/proxy", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent); 
+                zooKeeper.Create("/config/proxy", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+
+            stat = zooKeeper.Exists("/config/feed", false);
+            if (stat == null)
+                zooKeeper.Create("/config/feed", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
 
             stat = zooKeeper.Exists("/overseer", false);
             if (stat == null)
@@ -240,10 +252,12 @@ namespace RuiJi.Node
             nodes.AddRange(GetChildren("/config/proxy").AllKeys);
             nodes.AddRange(GetChildren("/config/crawler").AllKeys);
             nodes.AddRange(GetChildren("/config/extracter").AllKeys);
+            nodes.AddRange(GetChildren("/config/feed").AllKeys);
 
             nodes.AddRange(GetChildren("/live_nodes/proxy").AllKeys);
             nodes.AddRange(GetChildren("/live_nodes/crawler").AllKeys);
             nodes.AddRange(GetChildren("/live_nodes/extracter").AllKeys);
+            nodes.AddRange(GetChildren("/live_nodes/feed").AllKeys);
 
             foreach (var node in nodes)
             {
@@ -274,6 +288,9 @@ namespace RuiJi.Node
                         case KeeperState.Disconnected:
                             {
                                 Console.WriteLine("disconnected with zookeeper server");
+                                if(!service.force)
+                                    service.Start();
+                                service.force = false;
                                 break;
                             }
                         case KeeperState.Expired:

@@ -13,10 +13,10 @@ namespace RuiJi.Core.Extracter.Selector
         [JsonProperty("attr")]
         public string AttrName { get; set; }
 
-        [JsonProperty("type")]
+        [JsonProperty("ctype")]
         public CssTypeEnum Type { get; set; }
 
-        public CssSelector(string value, CssTypeEnum type = CssTypeEnum.Text, bool remove = false)
+        public CssSelector(string value, CssTypeEnum type = CssTypeEnum.Text, RemoveEnum remove = RemoveEnum.NO)
         {
             this.Value = value;
             this.Type = type;

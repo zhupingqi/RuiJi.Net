@@ -15,9 +15,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.ChromePlugin", "RuiJi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{53DD9533-82ED-43BB-935F-C60394EE6B2E}"
 	ProjectSection(SolutionItems) = preProject
+		expression.txt = expression.txt
 		C:\Users\朱平齐\Desktop\extract_structure.png = C:\Users\朱平齐\Desktop\extract_structure.png
 		LICENSE.txt = LICENSE.txt
 		README.md = README.md
+		technology.txt = technology.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Net", "RuiJi.Net\RuiJi.Net.csproj", "{934BEB73-E7C2-4C70-B697-A5FB2066C17E}"

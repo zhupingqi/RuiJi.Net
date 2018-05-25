@@ -61,7 +61,7 @@ namespace RuiJi.Owin.Controllers
         [HttpGet]
         public object ServerInfo()
         {
-            var node = ServerManager.GetNode(Request.RequestUri.Port.ToString()) as CrawlerNode;
+            var node = ServerManager.GetNode(Request.RequestUri.Port.ToString()).NodeBase as CrawlerNode;
 
             return node.GetNodeConfig();
         }
@@ -75,7 +75,7 @@ namespace RuiJi.Owin.Controllers
         [HttpPost]
         public void SetIps([FromBody]string[] ips)
         {
-            var node = ServerManager.GetNode(Request.RequestUri.Port.ToString()) as CrawlerNode;
+            var node = ServerManager.GetNode(Request.RequestUri.Port.ToString()).NodeBase as CrawlerNode;
             var path = "/config/crawler/" + Request.RequestUri.Authority;
 
             var data = node.GetData("/config/crawler/" + Request.RequestUri.Authority);

@@ -19,7 +19,7 @@ namespace RuiJi.Core.Extracter.Selector
         [JsonProperty("end")]
         public string End { get; set; }
 
-        public TextRangeSelector(string begin, string end, bool remove = false)
+        public TextRangeSelector(string begin, string end, RemoveEnum remove = RemoveEnum.NO)
         {
             this.Begin = begin;
             this.End = end;
