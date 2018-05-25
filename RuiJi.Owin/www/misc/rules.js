@@ -11,7 +11,7 @@
                 $("#tab_panel_rules").html(tmp.prop("outerHTML"));
 
                 var $table = $('#tb_rules').bootstrapTable({
-                    toolbar: '#toolbar',
+                    toolbar: '#toolbar_rules',
                     striped: true,
                     cache: false,
                     pagination: true,
@@ -28,7 +28,6 @@
                     clickToSelect: true,
                     height: 500,
                     uniqueId: "ID",
-                    showToggle: true,
                     cardView: false,
                     detailView: false,
                     onPostBody: function (e) {

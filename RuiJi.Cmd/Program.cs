@@ -27,6 +27,11 @@ namespace RuiJi.Cmd
             threads = new List<Thread>();
         }
 
+        ~Program()
+        {
+
+        }
+
         static void Main(string[] args)
         {
             LogManager.GetCurrentLoggers().First().Info("Program started!");

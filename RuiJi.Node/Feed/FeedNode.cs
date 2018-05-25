@@ -20,6 +20,11 @@ namespace RuiJi.Node.Feed
 
         }
 
+        ~FeedNode()
+        {
+            FeedWatcherScheduler.Stop();
+        }
+
         protected override void OnStartup()
         {
             var stat = zooKeeper.Exists("/live_nodes/feed/" + BaseUrl, false);
@@ -37,6 +42,8 @@ namespace RuiJi.Node.Feed
                 };
                 zooKeeper.Create("/config/feed/" + BaseUrl, JsonConvert.SerializeObject(d).GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
             }
+
+            FeedWatcherScheduler.Start(ProxyUrl);
         }
     }
 }

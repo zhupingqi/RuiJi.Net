@@ -41,7 +41,7 @@ namespace RuiJi.Node.Feed
                 col.EnsureIndex(m => m.Rules);
                 col.EnsureIndex(m => m.Status);
                 col.EnsureIndex(m => m.Type);
-                col.EnsureIndex(m => m.Method);
+                col.EnsureIndex(m => m.ExtractMethod);
             }
         }
     }

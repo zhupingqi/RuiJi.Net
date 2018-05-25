@@ -4,8 +4,9 @@
     paths: {
         jquery: '/scripts/jquery-3.1.1.min',
         template: '/scripts/template-web',
-        bootstrap: '/scripts/bootstrap-3.3.5/js/bootstrap',
+        bootstrap: '/scripts/bootstrap-3.3.5/dist/js/bootstrap',
         bootstrapTable: '/scripts/bootstrap-table/bootstrap-table.min',
+        bootstrapDialog: '/scripts/bootstrap3-dialog/js/bootstrap-dialog',
         'tabs': '/scripts/require-tabs/require.tabs',
         'tree': '/scripts/jstree/jstree.min'
     },
@@ -15,12 +16,12 @@
         }
     },
     shim: {
-        'bootstrap': {
-            exports: 'bootstrap'
-        },
         'bootstrapTable': {
             exports: 'bootstrapTable',
             deps: ['bootstrap', 'css!/scripts/bootstrap-table/bootstrap-table.min.css']
+        },
+        'bootstrapDialog': {
+            deps: ['bootstrap', 'css!/scripts/bootstrap3-dialog/css/bootstrap-dialog.min.css']
         },
         'tabs': {
             deps: ['css!/scripts/require-tabs/tabs.css', 'css!/misc/font-awesome.min.css']

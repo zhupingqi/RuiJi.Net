@@ -118,7 +118,8 @@ namespace RuiJi.Owin
             }
 
             NodeBase.Stop();
-            resetEvent.Set();
+            if(resetEvent != null)
+                resetEvent.Set();
 
             Running = false;
         }

@@ -164,44 +164,42 @@ namespace RuiJi.Core.Crawler
             IpCookieManager.Instance.Update(ip, request.Uri.ToString(), setCookie);
         }
 
-        private void PreprocessHeader(HttpWebRequest request, WebHeaderCollection headers)
+        private void PreprocessHeader(HttpWebRequest request, List<WebHeader> headers)
         {
             if (headers == null || headers.Count == 0)
                 return;
 
-            foreach (string key in headers.Keys)
+            foreach (var header in headers)
             {
-                if (ignoreHeader.Exists(m => m == key))
+                if (ignoreHeader.Exists(m => m == header.Key))
                     continue;
 
-                var value = headers[key];
-
-                switch (key) {
+                switch (header.Key) {
                     case "Referer":
                         {
-                            request.Referer = value;
+                            request.Referer = header.Value;
                             break;
                         }
                     case "User-Agent":
                         {
-                            request.UserAgent = value;
+                            request.UserAgent = header.Value;
                             break;
                         }
                     case "Accept":
                         {
-                            request.Accept = value;
+                            request.Accept = header.Value;
                             break;
                         }
                     case "Content-Type":
                         {
-                            request.ContentType = value;
+                            request.ContentType = header.Value;
                             break;
                         }
                     default: {
-                            request.Headers.Remove(key);
-                            if (!string.IsNullOrEmpty(value))
+                            request.Headers.Remove(header.Key);
+                            if (!string.IsNullOrEmpty(header.Value))
                             {
-                                request.Headers.Add(key, value);
+                                request.Headers.Add(header.Key, header.Value);
                             }
                             break;
                         }

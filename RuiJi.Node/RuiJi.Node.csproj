@@ -40,9 +40,20 @@
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Quartz, Version=3.0.4.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Quartz.3.0.4\lib\net452\Quartz.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=106.2.2.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.2.2\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SmartThreadPool, Version=2.2.4.0, Culture=neutral, PublicKeyToken=1126fe8b671e8a79, processorArchitecture=MSIL">
+      <HintPath>..\packages\SmartThreadPool.dll.2.2.4\lib\net45\SmartThreadPool.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -64,8 +75,10 @@
     <Compile Include="Crawler\CrawlerConfig.cs" />
     <Compile Include="Extracter\ExtracterManager.cs" />
     <Compile Include="Extracter\ExtracterProxyNode.cs" />
+    <Compile Include="Feed\FeedJob.cs" />
     <Compile Include="Feed\FeedLiteDb.cs" />
     <Compile Include="Feed\FeedModel.cs" />
+    <Compile Include="Feed\FeedWatcherScheduler.cs" />
     <Compile Include="NodeConfig.cs" />
     <Compile Include="Extracter\ExtracterNode.cs" />
     <Compile Include="Configuration\NodeConfigurationElementCollection.cs" />
@@ -87,6 +100,10 @@
     <ProjectReference Include="..\RuiJi.Core\RuiJi.Core.csproj">
       <Project>{A27677E3-1CE8-4A8C-B041-9F7A812546F2}</Project>
       <Name>RuiJi.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RuiJi.Net\RuiJi.Net.csproj">
+      <Project>{934beb73-e7c2-4c70-b697-a5fb2066c17e}</Project>
+      <Name>RuiJi.Net</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

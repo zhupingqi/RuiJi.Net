@@ -1,5 +1,5 @@
 ﻿<div>
-    <div id="toolbar">
+    <div id="toolbar_feeds">
         <div class="btn-group">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 批量操作 <span class="caret"></span>
@@ -46,6 +46,8 @@
             </ul>
         </div>
         <button type="submit" class="btn btn-default">筛选</button>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="submit" class="btn btn-default" id="add_feed">添加</button>
     </div>
     <div id="feeds_list">
         <table id="tb_feeds" data-toggle="table" data-url="">
@@ -55,6 +57,7 @@
                     <th data-field="sitename">SiteName</th>
                     <th data-field="railling">Railling</th>
                     <th data-field="address">Address</th>
+                    <th data-field="ua" data-width="60px">UA</th>
                     <th data-field="type" data-width="60px">Type</th>
                     <th data-field="method" data-width="60px">Method</th>
                     <th data-field="rules" data-width="60px">Rules</th>

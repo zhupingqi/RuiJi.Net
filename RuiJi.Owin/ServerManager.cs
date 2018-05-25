@@ -3,6 +3,8 @@ using RuiJi.Node;
 using RuiJi.Node.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -14,6 +16,7 @@ namespace RuiJi.Owin
     {
         private static List<Task> tasks;
         private static List<WebApiServer> servers;
+        private static Process zkProcess;
 
         static ServerManager()
         {
@@ -24,6 +27,8 @@ namespace RuiJi.Owin
         ~ServerManager()
         {
             StopAll();
+            if(zkProcess!= null)
+                zkProcess.Kill();
         }
 
         public static void Start(string baseUrl, string type, string zkServer, string proxy = "")
@@ -55,6 +60,23 @@ namespace RuiJi.Owin
 
         public static void StartServers()
         {
+            var zkServer = ConfigurationManager.AppSettings["zkServer"];
+            if(!string.IsNullOrEmpty(zkServer))
+            {
+                var path = AppDomain.CurrentDomain.BaseDirectory + zkServer + @"\bin\zkServer.cmd";
+
+                zkProcess = new Process();
+                zkProcess.StartInfo.FileName = path;
+                zkProcess.StartInfo.UseShellExecute = false;    //是否使用操作系统shell启动
+                zkProcess.StartInfo.RedirectStandardInput = false;//接受来自调用程序的输入信息
+                zkProcess.StartInfo.RedirectStandardOutput = false;//由调用程序获取输出信息
+                zkProcess.StartInfo.RedirectStandardError = false;//重定向标准错误输出
+                zkProcess.StartInfo.CreateNoWindow = false;//不显示程序窗口
+                zkProcess.Start();//启动程序
+            }
+
+            Thread.Sleep(3000);
+
             NodeConfigurationSection.Settings.ForEach(m =>
             {
                 var t = Task.Factory.StartNew(() =>
@@ -110,6 +132,12 @@ namespace RuiJi.Owin
 
         public static void StopAll()
         {
+            if (zkProcess != null)
+            {
+                zkProcess.Kill();
+                zkProcess = null;
+            }
+
             servers.ForEach(m =>
             {
                 m.Stop();

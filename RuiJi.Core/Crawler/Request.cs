@@ -22,7 +22,7 @@ namespace RuiJi.Core.Crawler
 
         public string Method { get; set; }
 
-        public WebHeaderCollection Headers { get; set; }
+        public List<WebHeader> Headers { get; set; }
 
         public Uri Uri { get; set; }
 
@@ -37,7 +37,7 @@ namespace RuiJi.Core.Crawler
         public Request()
         {
             Method = "GET";
-            Headers = new WebHeaderCollection();
+            Headers = new List<WebHeader>();
             UseCookie = true;
         }
 
