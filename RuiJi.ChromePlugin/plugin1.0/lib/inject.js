@@ -211,7 +211,7 @@ var processResult;
         template = "<mj-se-template>" + response.html + "</mj-se-template>";
         init();
     });
-
+    //#region events
     $(document).on("mousedown", "ul.inject-item-type-ul a", function () {
         var $this = $(this);
         var t = $this.attr("t");
@@ -262,7 +262,7 @@ var processResult;
 
     $(document).on("click", "div.inject-list span", function () {
         if ($(this).hasClass("fa-plus")) {
-            if (rules.length == $("div.inject-list span").size() - 1) {
+            if (rules.length == $("div.inject-list span").length - 1) {
                 $("<span>" + (rules.length + 1) + "</span>").insertBefore("div.inject-list span.fa-plus");
             }
             $("div.inject-list span").eq(rules.length).click();
@@ -276,7 +276,7 @@ var processResult;
 
     $(document).on("click", "span.inject-input-group-btn > button", function () {
         var $this = $(this);
-        if ($this.find("i.fa-bullseye").size() == 0)
+        if ($this.find("i.fa-bullseye").length == 0)
             return;
 
         $("span.inject-input-group-btn > button").not($this).removeClass("active");
@@ -291,7 +291,7 @@ var processResult;
             return;
 
         var t = $(e.target);
-        if (t.closest(".jsPanel,.sweet-alert").size() > 0)
+        if (t.closest(".jsPanel,.sweet-alert").length > 0)
             return false;
 
         if (t.text() == "")
@@ -402,7 +402,7 @@ var processResult;
     $(document).on("click", "div.select-actions button", function () {
         var act = $(this).attr("class").split(" ")[1];
         var t = $(".inject-selected");
-        if (t.size() == 0)
+        if (t.length == 0)
             return;
 
         switch (act) {
@@ -452,7 +452,7 @@ var processResult;
         for (; ;) {
             groups.unshift(prevGroup);
             prevGroup = prevGroup.prev("div.inject-input-group");
-            if (prevGroup.size() == 0) {
+            if (prevGroup.length == 0) {
                 break;
             }
         }
@@ -495,7 +495,7 @@ var processResult;
     $(document).on("blur", "button.dropdown-toggle", function () {
         $("button.dropdown-toggle").parent().removeClass("open");
     });
-
+    //#endregion
 })(window);
 
 function getTemplate(name) {
@@ -510,12 +510,7 @@ function init() {
     var footer_template = getTemplate("template-tool-footer");
     var actions = getTemplate("template-tool-actions");
 
-    $(document.body).append("<inject-bootscrap></inject-bootscrap>");
-
-    var section = $("inject-bootscrap");
-
     var main = $.jsPanel({
-        //container : section,
         headerControls: {
             maximize: 'remove',
             minimize: 'remove',
@@ -553,11 +548,21 @@ function init() {
             tools.reposition(toolsPosition);
         },
         contentOverflow: { horizontal: 'hidden', vertical: 'auto' },
+        callback: function (panel) {
+            $.each(items, function (i, n) {
+                var $item = $(item_template);
+                $item.find(".inject-item-title").html(n.title);
+                $item.closest("div.inject-row").attr("inject-item-name", n.name);
+                $item.find("div.inject-input-group").attr("t", "csquery");
+                panel.content.append($item);
+            });
+            rules = [];
+            load();
+        },
         footerToolbar: function (footer) {
             return footer_template;
         }
     });
-
     var toolsPosition = {
         my: 'right-top',
         at: 'left-top',
@@ -567,7 +572,6 @@ function init() {
     };
 
     var tools = $.jsPanel({
-        //container: section,
         contentSize: { width: 200, height: 400 },
         headerRemove: true,
         resizable: 'disabled',
@@ -584,56 +588,24 @@ function init() {
         tools.reposition(toolsPosition);
     });
 
-    $.each(items, function (i, n) {
-        var $item = $(item_template);
-        $item.find(".inject-item-title").html(n.title);
-        $item.closest("div.inject-row").attr("inject-item-name", n.name);
-        $item.find("div.inject-input-group").attr("t", "csquery");
-        main.content.append($item);
-    });
 
-    //var d = [{
-    //    name: 'for',
-    //    values: [{
-    //        type: 'text',
-    //        values: ["http://www.baidu.com/"]
-    //    }]
-    //}, {
-    //    name: 'feature',
-    //    values: [{
-    //        type: 'include',
-    //        values: ["以下内容来自微信公众平台"]
-    //    }]
-    //}, {
-    //    name: 'region',
-    //    values: [{
-    //        type: 'csquery',
-    //        values: ["body"]
-    //    }, {
-    //        type: 'text',
-    //        values: ["<body>", "</body>"]
-    //    }, {
-    //        type: 'text',
-    //        values: ["<body>", "</body>"]
-    //    }]
-    //}];
+    //initPage();
+    //$.get("http://inspect.setup.miaojian.net/api/extractRule/getbyurl?url=" + window.location, function (result) {
+    //    rules = result.data;
+    //    load();
 
-    $.get("http://inspect.setup.miaojian.net/api/extractRule/getbyurl?url=" + window.location, function (result) {
-        rules = result.data;
-        load();
+    //    initPage();
 
-        initPage();
+    //    //if (result.data && result.data.length > 0) {
+    //    //    d = result.data;
 
-        //if (result.data && result.data.length > 0) {
-        //    d = result.data;
-
-        //    load(d[0]);
-        //    initPage(d.length);
-        //} else {
-        //    load([]);
-        //    initPage(1);
-        //}
-    });
+    //    //    load(d[0]);
+    //    //    initPage(d.length);
+    //    //} else {
+    //    //    load([]);
+    //    //    initPage(1);
+    //    //}
+    //});
 }
 
 function initPage() {
@@ -657,7 +629,9 @@ function initPage() {
 
     if (rules.length > 0) {
         $.each(rules, function (i, n) {
-            var source = $.Enumerable.From(n).SingleOrDefault(-1, "x=>x.name == 'source'");
+            var source = n.first(function (x) {
+                return x.name == 'source';
+            });
             if (source.values[0].values[0] == window.location) {
                 index = i;
             }
@@ -733,7 +707,6 @@ function load(index) {
             }
         });
     }
-
     $(".inject-input-group > input").val("");
     $("div.inject-row").each(function (i, n) {
         $(n).find("div.inject-input-group:gt(0)").remove();
@@ -746,9 +719,9 @@ function load(index) {
 
         $.each(n.values, function (j, m) {
             var im = item.find("div.inject-input-group").eq(j);
-            var type = $.Enumerable.From(itemTypes).SingleOrDefault(-1, "x=>x.name == '" + m.type + "'");
+            var type = itemTypes.first(function (x) { return x.name == m.type; });
 
-            if (im.size() == 0) {
+            if (im.length == 0) {
                 var $item_type = $(type.template ? getTemplate("template-tool-item-" + type.template) : getTemplate("template-tool-item-common"));
 
                 item.append($item_type.children());
@@ -762,12 +735,12 @@ function load(index) {
             $.each(m.values, function (index, v) {
                 im.find("input").eq(index).val(v);
                 if (index == 1) {
-                    if (im.find("div.excludtype-btn-group").size() > 0) {
+                    if (im.find("div.excludtype-btn-group").length > 0) {
                         im.find("div.excludtype-btn-group button[t='" + v + "']").addClass("active");
                     }
                 }
                 if (index == 2) {
-                    if (im.find("div.csquery-result-type").size() > 0) {
+                    if (im.find("div.csquery-result-type").length > 0) {
                         if (v) {
                             im.find("div.csquery-result-type i").removeAttr("class");
                             im.find("div.csquery-result-type i").addClass("fa csquery-result-" + v);
@@ -843,7 +816,7 @@ function changeItemType(subitem, elem, t) {
 
     var olds = subitem.find("input");
 
-    var type = $.Enumerable.From(itemTypes).SingleOrDefault(-1, "x=>x.name == '" + t + "'");
+    var type = itemTypes.frist(function (x) { return x.name == t });
     var $item_type = $(type.template ? getTemplate("template-tool-item-" + t) : getTemplate("template-tool-item-common"));
     $item_type = $item_type.find("div.inject-input-group");
 
@@ -878,7 +851,7 @@ function changeItemType(subitem, elem, t) {
 function selectElement(elem) {
     var es = elem.ellocate3();
     $("button.active").has("i.fa-bullseye").closest("div.inject-input-group").find("input:first").val(es.css);
-    $("#inject-elem-size").text($(es.css).size());
+    $("#inject-elem-size").text($(es.css).length);
     elem.addClass("inject-selected");
 }
 
@@ -888,7 +861,7 @@ function getData() {
     $.each(rows, function (i, n) {
         var $n = $(n);
         var groups = $n.find(".inject-input-group");
-        if (groups.size() > 0) {
+        if (groups.length > 0) {
             var dd = { name: $n.attr("inject-item-name"), values: [] };
             $.each(groups, function (j, m) {
                 var $m = $(m);
@@ -911,4 +884,8 @@ function skipEmptyElementForArray(arr) {
         }
     });
     return a;
+}
+
+function tipAlert(msg) {
+    swal({ title: msg, type: "warning", timer: 3000 });
 }

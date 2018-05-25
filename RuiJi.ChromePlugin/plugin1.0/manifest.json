@@ -6,6 +6,7 @@
     {
       "all_frames": true,
       "css": [
+        "/lib/jquery-ui-1.12.1/jquery-ui.min.css",
         "/font-awesome-4.2.0/css/font-awesome.min.css",
         "/css/jquery.jspanel.min.css",
         "/lib/bootstrap-3.3.5/css/bootstrap.min.css",
@@ -14,10 +15,11 @@
       ],
       "js": [
         "/lib/jquery-3.1.1.min.js",
+        "/lib/proto.js",
+        "/lib/jquery-ui-1.12.1/jquery-ui.min.js",
         "/lib/bootstrap-3.3.5/js/bootstrap.min.js",
         "/lib/jquery.jspanel.min.js",
         "/lib/sweetalert-master/dist/sweetalert.min.js",
-        "/lib/proto.js",
         "/lib/inject.js"
       ],
       "matches": [ "http://*/*", "https://*/*" ],
