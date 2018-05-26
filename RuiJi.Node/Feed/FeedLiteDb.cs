@@ -38,10 +38,8 @@ namespace RuiJi.Node.Feed
             {
                 var col = db.GetCollection<FeedModel>("feeds");
                 col.EnsureIndex(m => m.SiteName);
-                col.EnsureIndex(m => m.Rules);
                 col.EnsureIndex(m => m.Status);
                 col.EnsureIndex(m => m.Type);
-                col.EnsureIndex(m => m.ExtractMethod);
             }
         }
     }

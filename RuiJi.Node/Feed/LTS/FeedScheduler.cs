@@ -6,14 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RuiJi.Node.Feed
+namespace RuiJi.Node.Feed.LTS
 {
-    public class FeedWatcherScheduler
+    public class FeedScheduler
     {
         private static IScheduler scheduler;
         private static StdSchedulerFactory factory;
 
-        static FeedWatcherScheduler()
+        static FeedScheduler()
         {
             factory = new StdSchedulerFactory();
         }

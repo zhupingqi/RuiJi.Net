@@ -1,6 +1,7 @@
-﻿using RuiJi.Core.Utils.Page;
+﻿using Newtonsoft.Json;
+using RuiJi.Core.Extracter;
+using RuiJi.Core.Utils.Page;
 using RuiJi.Node.Feed;
-using RuiJi.Node.Rule;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +43,24 @@ namespace RuiJi.Owin.Controllers
                 rows = RuleLiteDB.GetRuleModels(paging),
                 total = paging.Count
             };
+        }
+
+        [HttpGet]
+        public object UrlRule(string url)
+        {
+            return RuleLiteDB.Match(url).Select(m => JsonConvert.DeserializeObject<ExtractBlockCollection>( m.Blocks)).ToList();
+        }
+
+        [HttpGet]
+        public object FeedJob(string feedUrl)
+        {
+            //according to feed url return available formated url
+            //include random tick if need
+            //need url format processor like below
+            // {# datetime:yyyyMMdd #}
+            // {# tick:10 #}
+
+            return null;
         }
     }
 }

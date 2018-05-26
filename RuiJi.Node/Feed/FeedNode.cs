@@ -10,6 +10,7 @@ using ZooKeeperNet;
 using System.Threading;
 using RuiJi.Core;
 using Newtonsoft.Json;
+using RuiJi.Node.Feed.LTS;
 
 namespace RuiJi.Node.Feed
 {
@@ -22,7 +23,7 @@ namespace RuiJi.Node.Feed
 
         ~FeedNode()
         {
-            FeedWatcherScheduler.Stop();
+            FeedScheduler.Stop();
         }
 
         protected override void OnStartup()
@@ -43,7 +44,8 @@ namespace RuiJi.Node.Feed
                 zooKeeper.Create("/config/feed/" + BaseUrl, JsonConvert.SerializeObject(d).GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
             }
 
-            FeedWatcherScheduler.Start(ProxyUrl);
+            FeedScheduler.Start(ProxyUrl);
+            FeedExtractScheduler.Start();
         }
     }
 }

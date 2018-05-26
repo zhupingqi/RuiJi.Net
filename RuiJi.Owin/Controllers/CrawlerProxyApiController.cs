@@ -17,7 +17,7 @@ namespace RuiJi.Owin.Controllers
         //[WebApiCacheAttribute(Duration = 10)]
         public Response Crawl(Request request)
         {
-            ElectResult result;
+            CrawlerElectResult result;
 
             if (!string.IsNullOrEmpty(request.Ip))
             {

@@ -82,6 +82,7 @@
     <Compile Include="Extracter\ExtractTile.cs" />
     <Compile Include="Extracter\ExtractMetaCollection.cs" />
     <Compile Include="Extracter\Processor\ClearTagProcessor.cs" />
+    <Compile Include="Extracter\Processor\ExpressionProcessor.cs" />
     <Compile Include="Extracter\Processor\JsonPathProcessor.cs" />
     <Compile Include="Extracter\Processor\XPathProcessor.cs" />
     <Compile Include="Extracter\ProcessResult.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="Extracter\Enum\ExcludeTypeEnum.cs" />
     <Compile Include="Extracter\Enum\SelectorTypeEnum.cs" />
     <Compile Include="Extracter\Selector\ExcludeSelector.cs" />
+    <Compile Include="Extracter\Selector\ExpressionSelector.cs" />
     <Compile Include="Extracter\Selector\ISelector.cs" />
     <Compile Include="Extracter\Selector\JsonPathSelector.cs" />
     <Compile Include="Extracter\Selector\RegexSelector.cs" />
@@ -115,6 +117,10 @@
     <Compile Include="Crawler\Request.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Crawler\Response.cs" />
+    <Compile Include="Queue\QueueChangedEventHandler.cs" />
+    <Compile Include="Queue\QueueChangedAction.cs" />
+    <Compile Include="Queue\QueueChangedEventArgs.cs" />
+    <Compile Include="Queue\MessageQueue.cs" />
     <Compile Include="Utils\DecodeResult.cs" />
     <Compile Include="Utils\Decoding.cs" />
     <Compile Include="Utils\HtmlHelper.cs" />
@@ -133,6 +139,7 @@
     <Compile Include="Utils\Suffix\DomainParser.cs" />
     <Compile Include="Utils\Suffix\Rule.cs" />
     <Compile Include="Utils\Suffix\RuleDefinition.cs" />
+    <Compile Include="Utils\Wildcard.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

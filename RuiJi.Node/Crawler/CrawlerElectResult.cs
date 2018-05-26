@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Node.Crawler
 {
-    public class ElectResult
+    public class CrawlerElectResult
     {
         public string BaseUrl { get; set; }
         public string ClientIp { get; set; }

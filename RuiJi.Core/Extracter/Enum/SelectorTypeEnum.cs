@@ -8,15 +8,16 @@ namespace RuiJi.Core.Extracter.Enum
 {
     public enum SelectorTypeEnum
     {
-        Css,
-        Regex,
-        RegexSplit,
-        Text,
-        Exclude,
-        Include,
-        Replace,
-        Json,
-        XPath,
-        ClearTag
+        CSS,
+        REGEX,
+        REGEXSPLIT,
+        TEXT,
+        EXCLUDE,
+        INCLUDE,
+        REPLACE,
+        JSON,
+        XPATH,
+        CLEAR,
+        EXPRESSION
     }
 }

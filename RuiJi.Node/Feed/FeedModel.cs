@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
 using RuiJi.Core.Crawler;
+using RuiJi.Core.Extracter;
+using RuiJi.Core.Extracter.Selector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,15 +15,9 @@ namespace RuiJi.Node.Feed
     {
         HTML,
         XML,
+        JS,
         JSON,
         JSONP
-    }
-
-    public enum AddressExtractMethodEnum
-    {
-        AUTO,
-        EXPRESSION,
-        REGEX
     }
 
     public enum FeedStatus
@@ -41,9 +37,6 @@ namespace RuiJi.Node.Feed
         [JsonProperty("railling")]
         public string Railling { get; set; }
 
-        /// <summary>
-        /// url format by feedProxy
-        /// </summary>
         [JsonProperty("url")]
         public string Url { get; set; }
 
@@ -55,9 +48,6 @@ namespace RuiJi.Node.Feed
 
         [JsonProperty("type")]
         public FeedTypeEnum Type { get; set; }
-
-        [JsonProperty("extractMethod")]
-        public AddressExtractMethodEnum ExtractMethod { get; set; }
 
         [JsonProperty("method")]
         public string Method { get; set; }
@@ -71,13 +61,13 @@ namespace RuiJi.Node.Feed
         [JsonProperty("headers")]
         public List<WebHeader> Headers { get; set; }
 
-        [JsonProperty("rules")]
-        public int Rules { get; set; }
-
         [JsonProperty("scheduling")]
         public string Scheduling { get; set; }
 
         [JsonProperty("status")]
         public FeedStatus Status { get; set; }
+
+        [JsonProperty("block")]
+        public ExtractBlock ExtractBlock { get; set; }
     }
 }

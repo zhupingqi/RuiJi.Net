@@ -1,8 +1,28 @@
+[block]
+css #main:html
+
+[tile]
+css div.article:html
+
+[meta]
 time
-css time text
+css time:text
 
 author
-css .author text
+css .author:text
 
 content
-css .entry-content ihtml
+css .entry-content:html
+
+address
+css a[href]
+
+railling
+css .location:text
+extext "您当前的位置":start
+extext "正文":end
+extext ">":all
+
+content
+css .content:html
+css .comment:html -r

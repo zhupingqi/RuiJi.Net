@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RuiJi.Core.Crawler;
@@ -72,9 +73,7 @@ namespace RuiJi.Net.Test
         {
             ServerManager.StartServers();
 
-            var request = new Request("http://www.ruijihg.com/%e5%bc%80%e5%8f%91/");
-
-            var response = new Crawler().Request(request);
+            var response = new Crawler().Request("http://www.ruijihg.com/%e5%bc%80%e5%8f%91/");
 
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 return;
@@ -104,6 +103,30 @@ namespace RuiJi.Net.Test
             });
 
             var r = Extracter.Extract(new ExtractRequest {
+                Block = block,
+                Content = content
+            });
+
+            Assert.IsTrue(r.Content.Length > 0);
+            Assert.IsTrue(r.Tiles.Count > 0);
+        }
+
+        [TestMethod]
+        public void TestGetRule()
+        {
+            ServerManager.StartServers();
+
+            var response = new Crawler().Request("http://www.ruijihg.com/2018/05/20/ruiji-solr-net/");
+
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                return;
+
+            var content = response.Data.ToString();
+
+            var block = Feeder.GetExtractBlock("http://www.ruijihg.com/2018/05/20/ruiji-solr-net/").First().First();
+
+            var r = Extracter.Extract(new ExtractRequest
+            {
                 Block = block,
                 Content = content
             });

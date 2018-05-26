@@ -9,7 +9,6 @@ namespace RuiJi.Core.Extracter
 {
     public class ExtractRequest
     {
-        //[JsonProperty("block")]
         public ExtractBlock Block { get; set; }
 
         //[JsonProperty("content")]

@@ -16,7 +16,7 @@ namespace RuiJi.Core.Extracter.Selector
 
         protected override SelectorTypeEnum SetSelectType()
         {
-            return SelectorTypeEnum.ClearTag;
+            return SelectorTypeEnum.CLEAR;
         }
     }
 }

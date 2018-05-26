@@ -33,12 +33,15 @@ namespace RuiJi.Net
             var restResponse = client.Execute(restRequest);
 
             var response = JsonConvert.DeserializeObject<Response>(restResponse.Content);
-            if (restResponse.StatusCode != System.Net.HttpStatusCode.OK)
-            {
-                ProxyManager.Instance.MarkDown(proxyUrl);
-            }
 
             return response;
+        }
+
+        public Response Request(string url)
+        {
+            var request = new Request(url);
+
+            return Request(request);
         }
     }
 }

@@ -32,7 +32,7 @@ namespace RuiJi.Core.Extracter.Selector
 
         protected override SelectorTypeEnum SetSelectType()
         {
-            return SelectorTypeEnum.Regex;
+            return SelectorTypeEnum.REGEX;
         }
     }
 }

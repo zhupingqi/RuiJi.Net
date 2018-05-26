@@ -200,6 +200,10 @@
       <Project>{a27677e3-1ce8-4a8c-b041-9f7a812546f2}</Project>
       <Name>RuiJi.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RuiJi.Net\RuiJi.Net.csproj">
+      <Project>{934beb73-e7c2-4c70-b697-a5fb2066c17e}</Project>
+      <Name>RuiJi.Net</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RuiJi.Node\RuiJi.Node.csproj">
       <Project>{97673817-f983-4ce8-919e-d2e43e46144c}</Project>
       <Name>RuiJi.Node</Name>

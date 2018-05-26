@@ -60,19 +60,19 @@ namespace RuiJi.Owin
 
         public static void StartServers()
         {
-            var zkServer = ConfigurationManager.AppSettings["zkServer"];
+            var zkServer = ConfigurationManager.AppSettings["zkPath"];
             if(!string.IsNullOrEmpty(zkServer))
             {
                 var path = AppDomain.CurrentDomain.BaseDirectory + zkServer + @"\bin\zkServer.cmd";
 
                 zkProcess = new Process();
                 zkProcess.StartInfo.FileName = path;
-                zkProcess.StartInfo.UseShellExecute = false;    //是否使用操作系统shell启动
-                zkProcess.StartInfo.RedirectStandardInput = false;//接受来自调用程序的输入信息
-                zkProcess.StartInfo.RedirectStandardOutput = false;//由调用程序获取输出信息
-                zkProcess.StartInfo.RedirectStandardError = false;//重定向标准错误输出
-                zkProcess.StartInfo.CreateNoWindow = false;//不显示程序窗口
-                zkProcess.Start();//启动程序
+                zkProcess.StartInfo.UseShellExecute = false;
+                zkProcess.StartInfo.RedirectStandardInput = false;
+                zkProcess.StartInfo.RedirectStandardOutput = false;
+                zkProcess.StartInfo.RedirectStandardError = false;
+                zkProcess.StartInfo.CreateNoWindow = false;
+                zkProcess.Start();
             }
 
             Thread.Sleep(3000);
@@ -132,18 +132,22 @@ namespace RuiJi.Owin
 
         public static void StopAll()
         {
-            if (zkProcess != null)
+            try
             {
-                zkProcess.Kill();
-                zkProcess = null;
-            }
+                if (zkProcess != null)
+                {
+                    zkProcess.Kill();
+                    zkProcess = null;
+                }
 
-            servers.ForEach(m =>
-            {
-                m.Stop();
-                Console.WriteLine("server port with " + m.Port + " stop!");
-            });
-            servers.Clear();
+                servers.ForEach(m =>
+                {
+                    m.Stop();
+                    Console.WriteLine("server port with " + m.Port + " stop!");
+                });
+                servers.Clear();
+            }
+            catch { }
 
             Console.WriteLine("all server stop!");
         }

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RuiJi.Node.Rule
+namespace RuiJi.Node.Feed
 {
     public enum RuleTypeEnum
     {

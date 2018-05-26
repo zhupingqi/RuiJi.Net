@@ -69,16 +69,21 @@
     <Compile Include="Configuration\NodeConfigurationElement.cs" />
     <Compile Include="Crawler\CrawlerManager.cs" />
     <Compile Include="Crawler\CrawlerProxyNodeModeEnum.cs" />
-    <Compile Include="Crawler\ElectResult.cs" />
+    <Compile Include="Crawler\CrawlerElectResult.cs" />
     <Compile Include="Crawler\CrawlerNode.cs" />
     <Compile Include="Crawler\CrawlerProxyNode.cs" />
     <Compile Include="Crawler\CrawlerConfig.cs" />
     <Compile Include="Extracter\ExtracterManager.cs" />
     <Compile Include="Extracter\ExtracterProxyNode.cs" />
-    <Compile Include="Feed\FeedJob.cs" />
+    <Compile Include="Feed\LTS\ContentQueue.cs" />
+    <Compile Include="Feed\LTS\FeedExtracter.cs" />
+    <Compile Include="Feed\LTS\FeedExtractJob.cs" />
+    <Compile Include="Feed\LTS\FeedExtractScheduler.cs" />
+    <Compile Include="Feed\LTS\FeedJob.cs" />
     <Compile Include="Feed\FeedLiteDb.cs" />
     <Compile Include="Feed\FeedModel.cs" />
-    <Compile Include="Feed\FeedWatcherScheduler.cs" />
+    <Compile Include="Feed\LTS\FeedScheduler.cs" />
+    <Compile Include="Feed\LTS\FeedSnapshot.cs" />
     <Compile Include="NodeConfig.cs" />
     <Compile Include="Extracter\ExtracterNode.cs" />
     <Compile Include="Configuration\NodeConfigurationElementCollection.cs" />
@@ -88,8 +93,8 @@
     <Compile Include="NodeData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="NodeBase.cs" />
-    <Compile Include="Rule\RuleLiteDB.cs" />
-    <Compile Include="Rule\RuleModel.cs" />
+    <Compile Include="Feed\RuleLiteDB.cs" />
+    <Compile Include="Feed\RuleModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

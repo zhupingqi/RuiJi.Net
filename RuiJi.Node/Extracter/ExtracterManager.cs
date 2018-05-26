@@ -33,7 +33,7 @@ namespace RuiJi.Node.Extracter
         {
         }
 
-        public ElectResult Elect()
+        public CrawlerElectResult Elect()
         {
             lock (_lck)
             {
@@ -42,7 +42,7 @@ namespace RuiJi.Node.Extracter
 
                 var server = serverMap[Convert.ToInt32(count++ % (ulong)serverMap.Count)];
 
-                return new ElectResult()
+                return new CrawlerElectResult()
                 {
                     BaseUrl = server
                 };

@@ -48,7 +48,7 @@ namespace RuiJi.Node.Crawler
             ServerMap = new List<Server>();
         }
 
-        public ElectResult ElectIP(Uri uri)
+        public CrawlerElectResult ElectIP(Uri uri)
         {
             lock (_lck)
             {
@@ -62,7 +62,7 @@ namespace RuiJi.Node.Crawler
 
                 var server = ServerMap[Convert.ToInt32(hostMap[uri.Host] % (ulong)ServerMap.Count)];
 
-                return new ElectResult()
+                return new CrawlerElectResult()
                 {
                     BaseUrl = server.BaseUrl,
                     ClientIp = server.ClientIp
@@ -106,13 +106,13 @@ namespace RuiJi.Node.Crawler
             }
         }
 
-        public ElectResult GetServer(string ip)
+        public CrawlerElectResult GetServer(string ip)
         {
             var server = ServerMap.FirstOrDefault(m => m.ClientIp == ip);
             if (server == null)
                 return null;
 
-            return new ElectResult
+            return new CrawlerElectResult
             {
                 BaseUrl = server.BaseUrl,
                 ClientIp = ip

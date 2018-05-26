@@ -15,12 +15,12 @@ namespace RuiJi.Core.Extracter.Processor
         static ProcessorFactory()
         {
             processors = new Dictionary<SelectorTypeEnum, IProcessor>();
-            processors.Add(SelectorTypeEnum.Css, new CssProcessor());
-            processors.Add(SelectorTypeEnum.Regex, new RegexProcessor());
-            processors.Add(SelectorTypeEnum.Exclude, new ExcludeProcessor());
-            processors.Add(SelectorTypeEnum.RegexSplit, new RegexSelectorProcessor());
-            processors.Add(SelectorTypeEnum.Text, new TextRangeProcessor());
-            processors.Add(SelectorTypeEnum.Replace, new RegexReplaceProcessor());
+            processors.Add(SelectorTypeEnum.CSS, new CssProcessor());
+            processors.Add(SelectorTypeEnum.REGEX, new RegexProcessor());
+            processors.Add(SelectorTypeEnum.EXCLUDE, new ExcludeProcessor());
+            processors.Add(SelectorTypeEnum.REGEXSPLIT, new RegexSelectorProcessor());
+            processors.Add(SelectorTypeEnum.TEXT, new TextRangeProcessor());
+            processors.Add(SelectorTypeEnum.REPLACE, new RegexReplaceProcessor());
         }
 
         public static IProcessor GetProcessor(ISelector selector)
