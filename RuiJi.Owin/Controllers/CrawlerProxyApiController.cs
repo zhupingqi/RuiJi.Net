@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
 using RuiJi.Core.Crawler;
+using RuiJi.Net;
 using RuiJi.Node.Crawler;
 using System;
 using System.Collections.Generic;
@@ -17,48 +18,58 @@ namespace RuiJi.Owin.Controllers
         //[WebApiCacheAttribute(Duration = 10)]
         public Response Crawl(Request request)
         {
-            CrawlerElectResult result;
+            var node = ServerManager.Get(Request.RequestUri.Authority);
 
-            if (!string.IsNullOrEmpty(request.Ip))
+            if (node.NodeType == Node.NodeTypeEnum.CRAWLERPROXY)
             {
-                result = CrawlerManager.Instance.GetServer(request.Ip);
+                CrawlerElectResult result;
+
+                if (!string.IsNullOrEmpty(request.Ip))
+                {
+                    result = CrawlerManager.Instance.GetServer(request.Ip);
+                }
+                else
+                {
+                    result = CrawlerManager.Instance.ElectIP(request.Uri);
+                    if (result == null)
+                        return new Response
+                        {
+                            StatusCode = System.Net.HttpStatusCode.Conflict,
+                            Data = "no clrawler ip elect!"
+                        };
+                }
+
+                request.Ip = result.ClientIp;
+
+                var client = new RestClient("http://" + result.BaseUrl);
+                var restRequest = new RestRequest("api/crawl");
+                restRequest.Method = Method.POST;
+                restRequest.AddJsonBody(request);
+                restRequest.Timeout = request.Timeout;
+
+                var restResponse = client.Execute(restRequest);
+
+                var response = JsonConvert.DeserializeObject<Response>(restResponse.Content);
+                response.ElectInfo = result.BaseUrl + "/" + result.ClientIp;
+
+                return response;
             }
             else
             {
-                result = CrawlerManager.Instance.ElectIP(request.Uri);
-                if (result == null)
-                    return new Response {
-                        StatusCode = System.Net.HttpStatusCode.Conflict,
-                        Data = "no clrawler ip elect!"
-                    };
+                return new Crawler().Request(request);
             }
-
-            request.Ip = result.ClientIp;
-
-            var client = new RestClient("http://" + result.BaseUrl);
-            var restRequest = new RestRequest("api/crawl");
-            restRequest.Method = Method.POST;
-            restRequest.AddJsonBody(request);
-            restRequest.Timeout = request.Timeout;
-
-            var restResponse = client.Execute(restRequest);
-
-            var response = JsonConvert.DeserializeObject<Response>(restResponse.Content);
-            response.ElectInfo = result.BaseUrl + "/" + result.ClientIp;
-
-            return response;
-        }
-
-        [HttpGet]
-        public bool Ping()
-        {
-            return true;
         }
 
         [HttpGet]
         public object Crawlers()
         {
-            return CrawlerManager.Instance.ServerMap;
+            var node = ServerManager.Get(Request.RequestUri.Authority);
+
+            if (node.NodeType == Node.NodeTypeEnum.CRAWLERPROXY)
+            {
+                return CrawlerManager.Instance.ServerMap;
+            }
+            return new { };
         }
     }
 }

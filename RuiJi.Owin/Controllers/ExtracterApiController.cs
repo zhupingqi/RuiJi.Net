@@ -4,6 +4,7 @@ using RuiJi.Core.Crawler;
 using RuiJi.Core.Extensions;
 using RuiJi.Core.Extracter;
 using RuiJi.Core.Utils;
+using RuiJi.Net;
 using RuiJi.Node.Crawler;
 using System;
 using System.Collections.Generic;
@@ -20,11 +21,20 @@ namespace RuiJi.Owin.Controllers
         [HttpPost]
         public ExtractResult Extract([FromBody]string json)
         {
-            var ext = new RuiJiExtracter();
+            var node = ServerManager.Get(Request.RequestUri.Authority);
             var request = JsonConvert.DeserializeObject<ExtractRequest>(json);
 
-            var result = ext.Extract(request.Content, request.Block);
-            return result;
+            if (node.NodeType == Node.NodeTypeEnum.EXTRACTER)
+            {
+                var ext = new RuiJiExtracter();
+
+                var result = ext.Extract(request.Content, request.Block);
+                return result;
+            }
+            else
+            {
+                return Extracter.Extract(request);
+            }
         }
     }
 }

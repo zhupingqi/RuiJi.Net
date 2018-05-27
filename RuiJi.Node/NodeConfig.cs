@@ -17,5 +17,8 @@ namespace RuiJi.Node
 
         [JsonProperty("baseUrl")]
         public string baseUrl { get; set; }
+
+        [JsonProperty("pages")]
+        public int[] Pages { get; set; }
     }
 }

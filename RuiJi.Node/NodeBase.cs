@@ -24,6 +24,8 @@ namespace RuiJi.Node
 
         public string LeaderBaseUrl { get; protected set; }
 
+        public NodeTypeEnum NodeType { get; private set; }
+
         private bool force;
 
         public string States
@@ -47,6 +49,8 @@ namespace RuiJi.Node
         {
             if (string.IsNullOrEmpty(BaseUrl) || string.IsNullOrEmpty(ZkServer))
                 throw new Exception("BaseUrl and ZkServer must be set,call setup method!");
+
+            NodeType = SetNodeType();
 
             var resetEvent = new ManualResetEvent(false);
             var watcher = new SessionWatcher(this, resetEvent);
@@ -82,6 +86,8 @@ namespace RuiJi.Node
         }
 
         protected abstract void OnStartup();
+
+        protected abstract NodeTypeEnum SetNodeType();
 
         protected void CreateCommonNode()
         {

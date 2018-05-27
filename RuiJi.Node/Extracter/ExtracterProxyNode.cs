@@ -60,6 +60,11 @@ namespace RuiJi.Node.Extracter
             ExtracterManager.Instance.ClearAndAddServer(nodes.ToArray());
         }
 
+        protected override NodeTypeEnum SetNodeType()
+        {
+            return NodeTypeEnum.EXTRACTERPROXY;
+        }
+
         class LiveExtracterWatcher : IWatcher
         {
             ExtracterProxyNode node;

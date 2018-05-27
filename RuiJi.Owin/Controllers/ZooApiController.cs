@@ -20,7 +20,7 @@ namespace RuiJi.Owin.Controllers
             if (string.IsNullOrEmpty(path))
                 path = "/";
 
-            var leaderNode = GetLeader();
+            var leaderNode = GetLeaderNode();
 
             if (leaderNode != null)
             {
@@ -31,6 +31,9 @@ namespace RuiJi.Owin.Controllers
             else
             {
                 var leaderBaseUrl = ServerManager.GetNode(Request.RequestUri.Port.ToString()).NodeBase.LeaderBaseUrl;
+
+                if (string.IsNullOrEmpty(leaderBaseUrl))
+                    return null;
 
                 var client = new RestClient("http://" + leaderBaseUrl);
                 var restRequest = new RestRequest("api/zoo/tree?path=" + path);
@@ -47,7 +50,7 @@ namespace RuiJi.Owin.Controllers
         [HttpGet]
         public object NodeData(string path)
         {
-            var leaderNode = GetLeader();
+            var leaderNode = GetLeaderNode();
 
             if (leaderNode != null)
             {
@@ -72,7 +75,7 @@ namespace RuiJi.Owin.Controllers
         [HttpGet]
         public object Cluster()
         {
-            var leaderNode = GetLeader();
+            var leaderNode = GetLeaderNode();
 
             if (leaderNode!=null)
             {
@@ -97,7 +100,7 @@ namespace RuiJi.Owin.Controllers
         [HttpGet]
         public object FeedProxy()
         {
-            var leaderNode = GetLeader();
+            var leaderNode = GetLeaderNode();
 
             if (leaderNode != null)
             {
@@ -128,7 +131,7 @@ namespace RuiJi.Owin.Controllers
             }
         }
 
-        private NodeBase GetLeader()
+        private NodeBase GetLeaderNode()
         {
             var auth = Request.RequestUri.Authority;
             var leaderNode = ServerManager.GetLeader();

@@ -22,6 +22,24 @@ namespace RuiJi.Node.Feed
             }
         }
 
+        public static List<FeedModel> GetFeedModels(int[] pages,int pageSize)
+        {
+            using (var db = new LiteDatabase(@"Feeds.db"))
+            {
+                var col = db.GetCollection<FeedModel>("feeds");
+
+                var results = new List<FeedModel>();
+
+                pages.ToList().ForEach((page)=> {
+                    var start = (page - 1) * pageSize;
+
+                    results.AddRange(col.Find(Query.All(), start, pageSize));
+                });
+
+                return results;
+            }
+        }
+
         public static void CreateFeed(FeedModel feed)
         {
             using (var db = new LiteDatabase(@"Feeds.db"))

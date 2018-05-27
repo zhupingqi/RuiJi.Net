@@ -4,6 +4,7 @@ using RuiJi.Core;
 using RuiJi.Core.Crawler;
 using RuiJi.Core.Extensions;
 using RuiJi.Core.Extracter;
+using RuiJi.Net;
 using RuiJi.Node.Extracter;
 using System;
 using System.Collections.Generic;
@@ -20,28 +21,33 @@ namespace RuiJi.Owin.Controllers
         //[WebApiCacheAttribute(Duration = 10)]
         public ExtractResult Extract([FromBody]string json)
         {
-            var result = ExtracterManager.Instance.Elect();
-            if (result == null)
-                return new ExtractResult();
+            var node = ServerManager.Get(Request.RequestUri.Authority);
 
-            var client = new RestClient("http://" + result.BaseUrl);
-            var restRequest = new RestRequest("api/extract");
-            restRequest.Method = Method.POST;
-            restRequest.JsonSerializer = new NewtonJsonSerializer();
-            restRequest.AddJsonBody(json);
-            restRequest.Timeout = 15000;
+            if (node.NodeType == Node.NodeTypeEnum.EXTRACTERPROXY)
+            {
 
-            var restResponse = client.Execute(restRequest);
+                var result = ExtracterManager.Instance.Elect();
+                if (result == null)
+                    return new ExtractResult();
 
-            var response = JsonConvert.DeserializeObject<ExtractResult>(restResponse.Content);
+                var client = new RestClient("http://" + result.BaseUrl);
+                var restRequest = new RestRequest("api/extract");
+                restRequest.Method = Method.POST;
+                restRequest.JsonSerializer = new NewtonJsonSerializer();
+                restRequest.AddJsonBody(json);
+                restRequest.Timeout = 15000;
 
-            return response;
-        }
+                var restResponse = client.Execute(restRequest);
 
-        [HttpGet]
-        public bool Ping()
-        {
-            return true;
+                var response = JsonConvert.DeserializeObject<ExtractResult>(restResponse.Content);
+
+                return response;
+            }
+            else
+            {
+                var request = JsonConvert.DeserializeObject<ExtractRequest>(json);
+                return Extracter.Extract(request);
+            }
         }
     }
 }

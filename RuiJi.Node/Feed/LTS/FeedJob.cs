@@ -17,8 +17,6 @@ namespace RuiJi.Node.Feed.LTS
     {
         public static bool IsRunning = false;
 
-        internal static string ProxyUrl { get; set; }
-
         private static string baseDir;
 
         static FeedJob()
@@ -44,7 +42,10 @@ namespace RuiJi.Node.Feed.LTS
 
                 var task = Task.Factory.StartNew(() =>
                 {
-                    var feeds = GetFeedJobs();
+                    var proxyUrl = context.JobDetail.JobDataMap.Get("proxyUrl").ToString();
+                    var node = context.JobDetail.JobDataMap.Get("node") as FeedNode;
+
+                    var feeds = GetFeedJobs(proxyUrl, node);
 
                     var stpStartInfo = new STPStartInfo
                     {
@@ -79,12 +80,16 @@ namespace RuiJi.Node.Feed.LTS
             }
         }
 
-        private List<FeedModel> GetFeedJobs()
+        private List<FeedModel> GetFeedJobs(string proxyUrl,FeedNode node)
         {
             try
             {
-                var client = new RestClient("http://" + ProxyUrl);
-                var restRequest = new RestRequest("api/feed/job");
+                var d = node.GetData("/config/feed/" + node.BaseUrl);
+                var config = JsonConvert.DeserializeObject<NodeConfig>(d.Data);
+                var pages = config.Pages == null ? "" : string.Join(",", config.Pages);
+
+                var client = new RestClient("http://" + proxyUrl);
+                var restRequest = new RestRequest("api/feed/job?pages=" + pages);
                 restRequest.Method = Method.GET;
 
                 var restResponse = client.Execute(restRequest);

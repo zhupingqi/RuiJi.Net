@@ -1,28 +1,18 @@
+[expression]
+http://www.ruijihg.com/????/??/??/*
+
 [block]
-css #main:html
-
-[tile]
-css div.article:html
-
-[meta]
-time
-css time:text
-
-author
-css .author:text
-
-content
 css .entry-content:html
 
-address
-css a[href]
+[meta]
+#time
+css time:text
 
-railling
-css .location:text
-extext "您当前的位置":start
-extext "正文":end
-extext ">":all
+#author
+css .author:text
 
-content
-css .content:html
-css .comment:html -r
+#title
+css .entry-title:text
+
+#content
+css .entry-content:html

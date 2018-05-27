@@ -160,5 +160,10 @@ namespace RuiJi.Owin
 
             return null;
         }
+
+        public static NodeBase Get(string baseUrl)
+        {
+            return servers.SingleOrDefault(m=>m.NodeBase.BaseUrl.ToLower() == baseUrl.ToLower()).NodeBase;            
+        }
     }
 }

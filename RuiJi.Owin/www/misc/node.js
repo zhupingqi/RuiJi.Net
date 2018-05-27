@@ -3,14 +3,14 @@
         init: function () {
             var tmp = utils.loadTemplate("/misc/node.html", false);
             $("#tab_panel_node").html(tmp);
-            $("#node_set").hide();
+            $(".setting").hide();
 
             $(document).on("click", "#save_ips", function () {
                 var ips = $("#tab_panel_node :checked").map(function () {
                     return $(this).val()
                 }).get();
 
-                var crawler = $("#active_node").text();
+                var crawler = $("#active_node_crawler").text();
                 var url = "http://" + crawler + "/api/crawler/ips/set";
 
                 $.ajax({
@@ -24,9 +24,26 @@
                 });
             });
 
+            $(document).on("click", "#save_feed", function () {
+                var pages = $("#node_pages").val();
+
+                var feed = $("#active_node_feed").text();
+                var url = "http://" + feed + "/api/feed/set";
+
+                $.ajax({
+                    url: url,
+                    data: JSON.stringify(pages),
+                    type: 'POST',
+                    contentType: "application/json",
+                    success: function (res) {
+                        alert("完成");
+                    }
+                });
+            });
+
             $('#tree')
                 .on('changed.jstree', function (e, data) {
-                    $("#node_set").hide();
+                    $(".setting").hide();
                     $("#ips_set").html("");
 
                     var path = data.node.id;
@@ -42,11 +59,11 @@
                         $('#node_data').html(d.data);
 
                         if (path.startWith("/config/crawler/")) {
-                            $("#node_set").show();
+                            $("#crawler_node_set").show();
                             var crawler = path.replace("/config/crawler/", "");
                             var url = "http://" + crawler + "/api/crawler/ips";
 
-                            $("#active_node").text(crawler);
+                            $("#active_node_crawler").text(crawler);
 
                             $.getJSON(url, function (cips) {
                                 var ips = $.parseJSON(d.data).ips;
@@ -59,6 +76,18 @@
 
                                     $("#ips_set").append(input);
                                 })
+                            });
+                        }
+
+                        if (path.startWith("/config/feed/")) {
+                            $("#feed_node_set").show();
+                            var feed = path.replace("/config/feed/", "");
+                            var url = "http://" + feed + "/api/feed";
+
+                            $("#active_node_feed").text(feed);
+
+                            $.getJSON(url, function (pages) {
+                                $("#node_pages").val(pages);
                             });
                         }
                     })

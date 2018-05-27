@@ -73,6 +73,11 @@ namespace RuiJi.Node.Crawler
             return null;
         }
 
+        protected override NodeTypeEnum SetNodeType()
+        {
+            return NodeTypeEnum.CRAWLERPROXY;
+        }
+
         class LiveCrawlerWatcher : IWatcher
         {
             CrawlerProxyNode node;

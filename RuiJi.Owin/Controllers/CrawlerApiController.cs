@@ -2,6 +2,7 @@
 using RuiJi.Core;
 using RuiJi.Core.Crawler;
 using RuiJi.Core.Utils;
+using RuiJi.Net;
 using RuiJi.Node.Crawler;
 using System;
 using System.Collections.Generic;
@@ -19,22 +20,31 @@ namespace RuiJi.Owin.Controllers
         //[WebApiCacheAttribute(Duration = 10)]
         public Response Crawl(Request request)
         {
-            var crawler = new IPCrawler();
-            var response = crawler.Request(request);
+            var node = ServerManager.Get(Request.RequestUri.Authority);
 
-            var maxRefresh = 2;
-            string refreshUrl;
-
-            while (HasRefreshMeta(response, out refreshUrl) && maxRefresh > 0)
+            if (node.NodeType == Node.NodeTypeEnum.CRAWLER)
             {
-                crawler = new IPCrawler();
-                request.Uri = new Uri(refreshUrl);
-                response = crawler.Request(request);
+                var crawler = new IPCrawler();
+                var response = crawler.Request(request);
 
-                maxRefresh--;
+                var maxRefresh = 2;
+                string refreshUrl;
+
+                while (HasRefreshMeta(response, out refreshUrl) && maxRefresh > 0)
+                {
+                    crawler = new IPCrawler();
+                    request.Uri = new Uri(refreshUrl);
+                    response = crawler.Request(request);
+
+                    maxRefresh--;
+                }
+
+                return response;
             }
-
-            return response;
+            else
+            {
+                return new Crawler().Request(request);
+            }
         }
 
         private bool HasRefreshMeta(Response response, out string refreshUrl)
@@ -61,27 +71,43 @@ namespace RuiJi.Owin.Controllers
         [HttpGet]
         public object ServerInfo()
         {
-            var node = ServerManager.GetNode(Request.RequestUri.Port.ToString()).NodeBase as CrawlerNode;
+            var node = ServerManager.Get(Request.RequestUri.Authority);
 
-            return node.GetNodeConfig();
+            if (node.NodeType == Node.NodeTypeEnum.CRAWLER)
+            {
+                return ((CrawlerNode)node).GetNodeConfig();
+            }
+
+            return new { };
         }
 
         [HttpGet]
         public string[] Ips()
         {
-            return IPHelper.GetHostIPAddress().Select(m=>m.ToString()).ToArray();
+            var node = ServerManager.Get(Request.RequestUri.Authority);
+
+            if (node.NodeType == Node.NodeTypeEnum.CRAWLER)
+            {
+                return IPHelper.GetHostIPAddress().Select(m => m.ToString()).ToArray();
+            }
+
+            return new string[0];
         }
 
         [HttpPost]
         public void SetIps([FromBody]string[] ips)
         {
-            var node = ServerManager.GetNode(Request.RequestUri.Port.ToString()).NodeBase as CrawlerNode;
-            var path = "/config/crawler/" + Request.RequestUri.Authority;
+            var node = ServerManager.Get(Request.RequestUri.Authority);
 
-            var data = node.GetData("/config/crawler/" + Request.RequestUri.Authority);
-            var config = JsonConvert.DeserializeObject<CrawlerConfig>(data.Data);
-            config.Ips = ips;
-            node.SetData(path,JsonConvert.SerializeObject(config));
+            if (node.NodeType == Node.NodeTypeEnum.CRAWLER)
+            {
+                var path = "/config/crawler/" + Request.RequestUri.Authority;
+
+                var data = node.GetData("/config/crawler/" + Request.RequestUri.Authority);
+                var config = JsonConvert.DeserializeObject<CrawlerConfig>(data.Data);
+                config.Ips = ips;
+                node.SetData(path, JsonConvert.SerializeObject(config));
+            }
         }
     }
 }

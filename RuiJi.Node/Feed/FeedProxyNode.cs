@@ -49,6 +49,11 @@ namespace RuiJi.Node.Feed
             FeedManager.Instance.ClearAndAddServer(nodes.ToArray());
         }
 
+        protected override NodeTypeEnum SetNodeType()
+        {
+            return NodeTypeEnum.FEEDPROXY;
+        }
+
         class LiveFeedWatcher : IWatcher
         {
             FeedProxyNode node;
