@@ -11,5 +11,12 @@ matrix:
     env: DOTNETCORE=1
     sudo: required
 
+before_install:
+  - chmod 777 ./runtests.sh
+
+install:
+  - export DOTNET_CLI_TELEMETRY_OPTOUT=1
+  - export TRAVIS=1
+
 script:
   - ./runtests.sh
