@@ -10,3 +10,6 @@ matrix:
     mono: none
     env: DOTNETCORE=1
     sudo: required
+
+script:
+  - ./runtests.sh
