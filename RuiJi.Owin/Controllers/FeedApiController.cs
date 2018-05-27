@@ -127,7 +127,7 @@ namespace RuiJi.Owin.Controllers
                 //according to feed url return available formated url
                 //include random tick if need
                 //need url format processor like below
-                // {# datetime:yyyyMMdd #}
+                // {# now:yyyyMMdd #}
                 // {# tick:10 #}
             }
 
