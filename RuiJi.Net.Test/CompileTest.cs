@@ -9,8 +9,10 @@ namespace RuiJi.Net.Test
     {
         [TestMethod]
         public void TestMethod1()
-        {            
-            var result = JITCompile.GetResult("result = DateTime.Now.Ticks.ToString().Substring(10);");
+        {
+            var code = string.Format("result = DateTime.Now.ToString(\"{0}\");","yyyy");
+
+            var result = JITCompile.GetResult(code);
 
             Assert.IsTrue(result.Length > 0);            
         }

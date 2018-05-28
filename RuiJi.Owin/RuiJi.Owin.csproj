@@ -222,7 +222,7 @@
     <Content Include="www\misc\feed.js" />
     <Content Include="www\misc\feeds.html" />
     <Content Include="www\misc\feeds.js" />
-    <Content Include="www\misc\font-awesome.min.css" />
+    <Content Include="www\fonts\font-awesome.min.css" />
     <Content Include="www\misc\log.js" />
     <Content Include="www\misc\main.js" />
     <Content Include="www\misc\node.html" />

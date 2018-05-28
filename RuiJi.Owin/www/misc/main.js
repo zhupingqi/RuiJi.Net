@@ -24,7 +24,7 @@
             deps: ['bootstrap', 'css!/scripts/bootstrap3-dialog/css/bootstrap-dialog.min.css']
         },
         'tabs': {
-            deps: ['css!/scripts/require-tabs/tabs.css', 'css!/misc/font-awesome.min.css']
+            deps: ['css!/scripts/require-tabs/tabs.css', 'css!/fonts/font-awesome.min.css']
         },
         'tree': {
             deps: ['css!/scripts/jstree/themes/default/style.min.css','jquery']

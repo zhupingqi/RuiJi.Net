@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RuiJi.Core.Extracter;
+using RuiJi.Core.Utils;
 using RuiJi.Core.Utils.Page;
 using RuiJi.Node;
 using RuiJi.Node.Feed;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -124,11 +126,7 @@ namespace RuiJi.Owin.Controllers
         {
             foreach (var feed in feeds)
             {
-                //according to feed url return available formated url
-                //include random tick if need
-                //need url format processor like below
-                // {# now:yyyyMMdd #}
-                // {# tick:10 #}
+                feed.Url = CompileUrl.Compile(feed.Url);
             }
 
             return feeds;

@@ -121,6 +121,7 @@
     <Compile Include="Queue\QueueChangedAction.cs" />
     <Compile Include="Queue\QueueChangedEventArgs.cs" />
     <Compile Include="Queue\MessageQueue.cs" />
+    <Compile Include="Utils\CompileUrl.cs" />
     <Compile Include="Utils\JITCompile.cs" />
     <Compile Include="Utils\DecodeResult.cs" />
     <Compile Include="Utils\Decoding.cs" />

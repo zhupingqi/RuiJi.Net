@@ -69,5 +69,8 @@ namespace RuiJi.Node.Feed
 
         [JsonProperty("block")]
         public ExtractBlock ExtractBlock { get; set; }
+
+        [JsonProperty("expression")]
+        public string Expression { get; set; }
     }
 }
