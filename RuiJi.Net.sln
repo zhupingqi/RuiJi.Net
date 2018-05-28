@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Owin", "RuiJi.Owin\Ru
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Node", "RuiJi.Node\RuiJi.Node.csproj", "{97673817-F983-4CE8-919E-D2E43E46144C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.ChromePlugin", "RuiJi.ChromePlugin\RuiJi.ChromePlugin.csproj", "{524EECEB-E3D1-4921-9D3C-3EDAF039EAFB}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{53DD9533-82ED-43BB-935F-C60394EE6B2E}"
 	ProjectSection(SolutionItems) = preProject
 		.travis.yml = .travis.yml
@@ -49,10 +47,6 @@ Global
 		{97673817-F983-4CE8-919E-D2E43E46144C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97673817-F983-4CE8-919E-D2E43E46144C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97673817-F983-4CE8-919E-D2E43E46144C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{524EECEB-E3D1-4921-9D3C-3EDAF039EAFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{524EECEB-E3D1-4921-9D3C-3EDAF039EAFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{524EECEB-E3D1-4921-9D3C-3EDAF039EAFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{524EECEB-E3D1-4921-9D3C-3EDAF039EAFB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{934BEB73-E7C2-4C70-B697-A5FB2066C17E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{934BEB73-E7C2-4C70-B697-A5FB2066C17E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{934BEB73-E7C2-4C70-B697-A5FB2066C17E}.Release|Any CPU.ActiveCfg = Release|Any CPU
