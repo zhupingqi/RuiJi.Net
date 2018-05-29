@@ -34,11 +34,11 @@ namespace RuiJi.Node.Feed
         [JsonProperty("sitename")]
         public string SiteName { get; set; }
 
-        [JsonProperty("railling")]
-        public string Railling { get; set; }
+        [JsonProperty("remark")]
+        public string Remark { get; set; }
 
-        [JsonProperty("url")]
-        public string Url { get; set; }
+        [JsonProperty("address")]
+        public string Address { get; set; }
 
         [JsonProperty("domain")]
         public string Domain { get; set; }
@@ -47,10 +47,13 @@ namespace RuiJi.Node.Feed
         public int Delay { get; set; }
 
         [JsonProperty("type")]
-        public FeedTypeEnum Type { get; set; }
+        public string Type { get; set; }
 
         [JsonProperty("method")]
         public string Method { get; set; }
+
+        [JsonProperty("genre")]
+        public string Genre { get; set; }
 
         [JsonProperty("postParam")]
         public string PostParam { get; set; }
@@ -66,6 +69,9 @@ namespace RuiJi.Node.Feed
 
         [JsonProperty("status")]
         public FeedStatus Status { get; set; }
+
+        [JsonProperty("feedonly")]
+        public bool FeedOnly { get; set; }
 
         [JsonProperty("block")]
         public ExtractBlock ExtractBlock { get; set; }

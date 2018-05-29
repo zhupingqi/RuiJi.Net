@@ -1,7 +1,7 @@
 ﻿define(['jquery', 'utils', 'bootstrap', 'bootstrapTable'], function ($, utils, bootstrapTable) {
     var module = {
         init: function () {
-            var tmp = utils.loadTemplate("/misc/rules.html", false);
+            var tmp = utils.loadTemplate("/misc/feed/rules.html", false);
 
             $.getJSON("/api/zoo/feedproxy", function (url) {
 

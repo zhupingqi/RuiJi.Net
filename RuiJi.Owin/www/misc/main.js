@@ -8,7 +8,8 @@
         bootstrapTable: '/scripts/bootstrap-table/bootstrap-table.min',
         bootstrapDialog: '/scripts/bootstrap3-dialog/js/bootstrap-dialog',
         'tabs': '/scripts/require-tabs/require.tabs',
-        'tree': '/scripts/jstree/jstree.min'
+        'tree': '/scripts/jstree/jstree.min',
+        'sweetAlert': '/scripts/sweetalert/sweetalert.min',
     },
     map: {
         '*': {
@@ -28,6 +29,9 @@
         },
         'tree': {
             deps: ['css!/scripts/jstree/themes/default/style.min.css','jquery']
+        },
+        'sweetAlert': {
+            deps: ['css!/scripts/sweetalert/sweetalert.css']
         }
     }
 });

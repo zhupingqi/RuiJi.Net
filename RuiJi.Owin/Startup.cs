@@ -166,21 +166,33 @@ namespace RuiJi.Owin
                 );
 
             config.Routes.MapHttpRoute(
-                    name: "GetFeedSet",
-                    routeTemplate: "api/feed",
-                    defaults: new { controller = "FeedApi", action = "Feed" }
+                    name: "GetFeedPage",
+                    routeTemplate: "api/feed/page",
+                    defaults: new { controller = "FeedApi", action = "GetFeedPage" }
                 );
 
             config.Routes.MapHttpRoute(
-                    name: "SetFeed",
-                    routeTemplate: "api/feed/set",
-                    defaults: new { controller = "FeedApi", action = "SetFeed" }
+                    name: "SetFeedPage",
+                    routeTemplate: "api/feed/page/set",
+                    defaults: new { controller = "FeedApi", action = "SetFeedPage" }
                 );
 
             config.Routes.MapHttpRoute(
                     name: "FeedJob",
                     routeTemplate: "api/feed/job",
                     defaults: new { controller = "FeedApi", action = "FeedJob" }
+                );
+
+            config.Routes.MapHttpRoute(
+                    name: "FeedUpdate",
+                    routeTemplate: "api/feed/update",
+                    defaults: new { controller = "FeedApi", action = "Update" }
+                );
+
+            config.Routes.MapHttpRoute(
+                    name: "FeedGet",
+                    routeTemplate: "api/feed",
+                    defaults: new { controller = "FeedApi", action = "GetFeed" }
                 );
             #endregion
 

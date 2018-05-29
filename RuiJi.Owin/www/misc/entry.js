@@ -34,7 +34,7 @@
                         id: 'feed',
                         text: '新闻源',
                         type: 'lib',
-                        lib: 'feed'
+                        lib: 'feed/entry'
                     }
                 ]
             });

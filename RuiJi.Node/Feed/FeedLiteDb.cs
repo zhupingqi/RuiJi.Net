@@ -46,7 +46,10 @@ namespace RuiJi.Node.Feed
             {
                 var col = db.GetCollection<FeedModel>("feeds");
 
-                col.Insert(feed);
+                if (feed.Id == 0)
+                    col.Insert(feed);
+                else
+                    col.Update(feed);
             }
         }
 
@@ -58,6 +61,17 @@ namespace RuiJi.Node.Feed
                 col.EnsureIndex(m => m.SiteName);
                 col.EnsureIndex(m => m.Status);
                 col.EnsureIndex(m => m.Type);
+                col.EnsureIndex(m => m.Id);
+            }
+        }
+
+        public static FeedModel GetFeed(int id)
+        {
+            using (var db = new LiteDatabase(@"Feeds.db"))
+            {
+                var col = db.GetCollection<FeedModel>("feeds");
+
+                return col.Find(m=>m.Id == id).FirstOrDefault();
             }
         }
     }

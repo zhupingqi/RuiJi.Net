@@ -108,8 +108,9 @@ namespace RuiJi.Node.Feed.LTS
         {
             try
             {
-                var request = new Request(feed.Url);
-                request.Headers = feed.Headers;
+                var request = new Request(feed.Address);
+                if(feed.Headers != null)
+                    request.Headers = feed.Headers;
                 request.Headers.Add(new WebHeader("Referer", request.Uri.AbsoluteUri));
                 request.Method = feed.Method;
                 if (feed.Method == "POST" && !string.IsNullOrEmpty(feed.PostParam))
@@ -129,7 +130,7 @@ namespace RuiJi.Node.Feed.LTS
 
                     var json = JsonConvert.SerializeObject(new FeedSnapshot
                     {
-                        Url = feed.Url,
+                        Url = feed.Address,
                         Content = content,
                         Type = feed.Type,
                         ExtractBlock = feed.ExtractBlock

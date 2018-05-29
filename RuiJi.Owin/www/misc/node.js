@@ -28,7 +28,7 @@
                 var pages = $("#node_pages").val();
 
                 var feed = $("#active_node_feed").text();
-                var url = "http://" + feed + "/api/feed/set";
+                var url = "http://" + feed + "/api/feed/page/set";
 
                 $.ajax({
                     url: url,
@@ -82,7 +82,7 @@
                         if (path.startWith("/config/feed/")) {
                             $("#feed_node_set").show();
                             var feed = path.replace("/config/feed/", "");
-                            var url = "http://" + feed + "/api/feed";
+                            var url = "http://" + feed + "/api/feed/page";
 
                             $("#active_node_feed").text(feed);
 

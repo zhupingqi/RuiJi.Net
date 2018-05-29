@@ -1,18 +1,84 @@
+[address]
+http://www.ruijihg.com/
+
 [expression]
 http://www.ruijihg.com/????/??/??/*
 
 [block]
+#name
+
+[selector]
 css .entry-content:html
+
+[blocks]
+	[block]
+			
+	[block]
+			
+
+[tile]
+	[selector]
+	[meta]
 
 [meta]
-#time
-css time:text
+	#time
+	css time:text
 
-#author
-css .author:text
+	#author
+	css .author:text
 
-#title
-css .entry-title:text
+	#title
+	css .entry-title:text
 
-#content
-css .entry-content:html
+	#content
+	css .entry-content:html
+
+	#link
+	css h4 a[href] -r
+
+css
+----------------------------
+css h4 a[href] -r
+css h4:ohtml
+css h4:html
+css h4:text
+
+exclude
+----------------------------
+ex *********** -b
+ex *********** -e
+ex *********** -a
+
+expression
+----------------------------
+exp xxxx???xxx* 
+exp xxxx???xxx*  -r
+
+regex
+----------------------------
+reg /aasf/
+reg /aadjas/ -r
+
+regexReplace
+----------------------------
+regR /aaaa/ /dddd/
+
+regexSplit
+----------------------------
+regS /aaa/ 2 3 5
+regS /aaa/ 2 3 5 -r
+
+textRange
+----------------------------
+text /aaa/ /bbb/
+text /aaa/ /bbb/ -r
+
+xpath
+----------------------------
+xpath ladkfeio
+xpath dlqwekrjl -r
+
+jsonPath
+----------------------------
+jpath dlsldf.kljs
+jpath dlkejl -r

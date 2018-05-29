@@ -131,7 +131,7 @@ namespace RuiJi.Node.Feed.LTS
 
         public List<string> ExtractAddress(FeedSnapshot feed)
         {
-            if (feed.ExtractBlock.TileSelector.Selectors.Count == 0)
+            if (feed.ExtractBlock!= null && feed.ExtractBlock.TileSelector.Selectors.Count == 0)
                 feed.ExtractBlock.TileSelector.Selectors.Add(new CssSelector("a", "href"));
 
             var ex = new RuiJiExtracter();

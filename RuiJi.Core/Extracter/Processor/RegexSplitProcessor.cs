@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Core.Extracter.Processor
 {
-    public class RegexSelectorProcessor : ProcessorBase
+    public class RegexSplitSelectorProcessor : ProcessorBase
     {
         public override ProcessResult ProcessNeed(ISelector selector, string html, params object[] args)
         {

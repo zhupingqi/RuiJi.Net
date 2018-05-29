@@ -18,7 +18,7 @@ namespace RuiJi.Core.Extracter.Processor
             processors.Add(SelectorTypeEnum.CSS, new CssProcessor());
             processors.Add(SelectorTypeEnum.REGEX, new RegexProcessor());
             processors.Add(SelectorTypeEnum.EXCLUDE, new ExcludeProcessor());
-            processors.Add(SelectorTypeEnum.REGEXSPLIT, new RegexSelectorProcessor());
+            processors.Add(SelectorTypeEnum.REGEXSPLIT, new RegexSplitSelectorProcessor());
             processors.Add(SelectorTypeEnum.TEXT, new TextRangeProcessor());
             processors.Add(SelectorTypeEnum.REPLACE, new RegexReplaceProcessor());
         }

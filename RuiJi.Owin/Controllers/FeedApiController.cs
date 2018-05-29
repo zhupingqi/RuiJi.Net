@@ -87,7 +87,7 @@ namespace RuiJi.Owin.Controllers
         }
 
         [HttpGet]
-        public string Feed()
+        public string GetFeedPage()
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
 
@@ -106,7 +106,7 @@ namespace RuiJi.Owin.Controllers
         }
 
         [HttpGet]
-        public void SetFeed(string pages)
+        public void SetFeedPage(string pages)
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
 
@@ -116,18 +116,40 @@ namespace RuiJi.Owin.Controllers
 
                 var data = node.GetData("/config/feed/" + Request.RequestUri.Authority);
                 var config = JsonConvert.DeserializeObject<NodeConfig>(data.Data);
-                config.Pages = pages.Split(',').Select(m=>Convert.ToInt32(m)).ToArray();
+                config.Pages = pages.Split(',').Select(m => Convert.ToInt32(m)).ToArray();
 
                 node.SetData(path, JsonConvert.SerializeObject(config));
             }
+        }
+
+        [HttpPost]
+        public void Update(FeedModel feed)
+        {
+            FeedLiteDb.CreateFeed(feed);
+        }
+
+        [HttpGet]
+        public object GetFeed(int id)
+        {
+            var feed = FeedLiteDb.GetFeed(id);
+
+            return feed;
         }
 
         private List<FeedModel> PreProcessUrl(List<FeedModel> feeds)
         {
             foreach (var feed in feeds)
             {
-                feed.Url = CompileUrl.Compile(feed.Url);
+                var r = CompileUrl.Extract(feed.Address);
+                var code = "";
+                if (r != null && r.Function == "now")
+                {
+                    code = string.Format("result = Datetime.Now.ToString({0})", r.Args);
+                    feed.Address = CompileUrl.Compile(code);
+                }
             }
+
+            feeds.RemoveAll(m => string.IsNullOrEmpty(m.Address));
 
             return feeds;
         }

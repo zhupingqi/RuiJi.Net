@@ -17,7 +17,7 @@ namespace RuiJi.Node.Feed.LTS
         public string Content { get; set; }
 
         [JsonProperty("type")]
-        public FeedTypeEnum Type { get; set; }
+        public string Type { get; set; }
 
         [JsonProperty("block")]
         public ExtractBlock ExtractBlock { get; set; }

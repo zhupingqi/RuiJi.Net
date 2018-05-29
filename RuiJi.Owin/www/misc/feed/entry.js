@@ -9,31 +9,31 @@
                         id: 'statistics',
                         text: '统计',
                         type: 'lib',
-                        lib: 'statistics'
+                        lib: 'feed/statistics'
                     },
                     {
                         id: 'feeds',
                         text: '新闻源',
                         type: 'lib',
-                        lib: 'feeds'
+                        lib: 'feed/feeds'
                     },
                     {
                         id: 'rules',
                         text: '规则',
                         type: 'lib',
-                        lib: 'rules'
+                        lib: 'feed/rules'
                     },
                     {
                         id: 'plugin',
                         text: '插件',
                         type: 'lib',
-                        lib: 'plugin'
+                        lib: 'feed/plugin'
                     },
                     {
                         id: 'setting',
                         text: '设置',
                         type: 'lib',
-                        lib: 'setting'
+                        lib: 'feed/setting'
                     }
                 ]
             });

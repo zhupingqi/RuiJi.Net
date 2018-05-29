@@ -35,9 +35,6 @@
 
             return html;
         },
-        alert: function (content) {
-            swal(langs.trans(content));
-        },
         loadCss: function (path) {
             require(['css!' + path]);
         },
