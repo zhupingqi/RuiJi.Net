@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -61,18 +62,21 @@ namespace RuiJi.Owin
         public static void StartServers()
         {
             var zkServer = ConfigurationManager.AppSettings["zkPath"];
-            if(!string.IsNullOrEmpty(zkServer))
+            if (!string.IsNullOrEmpty(zkServer))
             {
                 var path = AppDomain.CurrentDomain.BaseDirectory + zkServer + @"\bin\zkServer.cmd";
 
-                zkProcess = new Process();
-                zkProcess.StartInfo.FileName = path;
-                zkProcess.StartInfo.UseShellExecute = false;
-                zkProcess.StartInfo.RedirectStandardInput = false;
-                zkProcess.StartInfo.RedirectStandardOutput = false;
-                zkProcess.StartInfo.RedirectStandardError = false;
-                zkProcess.StartInfo.CreateNoWindow = false;
-                zkProcess.Start();
+                if (File.Exists(path))
+                {
+                    zkProcess = new Process();
+                    zkProcess.StartInfo.FileName = path;
+                    zkProcess.StartInfo.UseShellExecute = false;
+                    zkProcess.StartInfo.RedirectStandardInput = false;
+                    zkProcess.StartInfo.RedirectStandardOutput = false;
+                    zkProcess.StartInfo.RedirectStandardError = false;
+                    zkProcess.StartInfo.CreateNoWindow = false;
+                    zkProcess.Start();
+                }
             }
 
             Thread.Sleep(3000);
