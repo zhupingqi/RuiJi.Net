@@ -40,7 +40,7 @@ namespace RuiJi.Node.Feed
             }
         }
 
-        public static void CreateFeed(FeedModel feed)
+        public static void AddOrUpdate(FeedModel feed)
         {
             using (var db = new LiteDatabase(@"Feeds.db"))
             {

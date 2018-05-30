@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RuiJi.Core.Crawler;
+using RuiJi.Core.Extensions;
 using RuiJi.Core.Extracter;
 using RuiJi.Core.Extracter.Selector;
 using System;
@@ -47,7 +48,8 @@ namespace RuiJi.Node.Feed
         public int Delay { get; set; }
 
         [JsonProperty("type")]
-        public string Type { get; set; }
+        [JsonConverter(typeof(EnumConvert<FeedTypeEnum>))]
+        public FeedTypeEnum Type { get; set; }
 
         [JsonProperty("method")]
         public string Method { get; set; }

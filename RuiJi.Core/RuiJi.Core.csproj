@@ -65,12 +65,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Converter\WebHeaderConverter .cs" />
     <Compile Include="Cookie\IpCookieManager.cs" />
     <Compile Include="Cookie\ManagedCookie.cs" />
     <Compile Include="Crawler\IPCrawler.cs" />
     <Compile Include="Crawler\ProxyCrawler.cs" />
     <Compile Include="Crawler\WebHeader.cs" />
+    <Compile Include="Extensions\EnumConvert.cs" />
     <Compile Include="Extensions\NewtonJsonSerializer.cs" />
     <Compile Include="Extensions\ISelectorConverter.cs" />
     <Compile Include="Extensions\UriExtensions.cs" />

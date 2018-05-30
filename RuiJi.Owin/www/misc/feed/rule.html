@@ -1,0 +1,53 @@
+﻿<div class="row-fluid" id="rule_dialog">
+    <form>
+        <div class="input-group">
+            <span class="input-group-addon">Url</span>
+            <input type="text" class="form-control required" name="url" placeholder="Reference Url" />
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">Expression</span>
+            <input type="hidden" name="id" value="">
+            <input type="text" class="form-control required" name="expression" placeholder="Url Expression">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">Feature</span>
+            <textarea type="text" name="feature" placeholder="feature expression"></textarea>
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">Type</span>
+            <input type="hidden" name="type" required value="HTML">
+            <input type="text" class="form-control" value="HTML" disabled="disabled">
+            <div class="input-group-btn">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">请选择<span class="caret"></span></button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <li><a href="javascript:;">HTML</a></li>
+                    <li><a href="javascript:;">JSON</a></li>
+                    <li><a href="javascript:;">JSONP</a></li>
+                    <li><a href="javascript:;">XML</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">Block Exp</span>
+            <textarea type="text" name="block" rows="10"></textarea>
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">RuiJi Exp</span>
+            <textarea type="text" name="rexp" rows="10"></textarea>
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">Status</span>
+            <input type="hidden" name="status" value="true">
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-mjdark2 active">
+                    Run
+                    <input type="radio" autocomplete="off" value="true">
+                </label>
+                <label class="btn btn-mjdark2">
+                    Pause
+                    <input type="radio" autocomplete="off" value="false">
+                </label>
+            </div>
+        </div>
+    </form>
+</div>

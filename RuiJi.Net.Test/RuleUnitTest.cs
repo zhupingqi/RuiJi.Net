@@ -23,31 +23,28 @@ namespace RuiJi.Net.Test
             rule.Domain = new Uri(rule.Url).GetDomain();
             rule.Expression = "http://www.ruijihg.com/????/??/??/*";
 
-            var blocks = new ExtractBlockCollection
+            var block = new ExtractBlock()
             {
-                new ExtractBlock()
-                {
-                    Selectors = new List<ISelector>
+                Selectors = new List<ISelector>
                     {
                         new CssSelector("#main",CssTypeEnum.InnerHtml)
                     },
-                    Metas = new ExtractMetaCollection()
-                }
+                Metas = new ExtractMetaCollection()
             };
 
-            blocks[0].Metas.AddMeta("time", new List<ISelector> {
+            block.Metas.AddMeta("time", new List<ISelector> {
                 new CssSelector("time",CssTypeEnum.Text)
             });
 
-            blocks[0].Metas.AddMeta("author", new List<ISelector> {
+            block.Metas.AddMeta("author", new List<ISelector> {
                 new CssSelector(".author",CssTypeEnum.Text)
             });
 
-            blocks[0].Metas.AddMeta("content", new List<ISelector> {
+            block.Metas.AddMeta("content", new List<ISelector> {
                 new CssSelector(".entry-content",CssTypeEnum.InnerHtml)
             });
 
-            rule.Blocks = JsonConvert.SerializeObject(blocks);
+            rule.BlockExpression = JsonConvert.SerializeObject(block);
 
             //rule.Id = 1;
             RuleLiteDB.AddOrUpdate(rule);
@@ -76,6 +73,18 @@ namespace RuiJi.Net.Test
                     TestLock(i);
                 }
             }
+        }
+
+        [TestMethod]
+        public void TestRuleConvert()
+        {
+            var rule = new RuleModel();
+            rule.Type = RuleTypeEnum.JSONP;
+            var j = JsonConvert.SerializeObject(rule);
+
+            var o = JsonConvert.DeserializeObject<RuleModel>(j);
+
+            Assert.IsTrue(o.Type == RuleTypeEnum.JSONP);
         }
     }
 }

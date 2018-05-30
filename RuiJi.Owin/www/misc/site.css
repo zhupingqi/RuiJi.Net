@@ -53,7 +53,6 @@
 
     .input-group textarea {
         border: 1px solid #ccc;
-        height: 60px;
         border-bottom-right-radius: 4px;
         border-top-right-radius: 4px;
         display: block;
@@ -62,13 +61,13 @@
         float: left;
     }
 
-#feed_dialog div.input-group{
-    width:550px;
+#feed_dialog div.input-group, #rule_dialog div.input-group {
+    width: 550px;
 }
 
-#feed_dialog div.input-group > span:first-child{
-    width: 100px;
-}
+    #feed_dialog div.input-group > span:first-child, #rule_dialog div.input-group > span:first-child {
+        width: 105px;
+    }
 
 textarea[name='expression']{
     height:60px;

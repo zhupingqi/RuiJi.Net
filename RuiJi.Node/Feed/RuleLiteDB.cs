@@ -29,6 +29,9 @@ namespace RuiJi.Node.Feed
             using (var db = new LiteDatabase(@"Rules.db"))
             {
                 var col = db.GetCollection<RuleModel>("rules");
+                if (Uri.IsWellFormedUriString(rule.Url, UriKind.Absolute))
+                    rule.Domain = new Uri(rule.Url).GetDomain();
+
                 if (rule.Id == 0)
                 {
                     rule.Url = rule.Url.Trim().ToLower();
@@ -74,6 +77,16 @@ namespace RuiJi.Node.Feed
 
                 var mask = Wildcard.MaxMatch(url, masks);
                 return rules.Where(m => m.Expression == mask).ToList();
+            }
+        }
+
+        public static RuleModel GetRule(int id)
+        {
+            using (var db = new LiteDatabase(@"Rules.db"))
+            {
+                var col = db.GetCollection<RuleModel>("rules");
+
+                return col.Find(m => m.Id == id).FirstOrDefault();
             }
         }
     }

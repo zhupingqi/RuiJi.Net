@@ -223,6 +223,7 @@
     <Content Include="www\misc\feed\feeds.html" />
     <Content Include="www\misc\feed\feeds.js" />
     <Content Include="www\fonts\font-awesome.min.css" />
+    <Content Include="www\misc\feed\rule.html" />
     <Content Include="www\misc\log.js" />
     <Content Include="www\misc\main.js" />
     <Content Include="www\misc\node.html" />

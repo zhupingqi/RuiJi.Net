@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RuiJi.Core.Extensions;
 using RuiJi.Core.Extracter;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,8 @@ namespace RuiJi.Node.Feed.LTS
         public string Content { get; set; }
 
         [JsonProperty("type")]
-        public string Type { get; set; }
+        [JsonConverter(typeof(EnumConvert<FeedTypeEnum>))]
+        public FeedTypeEnum Type { get; set; }
 
         [JsonProperty("block")]
         public ExtractBlock ExtractBlock { get; set; }

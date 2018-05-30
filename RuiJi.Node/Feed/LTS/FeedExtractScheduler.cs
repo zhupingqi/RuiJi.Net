@@ -25,7 +25,7 @@ namespace RuiJi.Node.Feed.LTS
 
             IJobDetail job = JobBuilder.Create<FeedExtractJob>().Build();
 
-            ITrigger trigger = TriggerBuilder.Create().WithCronSchedule("0 0/1 * * * ?").Build();
+            ITrigger trigger = TriggerBuilder.Create().WithCronSchedule("0 0/5 * * * ?").Build();
 
             await scheduler.ScheduleJob(job, trigger);
         }

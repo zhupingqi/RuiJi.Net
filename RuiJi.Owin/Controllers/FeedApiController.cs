@@ -65,7 +65,7 @@ namespace RuiJi.Owin.Controllers
 
             if (node.NodeType == Node.NodeTypeEnum.FEEDPROXY)
             {
-                return RuleLiteDB.Match(url).Select(m => JsonConvert.DeserializeObject<ExtractBlockCollection>(m.Blocks)).ToList();
+                return RuleLiteDB.Match(url).Select(m => JsonConvert.DeserializeObject<ExtractBlock>(m.BlockExpression)).ToList();
             }
 
             return new { };
@@ -105,8 +105,8 @@ namespace RuiJi.Owin.Controllers
             return "";
         }
 
-        [HttpGet]
-        public void SetFeedPage(string pages)
+        [HttpPost]
+        public void SetFeedPage([FromBody]string pages)
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
 
@@ -123,15 +123,29 @@ namespace RuiJi.Owin.Controllers
         }
 
         [HttpPost]
-        public void Update(FeedModel feed)
+        public void UpdateFeed(FeedModel feed)
         {
-            FeedLiteDb.CreateFeed(feed);
+            FeedLiteDb.AddOrUpdate(feed);
         }
 
         [HttpGet]
         public object GetFeed(int id)
         {
             var feed = FeedLiteDb.GetFeed(id);
+
+            return feed;
+        }
+
+        [HttpPost]
+        public void UpdateRule(RuleModel rule)
+        {
+            RuleLiteDB.AddOrUpdate(rule);
+        }
+
+        [HttpGet]
+        public object GetRule(int id)
+        {
+            var feed = RuleLiteDB.GetRule(id);
 
             return feed;
         }

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RuiJi.Core.Extensions;
 using RuiJi.Core.Extracter;
 using RuiJi.Core.Extracter.Selector;
 using System;
@@ -26,6 +27,7 @@ namespace RuiJi.Node.Feed
         public string Domain { get; set; }
 
         [JsonProperty("type")]
+        [JsonConverter(typeof(EnumConvert<RuleTypeEnum>))]
         public RuleTypeEnum Type { get; set; }
 
         [JsonProperty("expression")]
@@ -35,9 +37,13 @@ namespace RuiJi.Node.Feed
         public string Url { get; set; }
 
         [JsonProperty("feature")]
-        public string[] Feature { get; set; }
+        public string Feature { get; set; }
 
-        [JsonProperty("blocks")]
-        public string Blocks { get; set; }
+        [JsonProperty("block")]
+        public string BlockExpression { get; set; }
+
+        [JsonProperty("rexp")]
+        public string RuiJiExpression { get; set; }
+
     }
 }
