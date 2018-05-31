@@ -3,6 +3,23 @@
         init: function () {
             var tmp = utils.loadTemplate("/misc/status.html", false);
             $("#tab_panel_status").html(tmp);
+
+            $.getJSON('/api/info/system', function (d) {
+                console.log(d);
+                var t = utils.template("status_system_info", d);
+                console.log(t);
+                $("#system_info").html(t);
+            });
+            //$.getJSON('/api/info/server?baseUrl=' + window.location.href, function (d) {
+            //    console.log(d);
+            //});
+            $.getJSON('/api/info/dll', function (vs) {
+                $.map(vs.versions, function (v) {
+                    var $d = $("<div></div>");
+                    $d.text(v);
+                    $("#dll_version").append($d);
+                });
+            });
         }
     };
 

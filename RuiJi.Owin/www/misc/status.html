@@ -1,16 +1,44 @@
-﻿<div class="panel panel-default">
+﻿<script id="status_system_info" type="text/html">
+    <div>
+        <span>内存使用率</span><br /><br />
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="{{memoryLoad}}" aria-valuemin="0" aria-valuemax="100" style="width: {{memoryLoad}}%;">
+                <!--<span class="sr-only">60% Complete</span>-->
+            </div>
+        </div>
+    </div>
+    <div>
+        <span>CPU使用率</span><br /><br />
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="{{cpuLoad}}" aria-valuemin="0" aria-valuemax="100" style="width:{{cpuLoad}}%;">
+                <span class="sr-only">60% Complete</span>
+            </div>
+        </div>
+    </div>
+    <div>
+        <span>网络使用率</span><br /><br />
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                <span class="sr-only">60% Complete</span>
+            </div>
+        </div>
+    </div>
+</script>
+
+
+<div class="panel panel-default">
     <div class="panel-body">
         <div class="row">
             <div class="col-lg-6 status-instance">
-                <div><span>节点类型</span></div>
+                <div>
+                    <span>节点类型</span>
+                    <div id="feed_type"></div>
+                </div>
                 <br />
                 <div><span>启动时间</span></div>
                 <br />
-                <div>
+                <div id="dll_version">
                     <span>版本</span>
-                    <div>RuiJi.Core 1.0.0.0</div>
-                    <div>RuiJi.Node </div>
-                    <div>RuiJi.Own </div>
                 </div>
                 <br />
                 <div>
@@ -20,31 +48,8 @@
                     <div>内存 </div>
                 </div>
             </div>
-            <div class="col-lg-6">
-                <div>
-                    <span>内存使用率</span><br /><br />
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                            <span class="sr-only">60% Complete</span>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <span>CPU使用率</span><br /><br />
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                            <span class="sr-only">60% Complete</span>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <span>网络使用率</span><br /><br />
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                            <span class="sr-only">60% Complete</span>
-                        </div>
-                    </div>
-                </div>
+            <div class="col-lg-6" id="system_info">
+                
             </div>
         </div>
     </div>

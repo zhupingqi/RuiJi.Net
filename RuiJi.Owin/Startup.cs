@@ -208,6 +208,26 @@ namespace RuiJi.Owin
                 );
             #endregion
 
+            #region Info Api
+            config.Routes.MapHttpRoute(
+                   name: "SystemInfo",
+                   routeTemplate: "api/info/system",
+                   defaults: new { controller = "InfoApi", action = "System" }
+               );
+
+            config.Routes.MapHttpRoute(
+                    name: "ServerTypeInfo",
+                    routeTemplate: "api/info/server",
+                    defaults: new { controller = "InfoApi", action = "Server" }
+                );
+
+            config.Routes.MapHttpRoute(
+                    name: "DllInfo",
+                    routeTemplate: "api/info/dll",
+                    defaults: new { controller = "InfoApi", action = "Dll" }
+                );
+            #endregion
+
             config.Routes.MapHttpRoute(
                 name: "Default",
                 routeTemplate: "api/{controller}/{action}",
