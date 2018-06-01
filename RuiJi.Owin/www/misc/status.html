@@ -11,7 +11,7 @@
         <span>CPU使用率</span><br /><br />
         <div class="progress">
             <div class="progress-bar" role="progressbar" aria-valuenow="{{cpuLoad}}" aria-valuemin="0" aria-valuemax="100" style="width:{{cpuLoad}}%;">
-                <span class="sr-only">60% Complete</span>
+                <!--<span class="sr-only">60% Complete</span>-->
             </div>
         </div>
     </div>
@@ -19,33 +19,36 @@
         <span>网络使用率</span><br /><br />
         <div class="progress">
             <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                <span class="sr-only">60% Complete</span>
+                <!--<span class="sr-only">60% Complete</span>-->
             </div>
         </div>
     </div>
 </script>
 
+<script id="status_server_info" type="text/html">
+    <div>
+        <span>节点类型</span>
+        <div id="feed_type">{{nodeType}}</div>
+    </div>
+    <br />
+    <div><span>启动时间</span></div>
+    <br />
+    <div>
+        <span>服务器</span>
+        <div>环境 .Net Framework 4.6 </div>
+        <div>处理器 {{cpu}}</div>
+        <div>内存 {{memory}}</div>
+    </div>
+</script>
 
 <div class="panel panel-default">
     <div class="panel-body">
         <div class="row">
-            <div class="col-lg-6 status-instance">
-                <div>
-                    <span>节点类型</span>
-                    <div id="feed_type"></div>
-                </div>
-                <br />
-                <div><span>启动时间</span></div>
+            <div class="col-lg-6 status-instance" id="server_info">
+                
                 <br />
                 <div id="dll_version">
                     <span>版本</span>
-                </div>
-                <br />
-                <div>
-                    <span>服务器</span>
-                    <div>环境 .Net Framework 4.6 </div>
-                    <div>处理器 </div>
-                    <div>内存 </div>
                 </div>
             </div>
             <div class="col-lg-6" id="system_info">

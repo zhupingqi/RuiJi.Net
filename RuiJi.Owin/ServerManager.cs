@@ -167,6 +167,7 @@ namespace RuiJi.Owin
 
         public static NodeBase Get(string baseUrl)
         {
+            var temp = servers.SingleOrDefault(m => m.NodeBase.BaseUrl.ToLower() == baseUrl.ToLower());
             return servers.SingleOrDefault(m=>m.NodeBase.BaseUrl.ToLower() == baseUrl.ToLower()).NodeBase;            
         }
     }

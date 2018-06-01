@@ -10,14 +10,19 @@
                 console.log(t);
                 $("#system_info").html(t);
             });
-            //$.getJSON('/api/info/server?baseUrl=' + window.location.href, function (d) {
-            //    console.log(d);
-            //});
+
+            $.getJSON('/api/info/server?baseUrl=' + window.location.href, function (d) {
+                console.log(d);
+                var t = utils.template("status_server_info", d);
+                $("#server_info").prepend(t);
+            });
+
             $.getJSON('/api/info/dll', function (vs) {
                 $.map(vs.versions, function (v) {
                     var $d = $("<div></div>");
                     $d.text(v);
                     $("#dll_version").append($d);
+                    console.log(v);
                 });
             });
         }

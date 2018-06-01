@@ -25,7 +25,7 @@ namespace RuiJi.Owin.Controllers
 
             var cpuLoad = sys.CpuLoad;
 
-            return new { memoryLoad = memoryLoad, memory = sys.PhysicalMemory / 1024 / 1024, cpu = sys.ProcessorName, cpuLoad = cpuLoad };
+            return new { memoryLoad = memoryLoad, cpuLoad = cpuLoad };
         }
 
         /// <summary>
@@ -36,8 +36,13 @@ namespace RuiJi.Owin.Controllers
         [HttpGet]
         public object Server(string baseUrl)
         {
+            baseUrl = new Uri(baseUrl).Authority;
             var server = ServerManager.Get(baseUrl);
-            return server;
+
+            SystemInfo sys = new SystemInfo();
+            var memory = Math.Round((double)sys.PhysicalMemory / 1024 / 1024 / 1024, 1, MidpointRounding.AwayFromZero) + "GB";
+
+            return new { nodeType = server.NodeType.ToString(), cpu = sys.ProcessorName, memory = memory };
         }
 
         /// <summary>

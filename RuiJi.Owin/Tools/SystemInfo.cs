@@ -64,6 +64,16 @@ namespace RuiJi.Owin.Tools
                 }
             }
 
+            //mc = new ManagementClass("Win32_NetworkAdapter");
+            //moc = mc.GetInstances();
+            //foreach (ManagementObject mo in moc)
+            //{
+            //    //if (mo["TotalPhysicalMemory"] != null)
+            //    //{
+            //    //    m_PhysicalMemory = long.Parse(mo["TotalPhysicalMemory"].ToString());
+            //    //}
+            //}
+
             ManagementObjectSearcher MySearcher = new ManagementObjectSearcher("SELECT * FROM Win32_Processor");
             foreach (ManagementObject mo in MySearcher.Get())
             {
