@@ -48,14 +48,18 @@ namespace RuiJi.Node.Crawler
         {
             CrawlerManager.Instance.Clear();
 
-            var nodes = zooKeeper.GetChildren("/live_nodes/crawler", new LiveCrawlerWatcher(this));
-
-            foreach (var node in nodes)
+            try
             {
-                var d = GetCrawlerConfig(node);
-                if (d.Proxy == BaseUrl)
-                    CrawlerManager.Instance.AddServer(node, d.Ips);
+                var nodes = zooKeeper.GetChildren("/live_nodes/crawler", new LiveCrawlerWatcher(this));
+
+                foreach (var node in nodes)
+                {
+                    var d = GetCrawlerConfig(node);
+                    if (d.Proxy == BaseUrl)
+                        CrawlerManager.Instance.AddServer(node, d.Ips);
+                }
             }
+            catch { }
         }
 
         public CrawlerConfig GetCrawlerConfig(string baseUrl)

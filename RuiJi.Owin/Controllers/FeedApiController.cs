@@ -59,13 +59,18 @@ namespace RuiJi.Owin.Controllers
         }
 
         [HttpGet]
-        public object UrlRule(string url)
+        public object UrlRule(string url,bool useBlock = false)
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
 
             if (node.NodeType == Node.NodeTypeEnum.FEEDPROXY)
             {
-                return RuleLiteDB.Match(url).Select(m => JsonConvert.DeserializeObject<ExtractBlock>(m.BlockExpression)).ToList();
+                if (useBlock)
+                    return RuleLiteDB.Match(url).Select(m => JsonConvert.DeserializeObject<ExtractBlock>(m.BlockExpression)).ToList();
+                else
+                {
+                    return RuleLiteDB.Match(url).Select(m => RuiJiExtracter.PaserBlock(m.RuiJiExpression)).ToList();
+                }
             }
 
             return new { };

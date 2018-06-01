@@ -66,7 +66,7 @@ namespace RuiJi.Node.Feed.LTS
             }
         }
 
-        private List<ExtractResult> Extract(string url)
+        public List<ExtractResult> Extract(string url)
         {
             var cralwer = new RuiJi.Net.Crawler();
             var response = cralwer.Request(url);
@@ -74,16 +74,15 @@ namespace RuiJi.Node.Feed.LTS
 
             var results = new List<ExtractResult>();
 
-            Feeder.GetExtractBlock(url).ForEach((m)=> {
-                m.ForEach(n=> {
-                    var r = RuiJi.Net.Extracter.Extract(new ExtractRequest
-                    {
-                        Block = n,
-                        Content = content
-                    });
-
-                    results.Add(r);
+            var blocks = Feeder.GetExtractBlock(url);
+            blocks.ForEach((m)=> {
+                var r = RuiJi.Net.Extracter.Extract(new ExtractRequest
+                {
+                    Block = m,
+                    Content = content
                 });
+
+                results.Add(r);
             });
 
             return results;

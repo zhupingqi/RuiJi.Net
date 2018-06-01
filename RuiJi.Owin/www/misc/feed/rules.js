@@ -26,8 +26,8 @@
                 });
             });
 
-            $(document).on("click", "#rule_dialog ul.dropdown-menu a", function (e) {
-                var menu = $(e.currentTarget);
+            $(document).on("click", "#rule_dialog ul.dropdown-menu a", function () {
+                var menu = $(this);
                 var h = menu.closest(".input-group").find(":hidden");
                 var v = menu.attr("data-bind") ? menu.attr("data-bind") : menu.text();
 
@@ -35,8 +35,8 @@
                 h.next().val(menu.text());
             });
 
-            $(document).on("click", "#tb_rules .fa-edit", function (e) {
-                var ele = $(e.currentTarget);
+            $(document).on("click", "#tb_rules .fa-edit", function () {
+                var ele = $(this);
                 var id = ele.closest("tr").find("td").eq(1).text();
                 var f = $(ruleTmp);
                 f.find("input[name='id']").val(id);

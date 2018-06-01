@@ -76,9 +76,9 @@ namespace RuiJi.Node.Feed
         public bool FeedOnly { get; set; }
 
         [JsonProperty("block")]
-        public ExtractBlock ExtractBlock { get; set; }
+        public string BlockExpression { get; set; }
 
-        [JsonProperty("expression")]
-        public string Expression { get; set; }
+        [JsonProperty("rexp")]
+        public string RuiJiExpression { get; set; }
     }
 }

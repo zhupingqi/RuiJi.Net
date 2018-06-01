@@ -32,43 +32,64 @@ namespace RuiJi.Node.Feed.LTS
 
         public static bool IsRunning = false;
 
+        private static string baseDir;
+
+        static FeedExtractJob()
+        {
+            baseDir = AppDomain.CurrentDomain.BaseDirectory;
+
+            if (!Directory.Exists(baseDir + @"history"))
+            {
+                Directory.CreateDirectory(baseDir + @"history");
+            }
+            if (!Directory.Exists(baseDir + @"pre"))
+            {
+                Directory.CreateDirectory(baseDir + @"pre");
+            }
+        }
+
         public async Task Execute(IJobExecutionContext context)
         {
             if (!IsRunning)
             {
                 IsRunning = true;
 
-                MoveDelayFeed();
-
-                var task = Task.Factory.StartNew(() =>
+                try
                 {
-                    var files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory + @"snapshot");
 
-                    var stpStartInfo = new STPStartInfo
-                    {
-                        IdleTimeout = 3000,
-                        MaxWorkerThreads = 8,
-                        MinWorkerThreads = 0
-                    };
+                    MoveDelayFeed();
 
-                    var pool = new SmartThreadPool(stpStartInfo);
-                    var waits = new List<IWorkItemResult>();
-                    foreach (var file in files)
+                    var task = Task.Factory.StartNew(() =>
                     {
-                        var item = pool.QueueWorkItem((fileName) =>
+                        var files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory + @"snapshot");
+
+                        var stpStartInfo = new STPStartInfo
                         {
-                            DoTask(fileName);
-                        }, file);
-                        waits.Add(item);
-                    }
-                    SmartThreadPool.WaitAll(waits.ToArray());
-                    pool.Shutdown(true, 1000);
-                    pool.Dispose();
-                    pool = null;
-                    waits.Clear();
-                });
+                            IdleTimeout = 3000,
+                            MaxWorkerThreads = 8,
+                            MinWorkerThreads = 0
+                        };
 
-                await task;
+                        var pool = new SmartThreadPool(stpStartInfo);
+                        var waits = new List<IWorkItemResult>();
+                        foreach (var file in files)
+                        {
+                            var item = pool.QueueWorkItem((fileName) =>
+                            {
+                                DoTask(fileName);
+                            }, file);
+                            waits.Add(item);
+                        }
+                        SmartThreadPool.WaitAll(waits.ToArray());
+                        pool.Shutdown(true, 1000);
+                        pool.Dispose();
+                        pool = null;
+                        waits.Clear();
+                    });
+
+                    await task;
+                }
+                catch { }
 
                 IsRunning = false;
             }
@@ -112,14 +133,13 @@ namespace RuiJi.Node.Feed.LTS
 
             File.WriteAllLines(hisFile, urls, Encoding.UTF8);
 
-            if (feed.ExtractBlock.TileSelector.Selectors.Count > 0)
-            {
-                urls.RemoveAll(m => urlsHistory.Contains(m));
+            urls.RemoveAll(m => urlsHistory.Contains(m));
+            urls.RemoveAll(m => string.IsNullOrEmpty(m));
+            urls.RemoveAll(m => !Uri.IsWellFormedUriString(m, UriKind.Absolute));
 
-                foreach (var u in urls)
-                {
-                    ContentQueue.Instance.Enqueue(seedId + "_" + u);
-                }
+            foreach (var u in urls)
+            {
+                ContentQueue.Instance.Enqueue(u);
             }
 
             var destFile = path.Replace("snapshot", "pre").Replace(filename, seedId + ".txt");
@@ -131,11 +151,25 @@ namespace RuiJi.Node.Feed.LTS
 
         public List<string> ExtractAddress(FeedSnapshot feed)
         {
-            if (feed.ExtractBlock!= null && feed.ExtractBlock.TileSelector.Selectors.Count == 0)
-                feed.ExtractBlock.TileSelector.Selectors.Add(new CssSelector("a", "href"));
+            var block = new ExtractBlock();
+            block.TileSelector.Selectors.Add(new CssSelector("a", "href"));
 
-            var ex = new RuiJiExtracter();
-            var result = ex.Extract(feed.Content, feed.ExtractBlock);
+            if (feed.UseBlock)
+            {
+                if(!string.IsNullOrEmpty(feed.BlockExpression))
+                    block = JsonConvert.DeserializeObject<ExtractBlock>(feed.BlockExpression);
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(feed.RuiJiExpression))
+                {
+                    block.TileSelector.Selectors.Clear();
+                    var s = RuiJiExtracter.ParserBase(feed.RuiJiExpression).Selectors;
+                    block.TileSelector.Selectors.AddRange(s);
+                }
+            }
+
+            var result = RuiJiExtracter.Extract(feed.Content, block);
             var results = new List<string>();
 
             foreach (var item in result.Tiles.Results)

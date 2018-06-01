@@ -26,9 +26,7 @@ namespace RuiJi.Owin.Controllers
 
             if (node.NodeType == Node.NodeTypeEnum.EXTRACTER)
             {
-                var ext = new RuiJiExtracter();
-
-                var result = ext.Extract(request.Content, request.Block);
+                var result = RuiJiExtracter.Extract(request.Content, request.Block);
                 return result;
             }
             else

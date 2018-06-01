@@ -17,11 +17,17 @@ namespace RuiJi.Node.Feed.LTS
         [JsonProperty("content")]
         public string Content { get; set; }
 
+        [JsonProperty("useBlock")]
+        public bool UseBlock { get; set; }
+
         [JsonProperty("type")]
         [JsonConverter(typeof(EnumConvert<FeedTypeEnum>))]
         public FeedTypeEnum Type { get; set; }
 
         [JsonProperty("block")]
-        public ExtractBlock ExtractBlock { get; set; }
+        public string BlockExpression { get; set; }
+
+        [JsonProperty("rexp")]
+        public string RuiJiExpression { get; set; }
     }
 }

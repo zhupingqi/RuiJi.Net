@@ -58,6 +58,7 @@
     <Compile Include="RequestUnitTest.cs" />
     <Compile Include="RuleUnitTest.cs" />
     <Compile Include="CompileTest.cs" />
+    <Compile Include="ExpressionUnitTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

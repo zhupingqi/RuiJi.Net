@@ -61,8 +61,7 @@ namespace RuiJi.Net.Test
                 new CssSelector(".pt-cv-readmore","href")
             });
 
-            var ext = new RuiJiExtracter();
-            var r = ext.Extract(content, block);
+            var r = RuiJiExtracter.Extract(content, block);
 
             Assert.IsTrue(r.Content.Length > 0);
             Assert.IsTrue(r.Tiles.Count > 0);
@@ -123,7 +122,7 @@ namespace RuiJi.Net.Test
 
             var content = response.Data.ToString();
 
-            var block = Feeder.GetExtractBlock("http://www.ruijihg.com/2018/05/20/ruiji-solr-net/").First().First();
+            var block = Feeder.GetExtractBlock("http://www.ruijihg.com/2018/05/20/ruiji-solr-net/").First();
 
             var r = Extracter.Extract(new ExtractRequest
             {

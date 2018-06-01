@@ -75,6 +75,13 @@
                 });
             });
 
+            $(document).on("click", "#feed_dialog ul.nav li", function () {
+                var ele = $(this);
+                ele.addClass("active").siblings().removeClass("active");
+
+                ele.closest("div").find("textarea").eq(ele.index()).show().siblings("textarea").hide();
+            });
+
             tmp = $(tmp);
             tmp.find("#tb_feeds").attr("data-url", "http://" + proxyUrl + "/api/feeds");
 

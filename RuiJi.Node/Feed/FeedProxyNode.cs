@@ -70,7 +70,7 @@ namespace RuiJi.Node.Feed
                     case EventType.NodeChildrenChanged:
                         {
                             node.LoadLiveFeed();
-                            Console.WriteLine("detected extracter node change");
+                            Console.WriteLine("detected feed node change");
                             break;
                         }
                 }

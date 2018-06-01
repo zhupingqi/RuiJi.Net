@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Quartz;
 using RestSharp;
 using RuiJi.Core.Crawler;
+using RuiJi.Core.Extracter;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -133,7 +134,8 @@ namespace RuiJi.Node.Feed.LTS
                         Url = feed.Address,
                         Content = content,
                         Type = feed.Type,
-                        ExtractBlock = feed.ExtractBlock
+                        BlockExpression = feed.BlockExpression,
+                        RuiJiExpression = feed.RuiJiExpression
                     }, Formatting.Indented);
 
                     File.WriteAllText(fileName, json, Encoding.UTF8);

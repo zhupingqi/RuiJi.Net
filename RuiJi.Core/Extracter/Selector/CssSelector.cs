@@ -16,7 +16,7 @@ namespace RuiJi.Core.Extracter.Selector
         [JsonProperty("ctype")]
         public CssTypeEnum Type { get; set; }
 
-        public CssSelector(string value, CssTypeEnum type = CssTypeEnum.Text, RemoveEnum remove = RemoveEnum.NO)
+        public CssSelector(string value, CssTypeEnum type = CssTypeEnum.Text, bool remove = true)
         {
             this.Value = value;
             this.Type = type;

@@ -6,19 +6,19 @@ http://www.ruijihg.com/????/??/??/*
 
 [block]
 #name
-
-[selector]
 css .entry-content:html
 
 [blocks]
-	[block]
-			
-	[block]
-			
+	@block1
+	@block2
 
 [tile]
-	[selector]
+	#aa
+	css a:ohtml
+
 	[meta]
+	#time
+	css time:text
 
 [meta]
 	#time
@@ -36,11 +36,19 @@ css .entry-content:html
 	#link
 	css h4 a[href] -r
 
+[block]
+#block1
+
+[block]
+#block2
+
+-----------------------------------------
+
 css
 ----------------------------
 css h4 a[href] -r
 css h4:ohtml
-css h4:html
+css h4:html -r
 css h4:text
 
 exclude
@@ -57,11 +65,12 @@ exp xxxx???xxx*  -r
 regex
 ----------------------------
 reg /aasf/
+reg /aa(.*)sf/ 0 1
 reg /aadjas/ -r
 
 regexReplace
 ----------------------------
-regR /aaaa/ /dddd/
+regR /aaaa/ dddd/
 
 regexSplit
 ----------------------------

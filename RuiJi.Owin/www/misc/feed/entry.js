@@ -37,6 +37,25 @@
                     }
                 ]
             });
+
+            $(document).keydown(function (event) {
+                if (event.keyCode == 9 && event.target.tagName == "TEXTAREA") {
+                    event.returnValue = false;
+                    var textEl = event.target;
+                    var tab = '\t';
+                    var txt = $(textEl).val();
+                    var startPos = textEl.selectionStart;
+                    var endPos = textEl.selectionEnd;
+
+                    txt = txt.substring(0, startPos) + tab + txt.substring(endPos, txt.length);
+                    $(textEl).val(txt);
+
+                    textEl.selectionStart = endPos + 1;
+                    textEl.selectionEnd = endPos + 1;
+
+                    return false;
+                }
+            });
         }
     };
 

@@ -13,6 +13,11 @@ namespace RuiJi.Core.Extracter.Selector
         [JsonProperty("newChar")]
         public string NewChar { get; set; }
 
+        public RegexReplaceSelector()
+        {
+
+        }
+
         public RegexReplaceSelector(string value, string newChar)
         {
             this.NewChar = newChar;

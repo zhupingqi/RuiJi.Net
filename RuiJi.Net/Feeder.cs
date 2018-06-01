@@ -13,7 +13,7 @@ namespace RuiJi.Net
 {
     public class Feeder
     {
-        public static List<ExtractBlockCollection> GetExtractBlock(string url)
+        public static List<ExtractBlock> GetExtractBlock(string url)
         {
             var proxyUrl = ProxyManager.Instance.Elect(ProxyTypeEnum.Feed);
 
@@ -31,7 +31,7 @@ namespace RuiJi.Net
 
             var restResponse = client.Execute(restRequest);
 
-            var response = JsonConvert.DeserializeObject<List<ExtractBlockCollection>>(restResponse.Content);
+            var response = JsonConvert.DeserializeObject<List<ExtractBlock>>(restResponse.Content);
 
             return response;
         }
