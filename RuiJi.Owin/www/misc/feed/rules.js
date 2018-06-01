@@ -55,7 +55,7 @@
                     }
 
                     BootstrapDialog.show({
-                        title: '修改 Feed',
+                        title: '修改 Rule',
                         message: f.prop("outerHTML"),
                         closable: false,
                         nl2br: false,
@@ -73,6 +73,13 @@
                         }]
                     });
                 });
+            });
+
+            $(document).on("click", "#rule_dialog ul.nav li", function () {
+                var ele = $(this);
+                ele.addClass("active").siblings().removeClass("active");
+
+                ele.closest("div").find("textarea").eq(ele.index()).show().siblings("textarea").hide();
             });
 
             tmp = $(tmp);
