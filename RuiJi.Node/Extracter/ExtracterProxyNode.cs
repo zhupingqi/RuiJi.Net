@@ -53,11 +53,15 @@ namespace RuiJi.Node.Extracter
 
         protected void LoadLiveExtracter()
         {
-            ExtracterManager.Instance.Clear();
+            try
+            {
+                ExtracterManager.Instance.Clear();
 
-            var nodes = zooKeeper.GetChildren("/live_nodes/extracter", new LiveExtracterWatcher(this));
+                var nodes = zooKeeper.GetChildren("/live_nodes/extracter", new LiveExtracterWatcher(this));
 
-            ExtracterManager.Instance.ClearAndAddServer(nodes.ToArray());
+                ExtracterManager.Instance.ClearAndAddServer(nodes.ToArray());
+            }
+            catch { }
         }
 
         protected override NodeTypeEnum SetNodeType()

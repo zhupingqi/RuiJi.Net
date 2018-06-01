@@ -53,15 +53,19 @@ namespace RuiJi.Node.Feed.LTS
             {
                 pool.QueueWorkItem(() =>
                 {
-                    string url;
-                    if (queue.TryDequeue(out url))
+                    try
                     {
-                        var article = Extract(url);
-                        if (article != null)
+                        string url;
+                        if (queue.TryDequeue(out url))
                         {
-                            Save(article);
+                            var article = Extract(url);
+                            if (article != null)
+                            {
+                                Save(article);
+                            }
                         }
                     }
+                    catch { }
                 });
             }
         }
@@ -88,7 +92,7 @@ namespace RuiJi.Node.Feed.LTS
             return results;
         }
 
-        private void Save(object article)
+        private void Save(List<ExtractResult> articles)
         {
             throw new NotImplementedException();
         }

@@ -79,14 +79,19 @@ namespace RuiJi.Owin.Controllers
         [HttpGet]
         public object FeedJob(string pages)
         {
-            var node = ServerManager.Get(Request.RequestUri.Authority);
-
-            if (node.NodeType == Node.NodeTypeEnum.FEEDPROXY)
+            try
             {
-                var ps = pages.Split(',').Select(m => Convert.ToInt32(m)).ToArray();
 
-                return PreProcessUrl(FeedLiteDb.GetFeedModels(ps, 50));
+                var node = ServerManager.Get(Request.RequestUri.Authority);
+
+                if (node.NodeType == Node.NodeTypeEnum.FEEDPROXY)
+                {
+                    var ps = pages.Split(',').Select(m => Convert.ToInt32(m)).ToArray();
+
+                    return PreProcessUrl(FeedLiteDb.GetFeedModels(ps, 50));
+                }
             }
+            catch { }
 
             return new { };
         }

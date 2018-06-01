@@ -30,13 +30,17 @@ namespace RuiJi.Node.Crawler
 
         public CrawlerConfig GetNodeConfig()
         {
-            if (zooKeeper != null && zooKeeper.State == ZooKeeper.States.CONNECTED)
+            try
             {
-                var b = zooKeeper.GetData("/config/crawler/" + BaseUrl, false, null);
-                var r = System.Text.Encoding.UTF8.GetString(b);
+                if (zooKeeper != null && zooKeeper.State == ZooKeeper.States.CONNECTED)
+                {
+                    var b = zooKeeper.GetData("/config/crawler/" + BaseUrl, false, null);
+                    var r = System.Text.Encoding.UTF8.GetString(b);
 
-                return JsonConvert.DeserializeObject<CrawlerConfig>(r);
+                    return JsonConvert.DeserializeObject<CrawlerConfig>(r);
+                }
             }
+            catch { }
 
             return new CrawlerConfig();
         }

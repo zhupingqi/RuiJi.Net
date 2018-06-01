@@ -45,8 +45,12 @@ namespace RuiJi.Node.Feed
 
         protected void LoadLiveFeed()
         {
-            var nodes = zooKeeper.GetChildren("/live_nodes/feed", new LiveFeedWatcher(this));
-            FeedManager.Instance.ClearAndAddServer(nodes.ToArray());
+            try
+            {
+                var nodes = zooKeeper.GetChildren("/live_nodes/feed", new LiveFeedWatcher(this));
+                FeedManager.Instance.ClearAndAddServer(nodes.ToArray());
+            }
+            catch { }
         }
 
         protected override NodeTypeEnum SetNodeType()
