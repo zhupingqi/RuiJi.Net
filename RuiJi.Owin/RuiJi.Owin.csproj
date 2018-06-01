@@ -69,6 +69,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.6\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
@@ -94,8 +95,10 @@
     <Compile Include="Controllers\ExtracterApiController.cs" />
     <Compile Include="Controllers\CrawlerApiController.cs" />
     <Compile Include="Controllers\FeedApiController.cs" />
+    <Compile Include="Controllers\InfoApiController.cs" />
     <Compile Include="Controllers\ZooApiController.cs" />
     <Compile Include="ServerManager.cs" />
+    <Compile Include="Tools\SystemInfo.cs" />
     <Compile Include="WebApiCacheAttribute.cs" />
     <Compile Include="WebApiServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
