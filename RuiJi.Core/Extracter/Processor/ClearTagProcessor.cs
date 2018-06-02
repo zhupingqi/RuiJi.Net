@@ -10,19 +10,19 @@ namespace RuiJi.Core.Extracter.Processor
 {
     public class ClearTagProcessor : ProcessorBase
     {
-        public override ProcessResult ProcessNeed(ISelector sel, string html, params object[] args)
+        public override ProcessResult ProcessNeed(ISelector selector, ProcessResult result)
         {
-            var spSelector = sel as ClearTagSelector;
+            var clearSelector = selector as ClearTagSelector;
 
             var pr = new ProcessResult();
-            pr.Matches.Add(HtmlHelper.ClearTag(html));
+            pr.Matches.Add(HtmlHelper.ClearTag(result.Content));
 
             return pr;
         }
 
-        public override ProcessResult ProcessRemove(ISelector sel, string html, params object[] args)
+        public override ProcessResult ProcessRemove(ISelector selector, ProcessResult result)
         {
-            return ProcessNeed(sel, html, args);
+            return ProcessNeed(selector, result);
         }
     }
 }

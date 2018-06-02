@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RuiJi.Core.Crawler;
 using RuiJi.Core.Extracter;
+using RuiJi.Node.Feed;
 using RuiJi.Node.Feed.LTS;
 
 namespace RuiJi.Net.Test
@@ -134,6 +135,16 @@ css .entry-content:html
             var s = RuiJiExtracter.ParserBase("css a[href]").Selectors;
             block.TileSelector.Selectors.AddRange(s);
             var result = RuiJiExtracter.Extract(content, block);
+
+            Assert.IsTrue(true);
+        }
+
+        [TestMethod]
+        public void TestHistoryUpdate()
+        {
+            var feed = FeedLiteDb.GetFeed(1);
+            var job = new FeedExtractJob();
+            job.DoTask(@"D:\云同步\vcoded\RuiJi.Net\RuiJi.Cmd\bin\Debug\snapshot\1_636635303414097356.json");
 
             Assert.IsTrue(true);
         }

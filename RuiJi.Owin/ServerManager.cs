@@ -151,7 +151,9 @@ namespace RuiJi.Owin
                 });
                 servers.Clear();
             }
-            catch { }
+            catch(Exception ex) {
+                Console.WriteLine(ex.Message);
+            }
 
             Console.WriteLine("all server stop!");
         }

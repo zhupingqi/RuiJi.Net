@@ -15,42 +15,44 @@ namespace RuiJi.Core.Extracter.Processor
 {
     public class CssProcessor : ProcessorBase
     {
-        public override ProcessResult ProcessNeed(ISelector sel, string html, params object[] args)
+        public override ProcessResult ProcessNeed(ISelector selector, ProcessResult result)
         {
             var pr = new ProcessResult();
 
-            if (string.IsNullOrEmpty(sel.Value))
+            if (string.IsNullOrEmpty(selector.Value))
             {
                 return pr;
             }
-            html = "<doc>" + html + "</doc>";
-            CssSelector selector = sel as CssSelector;
-            if (selector.Type == CssTypeEnum.Text)
-                html = HtmlHelper.ClearTag(html);
 
-            CQ cq = CQ.Create(html, HtmlParsingMode.Auto);
-            var elems = cq.Find(selector.Value);
+            var content = "<doc>" + result.Content + "</doc>";
+            var cssSelector = selector as CssSelector;
+            if (cssSelector.Type == CssTypeEnum.Text)
+                content = HtmlHelper.ClearTag(content);
 
-            pr = ProResult(elems, selector);
+            CQ cq = CQ.Create(content, HtmlParsingMode.Auto);
+            var elems = cq.Find(cssSelector.Value);
+
+            pr = ProcessResult(elems, cssSelector);
 
             return pr;
         }
 
-        public override ProcessResult ProcessRemove(ISelector sel, string html, params object[] args)
+        public override ProcessResult ProcessRemove(ISelector selector, ProcessResult result)
         {
-            CssSelector selector = sel as CssSelector;
-            CQ cq = new CQ(html);
-            cq[selector.Value].Remove();
-            html = HttpUtility.HtmlDecode(cq.Render());
-            html = "<doc>" + html + "</doc>";
-            cq = CQ.Create(html, HtmlParsingMode.Auto);
+            var cssSelector = selector as CssSelector;
+            CQ cq = new CQ(result.Content);
+            cq[cssSelector.Value].Remove();
+            var content = HttpUtility.HtmlDecode(cq.Render());
+            content = "<doc>" + content + "</doc>";
+            cq = CQ.Create(content, HtmlParsingMode.Auto);
+
             var pr = new ProcessResult();
-            pr = ProResult(cq, selector);
+            pr = ProcessResult(cq, cssSelector);
 
             return pr;
         }
 
-        private ProcessResult ProResult(CQ elems, CssSelector selector)
+        private ProcessResult ProcessResult(CQ elems, CssSelector selector)
         {
             var pr = new ProcessResult();
             if (elems != null)
@@ -96,6 +98,6 @@ namespace RuiJi.Core.Extracter.Processor
                 }
             }
             return pr;
-        }        
+        }
     }
 }

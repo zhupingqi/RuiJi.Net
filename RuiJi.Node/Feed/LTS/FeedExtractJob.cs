@@ -38,13 +38,13 @@ namespace RuiJi.Node.Feed.LTS
         {
             baseDir = AppDomain.CurrentDomain.BaseDirectory;
 
-            if (!Directory.Exists(baseDir + @"history"))
+            if (!Directory.Exists(baseDir + @"/history"))
             {
-                Directory.CreateDirectory(baseDir + @"history");
+                Directory.CreateDirectory(baseDir + @"/history");
             }
-            if (!Directory.Exists(baseDir + @"pre"))
+            if (!Directory.Exists(baseDir + @"/pre"))
             {
-                Directory.CreateDirectory(baseDir + @"pre");
+                Directory.CreateDirectory(baseDir + @"/pre");
             }
         }
 

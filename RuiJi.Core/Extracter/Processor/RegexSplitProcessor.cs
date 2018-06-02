@@ -11,15 +11,15 @@ namespace RuiJi.Core.Extracter.Processor
 {
     public class RegexSplitSelectorProcessor : ProcessorBase
     {
-        public override ProcessResult ProcessNeed(ISelector selector, string html, params object[] args)
+        public override ProcessResult ProcessNeed(ISelector selector, ProcessResult result)
         {
-            var spSelector = selector as RegexSplitSelector;
-            var sp = Regex.Split(html, spSelector.Value).ToList();
-            sp.RemoveAll(m=>string.IsNullOrEmpty(m));
+            var regSSelector = selector as RegexSplitSelector;
+            var sp = Regex.Split(result.Content, regSSelector.Value).ToList();
+            sp.RemoveAll(m => string.IsNullOrEmpty(m));
 
             var results = new List<string>();
 
-            foreach (var index in spSelector.Index)
+            foreach (var index in regSSelector.Index)
             {
                 if (index < sp.Count)
                     results.Add(sp[index]);
@@ -31,15 +31,15 @@ namespace RuiJi.Core.Extracter.Processor
             return pr;
         }
 
-        public override ProcessResult ProcessRemove(ISelector selector, string html, params object[] args)
+        public override ProcessResult ProcessRemove(ISelector selector, ProcessResult result)
         {
-            var spSelector = selector as RegexSplitSelector;
-            var sp = Regex.Split(html, spSelector.Value, RegexOptions.IgnorePatternWhitespace).ToList();
+            var regSSelector = selector as RegexSplitSelector;
+            var sp = Regex.Split(result.Content, regSSelector.Value, RegexOptions.IgnorePatternWhitespace).ToList();
             sp.RemoveAll(m => string.IsNullOrEmpty(m));
 
             var results = new List<string>();
 
-            foreach (var index in spSelector.Index.OrderByDescending(m=>m))
+            foreach (var index in regSSelector.Index.OrderByDescending(m => m))
             {
                 sp.RemoveAt(index);
             }

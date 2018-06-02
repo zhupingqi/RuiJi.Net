@@ -5,27 +5,50 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace RuiJi.Core.Extracter.Processor
 {
     class JsonPathProcessor : ProcessorBase
     {
-        public override ProcessResult ProcessNeed(ISelector selector, string html, params object[] args)
+        public override ProcessResult ProcessNeed(ISelector selector, ProcessResult result)
         {
-            //JObject obj = JObject.Parse(content);
-            //JToken token = obj.SelectToken(property);
+            var pr = new ProcessResult();
+            if (string.IsNullOrEmpty(selector.Value))
+            {
+                return pr;
+            }
 
-            //if (token != null)
-            //{
-            //    return JsonConvert.DeserializeObject<T>(token.ToString());
-            //}
+            JObject obj = JObject.Parse(result.Content);
+            JToken token = obj.SelectToken(selector.Value);
 
-            throw new NotImplementedException();
+            if (token != null)
+            {
+                foreach (JToken t in token.Children())
+                {
+                    pr.Matches.Add(t.ToString());
+                }
+            }
+
+            return pr;
         }
 
-        public override ProcessResult ProcessRemove(ISelector selector, string html, params object[] args)
+        public override ProcessResult ProcessRemove(ISelector selector, ProcessResult result)
         {
-            throw new NotImplementedException();
+            var pr = new ProcessResult();
+            if (string.IsNullOrEmpty(selector.Value))
+            {
+                return pr;
+            }
+
+            JObject obj = JObject.Parse(result.Content);
+            JToken token = obj.SelectToken(selector.Value);
+
+            token.Remove();
+
+            pr.Matches.Add(obj.ToString());
+
+            return pr;
         }
     }
 }

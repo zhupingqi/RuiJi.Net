@@ -15,33 +15,32 @@ namespace RuiJi.Core.Extracter.Processor
     /// </summary>
     public class ExcludeProcessor : ProcessorBase
     {
-        public override ProcessResult ProcessNeed(ISelector sel, string html, params object[] args)
+        public override ProcessResult ProcessNeed(ISelector selector, ProcessResult result)
         {
-            var spSelector = sel as ExcludeSelector;
-            var type = spSelector.Type;
+            var exSelector = selector as ExcludeSelector;
+            var type = exSelector.Type;
 
             var pr = new ProcessResult();
 
             switch (type)
             {
                 case ExcludeTypeEnum.ALL:
-                    pr.Matches.Add(Regex.Replace(html, spSelector.Value, ""));
+                    pr.Matches.Add(Regex.Replace(result.Content, exSelector.Value, ""));
                     break;
                 case ExcludeTypeEnum.BEGIN:
-                    pr.Matches.Add(Regex.Replace(html, "^" + spSelector.Value, ""));
+                    pr.Matches.Add(Regex.Replace(result.Content, "^" + exSelector.Value, ""));
                     break;
                 case ExcludeTypeEnum.END:
-                    pr.Matches.Add(Regex.Replace(html, spSelector.Value + "$", ""));
+                    pr.Matches.Add(Regex.Replace(result.Content, exSelector.Value + "$", ""));
                     break;
-
             }
 
             return pr;
         }
 
-        public override ProcessResult ProcessRemove(ISelector sel, string html, params object[] args)
+        public override ProcessResult ProcessRemove(ISelector selector, ProcessResult result)
         {
-            return ProcessNeed(sel, html, args);
+            return ProcessNeed(selector, result);
         }
     }
 }

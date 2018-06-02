@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RuiJi.Core.Crawler;
 using RuiJi.Core.Extensions;
 using RuiJi.Core.Extracter;
 using RuiJi.Core.Extracter.Selector;
@@ -32,6 +33,18 @@ namespace RuiJi.Node.Feed
 
         [JsonProperty("expression")]
         public string Expression { get; set; }
+
+        [JsonProperty("method")]
+        public string Method { get; set; }
+
+        [JsonProperty("postParam")]
+        public string PostParam { get; set; }
+
+        [JsonProperty("ua")]
+        public string UA { get; set; }
+
+        [JsonProperty("headers")]
+        public List<WebHeader> Headers { get; set; }
 
         [JsonProperty("url")]
         public string Url { get; set; }

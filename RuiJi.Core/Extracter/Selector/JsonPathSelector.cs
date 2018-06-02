@@ -13,5 +13,13 @@ namespace RuiJi.Core.Extracter.Selector
         {
             return SelectorTypeEnum.JSON;
         }
+
+        public JsonPathSelector()
+        { }
+
+        public JsonPathSelector(string vale)
+        {
+            this.Value = vale;
+        }
     }
 }

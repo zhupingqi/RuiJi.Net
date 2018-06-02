@@ -292,6 +292,12 @@ namespace RuiJi.Core.Extracter
                         var selector = new ExpressionSelector();
                         selector.Remove = remove;
                         selector.Value = p;
+                        var ssp = p.Split(new string[] { " -s " },StringSplitOptions.RemoveEmptyEntries);
+                        if(ssp.Length == 2)
+                        {
+                            selector.Value = ssp[0];
+                            selector.Split = ssp[1];
+                        }
 
                         return selector;
                     }

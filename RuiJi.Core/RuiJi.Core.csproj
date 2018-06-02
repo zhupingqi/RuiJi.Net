@@ -75,6 +75,7 @@
     <Compile Include="Extensions\ISelectorConverter.cs" />
     <Compile Include="Extensions\UriExtensions.cs" />
     <Compile Include="Extracter\Enum\RemoveEnum.cs" />
+    <Compile Include="Extracter\Enum\XPathTypeEnum.cs" />
     <Compile Include="Extracter\ExtractBase.cs" />
     <Compile Include="Extracter\ExtractRequest.cs" />
     <Compile Include="Extracter\ExtractResult.cs" />

@@ -10,55 +10,98 @@ namespace RuiJi.Core.Extracter.Processor
 {
     public class ExpressionProcessor : ProcessorBase
     {
-        public override ProcessResult ProcessNeed(ISelector sel, string content, params object[] args)
+        public override ProcessResult ProcessNeed(ISelector selector, ProcessResult result)
         {
             var pr = new ProcessResult();
-            var selector = sel as ExpressionSelector;
+            var expSelector = selector as ExpressionSelector;
 
-            if (string.IsNullOrEmpty(selector.Value))
+            if (string.IsNullOrEmpty(expSelector.Value))
             {
                 return pr;
             }
 
-            var ary = new string[] { content };
+            var ary = new string[] { result.Content };
 
-            if (!string.IsNullOrEmpty(selector.Split))
+            if (result == null)
             {
-                ary = content.Split(new string[] { selector.Split }, StringSplitOptions.RemoveEmptyEntries);
+                if (!string.IsNullOrEmpty(expSelector.Split))
+                {
+                    ary = result.Content.Split(new string[] { expSelector.Split }, StringSplitOptions.RemoveEmptyEntries);
+                }
+
+                foreach (var item in ary)
+                {
+                    var m = Wildcard.IsMatch(item, new string[] { expSelector.Value });
+                    if (m)
+                        pr.Matches.Add(expSelector.Value);
+                }
             }
-
-            foreach (var item in ary)
+            else
             {
-                var m = Wildcard.IsMatch(item, new string[] { selector.Value });
-                if (m)
-                    pr.Matches.Add(selector.Value);
+                foreach (var item in result.Matches)
+                {
+                    ary = new string[] { item };
+
+                    if (!string.IsNullOrEmpty(expSelector.Split))
+                    {
+                        ary = item.Split(new string[] { expSelector.Split }, StringSplitOptions.RemoveEmptyEntries);
+                    }
+
+                    foreach (var it in ary)
+                    {
+                        var m = Wildcard.IsMatch(it, new string[] { expSelector.Value });
+                        if (m)
+                            pr.Matches.Add(it);
+                    }
+                }
             }
 
             return pr;
         }
 
-        public override ProcessResult ProcessRemove(ISelector sel, string content, params object[] args)
+        public override ProcessResult ProcessRemove(ISelector selector, ProcessResult result)
         {
             var pr = new ProcessResult();
-            var selector = sel as ExpressionSelector;
+            var expSelector = selector as ExpressionSelector;
 
-            if (string.IsNullOrEmpty(selector.Value))
+            if (string.IsNullOrEmpty(expSelector.Value))
             {
                 return pr;
             }
+            var ary = new string[] { result.Content };
 
-            var ary = new string[] { content };
-
-            if (!string.IsNullOrEmpty(selector.Split))
+            if (result == null)
             {
-                ary = content.Split(new string[] { selector.Split }, StringSplitOptions.RemoveEmptyEntries);
+                if (!string.IsNullOrEmpty(expSelector.Split))
+                {
+                    ary = result.Content.Split(new string[] { expSelector.Split }, StringSplitOptions.RemoveEmptyEntries);
+                }
+
+                foreach (var item in ary)
+                {
+                    var m = Wildcard.IsMatch(item, new string[] { expSelector.Value });
+                    if (!m)
+                        pr.Matches.Add(expSelector.Value);
+                }
             }
-
-            foreach (var item in ary)
+            else
             {
-                var m = Wildcard.IsMatch(item, new string[] { selector.Value });
-                if (!m)
-                    pr.Matches.Add(selector.Value);
+                foreach (var item in result.Matches)
+                {
+                    ary = new string[] { item };
+
+                    if (!string.IsNullOrEmpty(expSelector.Split))
+                    {
+                        ary = item.Split(new string[] { expSelector.Split }, StringSplitOptions.RemoveEmptyEntries);
+                    }
+
+                    foreach (var it in ary)
+                    {
+                        var m = Wildcard.IsMatch(it, new string[] { expSelector.Value });
+                        if (!m)
+                            pr.Matches.Add(it);
+                    }
+                }
             }
 
             return pr;

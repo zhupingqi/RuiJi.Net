@@ -60,7 +60,7 @@ namespace RuiJi.Node
                 Console.WriteLine("node " + BaseUrl + " ready to startup!");
                 Console.WriteLine("try connect to zookeeper server : " + ZkServer);                
 
-                zooKeeper = new ZooKeeper(ZkServer, TimeSpan.FromSeconds(15), watcher);
+                zooKeeper = new ZooKeeper(ZkServer, TimeSpan.FromSeconds(30), watcher);
                 resetEvent.WaitOne();
 
                 CreateCommonNode();

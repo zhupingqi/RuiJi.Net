@@ -21,6 +21,10 @@ namespace RuiJi.Core.Extracter.Processor
             processors.Add(SelectorTypeEnum.REGEXSPLIT, new RegexSplitSelectorProcessor());
             processors.Add(SelectorTypeEnum.TEXT, new TextRangeProcessor());
             processors.Add(SelectorTypeEnum.REPLACE, new RegexReplaceProcessor());
+            processors.Add(SelectorTypeEnum.EXPRESSION, new ExpressionProcessor());
+            processors.Add(SelectorTypeEnum.XPATH, new XPathProcessor());
+            processors.Add(SelectorTypeEnum.JSON, new JsonPathProcessor());
+            processors.Add(SelectorTypeEnum.CLEAR, new ClearTagProcessor());
         }
 
         public static IProcessor GetProcessor(ISelector selector)
@@ -31,6 +35,7 @@ namespace RuiJi.Core.Extracter.Processor
         public static ProcessResult Process(string content, List<ISelector> selectors)
         {
             var result = new ProcessResult();
+            result.Matches.Add(content);
 
             if (selectors.Count == 0)
             {
@@ -41,8 +46,7 @@ namespace RuiJi.Core.Extracter.Processor
                 foreach (var selector in selectors)
                 {
                     var processer = ProcessorFactory.GetProcessor(selector);
-                    result = processer.Process(selector, content);
-                    content = result.Content;
+                    result = processer.Process(selector, result);
                 }
             }
 

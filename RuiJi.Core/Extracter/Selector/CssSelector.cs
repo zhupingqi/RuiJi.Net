@@ -31,14 +31,8 @@ namespace RuiJi.Core.Extracter.Selector
         }
 
         public CssSelector()
-        { }
-
-        public CssSelector(CssSelector cssSelector)
         {
-            this.AttrName = cssSelector.AttrName;
-            this.Value = cssSelector.Value;
-            this.Type = cssSelector.Type;
-            this.Remove = cssSelector.Remove;
+
         }
 
         protected override SelectorTypeEnum SetSelectType()

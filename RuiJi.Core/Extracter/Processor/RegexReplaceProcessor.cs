@@ -11,17 +11,17 @@ namespace RuiJi.Core.Extracter.Processor
 {
     public class RegexReplaceProcessor : ProcessorBase
     {
-        public override ProcessResult ProcessNeed(ISelector sel, string html, params object[] args)
+        public override ProcessResult ProcessNeed(ISelector selector, ProcessResult result)
         {
             var pr = new ProcessResult();
-            var spSelector = sel as RegexReplaceSelector;
-            pr.Matches.Add(Regex.Replace(html, spSelector.Value, spSelector.NewChar));
+            var regRSelector = selector as RegexReplaceSelector;
+            pr.Matches.Add(Regex.Replace(result.Content, regRSelector.Value, regRSelector.NewChar));
             return pr;
         }
 
-        public override ProcessResult ProcessRemove(ISelector sel, string html, params object[] args)
+        public override ProcessResult ProcessRemove(ISelector selector, ProcessResult result)
         {
-            return ProcessNeed(sel, html, args);
+            return ProcessNeed(selector, result);
         }
     }
 }

@@ -14,8 +14,16 @@
             <input type="text" class="form-control required" name="address">
         </div>
         <div class="input-group">
-            <span class="input-group-addon">Delay</span>
-            <input type="text" class="form-control required" value="0" name="delay">
+            <span class="input-group-addon">Method</span>
+            <input type="hidden" name="method" value="GET">
+            <input type="text" class="form-control" value="GET" disabled="disabled">
+            <div class="input-group-btn">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">请选择<span class="caret"></span></button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <li><a href="javascript:;">GET</a></li>
+                    <li><a href="javascript:;">POST</a></li>
+                </ul>
+            </div>
         </div>
         <div class="input-group">
             <span class="input-group-addon">UA</span>
@@ -78,16 +86,8 @@
             <textarea type="text" name="block" rows="5" style="display:none"></textarea>
         </div>
         <div class="input-group">
-            <span class="input-group-addon">Method</span>
-            <input type="hidden" name="method" value="GET">
-            <input type="text" class="form-control" value="GET" disabled="disabled">
-            <div class="input-group-btn">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">请选择<span class="caret"></span></button>
-                <ul class="dropdown-menu dropdown-menu-right">
-                    <li><a href="javascript:;">GET</a></li>
-                    <li><a href="javascript:;">POST</a></li>
-                </ul>
-            </div>
+            <span class="input-group-addon">Delay</span>
+            <input type="text" class="form-control required" value="0" name="delay">
         </div>
         <div class="input-group">
             <span class="input-group-addon">Scheduling</span>

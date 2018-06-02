@@ -11,6 +11,6 @@ namespace RuiJi.Core.Extracter.Processor
 {
     public interface IProcessor
     {
-        ProcessResult Process(ISelector selector, string html, params object[] args);
+        ProcessResult Process(ISelector selector, ProcessResult result);
     }
 }

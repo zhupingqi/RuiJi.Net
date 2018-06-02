@@ -10,6 +10,33 @@
             <input type="text" class="form-control required" name="expression" placeholder="Url Expression">
         </div>
         <div class="input-group">
+            <span class="input-group-addon">Method</span>
+            <input type="hidden" name="method" value="GET">
+            <input type="text" class="form-control" value="GET" disabled="disabled">
+            <div class="input-group-btn">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">请选择<span class="caret"></span></button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <li><a href="javascript:;">GET</a></li>
+                    <li><a href="javascript:;">POST</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">UA</span>
+            <input type="hidden" name="ua" value="">
+            <input type="text" class="form-control">
+            <div class="input-group-btn">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">请选择<span class="caret"></span></button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <li><a href="javascript:;" data-bind="">Default</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">Headers</span>
+            <textarea type="text" name="headers"></textarea>
+        </div>
+        <div class="input-group">
             <span class="input-group-addon">Feature</span>
             <textarea type="text" name="feature" placeholder="feature expression"></textarea>
         </div>
