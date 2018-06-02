@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RuiJi.Core.Crawler;
-using RuiJi.Core.Extracter;
-using RuiJi.Node.Feed;
-using RuiJi.Node.Feed.LTS;
+using RuiJi.Net.Core.Crawler;
+using RuiJi.Net.Core.Extracter;
+using RuiJi.Net.Node.Feed;
+using RuiJi.Net.Node.Feed.LTS;
 
 namespace RuiJi.Net.Test
 {

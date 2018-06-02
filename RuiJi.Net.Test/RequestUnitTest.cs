@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RuiJi.Core.Crawler;
-using RuiJi.Owin;
+using RuiJi.Net.Core.Crawler;
+using RuiJi.Net.NodeVisitor;
+using RuiJi.Net.Owin;
 
 namespace RuiJi.Net.Test
 {

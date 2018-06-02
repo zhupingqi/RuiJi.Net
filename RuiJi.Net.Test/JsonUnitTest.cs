@@ -1,8 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using RuiJi.Core.Extracter;
-using RuiJi.Core.Extracter.Enum;
-using RuiJi.Core.Extracter.Selector;
+using RuiJi.Net.Core.Extracter;
+using RuiJi.Net.Core.Extracter.Enum;
+using RuiJi.Net.Core.Extracter.Selector;
 using System;
 using System.Collections.Generic;
 using System.Linq;

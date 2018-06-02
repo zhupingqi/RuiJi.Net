@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RuiJi.Core.Crawler;
-using RuiJi.Core.Extracter;
-using RuiJi.Core.Extracter.Enum;
-using RuiJi.Core.Extracter.Selector;
-using RuiJi.Owin;
+using RuiJi.Net.Core.Crawler;
+using RuiJi.Net.Core.Extracter;
+using RuiJi.Net.Core.Extracter.Enum;
+using RuiJi.Net.Core.Extracter.Selector;
+using RuiJi.Net.NodeVisitor;
+using RuiJi.Net.Owin;
 
 namespace RuiJi.Net.Test
 {

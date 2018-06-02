@@ -68,25 +68,25 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RuiJi.Cmd\RuiJi.Cmd.csproj">
+    <ProjectReference Include="..\RuiJi.Net.Cmd\RuiJi.Net.Cmd.csproj">
       <Project>{38676ab4-4262-4cce-8ae5-c67694c1a376}</Project>
-      <Name>RuiJi.Cmd</Name>
+      <Name>RuiJi.Net.Cmd</Name>
     </ProjectReference>
-    <ProjectReference Include="..\RuiJi.Core\RuiJi.Core.csproj">
+    <ProjectReference Include="..\RuiJi.Net.Core\RuiJi.Net.Core.csproj">
       <Project>{A27677E3-1CE8-4A8C-B041-9F7A812546F2}</Project>
-      <Name>RuiJi.Core</Name>
+      <Name>RuiJi.Net.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\RuiJi.Net\RuiJi.Net.csproj">
+    <ProjectReference Include="..\RuiJi.Net.NodeVisitor\RuiJi.Net.NodeVisitor.csproj">
       <Project>{934beb73-e7c2-4c70-b697-a5fb2066c17e}</Project>
-      <Name>RuiJi.Net</Name>
+      <Name>RuiJi.Net.NodeVisitor</Name>
     </ProjectReference>
-    <ProjectReference Include="..\RuiJi.Node\RuiJi.Node.csproj">
+    <ProjectReference Include="..\RuiJi.Net.Node\RuiJi.Net.Node.csproj">
       <Project>{97673817-F983-4CE8-919E-D2E43E46144C}</Project>
-      <Name>RuiJi.Node</Name>
+      <Name>RuiJi.Net.Node</Name>
     </ProjectReference>
-    <ProjectReference Include="..\RuiJi.Owin\RuiJi.Owin.csproj">
+    <ProjectReference Include="..\RuiJi.Net.Owin\RuiJi.Net.Owin.csproj">
       <Project>{0E98716C-4A38-45D4-8B53-7705A342AA42}</Project>
-      <Name>RuiJi.Owin</Name>
+      <Name>RuiJi.Net.Owin</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
