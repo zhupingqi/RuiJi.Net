@@ -5,6 +5,7 @@
         init: function () {
             var tmp = utils.loadTemplate("/misc/feed/feeds.html", false);
             var feed = utils.loadTemplate("/misc/feed/feed.html", false);
+            var crawl = utils.loadTemplate("/misc/feed/crawl.html", false);
 
             $(document).on("click", "#add_feed", function () {
                 BootstrapDialog.show({
@@ -26,8 +27,8 @@
                 });
             });
 
-            $(document).on("click", "#feed_dialog ul.dropdown-menu a", function (e) {
-                var menu = $(e.currentTarget);
+            $(document).on("click", "#feed_dialog ul.dropdown-menu a", function () {
+                var menu = $(this);
                 var h = menu.closest(".input-group").find(":hidden");
                 var v = menu.attr("data-bind") ? menu.attr("data-bind") : menu.text();
 
@@ -35,8 +36,8 @@
                 h.next().val(menu.text());
             });
 
-            $(document).on("click", "#tb_feeds .fa-edit", function (e) {
-                var ele = $(e.currentTarget);
+            $(document).on("click", "#tb_feeds .fa-edit", function () {
+                var ele = $(this);
                 var id = ele.closest("tr").find("td").eq(1).text();
                 var f = $(feed);
                 f.find("input[name='id']").val(id);
@@ -64,6 +65,38 @@
                             action: function (dialog) {
                                 module.update();
                                 dialog.close();
+                            }
+                        }, {
+                            label: 'Close',
+                            action: function (dialog) {
+                                dialog.close();
+                            }
+                        }]
+                    });
+                });
+            });
+
+            $(document).on("click", "#tb_feeds .fa-random", function () {
+                require(['/scripts/jquery.json-viewer.js']);
+                utils.loadCss("/scripts/jquery.json-viewer.css");
+
+                var ele = $(this);
+                var id = ele.closest("tr").find("td").eq(1).text();
+                var f = $(crawl);
+                f.find("input[name='id']").val(id);
+
+                $.getJSON("http://" + proxyUrl + "/api/feed?id=" + id, function (d) {
+                    f.find("#crawl_info").html("正在使用 " + d.address + " <br/>进行即时抓取，点击Start开始");
+
+                    BootstrapDialog.show({
+                        title: '即时抓取 Feed',
+                        message: f.prop("outerHTML"),
+                        closable: false,
+                        nl2br: false,
+                        buttons: [{
+                            label: 'Start',
+                            action: function (dialog) {
+                                module.start(id);
                             }
                         }, {
                             label: 'Close',
@@ -169,6 +202,27 @@
                 contentType: "application/json",
                 success: function (res) {
                     swal("完成");
+                }
+            });
+        },
+        start: function (feedId, taskId) {
+
+            var url = "http://" + proxyUrl + "/api/feed/crawl?feedId=" + feedId;
+            if (taskId && taskId > 0) {
+                url += "&taskId=" + taskId;
+            }
+
+            $.getJSON(url, function (d) {
+                $("#crawl_msg").text(d.state);
+
+                if (!d.completed) {
+                    module.start(feedId, d.taskId);
+                } else {
+                    var options = {
+                        collapsed: false,
+                        withQuotes: true
+                    };
+                    $('#crawl_result').jsonViewer(d.result, options);
                 }
             });
         }

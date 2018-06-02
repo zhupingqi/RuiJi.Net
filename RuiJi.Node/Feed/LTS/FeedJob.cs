@@ -62,7 +62,7 @@ namespace RuiJi.Node.Feed.LTS
                     {
                         var item = pool.QueueWorkItem((u) =>
                         {
-                            DoTask(u);
+                            DoTask(u, true);
                         }, feed);
 
                         waits.Add(item);
@@ -105,12 +105,12 @@ namespace RuiJi.Node.Feed.LTS
             }
         }
 
-        public void DoTask(FeedModel feed)
+        public FeedSnapshot DoTask(FeedModel feed,bool persistence = false)
         {
             try
             {
                 var request = new Request(feed.Address);
-                if(feed.Headers != null)
+                if (feed.Headers != null)
                     request.Headers = feed.Headers;
                 request.Headers.Add(new WebHeader("Referer", request.Uri.AbsoluteUri));
                 request.Method = feed.Method;
@@ -121,32 +121,39 @@ namespace RuiJi.Node.Feed.LTS
 
                 if (response != null && response.StatusCode == HttpStatusCode.OK)
                 {
-                    var fileName = baseDir + @"snapshot\" + feed.Id + "_" + DateTime.Now.Ticks + ".json";
-                    if (feed.Delay > 0)
-                    {
-                        fileName = baseDir + @"delay\" + feed.Id + "_" + DateTime.Now.AddMinutes(feed.Delay).Ticks + ".json";
-                    }
-
                     var content = Convert(response.Data.ToString(), Encoding.GetEncoding(response.Charset), Encoding.UTF8);
 
-                    var json = JsonConvert.SerializeObject(new FeedSnapshot
+                    var snap = new FeedSnapshot
                     {
                         Url = feed.Address,
                         Content = content,
                         Type = feed.Type,
                         BlockExpression = feed.BlockExpression,
                         RuiJiExpression = feed.RuiJiExpression
-                    }, Formatting.Indented);
+                    };
 
-                    File.WriteAllText(fileName, json, Encoding.UTF8);
+                    if (persistence)
+                    {
+                        var json = JsonConvert.SerializeObject(snap, Formatting.Indented);
 
-                    //SeedCache.Instance.SetLastVisitTime(url, DateTime.Now);
+                        var fileName = baseDir + @"snapshot\" + feed.Id + "_" + DateTime.Now.Ticks + ".json";
+                        if (feed.Delay > 0)
+                        {
+                            fileName = baseDir + @"delay\" + feed.Id + "_" + DateTime.Now.AddMinutes(feed.Delay).Ticks + ".json";
+                        }
+
+                        File.WriteAllText(fileName, json, Encoding.UTF8);
+                    }
+
+                    return snap;
                 }
             }
             catch (Exception ex)
             {
-
+                
             }
+
+            return null;
         }
 
         private string Convert(string input, Encoding source, Encoding target)

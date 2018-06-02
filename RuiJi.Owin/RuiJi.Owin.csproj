@@ -221,6 +221,7 @@
     </Content>
     <Content Include="www\misc\cluster.html" />
     <Content Include="www\misc\cluster.js" />
+    <Content Include="www\misc\feed\crawl.html" />
     <Content Include="www\misc\feed\feed.html" />
     <Content Include="www\misc\feed\entry.js" />
     <Content Include="www\misc\feed\feeds.html" />
@@ -477,6 +478,8 @@
     <Content Include="www\scripts\css.min.js" />
     <Content Include="www\scripts\echarts.min.js" />
     <Content Include="www\scripts\jquery-3.1.1.min.js" />
+    <Content Include="www\scripts\jquery.json-viewer.css" />
+    <Content Include="www\scripts\jquery.json-viewer.js" />
     <Content Include="www\scripts\jstree\jstree.js" />
     <Content Include="www\scripts\jstree\jstree.min.js" />
     <Content Include="www\scripts\jstree\themes\default-dark\32px.png" />

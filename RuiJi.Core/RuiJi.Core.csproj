@@ -142,6 +142,13 @@
     <Compile Include="Utils\Suffix\DomainParser.cs" />
     <Compile Include="Utils\Suffix\Rule.cs" />
     <Compile Include="Utils\Suffix\RuleDefinition.cs" />
+    <Compile Include="Utils\Tasks\IParallelTaskFunc.cs" />
+    <Compile Include="Utils\Tasks\IProgress.cs" />
+    <Compile Include="Utils\Tasks\ITask.cs" />
+    <Compile Include="Utils\Tasks\ITaskResultcs.cs" />
+    <Compile Include="Utils\Tasks\ParallelTask.cs" />
+    <Compile Include="Utils\Tasks\ParallelTaskBase.cs" />
+    <Compile Include="Utils\Tasks\ParallelTaskManager.cs" />
     <Compile Include="Utils\Wildcard.cs" />
   </ItemGroup>
   <ItemGroup>

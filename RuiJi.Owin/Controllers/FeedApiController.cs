@@ -2,8 +2,10 @@
 using RuiJi.Core.Extracter;
 using RuiJi.Core.Utils;
 using RuiJi.Core.Utils.Page;
+using RuiJi.Core.Utils.Tasks;
 using RuiJi.Node;
 using RuiJi.Node.Feed;
+using RuiJi.Node.Feed.LTS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -160,6 +162,41 @@ namespace RuiJi.Owin.Controllers
             return feed;
         }
 
+        [HttpGet]
+        public object RunCrawl([FromUri]CrawlTaskModel crawlTask)
+        {
+            ParallelTask task;
+
+            if (crawlTask.TaskId == 0)
+            {
+                task = ParallelTaskManager.StartNew<CrawlTaskFunc>(crawlTask.FeedId);
+            }
+            else
+            {
+                task = ParallelTaskManager.Get(crawlTask.TaskId);
+            }
+
+            if (task.Wait(1000))
+            {
+                return new
+                {
+                    completed = task.IsCompleted,
+                    state = task.ProgressState,
+                    taskId = task.TaskId,
+                    result = task.Task.Result
+                };
+            }
+            else
+            {
+                return new
+                {
+                    completed = task.IsCompleted,
+                    state = task.ProgressState,
+                    taskId = task.TaskId
+                };
+            }
+        }
+
         private List<FeedModel> PreProcessUrl(List<FeedModel> feeds)
         {
             foreach (var feed in feeds)
@@ -176,6 +213,49 @@ namespace RuiJi.Owin.Controllers
             feeds.RemoveAll(m => string.IsNullOrEmpty(m.Address));
 
             return feeds;
+        }
+    }
+
+    public class CrawlTaskModel
+    {
+        [JsonProperty("feedId")]
+        public int FeedId { get; set; }
+
+        [JsonProperty("taskId")]
+        public int TaskId { get; set; }
+    }
+
+    public class CrawlTaskFunc : IParallelTaskFunc
+    {
+        public object Run(object t, ParallelTask task)
+        {
+            var results = new List<ExtractResult>();
+            var reporter = task.Progress as IProgress<string>;
+
+            reporter.Report("正在读取Feed记录");
+            var feed = FeedLiteDb.GetFeed(Convert.ToInt32(t));
+
+            reporter.Report("正在下载 Feed");
+
+            var job = new FeedJob();
+            var snap = job.DoTask(feed, false);
+            reporter.Report("Feed 下载完成");
+
+            reporter.Report("正在提取Feed地址");
+            var j = new FeedExtractJob();
+            var urls = j.ExtractAddress(snap);
+            reporter.Report("Feed地址提取完成");
+
+            foreach (var url in urls)
+            {
+                reporter.Report("正在提取地址 " + url);
+                var r = ContentQueue.Instance.Extract(url);
+                results.AddRange(r);
+            }
+
+            reporter.Report("计算完成");
+
+            return results;
         }
     }
 }

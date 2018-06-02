@@ -45,5 +45,15 @@ namespace RuiJi.Net.Test
 
             Assert.IsTrue(o.Selectors.Count > 0);
         }
+
+        [TestMethod]
+        public void TestConverter()
+        {
+            var t = new ExtractTile("a");
+
+            var json = JsonConvert.SerializeObject(t);
+
+            Assert.IsTrue(true);
+        }
     }
 }

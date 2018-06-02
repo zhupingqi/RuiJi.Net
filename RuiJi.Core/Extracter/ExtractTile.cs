@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RuiJi.Core.Extensions;
 using RuiJi.Core.Extracter.Selector;
 using System;
 using System.Collections.Generic;
