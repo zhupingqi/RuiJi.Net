@@ -9,6 +9,8 @@ RuiJi.Net support ip polling that using the server public network address and pr
 
 Building, who can help me...
 
+[http://www.ruijihg.com/archives/ruijinet/getting-started](http://www.ruijihg.com/archives/ruijinet/getting-started)
+
 ## Notice
 
 The project is under development.
