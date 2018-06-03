@@ -132,20 +132,9 @@ css .entry-content:html
             var content = response.Data.ToString();
 
             var block = new ExtractBlock();
-            var s = RuiJiExpression.PaserBlock(@"[paging]
-#paging
-css #listnav:ohtml
-    
-[tile]
-#tile
-css #listnav li
-
-    [meta]
-    #page
-    css #listnav a:text
-
-    #url
-    css #listnav a[href]
+            var s = RuiJiExpression.PaserBlock(@"
+[paging]
+css #listnav a[href]
 ");
             
             var result = RuiJiExtracter.Extract(content, s);

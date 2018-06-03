@@ -26,7 +26,7 @@ namespace RuiJi.Net.Core.Extracter
         public Dictionary<string, ExtractResult> Metas { get;set; }
 
         [JsonProperty("paging")]
-        public Dictionary<string, string> Paging
+        public List<string> Paging
         {
             get
             {
@@ -40,12 +40,11 @@ namespace RuiJi.Net.Core.Extracter
                     return null;
                 }
 
-                var dic = new Dictionary<string, string>();
+                var dic = new List<string>();
 
                 foreach (var t in pageBlock.Tiles)
                 {
-                    if(t.Metas.ContainsKey("page") && t.Metas.ContainsKey("url"))
-                        dic.Add(t.Metas["page"].Content, t.Metas["url"].Content);
+                    dic.Add(t.Content);
                 }
 
                 return dic;

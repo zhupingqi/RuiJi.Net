@@ -45,6 +45,8 @@ namespace RuiJi.Net.Core.Extracter
                     case "[paging]":
                         {
                             var b = new ExtractBlock("paging");
+                            string.IsNullOrEmpty(b.Name);
+                                b.Name = "paging";
                             b.TileSelector = PaserTile(lines[key]);
                             block.Blocks.Add(b);
                             break;
@@ -155,7 +157,8 @@ namespace RuiJi.Net.Core.Extracter
                             }
                             else
                             {
-                                return null;
+                                selector.Type = CssTypeEnum.OutHtml;
+                                selector.Value = Regex.Replace(p, ":ohtml$", "").Trim();
                             }
                         }
 
