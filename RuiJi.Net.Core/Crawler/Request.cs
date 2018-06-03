@@ -34,6 +34,8 @@ namespace RuiJi.Net.Core.Crawler
 
         public bool UseCookie { get; set; }
 
+        public RequestProxy Proxy { get; set; }
+
         public Request()
         {
             Method = "GET";

@@ -16,9 +16,6 @@ namespace RuiJi.Net.Core.Extracter
         [JsonProperty("blocks", NullValueHandling = NullValueHandling.Ignore)]
         public ExtractBlockCollection Blocks { get; set; }
 
-        [JsonIgnore]
-        public string[] Childs { get; set; }
-
         [JsonProperty("metas", NullValueHandling = NullValueHandling.Ignore)]
         public ExtractMetaCollection Metas { get; set; }
 

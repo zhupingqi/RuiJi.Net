@@ -72,3 +72,9 @@
 textarea[name='expression']{
     height:60px;
 }
+
+table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

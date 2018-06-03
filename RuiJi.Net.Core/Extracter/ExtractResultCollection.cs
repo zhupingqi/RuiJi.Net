@@ -6,67 +6,42 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Extracter
 {
-    public class ExtractResultCollection
+    public class ExtractResultCollection : List<ExtractResult>
     {
         public List<ExtractResult> Results
         {
-            get;
-            private set;
+            get {
+                return this;
+            }
         }
 
         public ExtractResultCollection()
         {
-            Results = new List<ExtractResult>();
+            
         }
 
         public string[] AllKeys
         {
             get
             {
-                return Results.Select(m => m.Name).Distinct().ToArray();
+                return this.Select(m => m.Name).Distinct().ToArray();
             }
         }
 
-        public int Count
+        public ExtractResult this[string name]
         {
             get
             {
-                return Results.Count;
+                return this.SingleOrDefault(m => m.Name == name);
             }
-        }
-
-        public List<ExtractResult> this[string name]
-        {
-            get
-            {
-                return Results.Where(m => m.Name == name).ToList();
-            }
-        }
-
-        public ExtractResult this[int index]
-        {
-            get
-            {
-                return Results[index];
-            }
-        }
-
-        public void Add(ExtractResult result)
-        {
-            Results.Add(result);
         }
 
         public void Add(ExtractResultCollection collection)
         {
-            foreach (var r in collection.Results)
+            foreach (var r in collection)
             {
                 Add(r);
             }
-        }
-
-        public void Clear()
-        {
-            Results.Clear();
         }
 
         public bool HasKeys()
@@ -74,5 +49,4 @@ namespace RuiJi.Net.Core.Extracter
             return AllKeys.Length > 0;
         }
     }
-
 }

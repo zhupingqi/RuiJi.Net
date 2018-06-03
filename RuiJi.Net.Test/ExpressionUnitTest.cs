@@ -56,7 +56,7 @@ namespace RuiJi.Net.Test
                 jpath dlkejl -r
                 ";
 
-            var m = RuiJiExtracter.PaserMeta(metas);
+            var m = RuiJiExpression.PaserMeta(metas);
 
             Assert.IsTrue(m.Count > 0);
         }
@@ -117,22 +117,53 @@ css .entry-content:html
     css h4 a[href] -r";
 
 
-            var m = RuiJiExtracter.PaserBlock(block);
+            var m = RuiJiExpression.PaserBlock(block);
 
             Assert.IsTrue(m.Metas.Count > 0);
         }
 
         [TestMethod]
+        public void TestPaging()
+        {
+            var crawler = new RuiJiCrawler();
+            var request = new Request("https://www.kuaidaili.com/free/inha/1/");
+
+            var response = crawler.Request(request);
+            var content = response.Data.ToString();
+
+            var block = new ExtractBlock();
+            var s = RuiJiExpression.PaserBlock(@"[paging]
+#paging
+css #listnav:ohtml
+    
+[tile]
+#tile
+css #listnav li
+
+    [meta]
+    #page
+    css #listnav a:text
+
+    #url
+    css #listnav a[href]
+");
+            
+            var result = RuiJiExtracter.Extract(content, s);
+
+            Assert.IsTrue(true);
+        }
+
+        [TestMethod]
         public void TestExtract()
         {
-            var crawler = new IPCrawler();
+            var crawler = new RuiJiCrawler();
             var request = new Request("http://www.ruijihg.com/%e5%bc%80%e5%8f%91/");
 
             var response = crawler.Request(request);
             var content = response.Data.ToString();
 
             var block = new ExtractBlock();
-            var s = RuiJiExtracter.ParserBase("css a[href]").Selectors;
+            var s = RuiJiExpression.ParserBase("css a[href]").Selectors;
             block.TileSelector.Selectors.AddRange(s);
             var result = RuiJiExtracter.Extract(content, block);
 

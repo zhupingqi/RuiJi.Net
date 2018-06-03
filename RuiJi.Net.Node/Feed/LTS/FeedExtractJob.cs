@@ -164,7 +164,7 @@ namespace RuiJi.Net.Node.Feed.LTS
                 if (!string.IsNullOrEmpty(feed.RuiJiExpression))
                 {
                     block.TileSelector.Selectors.Clear();
-                    var s = RuiJiExtracter.ParserBase(feed.RuiJiExpression).Selectors;
+                    var s = RuiJiExpression.ParserBase(feed.RuiJiExpression).Selectors;
                     block.TileSelector.Selectors.AddRange(s);
                 }
             }
@@ -172,14 +172,19 @@ namespace RuiJi.Net.Node.Feed.LTS
             var result = RuiJiExtracter.Extract(feed.Content, block);
             var results = new List<string>();
 
-            foreach (var item in result.Tiles.Results)
+            if (result.Tiles != null)
             {
-                var href = item.Content;
-                if (href.Contains("#"))
+                foreach (var item in result.Tiles)
                 {
-                    href = href.Substring(0, href.IndexOf('#'));
+                    var href = item.Content;
+                    if (href.Contains("#"))
+                    {
+                        href = href.Substring(0, href.IndexOf('#'));
+                    }
+                    if (Uri.IsWellFormedUriString(href, UriKind.Relative))
+                        href = new Uri(new Uri(feed.Url), href).AbsoluteUri.ToString();
+                    results.Add(href);
                 }
-                results.Add(href);
             }
 
             return results.Distinct().ToList();

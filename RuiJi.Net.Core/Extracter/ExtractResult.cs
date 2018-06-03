@@ -23,7 +23,34 @@ namespace RuiJi.Net.Core.Extracter
         public ExtractResultCollection Blocks { get; set; }
 
         [JsonProperty("metas")]
-        public Dictionary<string, ExtractResult> Metas { get; set; }
+        public Dictionary<string, ExtractResult> Metas { get;set; }
+
+        [JsonProperty("paging")]
+        public Dictionary<string, string> Paging
+        {
+            get
+            {
+                if (Blocks == null)
+                    return null;
+
+                var pageBlock = Blocks.SingleOrDefault(m => m.Name == "paging");
+
+                if (pageBlock == null)
+                {
+                    return null;
+                }
+
+                var dic = new Dictionary<string, string>();
+
+                foreach (var t in pageBlock.Tiles)
+                {
+                    if(t.Metas.ContainsKey("page") && t.Metas.ContainsKey("url"))
+                        dic.Add(t.Metas["page"].Content, t.Metas["url"].Content);
+                }
+
+                return dic;
+            }
+        }
 
         public ExtractResult()
         {

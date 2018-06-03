@@ -25,7 +25,7 @@ namespace RuiJi.Net.Owin.Controllers
 
             if (node.NodeType == Node.NodeTypeEnum.CRAWLER)
             {
-                var crawler = new IPCrawler();
+                var crawler = new RuiJiCrawler();
                 var response = crawler.Request(request);
 
                 var maxRefresh = 2;
@@ -33,7 +33,7 @@ namespace RuiJi.Net.Owin.Controllers
 
                 while (HasRefreshMeta(response, out refreshUrl) && maxRefresh > 0)
                 {
-                    crawler = new IPCrawler();
+                    crawler = new RuiJiCrawler();
                     request.Uri = new Uri(refreshUrl);
                     response = crawler.Request(request);
 

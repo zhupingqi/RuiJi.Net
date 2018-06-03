@@ -18,7 +18,7 @@ namespace RuiJi.Net.Test
         [TestMethod]
         public void TestLocalExtract()
         {
-            var crawler = new IPCrawler();
+            var crawler = new RuiJiCrawler();
             var request = new Request("http://www.ruijihg.com/%e5%bc%80%e5%8f%91/");
 
             var response = crawler.Request(request);

@@ -28,6 +28,7 @@ namespace RuiJi.Net.Owin.Controllers
                 if (!string.IsNullOrEmpty(request.Ip))
                 {
                     result = CrawlerManager.Instance.GetServer(request.Ip);
+                    request.Ip = result.ClientIp;
                 }
                 else
                 {
@@ -39,8 +40,6 @@ namespace RuiJi.Net.Owin.Controllers
                             Data = "no clrawler ip elect!"
                         };
                 }
-
-                request.Ip = result.ClientIp;
 
                 var client = new RestClient("http://" + result.BaseUrl);
                 var restRequest = new RestRequest("api/crawl");

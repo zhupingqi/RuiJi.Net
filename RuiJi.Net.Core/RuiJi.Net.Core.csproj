@@ -67,8 +67,8 @@
   <ItemGroup>
     <Compile Include="Cookie\IpCookieManager.cs" />
     <Compile Include="Cookie\ManagedCookie.cs" />
-    <Compile Include="Crawler\IPCrawler.cs" />
-    <Compile Include="Crawler\ProxyCrawler.cs" />
+    <Compile Include="Crawler\RuiJiCrawler.cs" />
+    <Compile Include="Crawler\RequestProxy.cs" />
     <Compile Include="Crawler\WebHeader.cs" />
     <Compile Include="Extensions\EnumConvert.cs" />
     <Compile Include="Extensions\NewtonJsonSerializer.cs" />
@@ -87,6 +87,7 @@
     <Compile Include="Extracter\Processor\JsonPathProcessor.cs" />
     <Compile Include="Extracter\Processor\XPathProcessor.cs" />
     <Compile Include="Extracter\ProcessResult.cs" />
+    <Compile Include="Extracter\RuiJiExpression.cs" />
     <Compile Include="Extracter\RuiJiExtracter.cs" />
     <Compile Include="Extracter\ExtractBlock.cs" />
     <Compile Include="Extracter\ExtractBlockCollection.cs" />

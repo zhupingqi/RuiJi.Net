@@ -11,13 +11,13 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Crawler
 {
-    public class IPCrawler
+    public class RuiJiCrawler
     {
         private static List<string> ignoreHeader = new List<string>() {
             "Host", "Connection"
         };
 
-        public IPCrawler()
+        public RuiJiCrawler()
         {
 
         }
@@ -97,6 +97,18 @@ namespace RuiJi.Net.Core.Crawler
             if (!string.IsNullOrEmpty(cookie) && request.UseCookie)
             {
                 httpRequest.Headers.Add("Cookie", cookie);
+            }
+
+            if (request.Proxy != null && String.IsNullOrEmpty(request.Proxy.Host + request.Proxy.Port))
+            {
+                var proxy = new WebProxy(request.Proxy.Host,request.Proxy.Port);
+
+                if (!string.IsNullOrEmpty(request.Proxy.Username + request.Proxy.Password))
+                { 
+                    proxy.Credentials = new NetworkCredential(request.Proxy.Username, request.Proxy.Password);
+                }
+
+                httpRequest.Proxy = proxy;
             }
 
             if (!string.IsNullOrEmpty(request.Ip))

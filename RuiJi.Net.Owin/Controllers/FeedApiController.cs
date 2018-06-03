@@ -71,7 +71,7 @@ namespace RuiJi.Net.Owin.Controllers
                     return RuleLiteDB.Match(url).Select(m => JsonConvert.DeserializeObject<ExtractBlock>(m.BlockExpression)).ToList();
                 else
                 {
-                    return RuleLiteDB.Match(url).Select(m => RuiJiExtracter.PaserBlock(m.RuiJiExpression)).ToList();
+                    return RuleLiteDB.Match(url).Select(m => RuiJiExpression.PaserBlock(m.RuiJiExpression)).ToList();
                 }
             }
 
@@ -89,8 +89,10 @@ namespace RuiJi.Net.Owin.Controllers
                 if (node.NodeType == Node.NodeTypeEnum.FEEDPROXY)
                 {
                     var ps = pages.Split(',').Select(m => Convert.ToInt32(m)).ToArray();
+                    var feeds = FeedLiteDb.GetFeedModels(ps, 50);
+                    feeds.RemoveAll(m => m.Status == FeedStatus.OFF);
 
-                    return PreProcessUrl(FeedLiteDb.GetFeedModels(ps, 50));
+                    return PreProcessUrl(feeds);
                 }
             }
             catch { }
