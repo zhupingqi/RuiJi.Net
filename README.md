@@ -7,7 +7,9 @@ RuiJi.Net support ip polling that using the server public network address and pr
 
 ## Document
 
-Building, who can help me...
+Building
+
+[http://www.ruijihg.com/archives/ruijinet/getting-started](http://www.ruijihg.com/archives/ruijinet/getting-started)
 
 ## Notice
 
@@ -38,7 +40,7 @@ The project is under development.
 
 ## About extract structure
 
- ![Image text](/RuiJi.ChromePlugin/extract_structure.png)
+ ![Image text](http://www.ruijihg.com/wp-content/uploads/2018/06/4-2.png)
 
 
 ## Examples

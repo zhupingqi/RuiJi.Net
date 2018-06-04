@@ -1,0 +1,519 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0E98716C-4A38-45D4-8B53-7705A342AA42}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RuiJi.Net.Owin</RootNamespace>
+    <AssemblyName>RuiJi.Net.Owin</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Owin, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.4.0.0\lib\net451\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Cors, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Cors.4.0.0\lib\net451\Microsoft.Owin.Cors.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Diagnostics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Diagnostics.4.0.0\lib\net451\Microsoft.Owin.Diagnostics.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.FileSystems, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.FileSystems.4.0.0\lib\net451\Microsoft.Owin.FileSystems.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.HttpListener, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.HttpListener.4.0.0\lib\net451\Microsoft.Owin.Host.HttpListener.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Hosting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Hosting.4.0.0\lib\net451\Microsoft.Owin.Hosting.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.StaticFiles, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.StaticFiles.4.0.0\lib\net451\Microsoft.Owin.StaticFiles.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=106.2.2.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.2.2\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.6\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Cors, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.0.0\lib\net45\System.Web.Cors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.6\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.Owin, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.2.6\lib\net45\System.Web.Http.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controllers\ExtracterProxyApiController.cs" />
+    <Compile Include="Controllers\ExtracterApiController.cs" />
+    <Compile Include="Controllers\CrawlerApiController.cs" />
+    <Compile Include="Controllers\FeedApiController.cs" />
+    <Compile Include="Controllers\InfoApiController.cs" />
+    <Compile Include="Controllers\ZooApiController.cs" />
+    <Compile Include="ServerManager.cs" />
+    <Compile Include="SystemInfo.cs" />
+    <Compile Include="WebApiCacheAttribute.cs" />
+    <Compile Include="WebApiServer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Controllers\CrawlerProxyApiController.cs" />
+    <Compile Include="Startup.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="conf\clusterstate.json" />
+    <None Include="packages.config" />
+    <None Include="www\fonts\fontawesome-webfont.eot" />
+    <None Include="www\fonts\fontawesome-webfont.ttf" />
+    <None Include="www\fonts\fontawesome-webfont.woff" />
+    <None Include="www\fonts\fontawesome-webfont.woff2" />
+    <None Include="www\fonts\FontAwesome.otf" />
+    <None Include="www\fonts\jsglyph.eot" />
+    <None Include="www\fonts\jsglyph.ttf" />
+    <None Include="www\fonts\jsglyph.woff" />
+    <None Include="www\scripts\bootstrap-3.3.5\dist\css\bootstrap-theme.css.map" />
+    <None Include="www\scripts\bootstrap-3.3.5\dist\css\bootstrap.css.map" />
+    <None Include="www\scripts\bootstrap-3.3.5\dist\fonts\glyphicons-halflings-regular.eot" />
+    <None Include="www\scripts\bootstrap-3.3.5\dist\fonts\glyphicons-halflings-regular.ttf" />
+    <None Include="www\scripts\bootstrap-3.3.5\dist\fonts\glyphicons-halflings-regular.woff" />
+    <None Include="www\scripts\bootstrap-3.3.5\dist\fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\.csscomb.json" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\.csslintrc" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\alerts.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\badges.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\bootstrap.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\breadcrumbs.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\button-groups.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\buttons.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\carousel.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\close.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\code.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\component-animations.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\dropdowns.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\forms.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\glyphicons.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\grid.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\input-groups.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\jumbotron.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\labels.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\list-group.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\media.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\mixins.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\mixins\alerts.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\mixins\background-variant.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\mixins\border-radius.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\mixins\buttons.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\mixins\center-block.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\mixins\clearfix.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\mixins\forms.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\mixins\gradients.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\mixins\grid-framework.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\mixins\grid.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\mixins\hide-text.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\mixins\image.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\mixins\labels.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\mixins\list-group.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\mixins\nav-divider.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\mixins\nav-vertical-align.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\mixins\opacity.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\mixins\pagination.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\mixins\panels.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\mixins\progress-bar.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\mixins\reset-filter.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\mixins\reset-text.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\mixins\resize.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\mixins\responsive-visibility.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\mixins\size.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\mixins\tab-focus.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\mixins\table-row.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\mixins\text-emphasis.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\mixins\text-overflow.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\mixins\vendor-prefixes.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\modals.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\navbar.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\navs.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\normalize.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\pager.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\pagination.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\panels.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\popovers.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\print.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\progress-bars.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\responsive-embed.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\responsive-utilities.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\scaffolding.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\tables.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\theme.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\thumbnails.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\tooltip.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\type.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\utilities.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\variables.less" />
+    <None Include="www\scripts\bootstrap-3.3.5\less\wells.less" />
+    <None Include="www\scripts\bootstrap3-dialog\less\bootstrap-dialog.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RuiJi.Net.Core\RuiJi.Net.Core.csproj">
+      <Project>{a27677e3-1ce8-4a8c-b041-9f7a812546f2}</Project>
+      <Name>RuiJi.Net.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RuiJi.Net.NodeVisitor\RuiJi.Net.NodeVisitor.csproj">
+      <Project>{934beb73-e7c2-4c70-b697-a5fb2066c17e}</Project>
+      <Name>RuiJi.Net.NodeVisitor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RuiJi.Net.Node\RuiJi.Net.Node.csproj">
+      <Project>{97673817-f983-4ce8-919e-d2e43e46144c}</Project>
+      <Name>RuiJi.Net.Node</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="conf\config\online_proxy.txt" />
+    <Content Include="www\fonts\fontawesome-webfont.svg" />
+    <Content Include="www\fonts\jsglyph.svg" />
+    <Content Include="www\index.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\misc\cluster.html" />
+    <Content Include="www\misc\cluster.js" />
+    <Content Include="www\misc\feed\crawl.html" />
+    <Content Include="www\misc\feed\feed.html" />
+    <Content Include="www\misc\feed\entry.js" />
+    <Content Include="www\misc\feed\feeds.html" />
+    <Content Include="www\misc\feed\feeds.js" />
+    <Content Include="www\fonts\font-awesome.min.css" />
+    <Content Include="www\misc\feed\rule.html" />
+    <Content Include="www\misc\log.js" />
+    <Content Include="www\misc\main.js" />
+    <Content Include="www\misc\node.html" />
+    <Content Include="www\misc\node.js" />
+    <Content Include="www\misc\feed\plugin.js" />
+    <Content Include="www\misc\proto.js" />
+    <Content Include="www\misc\feed\rules.html" />
+    <Content Include="www\misc\feed\rules.js" />
+    <Content Include="www\misc\feed\setting.html" />
+    <Content Include="www\misc\feed\setting.js" />
+    <Content Include="www\misc\site.css" />
+    <Content Include="www\misc\feed\statistics.js" />
+    <Content Include="www\misc\status.html" />
+    <Content Include="www\misc\status.js" />
+    <Content Include="www\misc\utils.js" />
+    <Content Include="www\misc\entry.js" />
+    <Content Include="www\misc\langs\core.js" />
+    <Content Include="www\misc\langs\de.js" />
+    <Content Include="www\misc\langs\en.js" />
+    <Content Include="www\misc\langs\fra.js" />
+    <Content Include="www\misc\langs\jp.js" />
+    <Content Include="www\misc\langs\kor.js" />
+    <Content Include="www\misc\langs\zh.js" />
+    <Content Include="www\scripts\bootstrap-3.3.5\dist\css\bootstrap-theme.css" />
+    <Content Include="www\scripts\bootstrap-3.3.5\dist\css\bootstrap-theme.min.css" />
+    <Content Include="www\scripts\bootstrap-3.3.5\dist\css\bootstrap.css" />
+    <Content Include="www\scripts\bootstrap-3.3.5\dist\css\bootstrap.min.css" />
+    <Content Include="www\scripts\bootstrap-3.3.5\dist\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="www\scripts\bootstrap-3.3.5\dist\img\glyphicons-halflings-white.png" />
+    <Content Include="www\scripts\bootstrap-3.3.5\dist\img\glyphicons-halflings.png" />
+    <Content Include="www\scripts\bootstrap-3.3.5\dist\js\bootstrap.js" />
+    <Content Include="www\scripts\bootstrap-3.3.5\dist\js\bootstrap.min.js" />
+    <Content Include="www\scripts\bootstrap-3.3.5\dist\js\npm.js" />
+    <Content Include="www\scripts\bootstrap-table\bootstrap-table-locale-all.js" />
+    <Content Include="www\scripts\bootstrap-table\bootstrap-table-locale-all.min.js" />
+    <Content Include="www\scripts\bootstrap-table\bootstrap-table.css" />
+    <Content Include="www\scripts\bootstrap-table\bootstrap-table.js" />
+    <Content Include="www\scripts\bootstrap-table\bootstrap-table.min.css" />
+    <Content Include="www\scripts\bootstrap-table\bootstrap-table.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\accent-neutralise\bootstrap-table-accent-neutralise.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\accent-neutralise\bootstrap-table-accent-neutralise.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\angular\bootstrap-table-angular.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\angular\bootstrap-table-angular.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\auto-refresh\bootstrap-table-auto-refresh.css" />
+    <Content Include="www\scripts\bootstrap-table\extensions\auto-refresh\bootstrap-table-auto-refresh.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\auto-refresh\bootstrap-table-auto-refresh.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\click-edit-row\bootstrap-table-click-edit-row.css" />
+    <Content Include="www\scripts\bootstrap-table\extensions\click-edit-row\bootstrap-table-click-edit-row.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\click-edit-row\bootstrap-table-click-edit-row.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\cookie\bootstrap-table-cookie.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\cookie\bootstrap-table-cookie.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\copy-rows\bootstrap-table-copy-rows.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\copy-rows\bootstrap-table-copy-rows.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\defer-url\bootstrap-table-defer-url.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\defer-url\bootstrap-table-defer-url.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\editable\bootstrap-table-editable.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\editable\bootstrap-table-editable.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\export\bootstrap-table-export.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\export\bootstrap-table-export.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\filter-control\bootstrap-table-filter-control.css" />
+    <Content Include="www\scripts\bootstrap-table\extensions\filter-control\bootstrap-table-filter-control.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\filter-control\bootstrap-table-filter-control.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\filter\bootstrap-table-filter.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\filter\bootstrap-table-filter.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\flat-json\bootstrap-table-flat-json.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\flat-json\bootstrap-table-flat-json.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\group-by-v2\bootstrap-table-group-by.css" />
+    <Content Include="www\scripts\bootstrap-table\extensions\group-by-v2\bootstrap-table-group-by.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\group-by-v2\bootstrap-table-group-by.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\group-by\bootstrap-table-group-by.css" />
+    <Content Include="www\scripts\bootstrap-table\extensions\group-by\bootstrap-table-group-by.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\group-by\bootstrap-table-group-by.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\i18n-enhance\bootstrap-table-i18n-enhance.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\i18n-enhance\bootstrap-table-i18n-enhance.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\key-events\bootstrap-table-key-events.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\key-events\bootstrap-table-key-events.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\mobile\bootstrap-table-mobile.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\mobile\bootstrap-table-mobile.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\multi-column-toggle\bootstrap-table-multi-toggle.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\multi-column-toggle\bootstrap-table-multi-toggle.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\multiple-search\bootstrap-table-multiple-search.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\multiple-search\bootstrap-table-multiple-search.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\multiple-selection-row\bootstrap-table-multiple-selection-row.css" />
+    <Content Include="www\scripts\bootstrap-table\extensions\multiple-selection-row\bootstrap-table-multiple-selection-row.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\multiple-selection-row\bootstrap-table-multiple-selection-row.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\multiple-sort\bootstrap-table-multiple-sort.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\multiple-sort\bootstrap-table-multiple-sort.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\natural-sorting\bootstrap-table-natural-sorting.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\natural-sorting\bootstrap-table-natural-sorting.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\page-jumpto\bootstrap-table-jumpto.css" />
+    <Content Include="www\scripts\bootstrap-table\extensions\page-jumpto\bootstrap-table-jumpto.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\page-jumpto\bootstrap-table-jumpto.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\print\bootstrap-table-print.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\print\bootstrap-table-print.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\reorder-columns\bootstrap-table-reorder-columns.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\reorder-columns\bootstrap-table-reorder-columns.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\reorder-rows\bootstrap-table-reorder-rows.css" />
+    <Content Include="www\scripts\bootstrap-table\extensions\reorder-rows\bootstrap-table-reorder-rows.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\reorder-rows\bootstrap-table-reorder-rows.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\resizable\bootstrap-table-resizable.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\resizable\bootstrap-table-resizable.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\select2-filter\bootstrap-table-select2-filter.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\select2-filter\bootstrap-table-select2-filter.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\sticky-header\bootstrap-table-sticky-header.css" />
+    <Content Include="www\scripts\bootstrap-table\extensions\sticky-header\bootstrap-table-sticky-header.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\sticky-header\bootstrap-table-sticky-header.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\toolbar\bootstrap-table-toolbar.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\toolbar\bootstrap-table-toolbar.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\tree-column\bootstrap-table-tree-column.css" />
+    <Content Include="www\scripts\bootstrap-table\extensions\tree-column\bootstrap-table-tree-column.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\tree-column\bootstrap-table-tree-column.min.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\treegrid\bootstrap-table-treegrid.js" />
+    <Content Include="www\scripts\bootstrap-table\extensions\treegrid\bootstrap-table-treegrid.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-af-ZA.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-af-ZA.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ar-SA.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ar-SA.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ca-ES.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ca-ES.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-cs-CZ.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-cs-CZ.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-da-DK.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-da-DK.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-de-DE.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-de-DE.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-el-GR.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-el-GR.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-en-US.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-en-US.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-es-AR.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-es-AR.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-es-CL.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-es-CL.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-es-CR.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-es-CR.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-es-ES.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-es-ES.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-es-MX.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-es-MX.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-es-NI.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-es-NI.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-es-SP.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-es-SP.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-et-EE.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-et-EE.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-eu-EU.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-eu-EU.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-fa-IR.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-fa-IR.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-fr-BE.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-fr-BE.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-fr-FR.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-fr-FR.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-he-IL.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-he-IL.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-hr-HR.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-hr-HR.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-hu-HU.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-hu-HU.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-id-ID.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-id-ID.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-it-IT.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-it-IT.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ja-JP.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ja-JP.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ka-GE.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ka-GE.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ko-KR.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ko-KR.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ms-MY.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ms-MY.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-nb-NO.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-nb-NO.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-nl-NL.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-nl-NL.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-pl-PL.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-pl-PL.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-pt-BR.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-pt-BR.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-pt-PT.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-pt-PT.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ro-RO.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ro-RO.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ru-RU.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ru-RU.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-sk-SK.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-sk-SK.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-sv-SE.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-sv-SE.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-th-TH.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-th-TH.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-tr-TR.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-tr-TR.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-uk-UA.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-uk-UA.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ur-PK.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-ur-PK.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-uz-Latn-UZ.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-uz-Latn-UZ.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-vi-VN.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-vi-VN.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-zh-CN.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-zh-CN.min.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-zh-TW.js" />
+    <Content Include="www\scripts\bootstrap-table\locale\bootstrap-table-zh-TW.min.js" />
+    <Content Include="www\scripts\bootstrap3-dialog\css\bootstrap-dialog.css" />
+    <Content Include="www\scripts\bootstrap3-dialog\css\bootstrap-dialog.min.css" />
+    <Content Include="www\scripts\bootstrap3-dialog\js\bootstrap-dialog.js" />
+    <Content Include="www\scripts\bootstrap3-dialog\js\bootstrap-dialog.min.js" />
+    <Content Include="www\scripts\bootstrapvalidator\css\bootstrapValidator.css" />
+    <Content Include="www\scripts\bootstrapvalidator\css\bootstrapValidator.min.css" />
+    <Content Include="www\scripts\bootstrapvalidator\js\bootstrapValidator.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\bootstrapValidator.min.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\ar_MA.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\be_FR.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\be_NL.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\bg_BG.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\cs_CZ.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\da_DK.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\de_DE.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\en_US.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\es_CL.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\es_ES.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\fa_IR.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\fr_FR.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\gr_EL.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\he_IL.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\hu_HU.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\id_ID.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\it_IT.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\ja_JP.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\nl_NL.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\no_NO.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\pl_PL.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\pt_BR.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\pt_PT.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\ro_RO.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\ru_RU.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\sq_AL.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\sr_RS.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\sv_SE.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\th_TH.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\tr_TR.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\ua_UA.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\vi_VN.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\zh_CN.js" />
+    <Content Include="www\scripts\bootstrapvalidator\js\language\zh_TW.js" />
+    <Content Include="www\scripts\css.min.js" />
+    <Content Include="www\scripts\echarts.min.js" />
+    <Content Include="www\scripts\jquery-3.1.1.min.js" />
+    <Content Include="www\scripts\jquery.json-viewer.css" />
+    <Content Include="www\scripts\jquery.json-viewer.js" />
+    <Content Include="www\scripts\jstree\jstree.js" />
+    <Content Include="www\scripts\jstree\jstree.min.js" />
+    <Content Include="www\scripts\jstree\themes\default-dark\32px.png" />
+    <Content Include="www\scripts\jstree\themes\default-dark\40px.png" />
+    <Content Include="www\scripts\jstree\themes\default-dark\style.css" />
+    <Content Include="www\scripts\jstree\themes\default-dark\style.min.css" />
+    <Content Include="www\scripts\jstree\themes\default-dark\throbber.gif" />
+    <Content Include="www\scripts\jstree\themes\default\32px.png" />
+    <Content Include="www\scripts\jstree\themes\default\40px.png" />
+    <Content Include="www\scripts\jstree\themes\default\style.css" />
+    <Content Include="www\scripts\jstree\themes\default\style.min.css" />
+    <Content Include="www\scripts\jstree\themes\default\throbber.gif" />
+    <Content Include="www\scripts\require-tabs\require.tabs.js" />
+    <Content Include="www\scripts\require-tabs\tabs.css" />
+    <Content Include="www\scripts\require.js" />
+    <Content Include="www\scripts\sweetalert\sweetalert.css" />
+    <Content Include="www\scripts\sweetalert\sweetalert.min.js" />
+    <Content Include="www\scripts\template-web.js" />
+    <Content Include="www\scripts\template.helper.js" />
+    <Content Include="www\scripts\template.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="conf\config\crawler\" />
+    <Folder Include="conf\config\extracter\" />
+    <Folder Include="conf\config\proxy\" />
+    <Folder Include="conf\live_nodes\" />
+    <Folder Include="www\misc\feed\plugin\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(ProjectDir)www" "$(SolutionDir)RuiJi.Net.Cmd\bin\debug\www" /E /Y</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+</Project>

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using RuiJi.Core.Extensions.System;
-using RuiJi.Core.Extracter;
-using RuiJi.Core.Extracter.Enum;
-using RuiJi.Core.Extracter.Selector;
-using RuiJi.Node.Feed;
+using RuiJi.Net.Core.Extensions.System;
+using RuiJi.Net.Core.Extracter;
+using RuiJi.Net.Core.Extracter.Enum;
+using RuiJi.Net.Core.Extracter.Selector;
+using RuiJi.Net.Node.Feed;
 
 namespace RuiJi.Net.Test
 {
