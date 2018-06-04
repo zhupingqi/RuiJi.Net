@@ -28,14 +28,17 @@
 <script id="status_server_info" type="text/html">
     <div>
         <span>节点类型</span>
-        <div id="feed_type">{{nodeType}}</div>
+        <div>{{nodeType}}</div>
     </div>
     <br />
-    <div><span>启动时间</span></div>
+    <div>
+        <span>启动时间</span>
+        <div>{{startTime}}</div>
+    </div>
     <br />
     <div>
         <span>服务器</span>
-        <div>环境 .Net Framework 4.6 </div>
+        <div>环境 .Net Framework {{efVersion}} </div>
         <div>处理器 {{cpu}}</div>
         <div>内存 {{memory}}</div>
     </div>

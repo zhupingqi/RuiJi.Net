@@ -23,7 +23,7 @@ namespace RuiJi.Net.Owin.Controllers
             var memoryLoad = 100 - ((double)sys.MemoryAvailable / (double)sys.PhysicalMemory) * 100;
 
             var cpuLoad = sys.CpuLoad;
-
+            
             return new { memoryLoad = memoryLoad, cpuLoad = cpuLoad };
         }
 
@@ -41,7 +41,7 @@ namespace RuiJi.Net.Owin.Controllers
             SystemInfo sys = new SystemInfo();
             var memory = Math.Round((double)sys.PhysicalMemory / 1024 / 1024 / 1024, 1, MidpointRounding.AwayFromZero) + "GB";
 
-            return new { nodeType = server.NodeType.ToString(), cpu = sys.ProcessorName, memory = memory };
+            return new { nodeType = server.NodeType.ToString(), startTime = server.StartTime.ToString("yyyy-MM-dd HH:mm:ss"), cpu = sys.ProcessorName, memory = memory, efVersion = Environment.Version.ToString() };
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace RuiJi.Net.Owin.Controllers
         [HttpGet]
         public object Dll()
         {
-            var dlls = new string[] { "RuiJi.Core", "RuiJi.Net", "RuiJi.Owin" };
+            var dlls = new string[] { "RuiJi.Net.Core", "RuiJi.Net.Node", "RuiJi.Net.NodeVisitor", "RuiJi.Net.Owin" };
             var versions = new List<string>();
             foreach (var dll in dlls)
             {

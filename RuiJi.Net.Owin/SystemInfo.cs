@@ -15,6 +15,7 @@ namespace RuiJi.Net.Owin
         private int m_ProcessorCount = 0;   //CPU个数
         private PerformanceCounter pcCpuLoad;   //CPU计数器
         private long m_PhysicalMemory = 0;   //物理内存
+        //private long m_NetworkSpeed = 0;
 
         private const int GW_HWNDFIRST = 0;
         private const int GW_HWNDNEXT = 2;
@@ -68,10 +69,10 @@ namespace RuiJi.Net.Owin
             //moc = mc.GetInstances();
             //foreach (ManagementObject mo in moc)
             //{
-            //    //if (mo["TotalPhysicalMemory"] != null)
-            //    //{
-            //    //    m_PhysicalMemory = long.Parse(mo["TotalPhysicalMemory"].ToString());
-            //    //}
+            //    if (mo["MaxSpeed"] != null)
+            //    {
+            //        m_NetworkSpeed = long.Parse(mo["MaxSpeed"].ToString());
+            //    }
             //}
 
             ManagementObjectSearcher MySearcher = new ManagementObjectSearcher("SELECT * FROM Win32_Processor");
@@ -161,6 +162,16 @@ namespace RuiJi.Net.Owin
         }
         #endregion
 
+        //#region 网络速率
+        //public long NetworkSpeed
+        //{
+        //    get
+        //    {
+        //        return m_NetworkSpeed;
+        //    }
+        //}
+        //#endregion
+
         #region 结束指定进程
         /// <summary>
         /// 结束指定进程
@@ -176,7 +187,6 @@ namespace RuiJi.Net.Owin
             catch { }
         }
         #endregion
-
 
         #region 查找所有应用程序标题
         /// <summary>

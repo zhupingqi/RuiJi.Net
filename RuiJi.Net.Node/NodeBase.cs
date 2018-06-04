@@ -26,6 +26,8 @@ namespace RuiJi.Net.Node
 
         public NodeTypeEnum NodeType { get; private set; }
 
+        public DateTime StartTime { get; private set; }
+
         private bool force;
 
         public string States
@@ -38,11 +40,12 @@ namespace RuiJi.Net.Node
 
         public bool IsLeader { get; private set; }
 
-        public NodeBase(string baseUrl, string zkServer,string proxyUrl = "")
+        public NodeBase(string baseUrl, string zkServer, string proxyUrl = "")
         {
             this.BaseUrl = IPHelper.FixLocalUrl(baseUrl);
             this.ZkServer = IPHelper.FixLocalUrl(zkServer);
             this.ProxyUrl = IPHelper.FixLocalUrl(proxyUrl);
+            this.StartTime = DateTime.Now;
         }
 
         public virtual void Start()
@@ -58,7 +61,7 @@ namespace RuiJi.Net.Node
             try
             {
                 Console.WriteLine("node " + BaseUrl + " ready to startup!");
-                Console.WriteLine("try connect to zookeeper server : " + ZkServer);                
+                Console.WriteLine("try connect to zookeeper server : " + ZkServer);
 
                 zooKeeper = new ZooKeeper(ZkServer, TimeSpan.FromSeconds(30), watcher);
                 resetEvent.WaitOne();
@@ -167,7 +170,7 @@ namespace RuiJi.Net.Node
                 IsLeader = false;
                 Console.WriteLine(BaseUrl + " run for leader failed!");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -188,7 +191,7 @@ namespace RuiJi.Net.Node
             }
             catch (Exception ex)
             {
-                Console.WriteLine(BaseUrl + " read leader failed!");                
+                Console.WriteLine(BaseUrl + " read leader failed!");
             }
 
             return null;
@@ -217,7 +220,7 @@ namespace RuiJi.Net.Node
             }
         }
 
-        public void SetData(string path,string data,int version = -1)
+        public void SetData(string path, string data, int version = -1)
         {
             try
             {
@@ -294,7 +297,7 @@ namespace RuiJi.Net.Node
                         case KeeperState.Disconnected:
                             {
                                 Console.WriteLine("disconnected with zookeeper server");
-                                if(!service.force)
+                                if (!service.force)
                                     service.Start();
                                 service.force = false;
                                 break;
@@ -335,7 +338,7 @@ namespace RuiJi.Net.Node
 
             public void Process(WatchedEvent @event)
             {
-                if(@event.Type == EventType.NodeDeleted)
+                if (@event.Type == EventType.NodeDeleted)
                 {
                     Console.WriteLine("leader offline, run for leader");
                     service.RunForLeaderNode();
