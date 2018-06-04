@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Vanara.PInvoke;
+using static Vanara.PInvoke.IpHlpApi;
 
 namespace RuiJi.Net.Owin.Controllers
 {
@@ -23,8 +26,42 @@ namespace RuiJi.Net.Owin.Controllers
             var memoryLoad = 100 - ((double)sys.MemoryAvailable / (double)sys.PhysicalMemory) * 100;
 
             var cpuLoad = sys.CpuLoad;
-            
-            return new { memoryLoad = memoryLoad, cpuLoad = cpuLoad };
+
+            var iftable1 = IpHlpApi.GetIfTable();
+            long inSpeed1 = iftable1.Sum(m => m.dwInOctets);
+            long outSpeed1 = iftable1.Sum(m => m.dwOutOctets);
+
+            Thread.Sleep(1000);
+
+            var iftable2 = IpHlpApi.GetIfTable();
+            var inSpeed2 = iftable2.Sum(m => m.dwInOctets);
+            var outSpeed2 = iftable2.Sum(m => m.dwOutOctets);
+
+            var inSpeed = inSpeed2 - inSpeed1;
+            var outSpeed = outSpeed2 - outSpeed1;
+
+            var ada = IpHlpApi.GetInterfaceInfo();
+            ulong total = 0;
+
+            foreach (var a in ada.Adapter)
+            {
+                MIB_IF_ROW2 row = new MIB_IF_ROW2(a.Index);
+                IpHlpApi.GetIfEntry2(ref row);
+
+                if (row.InOctets > 0)
+                {
+                    total += row.ReceiveLinkSpeed;
+                }
+            }
+
+            total = total / 8;
+
+            return new {
+                memoryLoad = memoryLoad,
+                cpuLoad = cpuLoad,
+                inSpeed = (double)inSpeed * 100 / Convert.ToDouble(total),
+                outSpeed = (double)outSpeed * 100 / Convert.ToDouble(total)
+            };
         }
 
         /// <summary>
@@ -39,9 +76,15 @@ namespace RuiJi.Net.Owin.Controllers
             var server = ServerManager.Get(baseUrl);
 
             SystemInfo sys = new SystemInfo();
-            var memory = Math.Round((double)sys.PhysicalMemory / 1024 / 1024 / 1024, 1, MidpointRounding.AwayFromZero) + "GB";
+            var memory = Math.Round((double)sys.PhysicalMemory / 1024 / 1024 / 1024, 1, MidpointRounding.AwayFromZero) + "GB";           
 
-            return new { nodeType = server.NodeType.ToString(), startTime = server.StartTime.ToString("yyyy-MM-dd HH:mm:ss"), cpu = sys.ProcessorName, memory = memory, efVersion = sys.Version };
+            return new {
+                nodeType = server.NodeType.ToString(),
+                startTime = server.StartTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                cpu = sys.ProcessorName,
+                memory = memory,
+                efVersion = sys.Version
+            };
         }
 
         /// <summary>

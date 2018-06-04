@@ -24,12 +24,27 @@ namespace RuiJi.Net.Core.Extracter.Processor
                 return pr;
             }
 
-            var content = "<doc>" + result.Content + "</doc>";
+            var content = result.Content.Trim();
+
+            if (content.StartsWith("<td"))
+            {
+                content = "<tr>" + content + "</tr>";
+            }
+
+            if(content.StartsWith("<tr"))
+            {
+
+            }
+            else
+            {
+                content = "<div>" + content + "</div>";
+            }
+
             var cssSelector = selector as CssSelector;
             if (cssSelector.Type == CssTypeEnum.Text)
                 content = HtmlHelper.ClearTag(content);
 
-            CQ cq = CQ.Create(content, HtmlParsingMode.Auto);
+            CQ cq = CQ.Create(content, HtmlParsingMode.Auto,HtmlParsingOptions.AllowSelfClosingTags,DocType.XHTML);
             var elems = cq.Find(cssSelector.Value);
 
             pr = ProcessResult(elems, cssSelector);

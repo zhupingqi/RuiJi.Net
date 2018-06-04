@@ -2,8 +2,10 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RuiJi.Net.Core.Crawler;
 using RuiJi.Net.Core.Extracter;
+using RuiJi.Net.Core.Utils.Tasks;
 using RuiJi.Net.Node.Feed;
 using RuiJi.Net.Node.Feed.LTS;
+using RuiJi.Net.Owin.Controllers;
 
 namespace RuiJi.Net.Test
 {
@@ -133,10 +135,20 @@ css .entry-content:html
 
             var block = new ExtractBlock();
             var s = RuiJiExpression.PaserBlock(@"
+[tile]
+	css table.table-bordered tr:gt(0):ohtml
+
+	[meta]
+	#ip
+	css td[data-title='IP']:text
+
+    # port
+    css td[data-title='PORT']:text
+
 [paging]
 css #listnav a[href]
 ");
-            
+
             var result = RuiJiExtracter.Extract(content, s);
 
             Assert.IsTrue(true);
@@ -172,9 +184,22 @@ css #listnav a[href]
         [TestMethod]
         public void TestUrlExtract()
         {
-            var result = ContentQueue.Instance.Extract("http://www.ruijihg.com/archives/315");           
+            var result = ContentQueue.Instance.Extract("http://www.ruijihg.com/archives/315");
 
             Assert.IsTrue(true);
+        }
+
+        [TestMethod]
+        public void TestCrawlTaskFunc()
+        {
+            var task = new ParallelTask();
+            var model = new CrawlTaskModel();
+            model.FeedId = 2;
+
+            var fun = new CrawlTaskFunc();
+            var result = fun.Run(model, task);
+
+            Assert.IsTrue(result != null);
         }
     }
 }

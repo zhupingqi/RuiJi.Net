@@ -50,6 +50,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Http, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExtractUnitTest.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="RuleUnitTest.cs" />
     <Compile Include="CompileTest.cs" />
     <Compile Include="ExpressionUnitTest.cs" />
+    <Compile Include="SysUnitTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
