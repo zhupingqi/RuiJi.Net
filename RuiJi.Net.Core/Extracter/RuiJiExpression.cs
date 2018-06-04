@@ -14,7 +14,7 @@ namespace RuiJi.Net.Core.Extracter
         public static ExtractBlock PaserBlock(string expression)
         {
             expression = expression.Replace("\r\n", "\n").Trim();
-            var lines = Split(expression, new string[] { "[blocks]", "[tile]", "[meta]", "[paging]" });
+            var lines = Split(expression, new string[] { "[block]", "[blocks]", "[tile]", "[meta]", "[paging]" });
             var block = new ExtractBlock();
 
             foreach (var key in lines.Keys)
@@ -22,6 +22,7 @@ namespace RuiJi.Net.Core.Extracter
                 switch (key)
                 {
                     case "":
+                    case "[block]":
                         {
                             var b = ParserBase(lines[key]);
                             block.Name = b.Name;

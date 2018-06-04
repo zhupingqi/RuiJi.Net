@@ -171,7 +171,7 @@ namespace RuiJi.Net.Owin.Controllers
 
             if (crawlTask.TaskId == 0)
             {
-                task = ParallelTaskManager.StartNew<CrawlTaskFunc>(crawlTask.FeedId);
+                task = ParallelTaskManager.StartNew<CrawlTaskFunc>(crawlTask);
             }
             else
             {
@@ -225,23 +225,33 @@ namespace RuiJi.Net.Owin.Controllers
 
         [JsonProperty("taskId")]
         public int TaskId { get; set; }
+
+        [JsonProperty("content")]
+        public bool IncludeContent { get; set; }
     }
 
     public class CrawlTaskFunc : IParallelTaskFunc
     {
         public object Run(object t, ParallelTask task)
         {
+            var model = t as CrawlTaskModel;
+
             var results = new List<ExtractResult>();
             var reporter = task.Progress as IProgress<string>;
 
             reporter.Report("正在读取Feed记录");
-            var feed = FeedLiteDb.GetFeed(Convert.ToInt32(t));
+            var feed = FeedLiteDb.GetFeed(model.FeedId);
 
             reporter.Report("正在下载 Feed");
 
             var job = new FeedJob();
             var snap = job.DoTask(feed, false);
             reporter.Report("Feed 下载完成");
+
+            var block = RuiJiExpression.PaserBlock(feed.RuiJiExpression);
+
+            var feedResult = RuiJiExtracter.Extract(snap.Content, block);
+            results.Add(feedResult);
 
             reporter.Report("正在提取Feed地址");
             var j = new FeedExtractJob();
@@ -252,12 +262,33 @@ namespace RuiJi.Net.Owin.Controllers
             {
                 reporter.Report("正在提取地址 " + url);
                 var r = ContentQueue.Instance.Extract(url);
+                
                 results.AddRange(r);
             }
 
             reporter.Report("计算完成");
 
+            if (!model.IncludeContent)
+            {
+                results.ForEach((m) =>
+                {
+                    ClearContent(m);
+                });
+            }
+
             return results;
+        }
+
+        private void ClearContent(ExtractResult result)
+        {
+            result.Content = "";
+
+            if(result.Blocks != null && result.Blocks.Count > 0)
+            {
+                result.Blocks.ForEach((m) => {
+                    ClearContent(m);
+                });
+            }
         }
     }
 }

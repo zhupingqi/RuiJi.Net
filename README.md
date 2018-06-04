@@ -40,7 +40,7 @@ The project is under development.
 
 ## About extract structure
 
- ![Image text](/RuiJi.ChromePlugin/extract_structure.png)
+ ![Image text](http://www.ruijihg.com/wp-content/uploads/2018/06/4-2.png)
 
 
 ## Examples
