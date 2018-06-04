@@ -15,6 +15,7 @@ namespace RuiJi.Net.Owin
         private int m_ProcessorCount = 0;   //CPU个数
         private PerformanceCounter pcCpuLoad;   //CPU计数器
         private long m_PhysicalMemory = 0;   //物理内存
+        private string m_Version = "";
         //private long m_NetworkSpeed = 0;
 
         private const int GW_HWNDFIRST = 0;
@@ -54,6 +55,9 @@ namespace RuiJi.Net.Owin
             //CPU个数
             m_ProcessorCount = Environment.ProcessorCount;
 
+            //环境版本
+            m_Version = Environment.Version.ToString();
+
             //获得物理内存
             ManagementClass mc = new ManagementClass("Win32_ComputerSystem");
             ManagementObjectCollection moc = mc.GetInstances();
@@ -75,13 +79,24 @@ namespace RuiJi.Net.Owin
             //    }
             //}
 
-            ManagementObjectSearcher MySearcher = new ManagementObjectSearcher("SELECT * FROM Win32_Processor");
-            foreach (ManagementObject mo in MySearcher.Get())
+            mc = new ManagementClass("Win32_Processor");
+            moc = mc.GetInstances();
+            foreach (ManagementObject mo in moc)
             {
                 if (mo["Name"] != null)
                 {
                     m_ProcessorName = mo["Name"].ToString();
                 }
+            }
+        }
+        #endregion
+
+        #region 环境版本
+        public string Version
+        {
+            get
+            {
+                return m_Version;
             }
         }
         #endregion
@@ -162,7 +177,7 @@ namespace RuiJi.Net.Owin
         }
         #endregion
 
-        //#region 网络速率
+        #region 网络速率
         //public long NetworkSpeed
         //{
         //    get
@@ -170,7 +185,7 @@ namespace RuiJi.Net.Owin
         //        return m_NetworkSpeed;
         //    }
         //}
-        //#endregion
+        #endregion
 
         #region 结束指定进程
         /// <summary>

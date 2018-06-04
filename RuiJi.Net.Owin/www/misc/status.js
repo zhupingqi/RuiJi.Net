@@ -5,14 +5,11 @@
             $("#tab_panel_status").html(tmp);
 
             $.getJSON('/api/info/system', function (d) {
-                console.log(d);
                 var t = utils.template("status_system_info", d);
-                console.log(t);
                 $("#system_info").html(t);
             });
 
             $.getJSON('/api/info/server?baseUrl=' + window.location.href, function (d) {
-                console.log(d);
                 var t = utils.template("status_server_info", d);
                 $("#server_info").prepend(t);
             });
@@ -22,7 +19,6 @@
                     var $d = $("<div></div>");
                     $d.text(v);
                     $("#dll_version").append($d);
-                    console.log(v);
                 });
             });
         }

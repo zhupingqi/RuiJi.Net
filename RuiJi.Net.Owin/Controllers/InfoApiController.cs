@@ -41,7 +41,7 @@ namespace RuiJi.Net.Owin.Controllers
             SystemInfo sys = new SystemInfo();
             var memory = Math.Round((double)sys.PhysicalMemory / 1024 / 1024 / 1024, 1, MidpointRounding.AwayFromZero) + "GB";
 
-            return new { nodeType = server.NodeType.ToString(), startTime = server.StartTime.ToString("yyyy-MM-dd HH:mm:ss"), cpu = sys.ProcessorName, memory = memory, efVersion = Environment.Version.ToString() };
+            return new { nodeType = server.NodeType.ToString(), startTime = server.StartTime.ToString("yyyy-MM-dd HH:mm:ss"), cpu = sys.ProcessorName, memory = memory, efVersion = sys.Version };
         }
 
         /// <summary>
