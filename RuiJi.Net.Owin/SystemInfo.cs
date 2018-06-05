@@ -6,6 +6,9 @@ using System.IO;
 using System.Text;
 using System.Management;
 using System.Runtime.InteropServices;
+using System.Linq;
+using Vanara.PInvoke;
+using static Vanara.PInvoke.IpHlpApi;
 
 namespace RuiJi.Net.Owin
 {
@@ -16,7 +19,10 @@ namespace RuiJi.Net.Owin
         private PerformanceCounter pcCpuLoad;   //CPU计数器
         private long m_PhysicalMemory = 0;   //物理内存
         private string m_Version = "";
-        //private long m_NetworkSpeed = 0;
+
+        private long m_InSpeed = 0;
+        private long m_OutSpeed = 0;
+        private ulong m_SpeedTotal = 0;
 
         private const int GW_HWNDFIRST = 0;
         private const int GW_HWNDNEXT = 2;
@@ -25,8 +31,6 @@ namespace RuiJi.Net.Owin
         private const int WS_BORDER = 8388608;
 
         #region AIP声明
-        [DllImport("IpHlpApi.dll")]
-        extern static public uint GetIfTable(byte[] pIfTable, ref uint pdwSize, bool bOrder);
 
         [DllImport("User32")]
         private extern static int GetWindow(int hWnd, int wCmd);
@@ -68,16 +72,6 @@ namespace RuiJi.Net.Owin
                     m_PhysicalMemory = long.Parse(mo["TotalPhysicalMemory"].ToString());
                 }
             }
-
-            //mc = new ManagementClass("Win32_NetworkAdapter");
-            //moc = mc.GetInstances();
-            //foreach (ManagementObject mo in moc)
-            //{
-            //    if (mo["MaxSpeed"] != null)
-            //    {
-            //        m_NetworkSpeed = long.Parse(mo["MaxSpeed"].ToString());
-            //    }
-            //}
 
             mc = new ManagementClass("Win32_Processor");
             moc = mc.GetInstances();
@@ -178,13 +172,62 @@ namespace RuiJi.Net.Owin
         #endregion
 
         #region 网络速率
-        //public long NetworkSpeed
-        //{
-        //    get
-        //    {
-        //        return m_NetworkSpeed;
-        //    }
-        //}
+
+        public void ReckonSpeed()
+        {
+            var iftable1 = GetIfTable();
+            long inSpeed1 = iftable1.Sum(m => m.dwInOctets);
+            long outSpeed1 = iftable1.Sum(m => m.dwOutOctets);
+
+            Thread.Sleep(1000);
+
+            var iftable2 = GetIfTable();
+            var inSpeed2 = iftable2.Sum(m => m.dwInOctets);
+            var outSpeed2 = iftable2.Sum(m => m.dwOutOctets);
+
+            m_InSpeed = inSpeed2 - inSpeed1;
+            m_OutSpeed = outSpeed2 - outSpeed1;
+
+            var ada = GetInterfaceInfo();
+            ulong total = 0;
+
+            foreach (var a in ada.Adapter)
+            {
+                MIB_IF_ROW2 row = new MIB_IF_ROW2(a.Index);
+                GetIfEntry2(ref row);
+
+                if (row.InOctets > 0)
+                {
+                    total += row.ReceiveLinkSpeed;
+                }
+            }
+
+            m_SpeedTotal = total / 8;
+        }
+
+        public long InSpeed
+        {
+            get
+            {
+                return m_InSpeed;
+            }
+        }
+
+        public long OutSpeed
+        {
+            get
+            {
+                return m_OutSpeed;
+            }
+        }
+
+        public ulong SpeedTotal
+        {
+            get
+            {
+                return m_SpeedTotal;
+            }
+        }
         #endregion
 
         #region 结束指定进程

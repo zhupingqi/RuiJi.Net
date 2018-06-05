@@ -14,7 +14,7 @@ namespace RuiJi.Net.Owin.Controllers
     public class InfoApiController : ApiController
     {
         /// <summary>
-        /// 获取系统信息（此方法应该刷新，还未完成）
+        /// 获取系统信息
         /// </summary>
         /// <returns>cpu 内存信息</returns>
         [HttpGet]
@@ -23,49 +23,18 @@ namespace RuiJi.Net.Owin.Controllers
         {
             SystemInfo sys = new SystemInfo();
 
-            var memoryLoad = 100 - ((double)sys.MemoryAvailable / (double)sys.PhysicalMemory) * 100;
-
-            var cpuLoad = sys.CpuLoad;
-
-            var iftable1 = IpHlpApi.GetIfTable();
-            long inSpeed1 = iftable1.Sum(m => m.dwInOctets);
-            long outSpeed1 = iftable1.Sum(m => m.dwOutOctets);
-
-            Thread.Sleep(1000);
-
-            var iftable2 = IpHlpApi.GetIfTable();
-            var inSpeed2 = iftable2.Sum(m => m.dwInOctets);
-            var outSpeed2 = iftable2.Sum(m => m.dwOutOctets);
-
-            var inSpeed = inSpeed2 - inSpeed1;
-            var outSpeed = outSpeed2 - outSpeed1;
-
-            var ada = IpHlpApi.GetInterfaceInfo();
-            ulong total = 0;
-
-            foreach (var a in ada.Adapter)
-            {
-                MIB_IF_ROW2 row = new MIB_IF_ROW2(a.Index);
-                IpHlpApi.GetIfEntry2(ref row);
-
-                if (row.InOctets > 0)
-                {
-                    total += row.ReceiveLinkSpeed;
-                }
-            }
-
-            total = total / 8;
+            sys.ReckonSpeed();
 
             return new {
-                memoryLoad = memoryLoad,
-                cpuLoad = cpuLoad,
-                inSpeed = (double)inSpeed * 100 / Convert.ToDouble(total),
-                outSpeed = (double)outSpeed * 100 / Convert.ToDouble(total)
+                memoryLoad = 100 - ((double)sys.MemoryAvailable / (double)sys.PhysicalMemory) * 100,
+                cpuLoad = sys.CpuLoad,
+                inSpeed = (double)sys.InSpeed * 100 / Convert.ToDouble(sys.SpeedTotal),
+                outSpeed = (double)sys.OutSpeed * 100 / Convert.ToDouble(sys.SpeedTotal)
             };
         }
 
         /// <summary>
-        /// 配置文件中的baseurl为localhost的，暂时读不到，js注释了
+        /// 获取服务器信息
         /// </summary>
         /// <param name="baseUrl"></param>
         /// <returns></returns>
@@ -88,7 +57,7 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         /// <summary>
-        /// dll可以动态加载，是否可以写在appconfig中？
+        /// 动态加载dll信息
         /// </summary>
         /// <returns></returns>
         [HttpGet]
