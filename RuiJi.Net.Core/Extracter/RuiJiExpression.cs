@@ -103,7 +103,8 @@ namespace RuiJi.Net.Core.Extracter
             var b = ParserBase(lines.First());
             tile.Name = b.Name;
             tile.Selectors = b.Selectors;
-            tile.Metas = ParserMeta(lines.Last());
+            if(lines.Length > 1)
+                tile.Metas = ParserMeta(lines.Last());
 
             return tile;
         }

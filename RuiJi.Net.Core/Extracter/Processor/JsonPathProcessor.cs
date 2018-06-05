@@ -20,11 +20,11 @@ namespace RuiJi.Net.Core.Extracter.Processor
             }
 
             JObject obj = JObject.Parse(result.Content);
-            JToken token = obj.SelectToken(selector.Value);
+            IEnumerable<JToken> tokens = obj.SelectTokens(selector.Value);
 
-            if (token != null)
+            if (tokens.Count() > 0)
             {
-                foreach (JToken t in token.Children())
+                foreach (JToken t in tokens)
                 {
                     pr.Matches.Add(t.ToString());
                 }

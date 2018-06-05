@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RuiJi.Net.Core.Crawler;
 using RuiJi.Net.Core.Extracter;
+using RuiJi.Net.Core.Utils;
 using RuiJi.Net.Core.Utils.Tasks;
 using RuiJi.Net.Node.Feed;
 using RuiJi.Net.Node.Feed.LTS;
@@ -182,12 +183,34 @@ css #listnav a[href]
         {
             var task = new ParallelTask();
             var model = new CrawlTaskModel();
-            model.FeedId = 2;
+            model.FeedId = 3;
 
             var fun = new CrawlTaskFunc();
             var result = fun.Run(model, task);
 
             Assert.IsTrue(result != null);
+        }
+
+        [TestMethod]
+        public void TestJsonPExtract()
+        {
+            var url = "http://app.cannews.com.cn/roll.php?do=query&callback=jsonp1475197217819&_={# ticks() #}&date={# now(\"yyyy-MM-dd\") #}&size=20&page=1";
+
+            var f = new CompileFeedAddress();
+            url = f.Compile(url);
+
+            var c = new RuiJiCrawler();
+            var response = c.Request(new Request(url));
+
+            var expression = @"
+[tile]
+reg /jsonp[\d]+?\((.*)\)/ 1
+jpath $..url
+";
+            var b = RuiJiExpression.ParserBlock(expression);
+            var result = RuiJiExtracter.Extract(response.Data.ToString(), b);
+
+            Assert.IsTrue(result.Tiles.Count > 0);
         }
     }
 }

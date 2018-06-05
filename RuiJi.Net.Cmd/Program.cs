@@ -20,11 +20,9 @@ namespace RuiJi.Net.Cmd
 {
     public class Program
     {
-        static List<Thread> threads;
-
         static Program()
         {
-            threads = new List<Thread>();
+
         }
 
         ~Program()
