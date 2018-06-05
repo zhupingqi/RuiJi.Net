@@ -11,54 +11,90 @@ namespace RuiJi.Net.Core.Extracter
 {
     public class RuiJiExpression
     {
-        public static ExtractBlock PaserBlock(string expression)
+        public static ExtractBlock ParserBlock(string expression)
         {
             expression = expression.Replace("\r\n", "\n").Trim();
-            var lines = Split(expression, new string[] { "[block]", "[blocks]", "[tile]", "[meta]", "[paging]" });
-            var block = new ExtractBlock();
 
-            foreach (var key in lines.Keys)
+            var blockExps = ParserBlocks(expression);
+            var results = new List<ExtractBlock>();
+
+            foreach (var exp in blockExps)
             {
-                switch (key)
+                var block = new ExtractBlock();
+                var blockExp = exp.Replace("\r\n", "\n").Trim();
+                var lines = Split(blockExp, new string[] { "[block]", "[blocks]", "[tile]", "[meta]", "[paging]" });
+
+                foreach (var key in lines.Keys)
                 {
-                    case "":
-                    case "[block]":
-                        {
-                            var b = ParserBase(lines[key]);
-                            block.Name = b.Name;
-                            block.Selectors = b.Selectors;
-                            break;
-                        }
-                    case "[blocks]":
-                        {
-                            break;
-                        }
-                    case "[tile]":
-                        {
-                            block.TileSelector = PaserTile(lines[key]);
-                            break;
-                        }
-                    case "[meta]":
-                        {
-                            block.Metas = PaserMeta(lines[key]);
-                            break;
-                        }
-                    case "[paging]":
-                        {
-                            var b = new ExtractBlock("paging");
-                            string.IsNullOrEmpty(b.Name);
+                    switch (key)
+                    {
+                        case "":
+                        case "[block]":
+                            {
+                                var b = ParserBase(lines[key]);
+                                block.Name = b.Name;
+                                block.Selectors = b.Selectors;
+                                break;
+                            }
+                        case "[blocks]":
+                            {
+                                var bs = lines[key].Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
+                                foreach (var b in bs)
+                                {
+                                    if(b.Trim().StartsWith("@"))
+                                    {
+                                        block.Blocks.Add(new ExtractBlock(b.Trim().TrimStart('@')));
+                                    }
+                                }
+                                break;
+                            }
+                        case "[tile]":
+                            {
+                                block.TileSelector = ParserTile(lines[key]);
+                                break;
+                            }
+                        case "[meta]":
+                            {
+                                block.Metas = ParserMeta(lines[key]);
+                                break;
+                            }
+                        case "[paging]":
+                            {
+                                var b = new ExtractBlock("paging");
+                                string.IsNullOrEmpty(b.Name);
                                 b.Name = "paging";
-                            b.TileSelector = PaserTile(lines[key]);
-                            block.Blocks.Add(b);
-                            break;
-                        }
+                                b.TileSelector = ParserTile(lines[key]);
+                                block.Blocks.Add(b);
+                                break;
+                            }
+                    }
+                }
+
+                results.Add(block);
+            }
+
+            var removes = new List<ExtractBlock>();
+
+            foreach (var result in results)
+            {                
+                for (int j = 0; j < result.Blocks.Count; j++)
+                {
+                    var sub = results.Where(m=> m != null ).SingleOrDefault(m => m.Name == result.Blocks[j].Name);
+
+                    if (sub != null)
+                    {
+                        result.Blocks[j] = sub;
+                        removes.Add(sub);
+                    }
                 }
             }
 
-            return block;
+            results.RemoveAll(m=> removes.Contains(m));
+
+            return results.First();
         }
 
-        public static ExtractTile PaserTile(string expression)
+        public static ExtractTile ParserTile(string expression)
         {
             expression = expression.Trim();
             var lines = Regex.Split(expression, @"\s+\[meta\]\n");
@@ -67,12 +103,12 @@ namespace RuiJi.Net.Core.Extracter
             var b = ParserBase(lines.First());
             tile.Name = b.Name;
             tile.Selectors = b.Selectors;
-            tile.Metas = PaserMeta(lines.Last());
+            tile.Metas = ParserMeta(lines.Last());
 
             return tile;
         }
 
-        public static ExtractMetaCollection PaserMeta(string expression)
+        public static ExtractMetaCollection ParserMeta(string expression)
         {
             expression = expression.Replace("\r\n", "\n");
             var metas = Regex.Split(expression, @"\n[\s]*\n");
@@ -295,6 +331,16 @@ namespace RuiJi.Net.Core.Extracter
             }
 
             return null;
+        }
+
+        private static List<string> ParserBlocks(string expression)
+        {
+            expression = "\n" + expression;
+
+            var results = Regex.Split(expression, @"\n\[block\]").ToList();
+            results.RemoveAll(m=>string.IsNullOrEmpty(m));
+
+            return results;
         }
 
         private static Dictionary<string, string> Split(string expression, string[] splits)

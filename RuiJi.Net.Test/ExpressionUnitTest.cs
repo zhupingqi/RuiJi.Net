@@ -58,7 +58,7 @@ namespace RuiJi.Net.Test
                 jpath dlkejl -r
                 ";
 
-            var m = RuiJiExpression.PaserMeta(metas);
+            var m = RuiJiExpression.ParserMeta(metas);
 
             Assert.IsTrue(m.Count > 0);
         }
@@ -67,6 +67,7 @@ namespace RuiJi.Net.Test
         public void TestBlock()
         {
             var block = @"
+[block]
 #name
 css .entry-content:html
 
@@ -96,30 +97,17 @@ css .entry-content:html
     css .entry-content:html
 
     #link
-    css h4 a[href] -r";
+    css h4 a[href] -r
+[block]
+#block1
+css .list1
 
-            block = @"
+[block]
+#block2
+css .list2
+";
 
-
-
-[meta]
-    #time
-    css time:text
-
-    #author
-    css .author:text
-
-    #title
-    css .entry-title:text
-
-    #content
-    css .entry-content:html
-
-    #link
-    css h4 a[href] -r";
-
-
-            var m = RuiJiExpression.PaserBlock(block);
+            var m = RuiJiExpression.ParserBlock(block);
 
             Assert.IsTrue(m.Metas.Count > 0);
         }
@@ -134,7 +122,7 @@ css .entry-content:html
             var content = response.Data.ToString();
 
             var block = new ExtractBlock();
-            var s = RuiJiExpression.PaserBlock(@"
+            var s = RuiJiExpression.ParserBlock(@"
 [tile]
 	css table.table-bordered tr:gt(0):ohtml
 

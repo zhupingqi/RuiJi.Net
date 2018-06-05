@@ -71,7 +71,7 @@ namespace RuiJi.Net.Owin.Controllers
                     return RuleLiteDB.Match(url).Select(m => JsonConvert.DeserializeObject<ExtractBlock>(m.BlockExpression)).ToList();
                 else
                 {
-                    return RuleLiteDB.Match(url).Select(m => RuiJiExpression.PaserBlock(m.RuiJiExpression)).ToList();
+                    return RuleLiteDB.Match(url).Select(m => RuiJiExpression.ParserBlock(m.RuiJiExpression)).ToList();
                 }
             }
 
@@ -248,7 +248,7 @@ namespace RuiJi.Net.Owin.Controllers
             var snap = job.DoTask(feed, false);
             reporter.Report("Feed 下载完成");
 
-            var block = RuiJiExpression.PaserBlock(feed.RuiJiExpression);
+            var block = RuiJiExpression.ParserBlock(feed.RuiJiExpression);
 
             var feedResult = RuiJiExtracter.Extract(snap.Content, block);
             results.Add(feedResult);
@@ -281,7 +281,7 @@ namespace RuiJi.Net.Owin.Controllers
 
         private void ClearContent(ExtractResult result)
         {
-            result.Content = "";
+            result.Content = null;
 
             if(result.Blocks != null && result.Blocks.Count > 0)
             {

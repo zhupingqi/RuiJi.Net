@@ -114,8 +114,12 @@ namespace RuiJi.Net.Core.Extracter
             foreach (var key in metas.Keys)
             {
                 var value = ExtractSelector(content, metas[key]);
+
                 if (value.Count > 0)
+                {
+                    value[0].Name = key;
                     results.Add(key, value[0]);
+                }
             }
 
             return results;

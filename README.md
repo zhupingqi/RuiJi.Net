@@ -144,9 +144,89 @@ the service startup is complete!
             });
 
 
+# About RuiJi Expression
+
+RuiJi Expression is a way to quickly add the rules of page extraction and implement soft coding. The ruiji expressions are as simple and understandable as possible.Before we start, we should first understand the rule model of RuiJi.Net.
+
+The RuiJi expression uses the structure described in the figure above to extract the pages that need to be extracted, and the extraction unit is Block, as shown in the following figure.
+
+Selectors is a list of selector
+Tiles is a region that needs to be repeatedly extracted
+Metas is the metadata that needs to be extracted
+Blocks is a subBlock that needs to be extracted within Block
+
+ ![Image text](http://www.ruijihg.com/wp-content/uploads/2018/06/1-3.png)
+
+If you need to extract http://www.ruijihg.com/开发, you need to observe the structure of the page first.You can use F12 to look at the structure of the page
+
+ ![Image text](http://www.ruijihg.com/wp-content/uploads/2018/06/2-2.png)
+
+First, make sure that the result of the Block selector is unique.
+
+ ![Image text](http://www.ruijihg.com/wp-content/uploads/2018/06/3-2.png)
+
+The definition of Block can be as follows
+
+    #content
+    css .pt-cv-view:ohtml
+
+Continue adding tile
+
+    [tile]
+        #tiles
+        css .pt-cv-content-item:ohtml
+
+        [meta]
+        #title
+        css .pt-cv-title:text
+
+        #content
+        css .pt-cv-content:html
+        ex 阅读更多... -e
+
+You may notice \t, because both block and tile contain meta, so the tile selector part and tile meta are \t as the current tile flag.
+
+The complete Block description structure is as follows
+
+    [Block]
+    #blockname
+    selector
+
+    [blocks]
+        @subblockname1
+        @subblockname2
+
+    [tile]
+        #tilename
+        tile selector
+
+        [meta]
+        #meta1
+        selector
+
+        #meta2
+        selector
+
+    [meta]
+        #blockmeta1
+        selector
+
+        #blockmeta2
+        selector
+
+
+
+#### I'm still improving RuiJi Expression
+
 ## Contact
 Please contact me with any suggestion
 
 416803633@qq.com
 
 my website : www.ruijihg.com
+
+QQ交流群: 545931923
+
+https://gitee.com/zhupingqi/RuiJi.Net
+
+https://github.com/zhupingqi/RuiJi.Net
