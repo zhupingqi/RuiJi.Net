@@ -53,6 +53,11 @@
                         if (ele.is(":hidden")) {
                             ele.next().attr("value", v);
                         }
+
+                        if (p == "status" && v == "OFF") {
+                            f.find(":radio[value='ON']").parent().removeClass("active");
+                            f.find(":radio[value='OFF']").parent().addClass("active");
+                        }
                     }
 
                     BootstrapDialog.show({
@@ -113,6 +118,11 @@
                 ele.addClass("active").siblings().removeClass("active");
 
                 ele.closest("div").find("textarea").eq(ele.index()).show().siblings("textarea").hide();
+            });
+
+            $(document).on("click", "#feed_dialog .btn-mjdark2", function () {
+                var ele = $(this);
+                ele.closest(".input-group").find("input").val(ele.find("input").val());
             });
 
             tmp = $(tmp);

@@ -70,6 +70,7 @@ namespace RuiJi.Net.Node.Feed
         public string Scheduling { get; set; }
 
         [JsonProperty("status")]
+        [JsonConverter(typeof(EnumConvert<FeedStatus>))]
         public FeedStatus Status { get; set; }
 
         [JsonProperty("feedonly")]
