@@ -13,11 +13,13 @@ namespace RuiJi.Net.Core.Utils
         public string Function { get; set; }
 
         public object[] Args { get; set; }
+
+        public int Index { get; set; }
     }
 
-    public class CompileUrl
+    public abstract class CompileUrl
     {
-        public static CompileExtract Extract(string url)
+        public List<CompileExtract> Extract(string url)
         {
             if (string.IsNullOrEmpty(url))
                 return null;
@@ -28,30 +30,52 @@ namespace RuiJi.Net.Core.Utils
             if (ms.Count == 0)
                 return null;
 
-            var result = new CompileExtract();
+            var results = new List<CompileExtract>();
 
             // now("yyyyMMdd")
             // ticks()
             foreach (Match m in ms)
             {
                 var d = m.Value.Trim();
-                var f = Regex.Match(d,@"^[^\(]*").Value.Trim();
-                var arg = Regex.Match(f, @".?\((.*)\)+");
+                var mt = Regex.Match(d, @"{#(.*?)\(");
+                if(!mt.Success || mt.Groups.Count != 2)
+                    continue;
 
-                result.Function = f;
+                var fun = mt.Groups[1].Value.Trim();
+                var arg = Regex.Match(d, @"\((.*)\)+");
+                var result = new CompileExtract();
 
-                if (arg.Success)
+                result.Function = fun;
+                result.Index = m.Index;
+
+                if (arg.Success && arg.Groups.Count == 2)
                 {
-                    result.Args = JsonConvert.DeserializeObject<object[]>("[" + arg.Value + "]");
+                    result.Args = JsonConvert.DeserializeObject<object[]>("[" + arg.Groups[1].Value + "]");
                 }
+
+                results.Add(result);
             }
 
-            return result;
+            return results;
         }
 
-        public static string Compile(string code)
+        public string Compile(string address)
         {
-            return JITCompile.GetResult(code);
+            var compileExtracts = Extract(address);
+            var reg = new Regex(@"\{#(.*?)#\}");
+
+            foreach (var c in compileExtracts)
+            {
+                var compile = "";
+                var code = FormatCode(c.Function, c.Args);
+                compile = JITCompile.GetResult(code);                
+
+                address = reg.Replace(address, compile, 1);
+            }
+
+            return address;
         }
+
+        public abstract string FormatCode(string function,object[] args);
     }
 }

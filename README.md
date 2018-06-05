@@ -1,4 +1,4 @@
-# RuiJi.Net
+ï»¿# RuiJi.Net
 RuiJi.Net is a distributed crawl framework written in c#.
 
 RuiJi.Net is a self host webapi written using Microsoft.Owin. Major features include distribute crawler, distribute extracter and managed cookie.
@@ -10,6 +10,8 @@ RuiJi.Net support ip polling that using the server public network address and pr
 Building
 
 [http://www.ruijihg.com/archives/ruijinet/getting-started](http://www.ruijihg.com/archives/ruijinet/getting-started)
+
+ä»¥ä¸Šé“¾æ¥å¸¦ä¸­æ–‡è¯´æ˜
 
 ## Notice
 
@@ -157,7 +159,7 @@ Blocks is a subBlock that needs to be extracted within Block
 
  ![Image text](http://www.ruijihg.com/wp-content/uploads/2018/06/1-3.png)
 
-If you need to extract http://www.ruijihg.com/¿ª·¢, you need to observe the structure of the page first.You can use F12 to look at the structure of the page
+If you need to extract http://www.ruijihg.com/å¼€å‘, you need to observe the structure of the page first.You can use F12 to look at the structure of the page
 
  ![Image text](http://www.ruijihg.com/wp-content/uploads/2018/06/2-2.png)
 
@@ -182,7 +184,7 @@ Continue adding tile
 
         #content
         css .pt-cv-content:html
-        ex ÔÄ¶Á¸ü¶à... -e
+        ex é˜…è¯»æ›´å¤š... -e
 
 You may notice \t, because both block and tile contain meta, so the tile selector part and tile meta are \t as the current tile flag.
 
@@ -225,7 +227,7 @@ Please contact me with any suggestion
 
 my website : www.ruijihg.com
 
-QQ½»Á÷Èº: 545931923
+QQäº¤æµç¾¤: 545931923
 
 https://gitee.com/zhupingqi/RuiJi.Net
 

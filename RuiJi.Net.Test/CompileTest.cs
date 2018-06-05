@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RuiJi.Net.Core.Utils;
+using RuiJi.Net.Owin.Controllers;
 
 namespace RuiJi.Net.Test
 {
@@ -10,11 +11,12 @@ namespace RuiJi.Net.Test
         [TestMethod]
         public void TestMethod1()
         {
-            var code = string.Format("result = DateTime.Now.ToString(\"{0}\");","yyyy");
+            var url = "http://app.cannews.com.cn/roll.php?do=query&callback=jsonp1475197217819&_={# ticks() #}&date={# now(\"yyyy-MM-dd\") #}&size=20&page=1";
 
-            var result = JITCompile.GetResult(code);
+            var f = new CompileFeedAddress();
+            url = f.Compile(url);
 
-            Assert.IsTrue(result.Length > 0);            
+            Assert.IsTrue(true);
         }
 
         [TestMethod]

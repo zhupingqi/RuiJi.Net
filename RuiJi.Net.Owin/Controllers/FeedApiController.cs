@@ -92,7 +92,13 @@ namespace RuiJi.Net.Owin.Controllers
                     var feeds = FeedLiteDb.GetFeedModels(ps, 50);
                     feeds.RemoveAll(m => m.Status == FeedStatus.OFF);
 
-                    return PreProcessUrl(feeds);
+                    var compile = new CompileFeedAddress();
+                    foreach (var feed in feeds)
+                    {
+                        feed.Address = compile.Compile(feed.Address);
+                    }
+
+                    return feeds;
                 }
             }
             catch { }
@@ -198,24 +204,6 @@ namespace RuiJi.Net.Owin.Controllers
                 };
             }
         }
-
-        private List<FeedModel> PreProcessUrl(List<FeedModel> feeds)
-        {
-            foreach (var feed in feeds)
-            {
-                var r = CompileUrl.Extract(feed.Address);
-                var code = "";
-                if (r != null && r.Function == "now")
-                {
-                    code = string.Format("result = Datetime.Now.ToString({0})", r.Args);
-                    feed.Address = CompileUrl.Compile(code);
-                }
-            }
-
-            feeds.RemoveAll(m => string.IsNullOrEmpty(m.Address));
-
-            return feeds;
-        }
     }
 
     public class CrawlTaskModel
@@ -289,6 +277,30 @@ namespace RuiJi.Net.Owin.Controllers
                     ClearContent(m);
                 });
             }
+        }
+    }
+
+    public class CompileFeedAddress : CompileUrl
+    {
+        public override string FormatCode(string function, object[] args)
+        {
+            var code = "";
+
+            switch (function)
+            {
+                case "now":
+                    {
+                        code = string.Format("result = DateTime.Now.ToString(\"{0}\");", args);
+                        break;
+                    }
+                case "ticks":
+                    {
+                        code = string.Format("result = DateTime.Now.Ticks;");
+                        break;
+                    }
+            }
+
+            return code;
         }
     }
 }
