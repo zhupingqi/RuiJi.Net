@@ -190,5 +190,27 @@ css #listnav a[href]
 
             Assert.IsTrue(result != null);
         }
+
+        [TestMethod]
+        public void TestJsonPExtract()
+        {
+            var url = "http://app.cannews.com.cn/roll.php?do=query&callback=jsonp1475197217819&_={# ticks() #}&date={# now(\"yyyy-MM-dd\") #}&size=20&page=1";
+
+            var f = new CompileFeedAddress();
+            url = f.Compile(url);
+
+            var c = new RuiJiCrawler();
+            var response = c.Request(new Request(url));
+
+            var expression = @"
+[tile]
+reg /jsonp[\d]+?\((.*)\)/ 1
+jpath $..url
+";
+            var b = RuiJiExpression.ParserBlock(expression);
+            var result = RuiJiExtracter.Extract(response.Data.ToString(), b);
+
+            Assert.IsTrue(result.Tiles.Count > 0);
+        }
     }
 }
