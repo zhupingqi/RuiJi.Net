@@ -34,6 +34,12 @@
                         text: '设置',
                         type: 'lib',
                         lib: 'feed/setting'
+                    },
+                    {
+                        id: 'fun',
+                        text: '函数',
+                        type: 'lib',
+                        lib: 'feed/fun'
                     }
                 ]
             });
