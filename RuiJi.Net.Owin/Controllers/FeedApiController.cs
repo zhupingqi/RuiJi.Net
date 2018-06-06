@@ -249,12 +249,15 @@ namespace RuiJi.Net.Owin.Controllers
             var urls = j.ExtractAddress(snap);
             reporter.Report("Feed地址提取完成");
 
-            foreach (var url in urls)
+            if (!string.IsNullOrEmpty(snap.RuiJiExpression))
             {
-                reporter.Report("正在提取地址 " + url);
-                var r = ContentQueue.Instance.Extract(url);
-                
-                results.AddRange(r);
+                foreach (var url in urls)
+                {
+                    reporter.Report("正在提取地址 " + url);
+                    var r = ContentQueue.Instance.Extract(url);
+
+                    results.AddRange(r);
+                }
             }
 
             reporter.Report("计算完成");
