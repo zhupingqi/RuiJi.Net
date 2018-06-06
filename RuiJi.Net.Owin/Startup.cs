@@ -212,6 +212,15 @@ namespace RuiJi.Net.Owin
                     routeTemplate: "api/feed/crawl",
                     defaults: new { controller = "FeedApi", action = "RunCrawl" }
                 );
+
+            #region Fun Api
+            config.Routes.MapHttpRoute(
+                    name: "FuncsList",
+                    routeTemplate: "api/funcs",
+                    defaults: new { controller = "FeedApi", action = "Funcs" }
+                );
+            #endregion
+
             #endregion
 
             #region Info Api

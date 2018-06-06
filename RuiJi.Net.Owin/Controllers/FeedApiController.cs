@@ -61,7 +61,7 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpGet]
-        public object UrlRule(string url,bool useBlock = false)
+        public object UrlRule(string url, bool useBlock = false)
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
 
@@ -204,6 +204,30 @@ namespace RuiJi.Net.Owin.Controllers
                 };
             }
         }
+
+        [HttpGet]
+        public object Funcs()
+        {
+            var node = ServerManager.Get(Request.RequestUri.Authority);
+
+            var list = new List<object>();
+
+            if (node.NodeType == Node.NodeTypeEnum.FEED)
+            {
+                for (int i = 1; i < 5; i++)
+                {
+                    var o = new { id = i, name = "函数" + i, code = "123" + i, examples = "123" + i };
+                    list.Add(o);
+                }
+                return new
+                {
+                    rows = list,
+                    total = list.Count
+                };
+            }
+
+            return new { };
+        }
     }
 
     public class CrawlTaskModel
@@ -253,7 +277,7 @@ namespace RuiJi.Net.Owin.Controllers
             {
                 reporter.Report("正在提取地址 " + url);
                 var r = ContentQueue.Instance.Extract(url);
-                
+
                 results.AddRange(r);
             }
 
@@ -272,12 +296,13 @@ namespace RuiJi.Net.Owin.Controllers
 
         private void ClearContent(ExtractResult result)
         {
-            if(result.Blocks != null || result.Metas != null || result.Tiles != null)
+            if (result.Blocks != null || result.Metas != null || result.Tiles != null)
                 result.Content = null;
 
-            if(result.Blocks != null && result.Blocks.Count > 0)
+            if (result.Blocks != null && result.Blocks.Count > 0)
             {
-                result.Blocks.ForEach((m) => {
+                result.Blocks.ForEach((m) =>
+                {
                     ClearContent(m);
                 });
             }

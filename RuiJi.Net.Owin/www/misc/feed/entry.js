@@ -36,10 +36,10 @@
                         lib: 'feed/setting'
                     },
                     {
-                        id: 'fun',
+                        id: 'func',
                         text: '函数',
                         type: 'lib',
-                        lib: 'feed/fun'
+                        lib: 'feed/func'
                     }
                 ]
             });
