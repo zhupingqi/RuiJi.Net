@@ -15,17 +15,11 @@ namespace RuiJi.Net.NodeVisitor
             var response = cralwer.Request(url);
             var content = response.Data.ToString();
 
-            var results = new List<ExtractResult>();
-
             var blocks = Feeder.GetExtractBlock(url);
-            blocks.ForEach((m) => {
-                var r = Extracter.Extract(new ExtractRequest
-                {
-                    Block = m,
-                    Content = content
-                });
-
-                results.Add(r);
+            var results = Extracter.Extract(new ExtractRequest
+            {
+                Blocks = blocks,
+                Content = content
             });
 
             return results;

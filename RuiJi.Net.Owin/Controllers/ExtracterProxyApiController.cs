@@ -20,7 +20,7 @@ namespace RuiJi.Net.Owin.Controllers
     {
         [HttpPost]
         //[WebApiCacheAttribute(Duration = 10)]
-        public ExtractResult Extract([FromBody]string json)
+        public List<ExtractResult> Extract([FromBody]string json)
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
 
@@ -29,7 +29,7 @@ namespace RuiJi.Net.Owin.Controllers
 
                 var result = ExtracterManager.Instance.Elect();
                 if (result == null)
-                    return new ExtractResult();
+                    return new List<ExtractResult>();
 
                 var client = new RestClient("http://" + result.BaseUrl);
                 var restRequest = new RestRequest("api/extract");
@@ -40,7 +40,7 @@ namespace RuiJi.Net.Owin.Controllers
 
                 var restResponse = client.Execute(restRequest);
 
-                var response = JsonConvert.DeserializeObject<ExtractResult>(restResponse.Content);
+                var response = JsonConvert.DeserializeObject<List<ExtractResult>>(restResponse.Content);
 
                 return response;
             }

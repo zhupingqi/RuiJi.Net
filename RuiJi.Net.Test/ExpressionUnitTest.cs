@@ -214,5 +214,11 @@ jpath $..url
 
             Assert.IsTrue(result.Content.Length > 0);
         }
+
+        [TestMethod]
+        public void TestFeature()
+        {
+
+        }
     }
 }

@@ -103,12 +103,17 @@ namespace RuiJi.Net.Test
             });
 
             var r = Extracter.Extract(new ExtractRequest {
-                Block = block,
+                Blocks = new List<ExtractFeatureBlock> {
+                    new ExtractFeatureBlock
+                    {
+                        Block = block
+                    }
+                },
                 Content = content
             });
 
-            Assert.IsTrue(r.Content.Length > 0);
-            Assert.IsTrue(r.Tiles.Count > 0);
+            Assert.IsTrue(r[0].Content.Length > 0);
+            Assert.IsTrue(r[0].Tiles.Count > 0);
         }
 
         [TestMethod]
@@ -127,12 +132,14 @@ namespace RuiJi.Net.Test
 
             var r = Extracter.Extract(new ExtractRequest
             {
-                Block = block,
+                Blocks = new List<ExtractFeatureBlock> {
+                    block
+                },
                 Content = content
             });
 
-            Assert.IsTrue(r.Content.Length > 0);
-            Assert.IsTrue(r.Tiles.Count > 0);
+            Assert.IsTrue(r[0].Content.Length > 0);
+            Assert.IsTrue(r[0].Tiles.Count > 0);
         }
     }
 }

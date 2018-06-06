@@ -81,7 +81,9 @@ namespace RuiJi.Net.Node.Feed
                 var masks = rules.Select(m => m.Expression).ToArray();
 
                 var mask = Wildcard.MaxMatch(url, masks);
-                return rules.Where(m => m.Expression == mask).ToList();
+                var results = rules.Where(m => m.Expression == mask).ToList();
+
+                return results;
             }
         }
 

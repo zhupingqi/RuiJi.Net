@@ -16,6 +16,45 @@ namespace RuiJi.Net.Core.Extracter
 {
     public class RuiJiExtracter
     {
+        public static List<ExtractResult> Extract(ExtractRequest request)
+        {
+            var blocks = request.Blocks.Where(m => !string.IsNullOrEmpty(m.Feature)).OrderByDescending(m => m.Feature.Length).ToList();
+            var results = new List<ExtractResult>();
+
+            foreach (var block in blocks)
+            {
+                var lines = block.Feature.Split('\n');
+                var b = new ExtractBlock();
+
+                foreach (var line in lines)
+                {
+                    var selector = RuiJiExpression.ParserSelector(line);
+                    if (b != null)
+                        b.Selectors.Add(selector);
+                }
+
+                var r = Extract(request.Content, b);
+                if (r.Content.Length > 0)
+                {
+                    r = Extract(request.Content, block.Block);
+                    results.Add(r);
+                    break;
+                }
+            }
+
+            if (results.Count > 0)
+                return results;
+
+            blocks = request.Blocks.Where(m => string.IsNullOrEmpty(m.Feature)).ToList();
+
+            foreach (var block in blocks)
+            {
+                results.Add(Extract(request.Content, block.Block));
+            }
+
+            return results;
+        }
+
         public static ExtractResult Extract(string content, ExtractBlock block)
         {
             var pr = ProcessorFactory.Process(content, block.Selectors);

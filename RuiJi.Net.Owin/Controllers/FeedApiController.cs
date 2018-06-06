@@ -69,10 +69,10 @@ namespace RuiJi.Net.Owin.Controllers
             if (node.NodeType == Node.NodeTypeEnum.FEEDPROXY)
             {
                 if (useBlock)
-                    return RuleLiteDb.Match(url).Select(m => JsonConvert.DeserializeObject<ExtractBlock>(m.BlockExpression)).ToList();
+                    return RuleLiteDb.Match(url).Select(m => new ExtractFeatureBlock(JsonConvert.DeserializeObject<ExtractBlock>(m.BlockExpression), m.Feature)).ToList();
                 else
                 {
-                    return RuleLiteDb.Match(url).Select(m => RuiJiExpression.ParserBlock(m.RuiJiExpression)).ToList();
+                    return RuleLiteDb.Match(url).Select(m => new ExtractFeatureBlock(RuiJiExpression.ParserBlock(m.RuiJiExpression), m.Feature)).ToList();
                 }
             }
 
@@ -191,11 +191,13 @@ namespace RuiJi.Net.Owin.Controllers
 
                 return new
                 {
-                    rows = ContentLiteDb.GetContents(paging, shard, feedId).Select(m=> new {
+                    rows = ContentLiteDb.GetContents(paging, shard, feedId).Select(m => new
+                    {
                         id = m.Id,
                         feedId = m.FeedId,
                         url = m.Url,
-                        metas = m.Metas.Select(n => new {
+                        metas = m.Metas.Select(n => new
+                        {
                             name = n.Key,
                             content = n.Value
                         })

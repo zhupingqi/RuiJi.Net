@@ -13,7 +13,7 @@ namespace RuiJi.Net.NodeVisitor
 {
     public class Feeder
     {
-        public static List<ExtractBlock> GetExtractBlock(string url)
+        public static List<ExtractFeatureBlock> GetExtractBlock(string url)
         {
             var proxyUrl = ProxyManager.Instance.Elect(ProxyTypeEnum.Feed);
 
@@ -31,7 +31,7 @@ namespace RuiJi.Net.NodeVisitor
 
             var restResponse = client.Execute(restRequest);
 
-            var response = JsonConvert.DeserializeObject<List<ExtractBlock>>(restResponse.Content);
+            var response = JsonConvert.DeserializeObject<List<ExtractFeatureBlock>>(restResponse.Content);
 
             return response;
         }

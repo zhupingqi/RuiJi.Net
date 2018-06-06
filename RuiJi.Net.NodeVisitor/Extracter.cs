@@ -12,7 +12,7 @@ namespace RuiJi.Net.NodeVisitor
 {
     public class Extracter
     {        
-        public static ExtractResult Extract(ExtractRequest request)
+        public static List<ExtractResult> Extract(ExtractRequest request)
         {
             var proxyUrl = ProxyManager.Instance.Elect(ProxyTypeEnum.Extracter);
 
@@ -31,7 +31,7 @@ namespace RuiJi.Net.NodeVisitor
 
             var restResponse = client.Execute(restRequest);
 
-            var response = JsonConvert.DeserializeObject<ExtractResult>(restResponse.Content);
+            var response = JsonConvert.DeserializeObject<List<ExtractResult>>(restResponse.Content);
 
             return response;
         }

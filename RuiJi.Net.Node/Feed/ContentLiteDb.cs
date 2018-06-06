@@ -35,9 +35,9 @@ namespace RuiJi.Net.Node.Feed
                 page.Count = col.Count();
 
                 if (feedID == 0)
-                    return col.Find(Query.All(), page.Start, page.PageSize).ToList();
+                    return col.Find(Query.All()).OrderByDescending(m => m.Id).Skip(page.Start).Take(page.PageSize).ToList();
                 else
-                    return col.Find(m => m.FeedId == feedID, page.Start, page.PageSize).ToList();
+                    return col.Find(m=>m.FeedId == feedID).OrderByDescending(m=>m.Id).Skip(page.Start).Take(page.PageSize).ToList();
             }
         }
     }

@@ -20,14 +20,14 @@ namespace RuiJi.Net.Owin.Controllers
     public class ExtracterApiController : ApiController
     {
         [HttpPost]
-        public ExtractResult Extract([FromBody]string json)
+        public List<ExtractResult> Extract([FromBody]string json)
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
             var request = JsonConvert.DeserializeObject<ExtractRequest>(json);
 
             if (node.NodeType == Node.NodeTypeEnum.EXTRACTER)
             {
-                var result = RuiJiExtracter.Extract(request.Content, request.Block);
+                var result = RuiJiExtracter.Extract(request);
                 return result;
             }
             else
