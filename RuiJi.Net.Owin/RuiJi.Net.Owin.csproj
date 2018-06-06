@@ -231,6 +231,8 @@
     </Content>
     <Content Include="www\misc\cluster.html" />
     <Content Include="www\misc\cluster.js" />
+    <Content Include="www\misc\content.html" />
+    <Content Include="www\misc\content.js" />
     <Content Include="www\misc\feed\crawl.html" />
     <Content Include="www\misc\feed\feed.html" />
     <Content Include="www\misc\feed\entry.js" />

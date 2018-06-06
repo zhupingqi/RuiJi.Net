@@ -13,3 +13,5 @@ Install-Package PhantomJS -Version 2.1.1
 函数添加
 日志
 代理服务器管理
+Web Ui
+Seed需要分两种类型：检测更新型/即时抓取型

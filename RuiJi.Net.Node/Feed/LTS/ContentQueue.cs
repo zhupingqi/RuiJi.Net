@@ -9,16 +9,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RuiJi.Net.NodeVisitor;
+using RuiJi.Net.Core;
+using System.IO;
+using Newtonsoft.Json;
+using RuiJi.Net.Core.Utils;
 
 namespace RuiJi.Net.Node.Feed.LTS
 {
+    public class QueueModel
+    {
+        public string Url { get; set; }
+
+        public int FeedId { get; set; }
+    }
+
     public class ContentQueue
     {
         private static ContentQueue contentQueue;
 
-        private MessageQueue<string> queue;
+        private MessageQueue<QueueModel> queue;
         private SmartThreadPool pool;
         private STPStartInfo stpStartInfo;
+        private IStorage<ContentModel> storage;
+        private string path;
 
         static ContentQueue()
         {
@@ -27,7 +40,13 @@ namespace RuiJi.Net.Node.Feed.LTS
 
         private ContentQueue()
         {
-            queue = new MessageQueue<string>();
+            path = AppDomain.CurrentDomain.BaseDirectory + "save_failed";
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+
+            storage = new FeedProxyStorage();
+
+            queue = new MessageQueue<QueueModel>();
             queue.ContentChanged += queue_ContentChanged;
 
             stpStartInfo = new STPStartInfo
@@ -48,7 +67,7 @@ namespace RuiJi.Net.Node.Feed.LTS
             }
         }
 
-        private void queue_ContentChanged(object sender, QueueChangedEventArgs<string> args)
+        private void queue_ContentChanged(object sender, QueueChangedEventArgs<QueueModel> args)
         {
             if (args.Action == QueueChangedActionEnum.Enqueue)
             {
@@ -56,13 +75,22 @@ namespace RuiJi.Net.Node.Feed.LTS
                 {
                     try
                     {
-                        string url;
-                        if (queue.TryDequeue(out url))
+                        QueueModel qm;
+                        if (queue.TryDequeue(out qm))
                         {
-                            var article = Extract(url);
-                            if (article != null)
+                            var visitor = new Visitor();
+
+                            var results = visitor.Extract(qm.Url);
+                            if (results.Count > 0)
                             {
-                                Save(article);
+                                var result = results.OrderByDescending(m => m.Metas.Count).First();
+                                var cm = new ContentModel();
+                                cm.FeedId = qm.FeedId;
+                                cm.Url = qm.Url;
+                                cm.Metas = result.Metas;
+
+                                if (!storage.Save(cm))
+                                    File.AppendAllText(path + @"\" + EncryptHelper.GetMD5Hash(qm.Url) + ".json", JsonConvert.SerializeObject(cm));
                             }
                         }
                     }
@@ -71,34 +99,12 @@ namespace RuiJi.Net.Node.Feed.LTS
             }
         }
 
-        public List<ExtractResult> Extract(string url)
-        {
-            var cralwer = new RuiJi.Net.NodeVisitor.Crawler();
-            var response = cralwer.Request(url);
-            var content = response.Data.ToString();
-
-            var results = new List<ExtractResult>();
-
-            var blocks = Feeder.GetExtractBlock(url);
-            blocks.ForEach((m)=> {
-                var r = RuiJi.Net.NodeVisitor.Extracter.Extract(new ExtractRequest
-                {
-                    Block = m,
-                    Content = content
-                });
-
-                results.Add(r);
-            });
-
-            return results;
-        }
-
         private void Save(List<ExtractResult> articles)
         {
             throw new NotImplementedException();
         }
 
-        internal void Enqueue(string v)
+        internal void Enqueue(QueueModel v)
         {
             queue.Enqueue(v);
         }

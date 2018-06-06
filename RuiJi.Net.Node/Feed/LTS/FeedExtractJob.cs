@@ -116,7 +116,7 @@ namespace RuiJi.Net.Node.Feed.LTS
         {
             var filename = path.Substring(path.LastIndexOf(@"\") + 1);
             var sp = filename.Split('_');
-            var seedId = Convert.ToInt64(sp[0]);
+            var feedId = Convert.ToInt32(sp[0]);
             var content = File.ReadAllText(path);
 
             var feed = JsonConvert.DeserializeObject<FeedSnapshot>(content);
@@ -124,7 +124,7 @@ namespace RuiJi.Net.Node.Feed.LTS
 
             var urls = ExtractAddress(feed);
 
-            var hisFile = AppDomain.CurrentDomain.BaseDirectory + @"history\" + seedId + ".txt";
+            var hisFile = AppDomain.CurrentDomain.BaseDirectory + @"history\" + feedId + ".txt";
             var urlsHistory = new string[0];
             if (File.Exists(hisFile))
             {
@@ -139,10 +139,14 @@ namespace RuiJi.Net.Node.Feed.LTS
 
             foreach (var u in urls)
             {
-                ContentQueue.Instance.Enqueue(u);
+                var qm = new QueueModel();
+                qm.FeedId = feedId;
+                qm.Url = u;
+
+                ContentQueue.Instance.Enqueue(qm);
             }
 
-            var destFile = path.Replace("snapshot", "pre").Replace(filename, seedId + ".txt");
+            var destFile = path.Replace("snapshot", "pre").Replace(filename, feedId + ".txt");
             if (File.Exists(destFile))
                 File.Delete(destFile);
 

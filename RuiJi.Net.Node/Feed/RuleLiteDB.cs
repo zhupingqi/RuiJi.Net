@@ -10,11 +10,16 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Node.Feed
 {
-    public class RuleLiteDB
+    public class RuleLiteDb
     {
+        static RuleLiteDb()
+        {
+            CreateIndex();
+        }
+
         public static List<RuleModel> GetRuleModels(Paging page)
         {
-            using (var db = new LiteDatabase(@"Rules.db"))
+            using (var db = new LiteDatabase(@"LiteDb/Rules.db"))
             {
                 var col = db.GetCollection<RuleModel>("rules");
 
@@ -26,7 +31,7 @@ namespace RuiJi.Net.Node.Feed
 
         public static void AddOrUpdate(RuleModel rule)
         {
-            using (var db = new LiteDatabase(@"Rules.db"))
+            using (var db = new LiteDatabase(@"LiteDb/Rules.db"))
             {
                 var col = db.GetCollection<RuleModel>("rules");
                 if (Uri.IsWellFormedUriString(rule.Url, UriKind.Absolute))
@@ -48,7 +53,7 @@ namespace RuiJi.Net.Node.Feed
 
         public static void Remove(int id)
         {
-            using (var db = new LiteDatabase(@"Rules.db"))
+            using (var db = new LiteDatabase(@"LiteDb/Rules.db"))
             {
                 var col = db.GetCollection<RuleModel>("rules");
                 col.Delete(id);
@@ -57,7 +62,7 @@ namespace RuiJi.Net.Node.Feed
 
         public static void CreateIndex()
         {
-            using (var db = new LiteDatabase(@"Rules.db"))
+            using (var db = new LiteDatabase(@"LiteDb/Rules.db"))
             {
                 var col = db.GetCollection<RuleModel>("feeds");
                 col.EnsureIndex(m => m.Domain);
@@ -69,7 +74,7 @@ namespace RuiJi.Net.Node.Feed
             url = url.Trim().ToLower();
             var domain = new Uri(url).GetDomain();
 
-            using (var db = new LiteDatabase(@"Rules.db"))
+            using (var db = new LiteDatabase(@"LiteDb/Rules.db"))
             {
                 var col = db.GetCollection<RuleModel>("rules");
                 var rules = col.Find(Query.Where("Domain", m => m.AsString == domain)).ToList();
@@ -82,7 +87,7 @@ namespace RuiJi.Net.Node.Feed
 
         public static RuleModel GetRule(int id)
         {
-            using (var db = new LiteDatabase(@"Rules.db"))
+            using (var db = new LiteDatabase(@"LiteDb/Rules.db"))
             {
                 var col = db.GetCollection<RuleModel>("rules");
 

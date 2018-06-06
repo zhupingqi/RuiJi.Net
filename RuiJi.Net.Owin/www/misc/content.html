@@ -1,0 +1,30 @@
+﻿<div>
+    <div id="toolbar_contents">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                批量操作 <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="javascript:;">停用</a></li>
+                <li><a href="javascript:;">移至回收站</a></li>
+            </ul>
+        </div>
+        <button type="submit" class="btn btn-default">应用</button>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="text" class="form-control" style="display: inline-block; width: auto;" placeholder="Search FeedId">
+        <button type="submit" class="btn btn-default">筛选</button>
+    </div>
+    <div id="contents_list">
+        <table id="tb_contents" data-toggle="table" data-url="">
+            <thead>
+                <tr>
+                    <th data-checkbox="true" data-width="30px">&nbsp;</th>
+                    <th data-field="id" data-width="40px">Id</th>
+                    <th data-field="feedId" data-width="40px">FeedId</th>
+                    <th data-field="url" data-width="100px">Url</th>
+                    <th data-field="metas" data-bind="metas">Metas</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>

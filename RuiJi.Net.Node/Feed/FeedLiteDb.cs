@@ -10,9 +10,14 @@ namespace RuiJi.Net.Node.Feed
 {
     public class FeedLiteDb
     {
+        static FeedLiteDb()
+        {
+            CreateIndex();
+        }
+
         public static List<FeedModel> GetFeedModels(Paging page)
         {
-            using (var db = new LiteDatabase(@"Feeds.db"))
+            using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
             {
                 var col = db.GetCollection<FeedModel>("feeds");
 
@@ -24,7 +29,7 @@ namespace RuiJi.Net.Node.Feed
 
         public static List<FeedModel> GetFeedModels(int[] pages,int pageSize)
         {
-            using (var db = new LiteDatabase(@"Feeds.db"))
+            using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
             {
                 var col = db.GetCollection<FeedModel>("feeds");
 
@@ -42,7 +47,7 @@ namespace RuiJi.Net.Node.Feed
 
         public static void AddOrUpdate(FeedModel feed)
         {
-            using (var db = new LiteDatabase(@"Feeds.db"))
+            using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
             {
                 var col = db.GetCollection<FeedModel>("feeds");
 
@@ -55,7 +60,7 @@ namespace RuiJi.Net.Node.Feed
 
         public static void CreateIndex()
         {
-            using (var db = new LiteDatabase(@"Feeds.db"))
+            using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
             {
                 var col = db.GetCollection<FeedModel>("feeds");
                 col.EnsureIndex(m => m.SiteName);
@@ -67,7 +72,7 @@ namespace RuiJi.Net.Node.Feed
 
         public static FeedModel GetFeed(int id)
         {
-            using (var db = new LiteDatabase(@"Feeds.db"))
+            using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
             {
                 var col = db.GetCollection<FeedModel>("feeds");
 

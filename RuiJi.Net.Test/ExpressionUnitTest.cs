@@ -6,6 +6,7 @@ using RuiJi.Net.Core.Utils;
 using RuiJi.Net.Core.Utils.Tasks;
 using RuiJi.Net.Node.Feed;
 using RuiJi.Net.Node.Feed.LTS;
+using RuiJi.Net.NodeVisitor;
 using RuiJi.Net.Owin.Controllers;
 
 namespace RuiJi.Net.Test
@@ -173,7 +174,9 @@ css #listnav a[href]
         [TestMethod]
         public void TestUrlExtract()
         {
-            var result = ContentQueue.Instance.Extract("http://www.ruijihg.com/archives/315");
+            var visitor = new Visitor();
+
+            var result = visitor.Extract("http://www.ruijihg.com/archives/315");
 
             Assert.IsTrue(true);
         }
