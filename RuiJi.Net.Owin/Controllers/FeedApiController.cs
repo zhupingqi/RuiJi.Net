@@ -232,6 +232,9 @@ namespace RuiJi.Net.Owin.Controllers
 
             reporter.Report("正在下载 Feed");
 
+            var compile = new CompileFeedAddress();
+            feed.Address = compile.Compile(feed.Address);
+
             var job = new FeedJob();
             var snap = job.DoTask(feed, false);
             reporter.Report("Feed 下载完成");
@@ -269,7 +272,8 @@ namespace RuiJi.Net.Owin.Controllers
 
         private void ClearContent(ExtractResult result)
         {
-            result.Content = null;
+            if(result.Blocks != null || result.Metas != null || result.Tiles != null)
+                result.Content = null;
 
             if(result.Blocks != null && result.Blocks.Count > 0)
             {

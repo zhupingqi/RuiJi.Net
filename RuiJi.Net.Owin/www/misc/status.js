@@ -5,10 +5,12 @@
             $("#tab_panel_status").html(tmp);
 
             setInterval(function () {
-                $.getJSON('/api/info/system', function (d) {
-                    var t = utils.template("status_system_info", d);
-                    $("#system_info").html(t);
-                });
+                if ($("#system_info").is(":visible")) {
+                    $.getJSON('/api/info/system', function (d) {
+                        var t = utils.template("status_system_info", d);
+                        $("#system_info").html(t);
+                    });
+                }
             }, 5000);
 
             $.getJSON('/api/info/server?baseUrl=' + window.location.href, function (d) {

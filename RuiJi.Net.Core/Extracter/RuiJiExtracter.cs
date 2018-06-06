@@ -16,11 +16,6 @@ namespace RuiJi.Net.Core.Extracter
 {
     public class RuiJiExtracter
     {
-        public RuiJiExtracter()
-        {
-
-        }
-
         public static ExtractResult Extract(string content, ExtractBlock block)
         {
             var pr = ProcessorFactory.Process(content, block.Selectors);

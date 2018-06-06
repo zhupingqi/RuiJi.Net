@@ -203,14 +203,13 @@ css #listnav a[href]
             var response = c.Request(new Request(url));
 
             var expression = @"
-[tile]
 reg /jsonp[\d]+?\((.*)\)/ 1
 jpath $..url
 ";
             var b = RuiJiExpression.ParserBlock(expression);
             var result = RuiJiExtracter.Extract(response.Data.ToString(), b);
 
-            Assert.IsTrue(result.Tiles.Count > 0);
+            Assert.IsTrue(result.Content.Length > 0);
         }
     }
 }

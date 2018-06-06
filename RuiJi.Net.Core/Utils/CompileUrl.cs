@@ -21,19 +21,17 @@ namespace RuiJi.Net.Core.Utils
     {
         public List<CompileExtract> Extract(string url)
         {
+            var results = new List<CompileExtract>();
+
             if (string.IsNullOrEmpty(url))
-                return null;
+                return results;
 
             var regex = new Regex(@"\{#(.*?)#\}");
             var ms = regex.Matches(url);
 
             if (ms.Count == 0)
-                return null;
+                return results;
 
-            var results = new List<CompileExtract>();
-
-            // now("yyyyMMdd")
-            // ticks()
             foreach (Match m in ms)
             {
                 var d = m.Value.Trim();
@@ -62,6 +60,9 @@ namespace RuiJi.Net.Core.Utils
         public string Compile(string address)
         {
             var compileExtracts = Extract(address);
+            if (compileExtracts.Count == 0)
+                return address;
+
             var reg = new Regex(@"\{#(.*?)#\}");
 
             foreach (var c in compileExtracts)
