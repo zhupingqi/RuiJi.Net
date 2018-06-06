@@ -15,10 +15,28 @@
                 result[prop] = cur;
             } else if ($.isArray(cur)) {
                 for (var i = 0, l = cur.length; i < l; i++) {
-                    recurse(cur[i], prop ? prop + that.options.flatSeparator + i : "" + i);
-                    if (l == 0) {
-                        result[prop] = [];
+                    //recurse(cur[i], prop ? prop + that.options.flatSeparator + i : "" + i);
+                    //if (l == 0) {
+                        //result[prop] = [];
+                    //}
+
+                    if (result[prop] === undefined)
+                        result[prop] = "";
+
+                    var content = "";
+
+                    for (var p in cur[i]) {
+                        var c = cur[i][p];
+                        if (c.length > 200)
+                            c = $(c).text().substr(0, 200);
+
+                        if (content == "")
+                            content = c;
+                        else
+                            content += ":" + c;
                     }
+
+                    result[prop] += " " + content;
                 }
             } else {
                 var isEmpty = true;

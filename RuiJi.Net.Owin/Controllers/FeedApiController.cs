@@ -191,7 +191,15 @@ namespace RuiJi.Net.Owin.Controllers
 
                 return new
                 {
-                    rows = ContentLiteDb.GetContents(paging, shard, feedId),
+                    rows = ContentLiteDb.GetContents(paging, shard, feedId).Select(m=> new {
+                        id = m.Id,
+                        feedId = m.FeedId,
+                        url = m.Url,
+                        metas = m.Metas.Select(n => new {
+                            name = n.Key,
+                            content = n.Value
+                        })
+                    }),
                     total = paging.Count
                 };
             }

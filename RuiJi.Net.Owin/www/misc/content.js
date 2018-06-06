@@ -1,4 +1,4 @@
-﻿define(['jquery', 'utils', 'sweetAlert','/scripts/bootstrap-table/extensions/flat-json/bootstrap-table-flat-json.min.js', 'bootstrapDialog', 'bootstrapTable'], function ($, utils) {
+﻿define(['jquery', 'utils', 'sweetAlert','flatJson', 'bootstrapDialog', 'bootstrapTable'], function ($, utils) {
     var proxyUrl = "";
 
     var module = {
