@@ -255,6 +255,30 @@ namespace RuiJi.Net.Owin.Controllers
                 };
             }
         }
+
+        [HttpGet]
+        public object Funcs()
+        {
+            var node = ServerManager.Get(Request.RequestUri.Authority);
+
+            var list = new List<object>();
+
+            if (node.NodeType == Node.NodeTypeEnum.FEED)
+            {
+                for (int i = 1; i < 5; i++)
+                {
+                    var o = new { id = i, name = "函数" + i, code = "123" + i, examples = "123" + i };
+                    list.Add(o);
+                }
+                return new
+                {
+                    rows = list,
+                    total = list.Count
+                };
+            }
+
+            return new { };
+        }
     }
 
     public class CrawlTaskModel
@@ -300,17 +324,12 @@ namespace RuiJi.Net.Owin.Controllers
             var urls = j.ExtractAddress(snap);
             reporter.Report("Feed地址提取完成");
 
-            if (!string.IsNullOrEmpty(snap.RuiJiExpression))
+            foreach (var url in urls)
             {
-                var visitor = new Visitor();
-
-                foreach (var url in urls)
-                {
-                    reporter.Report("正在提取地址 " + url);
-                    var r = visitor.Extract(url);
-
-                    results.AddRange(r);
-                }
+                reporter.Report("正在提取地址 " + url);
+                var r = ContentQueue.Instance.Extract(url);
+                
+                results.AddRange(r);
             }
 
             reporter.Report("计算完成");

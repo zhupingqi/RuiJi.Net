@@ -239,8 +239,8 @@
     <Content Include="www\misc\feed\feeds.html" />
     <Content Include="www\misc\feed\feeds.js" />
     <Content Include="www\fonts\font-awesome.min.css" />
-    <Content Include="www\misc\feed\fun.html" />
-    <Content Include="www\misc\feed\fun.js" />
+    <Content Include="www\misc\feed\func.html" />
+    <Content Include="www\misc\feed\func.js" />
     <Content Include="www\misc\feed\rule.html" />
     <Content Include="www\misc\log.js" />
     <Content Include="www\misc\main.js" />
@@ -451,6 +451,11 @@
     <Content Include="www\scripts\bootstrap3-dialog\css\bootstrap-dialog.min.css" />
     <Content Include="www\scripts\bootstrap3-dialog\js\bootstrap-dialog.js" />
     <Content Include="www\scripts\bootstrap3-dialog\js\bootstrap-dialog.min.js" />
+    <Content Include="www\scripts\bootstrap3-editable\css\bootstrap-editable.css" />
+    <Content Include="www\scripts\bootstrap3-editable\img\clear.png" />
+    <Content Include="www\scripts\bootstrap3-editable\img\loading.gif" />
+    <Content Include="www\scripts\bootstrap3-editable\js\bootstrap-editable.js" />
+    <Content Include="www\scripts\bootstrap3-editable\js\bootstrap-editable.min.js" />
     <Content Include="www\scripts\bootstrapvalidator\css\bootstrapValidator.css" />
     <Content Include="www\scripts\bootstrapvalidator\css\bootstrapValidator.min.css" />
     <Content Include="www\scripts\bootstrapvalidator\js\bootstrapValidator.js" />

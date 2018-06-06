@@ -212,18 +212,6 @@ namespace RuiJi.Net.Owin
                     routeTemplate: "api/feed/crawl",
                     defaults: new { controller = "FeedApi", action = "RunCrawl" }
                 );
-
-            config.Routes.MapHttpRoute(
-                    name: "SaveContent",
-                    routeTemplate: "api/fp/content/save",
-                    defaults: new { controller = "FeedApi", action = "SaveContent" }
-                );
-
-            config.Routes.MapHttpRoute(
-                    name: "GetContent",
-                    routeTemplate: "api/fp/content",
-                    defaults: new { controller = "FeedApi", action = "GetContent" }
-                );
             #endregion
 
             #region Info Api
