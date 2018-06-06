@@ -323,13 +323,17 @@ namespace RuiJi.Net.Owin.Controllers
             var j = new FeedExtractJob();
             var urls = j.ExtractAddress(snap);
             reporter.Report("Feed地址提取完成");
-
-            foreach (var url in urls)
+            if (!string.IsNullOrEmpty(snap.RuiJiExpression))
             {
-                reporter.Report("正在提取地址 " + url);
-                var r = ContentQueue.Instance.Extract(url);
-                
-                results.AddRange(r);
+                var visitor = new Visitor();
+
+                foreach (var url in urls)
+                {
+                    reporter.Report("正在提取地址 " + url);
+                    var r = visitor.Extract(url);
+
+                    results.AddRange(r);
+                }
             }
 
             reporter.Report("计算完成");
