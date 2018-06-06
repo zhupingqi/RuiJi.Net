@@ -2,25 +2,25 @@
     <div>
         <span>内存使用率</span><br /><br />
         <div class="progress">
-            <div class="progress-bar" role="progressbar" aria-valuenow="{{memoryLoad}}" aria-valuemin="0" aria-valuemax="100" style="width: {{memoryLoad}}%;">
+            <div class="progress-bar" role="progressbar" title="{{memoryLoad}}" aria-valuenow="{{memoryLoad}}" aria-valuemin="0" aria-valuemax="100" style="width: {{memoryLoad}}%;">
             </div>
         </div>
     </div>
     <div>
         <span>CPU使用率</span><br /><br />
         <div class="progress">
-            <div class="progress-bar" role="progressbar" aria-valuenow="{{cpuLoad}}" aria-valuemin="0" aria-valuemax="100" style="width:{{cpuLoad}}%;">
+            <div class="progress-bar" role="progressbar" title="{{cpuLoad}}" aria-valuenow="{{cpuLoad}}" aria-valuemin="0" aria-valuemax="100" style="width:{{cpuLoad}}%;">
             </div>
         </div>
     </div>
     <div>
         <span>网络使用率</span><br /><br />
         <div class="progress">
-            <span>In</span> <div class="progress-bar" role="progressbar" aria-valuenow="{{outSpeed}}" aria-valuemin="0" aria-valuemax="100" style="width: {{outSpeed}}%;">
+            <span>In</span> <div class="progress-bar" title="{{outSpeed}}" role="progressbar" aria-valuenow="{{outSpeed}}" aria-valuemin="0" aria-valuemax="100" style="width: {{outSpeed}}%;">
             </div>
         </div>
         <div class="progress">
-            Out <div class="progress-bar" role="progressbar" aria-valuenow="{{inSpeed}}" aria-valuemin="0" aria-valuemax="100" style="width: {{inSpeed}}%;">
+            Out <div class="progress-bar" title="{{inSpeed}}" role="progressbar" aria-valuenow="{{inSpeed}}" aria-valuemin="0" aria-valuemax="100" style="width: {{inSpeed}}%;">
             </div>
         </div>
     </div>
