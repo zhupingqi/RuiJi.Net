@@ -10,22 +10,22 @@ namespace RuiJi.Net.Core.Extracter
 {
     public class ExtractResult
     {
-        [JsonProperty("name")]
+        [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
         public string Name { get; set; }
 
-        [JsonProperty("content")]
+        [JsonProperty("content", NullValueHandling = NullValueHandling.Ignore)]
         public string Content { get; set; }
 
-        [JsonProperty("tiles")]
+        [JsonProperty("tiles", NullValueHandling = NullValueHandling.Ignore)]
         public ExtractResultCollection Tiles { get; set; }
 
-        [JsonProperty("blocks")]
+        [JsonProperty("blocks", NullValueHandling = NullValueHandling.Ignore)]
         public ExtractResultCollection Blocks { get; set; }
 
-        [JsonProperty("metas")]
-        public Dictionary<string, ExtractResult> Metas { get;set; }
+        [JsonProperty("metas", NullValueHandling = NullValueHandling.Ignore)]
+        public Dictionary<string, string> Metas { get;set; }
 
-        [JsonProperty("paging")]
+        [JsonProperty("paging", NullValueHandling = NullValueHandling.Ignore)]
         public List<string> Paging
         {
             get

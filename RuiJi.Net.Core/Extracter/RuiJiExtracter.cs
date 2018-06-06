@@ -102,9 +102,9 @@ namespace RuiJi.Net.Core.Extracter
             return results;
         }
 
-        public static Dictionary<string, ExtractResult> ExtractMeta(string content, ExtractMetaCollection metas)
+        public static Dictionary<string, string> ExtractMeta(string content, ExtractMetaCollection metas)
         {
-            var results = new Dictionary<string, ExtractResult>();
+            var results = new Dictionary<string, string>();
 
             foreach (var key in metas.Keys)
             {
@@ -113,7 +113,7 @@ namespace RuiJi.Net.Core.Extracter
                 if (value.Count > 0)
                 {
                     value[0].Name = key;
-                    results.Add(key, value[0]);
+                    results.Add(key, value[0].Content);
                 }
             }
 

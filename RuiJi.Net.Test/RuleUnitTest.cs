@@ -47,7 +47,7 @@ namespace RuiJi.Net.Test
             rule.BlockExpression = JsonConvert.SerializeObject(block);
 
             //rule.Id = 1;
-            RuleLiteDB.AddOrUpdate(rule);
+            RuleLiteDb.AddOrUpdate(rule);
 
             Assert.IsTrue(rule.Id > 0);
         }
@@ -57,7 +57,7 @@ namespace RuiJi.Net.Test
         {
             TestLock(20);
 
-            var rules = RuleLiteDB.Match("http://www.ruijihg.com/2018/05/24/json-net-%e5%8f%8d%e5%ba%8f%e5%88%97%e5%8c%96%e6%8e%a5%e5%8f%a3%e9%9b%86%e5%90%88/");
+            var rules = RuleLiteDb.Match("http://www.ruijihg.com/2018/05/24/json-net-%e5%8f%8d%e5%ba%8f%e5%88%97%e5%8c%96%e6%8e%a5%e5%8f%a3%e9%9b%86%e5%90%88/");
 
             Assert.IsTrue(rules.Count > 0);
         }

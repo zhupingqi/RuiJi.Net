@@ -6,6 +6,7 @@ using RuiJi.Net.Core.Utils.Tasks;
 using RuiJi.Net.Node;
 using RuiJi.Net.Node.Feed;
 using RuiJi.Net.Node.Feed.LTS;
+using RuiJi.Net.NodeVisitor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,7 +53,7 @@ namespace RuiJi.Net.Owin.Controllers
 
                 return new
                 {
-                    rows = RuleLiteDB.GetRuleModels(paging),
+                    rows = RuleLiteDb.GetRuleModels(paging),
                     total = paging.Count
                 };
             }
@@ -61,17 +62,17 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpGet]
-        public object UrlRule(string url,bool useBlock = false)
+        public object UrlRule(string url, bool useBlock = false)
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
 
             if (node.NodeType == Node.NodeTypeEnum.FEEDPROXY)
             {
                 if (useBlock)
-                    return RuleLiteDB.Match(url).Select(m => JsonConvert.DeserializeObject<ExtractBlock>(m.BlockExpression)).ToList();
+                    return RuleLiteDb.Match(url).Select(m => JsonConvert.DeserializeObject<ExtractBlock>(m.BlockExpression)).ToList();
                 else
                 {
-                    return RuleLiteDB.Match(url).Select(m => RuiJiExpression.ParserBlock(m.RuiJiExpression)).ToList();
+                    return RuleLiteDb.Match(url).Select(m => RuiJiExpression.ParserBlock(m.RuiJiExpression)).ToList();
                 }
             }
 
@@ -157,15 +158,65 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpPost]
+        public bool SaveContent(ContentModel content, string shard = "")
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(shard))
+                    shard = DateTime.Now.ToString("yyyyMM");
+
+                ContentLiteDb.AddOrUpdate(content, shard);
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        [HttpGet]
+        public object GetContent(int offset, int limit, string shard = "", int feedId = 0)
+        {
+            var node = ServerManager.Get(Request.RequestUri.Authority);
+
+            if (node.NodeType == Node.NodeTypeEnum.FEEDPROXY)
+            {
+                var paging = new Paging();
+                paging.CurrentPage = (offset / limit) + 1;
+                paging.PageSize = limit;
+
+                if (string.IsNullOrEmpty(shard))
+                    shard = DateTime.Now.ToString("yyyyMM");
+
+                return new
+                {
+                    rows = ContentLiteDb.GetContents(paging, shard, feedId).Select(m=> new {
+                        id = m.Id,
+                        feedId = m.FeedId,
+                        url = m.Url,
+                        metas = m.Metas.Select(n => new {
+                            name = n.Key,
+                            content = n.Value
+                        })
+                    }),
+                    total = paging.Count
+                };
+            }
+
+            return new { };
+        }
+
+        [HttpPost]
         public void UpdateRule(RuleModel rule)
         {
-            RuleLiteDB.AddOrUpdate(rule);
+            RuleLiteDb.AddOrUpdate(rule);
         }
 
         [HttpGet]
         public object GetRule(int id)
         {
-            var feed = RuleLiteDB.GetRule(id);
+            var feed = RuleLiteDb.GetRule(id);
 
             return feed;
         }
@@ -251,10 +302,12 @@ namespace RuiJi.Net.Owin.Controllers
 
             if (!string.IsNullOrEmpty(snap.RuiJiExpression))
             {
+                var visitor = new Visitor();
+
                 foreach (var url in urls)
                 {
                     reporter.Report("正在提取地址 " + url);
-                    var r = ContentQueue.Instance.Extract(url);
+                    var r = visitor.Extract(url);
 
                     results.AddRange(r);
                 }
@@ -275,12 +328,13 @@ namespace RuiJi.Net.Owin.Controllers
 
         private void ClearContent(ExtractResult result)
         {
-            if(result.Blocks != null || result.Metas != null || result.Tiles != null)
+            if (result.Blocks != null || result.Metas != null || result.Tiles != null)
                 result.Content = null;
 
-            if(result.Blocks != null && result.Blocks.Count > 0)
+            if (result.Blocks != null && result.Blocks.Count > 0)
             {
-                result.Blocks.ForEach((m) => {
+                result.Blocks.ForEach((m) =>
+                {
                     ClearContent(m);
                 });
             }

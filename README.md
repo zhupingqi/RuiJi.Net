@@ -92,7 +92,9 @@ The project is under development.
 
 4. run bin/zkServer.cmd in you zookeepr folder
 
-5. run RuiJi.cmd.exe 
+5. Start up zookeeper
+
+6. Compile RuiJi.Net.Cmd and run RuiJi.Net.Cmd.exe
 
 if You see the following information
 

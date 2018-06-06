@@ -35,6 +35,12 @@
                         text: '新闻源',
                         type: 'lib',
                         lib: 'feed/entry'
+                    },
+                    {
+                        id: 'content',
+                        text: '抓取结果',
+                        type: 'lib',
+                        lib: 'content'
                     }
                 ]
             });

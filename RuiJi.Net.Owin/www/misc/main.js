@@ -7,6 +7,7 @@
         bootstrap: '/scripts/bootstrap-3.3.5/dist/js/bootstrap',
         bootstrapTable: '/scripts/bootstrap-table/bootstrap-table.min',
         bootstrapDialog: '/scripts/bootstrap3-dialog/js/bootstrap-dialog',
+        flatJson: '/scripts/bootstrap-table/extensions/flat-json/bootstrap-table-flat-json',
         'tabs': '/scripts/require-tabs/require.tabs',
         'tree': '/scripts/jstree/jstree.min',
         'sweetAlert': '/scripts/sweetalert/sweetalert.min',
@@ -32,6 +33,9 @@
         },
         'sweetAlert': {
             deps: ['css!/scripts/sweetalert/sweetalert.css']
+        },
+        'flatJson': {
+            deps: ['bootstrapTable']
         }
     }
 });

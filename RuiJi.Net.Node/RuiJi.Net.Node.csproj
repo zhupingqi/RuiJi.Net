@@ -75,6 +75,8 @@
     <Compile Include="Crawler\CrawlerConfig.cs" />
     <Compile Include="Extracter\ExtracterManager.cs" />
     <Compile Include="Extracter\ExtracterProxyNode.cs" />
+    <Compile Include="Feed\ContentLiteDb.cs" />
+    <Compile Include="Feed\FeedProxyStorage.cs" />
     <Compile Include="Feed\LTS\ContentQueue.cs" />
     <Compile Include="Feed\LTS\FeedExtracter.cs" />
     <Compile Include="Feed\LTS\FeedExtractJob.cs" />
@@ -94,7 +96,7 @@
     <Compile Include="NodeTypeEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="NodeBase.cs" />
-    <Compile Include="Feed\RuleLiteDB.cs" />
+    <Compile Include="Feed\RuleLiteDb.cs" />
     <Compile Include="Feed\RuleModel.cs" />
   </ItemGroup>
   <ItemGroup>
