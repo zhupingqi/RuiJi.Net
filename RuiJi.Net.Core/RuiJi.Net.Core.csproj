@@ -131,7 +131,12 @@
     <Compile Include="Utils\Decoding.cs" />
     <Compile Include="Utils\HtmlHelper.cs" />
     <Compile Include="Utils\IPHelper.cs" />
-    <Compile Include="Utils\Logger.cs" />
+    <Compile Include="Utils\Log\EamilAppenderModel.cs" />
+    <Compile Include="Utils\Log\LayoutModel.cs" />
+    <Compile Include="Utils\Log\Logger.cs" />
+    <Compile Include="Utils\Log\LogModel.cs" />
+    <Compile Include="Utils\Log\AppenderType.cs" />
+    <Compile Include="Utils\Log\AppenderTypeEnum.cs" />
     <Compile Include="Utils\Page\AjaxPaging.cs" />
     <Compile Include="Utils\Page\IUrlPaging.cs" />
     <Compile Include="Utils\Page\Paging.cs" />

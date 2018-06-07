@@ -15,6 +15,7 @@ using System.Threading;
 using RuiJi.Net.Core.Utils;
 using log4net;
 using RuiJi.Net.Node.Configuration;
+using RuiJi.Net.Core.Utils.Log;
 
 namespace RuiJi.Net.Cmd
 {
@@ -32,8 +33,15 @@ namespace RuiJi.Net.Cmd
 
         static void Main(string[] args)
         {
-            LogManager.GetCurrentLoggers().First().Info("Program started!");
-
+            //LogManager.GetCurrentLoggers().First().Info("Program started!");
+            var logAppenders = new List<AppenderType>();
+            logAppenders.Add(new AppenderType(AppenderTypeEnum.INFO, "info"));
+            logAppenders.Add(new AppenderType(AppenderTypeEnum.ERROR, "error"));
+            logAppenders.Add(new AppenderType(AppenderTypeEnum.FATAL, "fatal"));
+            logAppenders.Add(new AppenderType(AppenderTypeEnum.MESSAGE, "all"));
+            Logger.Instance.AddNewLogger("server", "main".ToLower(), logAppenders);
+            var logger = Logger.Instance.GetLogger("server", "main").Logger;
+            logger.Info("Program started!");
             ServerManager.StartServers();
 
             while (true)
