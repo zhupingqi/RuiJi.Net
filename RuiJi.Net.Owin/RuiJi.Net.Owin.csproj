@@ -240,7 +240,8 @@
     <Content Include="www\misc\feed\feeds.js" />
     <Content Include="www\fonts\font-awesome.min.css" />
     <Content Include="www\misc\feed\func.html" />
-    <Content Include="www\misc\feed\func.js" />
+    <Content Include="www\misc\feed\funcs.html" />
+    <Content Include="www\misc\feed\funcs.js" />
     <Content Include="www\misc\feed\rule.html" />
     <Content Include="www\misc\log.js" />
     <Content Include="www\misc\main.js" />
