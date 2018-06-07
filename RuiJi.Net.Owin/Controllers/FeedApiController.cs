@@ -301,7 +301,7 @@ namespace RuiJi.Net.Owin.Controllers
         {
             var model = t as CrawlTaskModel;
 
-            var results = new List<ExtractResult>();
+            var results = new List<object>();
             var reporter = task.Progress as IProgress<string>;
 
             reporter.Report("正在读取Feed记录");
@@ -325,6 +325,7 @@ namespace RuiJi.Net.Owin.Controllers
             var j = new FeedExtractJob();
             var urls = j.ExtractAddress(snap);
             reporter.Report("Feed地址提取完成");
+
             if (!string.IsNullOrEmpty(snap.RuiJiExpression))
             {
                 var visitor = new Visitor();
@@ -332,9 +333,14 @@ namespace RuiJi.Net.Owin.Controllers
                 foreach (var url in urls)
                 {
                     reporter.Report("正在提取地址 " + url);
-                    var r = visitor.Extract(url);
+                    var result = visitor.Extract(url);
 
-                    results.AddRange(r);
+                    var cm = new ContentModel();
+                    cm.FeedId = model.FeedId;
+                    cm.Url = url;
+                    cm.Metas = result.Metas;
+
+                    results.Add(cm);
                 }
             }
 
@@ -351,8 +357,12 @@ namespace RuiJi.Net.Owin.Controllers
             return results;
         }
 
-        private void ClearContent(ExtractResult result)
+        private void ClearContent(object obj)
         {
+            var result = obj as ExtractResult;
+            if (result == null)
+                return;
+
             if (result.Blocks != null || result.Metas != null || result.Tiles != null)
                 result.Content = null;
 

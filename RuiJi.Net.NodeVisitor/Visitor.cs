@@ -9,7 +9,7 @@ namespace RuiJi.Net.NodeVisitor
 {
     public class Visitor
     {
-        public List<ExtractResult> Extract(string url)
+        public ExtractResult Extract(string url)
         {
             var cralwer = new Crawler();
             var response = cralwer.Request(url);
@@ -22,7 +22,7 @@ namespace RuiJi.Net.NodeVisitor
                 Content = content
             });
 
-            return results;
+            return results.OrderByDescending(m => m.Metas.Count).FirstOrDefault();
         }
     }
 }

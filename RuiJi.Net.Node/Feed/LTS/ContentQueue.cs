@@ -80,10 +80,9 @@ namespace RuiJi.Net.Node.Feed.LTS
                         {
                             var visitor = new Visitor();
 
-                            var results = visitor.Extract(qm.Url);
-                            if (results.Count > 0)
+                            var result = visitor.Extract(qm.Url);
+                            if (result!=null)
                             {
-                                var result = results.OrderByDescending(m => m.Metas.Count).First();
                                 var cm = new ContentModel();
                                 cm.FeedId = qm.FeedId;
                                 cm.Url = qm.Url;

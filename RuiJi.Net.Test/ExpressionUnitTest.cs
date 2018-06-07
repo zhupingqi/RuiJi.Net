@@ -176,7 +176,7 @@ css #listnav a[href]
         {
             var visitor = new Visitor();
 
-            var result = visitor.Extract("http://www.ruijihg.com/archives/315");
+            var result = visitor.Extract("http://www.cannews.com.cn/2018/0606/177699.shtml");
 
             Assert.IsTrue(true);
         }
