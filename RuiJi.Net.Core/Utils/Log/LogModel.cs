@@ -17,6 +17,7 @@ namespace RuiJi.Net.Core.Utils.Log
     /// </summary>
     public class LogModel
     {
+        private Thread watcher;
         public LogModel() { }
 
         public LogModel(ILog logger, ILoggerRepository repository, bool watchMessage, int maxMessageCount = 1000)
@@ -26,9 +27,13 @@ namespace RuiJi.Net.Core.Utils.Log
             Messages = new List<object>();
             WatchMessage = watchMessage;
             MaxMessageCount = maxMessageCount;
-            Watch();
+            watcher = new Thread(new ThreadStart(Watch));
+            watcher.Start();
         }
-
+        ~LogModel()
+        {
+            watcher.Abort();
+        }
         public ILog Logger { get; set; }
 
         public ILoggerRepository Repository { get; set; }
@@ -63,7 +68,7 @@ namespace RuiJi.Net.Core.Utils.Log
                         {
                             foreach (var ev in events)
                             {
-                                var msgObj = new { level = ev.Level.ToString(), thread = ev.ThreadName, time = ev.TimeStamp.ToString("yyyy-MM-dd HH:mm:ss"), message = ev.RenderedMessage };
+                                var msgObj = new { level = ev.Level.ToString().ToLower(), thread = ev.ThreadName, time = ev.TimeStamp.ToString("yyyy-MM-dd HH:mm:ss"), message = ev.RenderedMessage };
                                 lock (this)
                                 {
                                     while (Messages.Count >= MaxMessageCount)

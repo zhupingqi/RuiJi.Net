@@ -11,20 +11,30 @@ namespace RuiJi.Net.Core.Utils.Log
     /// </summary>
     public class AppenderType
     {
+        public AppenderType(AppenderTypeEnum type, string level, string fileSize = "10MB", LayoutModel layout = null, EamilAppenderModel emailAppender = null, int maxMessageCount = 1000)
+        {
+            Type = type;
+            Level = level;
+            FileSize = fileSize;
+            Layout = layout == null ? new LayoutModel() : layout;
+            EmailAppender = emailAppender;
+            MaxMessageCount = maxMessageCount;
+        }
+
         /// <summary>
         /// 追加器类型
         /// </summary>
         public AppenderTypeEnum Type { get; set; }
 
         /// <summary>
-        /// 文件大小（只对文件追加器有效）
+        /// 文件大小（只对文件追加器有效,例*KB|*MB|*GB）
         /// </summary>
         public string FileSize { get; set; }
 
         /// <summary>
-        /// 日志等级（Email和Memory追加器则为最小等级）
+        /// 日志等级（Email和Memory追加器则为最小等级;例：info,error,fatal）
         /// </summary>
-        public log4net.Core.Level Level { get; set; }
+        public string Level { get; set; }
 
         /// <summary>
         /// 日志模板（Memory追加器无效）

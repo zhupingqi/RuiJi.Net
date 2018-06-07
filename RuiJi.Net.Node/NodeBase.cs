@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Org.Apache.Zookeeper.Data;
 using RuiJi.Net.Core.Utils;
+using RuiJi.Net.Core.Utils.Log;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -46,21 +47,27 @@ namespace RuiJi.Net.Node
             this.ZkServer = IPHelper.FixLocalUrl(zkServer);
             this.ProxyUrl = IPHelper.FixLocalUrl(proxyUrl);
             this.StartTime = DateTime.Now;
+            this.NodeType = SetNodeType();
         }
 
         public virtual void Start()
         {
-            if (string.IsNullOrEmpty(BaseUrl) || string.IsNullOrEmpty(ZkServer))
-                throw new Exception("BaseUrl and ZkServer must be set,call setup method!");
+            var logger = Logger.Instance.GetLogger(BaseUrl, NodeType.ToString().ToLower()).Logger;
 
-            NodeType = SetNodeType();
+            if (string.IsNullOrEmpty(BaseUrl) || string.IsNullOrEmpty(ZkServer))
+            {
+                logger.Fatal("BaseUrl and ZkServer must be set,call setup method!");
+                throw new Exception("BaseUrl and ZkServer must be set,call setup method!");
+            }
 
             var resetEvent = new ManualResetEvent(false);
             var watcher = new SessionWatcher(this, resetEvent);
 
             try
             {
+                logger.Info("node " + BaseUrl + " ready to startup!");
                 Console.WriteLine("node " + BaseUrl + " ready to startup!");
+                logger.Info("try connect to zookeeper server : " + ZkServer);
                 Console.WriteLine("try connect to zookeeper server : " + ZkServer);
 
                 zooKeeper = new ZooKeeper(ZkServer, TimeSpan.FromSeconds(30), watcher);
@@ -73,6 +80,7 @@ namespace RuiJi.Net.Node
             }
             catch (Exception ex)
             {
+                logger.Error(ex.Message);
                 Console.WriteLine(ex.Message);
             }
         }

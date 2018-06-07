@@ -25,7 +25,7 @@ namespace RuiJi.Net.Core.Utils.Log
         /// <summary>
         /// 对象日志静态实体字典
         /// </summary>
-        public Dictionary<string, LogModel> Logs { get; private set; }
+        private Dictionary<string, LogModel> Logs { get; set; }
 
         static Logger()
         {
@@ -35,6 +35,14 @@ namespace RuiJi.Net.Core.Utils.Log
         private Logger()
         {
             Logs = new Dictionary<string, LogModel>();
+        }
+
+        public LogModel GetLogger(string baseUrl, string nodetype)
+        {
+            string path = nodetype + "/" + baseUrl.Replace(".", "_").Replace(":", "_");
+            if (!Logs.ContainsKey(path))
+                return null;
+            return Logs[path];
         }
 
         /// <summary>
@@ -48,28 +56,34 @@ namespace RuiJi.Net.Core.Utils.Log
             string path = nodetype + "/" + baseUrl.Replace(".", "_").Replace(":", "_");
             var repository = LogManager.CreateRepository(path);
             var hasMemory = false;
+            var maxMessageCount = 0;
             foreach (var type in types)
             {
+                var level = typeof(Level).GetField(System.Text.RegularExpressions.Regex.Replace(type.Level.ToLower(), @"^\w", t => t.Value.ToUpper())).GetValue(null) as Level;
                 switch (type.Type)
                 {
                     case AppenderTypeEnum.INFO:
                     case AppenderTypeEnum.ERROR:
                     case AppenderTypeEnum.FATAL:
-                        BasicConfigurator.Configure(repository, GetFileAppender(path, type.Level, type.Layout, type.FileSize));
+                        BasicConfigurator.Configure(repository, GetFileAppender(path, level, type.Layout, type.FileSize));
                         break;
                     case AppenderTypeEnum.MESSAGE:
-                        BasicConfigurator.Configure(repository, GetMemoryAppender(type.Level));
+                        BasicConfigurator.Configure(repository, GetMemoryAppender(level));
                         hasMemory = true;
+                        maxMessageCount = type.MaxMessageCount;
                         break;
                     case AppenderTypeEnum.EMAIL:
-                        BasicConfigurator.Configure(repository, GetSmtpAppender(type.EmailAppender.To, type.EmailAppender.From, type.EmailAppender.Password, type.EmailAppender.Subject, type.EmailAppender.Host, type.Layout, type.Level));
+                        if (type.EmailAppender != null)
+                        {
+                            BasicConfigurator.Configure(repository, GetSmtpAppender(type.EmailAppender.To, type.EmailAppender.From, type.EmailAppender.Password, type.EmailAppender.Subject, type.EmailAppender.Host, type.Layout, level));
+                        }
                         break;
                     default:
                         break;
                 }
             }
             if (!Logs.ContainsKey(path))
-                Logs.Add(path, new LogModel(LogManager.GetLogger(path, "MyLog"), repository, hasMemory));
+                Logs.Add(path, new LogModel(LogManager.GetLogger(path, "MyLog"), repository, hasMemory, maxMessageCount));
         }
 
         /// <summary>
@@ -114,8 +128,8 @@ namespace RuiJi.Net.Core.Utils.Log
         private PatternLayout GetLayout(string container, string hearder, string footer)
         {
             var layout = new log4net.Layout.PatternLayout(container);
-            layout.Header = hearder;
-            layout.Footer = footer;
+            layout.Header = hearder + Environment.NewLine;
+            layout.Footer = footer + Environment.NewLine;
             return layout;
         }
 

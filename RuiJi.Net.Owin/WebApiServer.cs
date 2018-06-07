@@ -1,5 +1,6 @@
 ﻿using Microsoft.Owin.Hosting;
 using RuiJi.Net.Core.Utils;
+using RuiJi.Net.Core.Utils.Log;
 using RuiJi.Net.Node;
 using RuiJi.Net.Node.Crawler;
 using RuiJi.Net.Node.Extracter;
@@ -97,9 +98,17 @@ namespace RuiJi.Net.Owin
                         break;
                     }
             }
+            var logAppenders = new List<AppenderType>();
+            logAppenders.Add(new AppenderType(AppenderTypeEnum.INFO, "info"));
+            logAppenders.Add(new AppenderType(AppenderTypeEnum.ERROR, "error"));
+            logAppenders.Add(new AppenderType(AppenderTypeEnum.FATAL, "fatal"));
+            logAppenders.Add(new AppenderType(AppenderTypeEnum.MESSAGE, "all"));
+            Logger.Instance.AddNewLogger(NodeBase.BaseUrl, NodeBase.NodeType.ToString().ToLower(), logAppenders);
+
+            var logger = Logger.Instance.GetLogger(NodeBase.BaseUrl, NodeBase.NodeType.ToString().ToLower()).Logger;
+            logger.Info("Web Api Server Start At http://" + baseUrl + " with " + nodeType + " node");
 
             NodeBase.Start();
-
             resetEvent = new ManualResetEvent(false);
             resetEvent.WaitOne();
         }
@@ -118,7 +127,7 @@ namespace RuiJi.Net.Owin
             }
 
             NodeBase.Stop();
-            if(resetEvent != null)
+            if (resetEvent != null)
                 resetEvent.Set();
 
             Running = false;
