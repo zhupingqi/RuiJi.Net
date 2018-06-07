@@ -5,6 +5,10 @@ RuiJi.Net is a self host webapi written using Microsoft.Owin. Major features inc
 
 RuiJi.Net support ip polling that using the server public network address and proxy server.
 
+# Notice !!!
+
+For the upcoming release of the alpha version, please take care of the QQ group 545931923
+
 ## Document
 
 Building
