@@ -77,6 +77,7 @@
     <Compile Include="Extracter\ExtracterProxyNode.cs" />
     <Compile Include="Feed\ContentLiteDb.cs" />
     <Compile Include="Feed\FeedProxyStorage.cs" />
+    <Compile Include="Feed\FuncModel.cs" />
     <Compile Include="Feed\LTS\ContentQueue.cs" />
     <Compile Include="Feed\LTS\FeedExtracter.cs" />
     <Compile Include="Feed\LTS\FeedExtractJob.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="Feed\FeedModel.cs" />
     <Compile Include="Feed\LTS\FeedScheduler.cs" />
     <Compile Include="Feed\LTS\FeedSnapshot.cs" />
+    <Compile Include="Feed\FuncLiteDb.cs" />
     <Compile Include="NodeConfig.cs" />
     <Compile Include="Extracter\ExtracterNode.cs" />
     <Compile Include="Configuration\NodeConfigurationElementCollection.cs" />

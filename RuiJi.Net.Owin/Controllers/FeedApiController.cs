@@ -258,20 +258,20 @@ namespace RuiJi.Net.Owin.Controllers
             }
         }
 
+        #region 节点函数
         [HttpGet]
-        public object Funcs()
+        public object Funcs(int offset, int limit)
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
 
-            var list = new List<object>();
-
             if (node.NodeType == Node.NodeTypeEnum.FEED)
             {
-                for (int i = 1; i < 5; i++)
-                {
-                    var o = new { id = i, name = "函数" + i, code = "123" + i, examples = "123" + i };
-                    list.Add(o);
-                }
+                var paging = new Paging();
+                paging.CurrentPage = (offset / limit) + 1;
+                paging.PageSize = limit;
+
+                var list = FuncLiteDb.GetFuncModels(paging);
+
                 return new
                 {
                     rows = list,
@@ -281,6 +281,15 @@ namespace RuiJi.Net.Owin.Controllers
 
             return new { };
         }
+
+        [HttpPost]
+        public object UpdateFunc(FuncModel func)
+        {
+            FuncLiteDb.AddOrUpdate(func);
+            return true;
+        }
+        #endregion
+
     }
 
     public class CrawlTaskModel

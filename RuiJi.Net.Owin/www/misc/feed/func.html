@@ -1,18 +1,17 @@
-﻿<div>
-    <div id="toolbar_funcs">
-    </div>
-    <div id="func_list">
-        <table id="tb_funcs" data-toggle="table" data-url="">
-            <!--<thead>
-                <tr>
-                    <th data-checkbox="true" data-width="30px">&nbsp;</th>
-                    <th data-field="id" data-width="40px">Id</th>
-                    <th data-field="name">Name</th>
-                    <th data-field="code">Code</th>
-                    <th data-field="examples">Examples</th>
-                    <th data-width="110px">Actions</th>
-                </tr>
-            </thead>-->
-        </table>
-    </div>
+﻿<div class="row-fluid" id="func_dialog">
+    <form id="func_form">
+        <div class="input-group">
+            <span class="input-group-addon">Name</span>
+            <input type="hidden" name="id" value="0">
+            <input type="text" class="form-control required" name="name">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">Code</span>
+            <input type="text" class="form-control" name="code">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">Examples</span>
+            <input type="text" class="form-control" name="examples">
+        </div>
+    </form>
 </div>
