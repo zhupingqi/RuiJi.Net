@@ -363,6 +363,7 @@ namespace RuiJi.Net.Owin.Controllers
                     cm.FeedId = model.FeedId;
                     cm.Url = url;
                     cm.Metas = result.Metas;
+                    cm.CDate = DateTime.Now;
 
                     results.Add(cm);
                 }

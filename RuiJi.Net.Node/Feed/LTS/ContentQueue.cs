@@ -87,6 +87,7 @@ namespace RuiJi.Net.Node.Feed.LTS
                                 cm.FeedId = qm.FeedId;
                                 cm.Url = qm.Url;
                                 cm.Metas = result.Metas;
+                                cm.CDate = DateTime.Now;
 
                                 if (!storage.Save(cm))
                                     File.AppendAllText(path + @"\" + EncryptHelper.GetMD5Hash(qm.Url) + ".json", JsonConvert.SerializeObject(cm));

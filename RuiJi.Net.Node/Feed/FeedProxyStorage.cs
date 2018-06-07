@@ -18,6 +18,9 @@ namespace RuiJi.Net.Node.Feed
         [JsonProperty("feedId")]
         public int FeedId { get; set; }
 
+        [JsonProperty("cdate")]
+        public DateTime CDate { get; set; }
+
         [JsonProperty("url")]
         public string Url { get; set; }
 
