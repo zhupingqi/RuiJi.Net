@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RuiJi.Net.Core.Utils;
+using RuiJi.Net.Node.Feed;
 using RuiJi.Net.Owin.Controllers;
 
 namespace RuiJi.Net.Test
@@ -20,9 +21,16 @@ namespace RuiJi.Net.Test
         }
 
         [TestMethod]
-        public void TestRegexMatch()
+        public void TestSample()
         {
+            var m = new FuncModel();
+            m.Code = "result = DateTime.Now.TimeOfDay;";
+            m.Sample = "timeOfDay()";
 
+            var func = new ComplieFuncTest("result = DateTime.Now.TimeOfDay;");
+            var result = func.Compile("{# " + m.Sample + " #}");
+            
+            Assert.IsTrue(result.Length > 0);
         }
     }
 }

@@ -14,9 +14,14 @@
                     closable: false,
                     nl2br: false,
                     buttons: [{
+                        label: 'Test',
+                        action: function (dialog) {
+                            module.test();
+                        }
+                    },{
                         label: 'Ok',
                         action: function (dialog) {
-                            module.update();
+                            module.update(dialog);
                         }
                     }, {
                         label: 'Close',
@@ -31,7 +36,7 @@
             $("#tab_panel_funcs").html(tmp.prop("outerHTML"));
 
             var $table = $('#tb_funcs').bootstrapTable({
-                url: "/api/funcs",
+                url: "http://" + proxyUrl + "/api/funcs",
                 method: 'get',
                 toolbar: '#toolbar_funcs',
                 striped: true,
@@ -65,11 +70,11 @@
                     }
 
                 }, {
-                    field: "examples",
-                    title: "Examples",
+                    field: "sample",
+                    title: "Sample",
                     editable: {
                         type: 'text',
-                        title: 'Examples'
+                        title: 'Sample'
                     }
                 }, {
                     field: "actions",
@@ -122,7 +127,7 @@
             };
             return temp;
         },
-        update: function () {
+        test: function () {
             var d = {};
             var t = $("#func_form").serializeArray();
 
@@ -130,7 +135,32 @@
                 d[this.name] = this.value.replace(/"/g, "&quot;");
             });
 
-            console.log(d);
+            $.ajax({
+                url: "/api/funcs/test",
+                data: JSON.stringify(d),
+                type: "POST",
+                contentType: "application/json",
+                success: function (res) {
+                    $("#func_form .msg").text(res);
+                }
+            });
+        },
+        update: function (dialog) {
+            var d = {};
+            var t = $("#func_form").serializeArray();
+            var msg = "";
+
+            $.each(t, function () {
+                d[this.name] = this.value.replace(/"/g, "&quot;");
+                if ($.trim(d[this.name]) == "") {
+                    msg += "\nneed " + this.name;
+                }
+            });
+
+            if (msg != "") {
+                swal(msg);
+                return;
+            }
 
             $.ajax({
                 url: "/api/funcs/update",
@@ -139,7 +169,12 @@
                 contentType: "application/json",
                 success: function (res) {
                     $table = $('#tb_funcs').bootstrapTable("refresh");
-                    swal("完成");
+                    if (res) {
+                        swal("完成");
+                        dialog.close();
+                    }
+                    else
+                        swal("添加失败");
                 }
             });
         },

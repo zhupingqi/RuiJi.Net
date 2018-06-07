@@ -37,7 +37,7 @@ namespace RuiJi.Net.Node.Feed
                 {
                     rule.Name = rule.Name.Trim();
                     rule.Code = rule.Code.Trim();
-                    rule.Examples = rule.Examples.Trim();
+                    rule.Sample = rule.Sample.Trim();
 
                     col.Insert(rule);
                 }
@@ -73,6 +73,16 @@ namespace RuiJi.Net.Node.Feed
                 var col = db.GetCollection<FuncModel>("funcs");
 
                 return col.Find(m => m.Id == id).FirstOrDefault();
+            }
+        }
+
+        public static FuncModel GetFunc(string name)
+        {
+            using (var db = new LiteDatabase(@"LiteDb/Funcs.db"))
+            {
+                var col = db.GetCollection<FuncModel>("funcs");
+
+                return col.Find(m => m.Name == name).FirstOrDefault();
             }
         }
     }

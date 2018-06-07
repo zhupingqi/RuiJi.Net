@@ -264,7 +264,7 @@ namespace RuiJi.Net.Owin.Controllers
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
 
-            if (node.NodeType == Node.NodeTypeEnum.FEED)
+            if (node.NodeType == Node.NodeTypeEnum.FEEDPROXY)
             {
                 var paging = new Paging();
                 paging.CurrentPage = (offset / limit) + 1;
@@ -283,8 +283,23 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpPost]
+        public object FuncTest(FuncModel func)
+        {
+            var code = "{# " + func.Sample + " #}";
+            var test = new ComplieFuncTest(func.Code);
+            return test.Compile(code);
+        }
+
+        [HttpPost]
         public object UpdateFunc(FuncModel func)
         {
+            if (func.Name == "now" || func.Name == "tick")
+                return false;
+
+            var f = FuncLiteDb.GetFunc(func.Name);
+            if (f != null)
+                return false;
+
             FuncLiteDb.AddOrUpdate(func);
             return true;
         }
@@ -403,9 +418,35 @@ namespace RuiJi.Net.Owin.Controllers
                         code = string.Format("result = DateTime.Now.Ticks;");
                         break;
                     }
+                default:
+                    {
+                        var f = FuncLiteDb.GetFunc(function);
+                        if (f != null)
+                        {
+                            code = string.Format(f.Code, args);
+                        }
+                        break;
+                    }
             }
 
             return code;
+        }
+    }
+
+    public class ComplieFuncTest : CompileUrl
+    {
+        private string code;
+
+        public ComplieFuncTest(string code)
+        {
+            this.code = code;
+        }
+
+        public override string FormatCode(string function, object[] args)
+        {
+            var formatCode = string.Format(code, args);
+
+            return formatCode;
         }
     }
 }

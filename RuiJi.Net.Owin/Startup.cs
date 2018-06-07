@@ -238,6 +238,12 @@ namespace RuiJi.Net.Owin
                     routeTemplate: "api/funcs/update",
                     defaults: new { controller = "FeedApi", action = "UpdateFunc" }
                 );
+
+            config.Routes.MapHttpRoute(
+                    name: "FuncTest",
+                    routeTemplate: "api/funcs/test",
+                    defaults: new { controller = "FeedApi", action = "FuncTest" }
+                );
             #endregion
 
             #region Info Api

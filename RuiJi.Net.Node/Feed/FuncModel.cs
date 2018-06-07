@@ -18,7 +18,7 @@ namespace RuiJi.Net.Node.Feed
         [JsonProperty("code")]
         public string Code { get; set; }
 
-        [JsonProperty("examples")]
-        public string Examples { get; set; }
+        [JsonProperty("sample")]
+        public string Sample { get; set; }
     }
 }

@@ -69,9 +69,11 @@ namespace RuiJi.Net.Core.Utils
             {
                 var compile = "";
                 var code = FormatCode(c.Function, c.Args);
-                compile = JITCompile.GetResult(code);                
-
-                address = reg.Replace(address, compile, 1);
+                if (!string.IsNullOrEmpty(code))
+                {
+                    compile = JITCompile.GetResult(code);
+                    address = reg.Replace(address, compile, 1);
+                }
             }
 
             return address;
