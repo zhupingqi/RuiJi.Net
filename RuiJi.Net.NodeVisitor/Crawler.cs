@@ -37,9 +37,10 @@ namespace RuiJi.Net.NodeVisitor
             return response;
         }
 
-        public Response Request(string url)
+        public Response Request(string url,string method = "GET")
         {
             var request = new Request(url);
+            request.Method = method;
 
             return Request(request);
         }

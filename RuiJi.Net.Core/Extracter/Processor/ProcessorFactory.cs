@@ -19,7 +19,7 @@ namespace RuiJi.Net.Core.Extracter.Processor
             processors.Add(SelectorTypeEnum.REGEX, new RegexProcessor());
             processors.Add(SelectorTypeEnum.EXCLUDE, new ExcludeProcessor());
             processors.Add(SelectorTypeEnum.REGEXSPLIT, new RegexSplitSelectorProcessor());
-            processors.Add(SelectorTypeEnum.TEXT, new TextRangeProcessor());
+            processors.Add(SelectorTypeEnum.TEXTRANGE, new TextRangeProcessor());
             processors.Add(SelectorTypeEnum.REPLACE, new RegexReplaceProcessor());
             processors.Add(SelectorTypeEnum.EXPRESSION, new ExpressionProcessor());
             processors.Add(SelectorTypeEnum.XPATH, new XPathProcessor());

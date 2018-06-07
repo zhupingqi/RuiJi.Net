@@ -1,4 +1,4 @@
-﻿define(['jquery', 'utils', 'sweetAlert', 'bootstrapDialog', 'bootstrapTable'], function ($, utils) {
+﻿define(['jquery', 'utils', 'sweetAlert', 'bootstrapDialog', 'bootstrapTable','jsonViewer'], function ($, utils) {
     var proxyUrl = "";
 
     var module = {
@@ -82,9 +82,6 @@
             });
 
             $(document).on("click", "#tb_feeds .fa-random", function () {
-                require(['/scripts/jquery.json-viewer.js']);
-                utils.loadCss("/scripts/jquery.json-viewer.css");
-
                 var ele = $(this);
                 var id = ele.closest("tr").find("td").eq(1).text();
                 var f = $(crawl);

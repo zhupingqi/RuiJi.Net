@@ -52,15 +52,23 @@ namespace RuiJi.Net.Core.Extensions
                     }
                 case "6":
                     {
-                        return JsonConvert.DeserializeObject<JsonPathSelector>(json);
+                        return JsonConvert.DeserializeObject<RegexReplaceSelector>(json);
                     }
                 case "7":
                     {
-                        return JsonConvert.DeserializeObject<XPathSelector>(json);
+                        return JsonConvert.DeserializeObject<JsonPathSelector>(json);
                     }
                 case "8":
                     {
+                        return JsonConvert.DeserializeObject<XPathSelector>(json);
+                    }
+                case "9":
+                    {
                         return JsonConvert.DeserializeObject<ClearTagSelector>(json);
+                    }
+                case "10":
+                    {
+                        return JsonConvert.DeserializeObject<ExpressionSelector>(json);
                     }
             }
 

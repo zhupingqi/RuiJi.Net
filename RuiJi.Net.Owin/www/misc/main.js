@@ -13,6 +13,7 @@
         'tabs': '/scripts/require-tabs/require.tabs',
         'tree': '/scripts/jstree/jstree.min',
         'sweetAlert': '/scripts/sweetalert/sweetalert.min',
+        'jsonViewer':'/scripts/jquery.json-viewer'
     },
     map: {
         '*': {
@@ -44,6 +45,9 @@
         },
         'flatJson': {
             deps: ['bootstrapTable']
+        },
+        'jsonViewer': {
+            deps: ['jquery', 'css!/scripts/jquery.json-viewer.css']
         }
     }
 });

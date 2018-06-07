@@ -11,7 +11,7 @@ namespace RuiJi.Net.Core.Extracter.Enum
         CSS,
         REGEX,
         REGEXSPLIT,
-        TEXT,
+        TEXTRANGE,
         EXCLUDE,
         INCLUDE,
         REPLACE,

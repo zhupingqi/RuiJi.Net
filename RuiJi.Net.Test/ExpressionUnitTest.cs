@@ -41,7 +41,7 @@ namespace RuiJi.Net.Test
                 reg /aa([\d]*)sf/ -r
 
                 #regexReplace
-                regR /aaaa/ dddd/
+                regR />>/ >
                 
                 #regexSplit
                 regS /aaa/ 2 3 5

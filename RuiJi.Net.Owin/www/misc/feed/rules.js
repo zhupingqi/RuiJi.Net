@@ -1,4 +1,4 @@
-﻿define(['jquery', 'utils', 'sweetAlert', 'bootstrapDialog', 'bootstrapTable'], function ($, utils) {
+﻿define(['jquery', 'utils', 'sweetAlert', 'bootstrapDialog', 'bootstrapTable','jsonViewer'], function ($, utils) {
     var proxyUrl = "";
 
     var module = {
@@ -13,6 +13,11 @@
                     closable: false,
                     nl2br: false,
                     buttons: [{
+                        label: 'Test',
+                        action: function (dialog) {
+                            module.test();
+                        }
+                    },{
                         label: 'Ok',
                         action: function (dialog) {
                             module.update();
@@ -60,6 +65,11 @@
                         closable: false,
                         nl2br: false,
                         buttons: [{
+                            label: 'Test',
+                            action: function (dialog) {
+                                module.test();
+                            }
+                        },{
                             label: 'Ok',
                             action: function (dialog) {
                                 module.update();
@@ -169,6 +179,51 @@
                 contentType: "application/json",
                 success: function (res) {
                     swal("完成");
+                }
+            });
+        },
+        test: function () {
+            var d = {};
+            var validate = true;
+            var msg = "need";
+
+            $("input.required", "#rule_dialog").each(function (index, e) {
+                e = $(e);
+                var v = e.val();
+                if ($.trim(e.val()) == "") {
+                    validate = false;
+                    msg += "\n" + e.attr("name");
+                }
+            });
+
+            if (!validate) {
+                swal(msg);
+                return;
+            }
+
+            $("input[name]:not(:disabled),textarea", "#rule_dialog").each(function (index, e) {
+                e = $(e);
+                var v = e.val();
+                if (v == "true")
+                    d[e.attr("name")] = true;
+                else if (v == "false")
+                    d[e.attr("name")] = false;
+                else
+                    d[e.attr("name")] = v;
+            });
+
+            $.ajax({
+                url: "/api/rule/test",
+                data: JSON.stringify(d),
+                type: "POST",
+                contentType: "application/json",
+                success: function (res) {
+                    var options = {
+                        collapsed: false,
+                        withQuotes: true
+                    };
+
+                    $('#rule_test_result').jsonViewer(res, options);
                 }
             });
         }

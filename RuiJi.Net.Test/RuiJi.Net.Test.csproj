@@ -61,6 +61,7 @@
     <Compile Include="CompileTest.cs" />
     <Compile Include="ExpressionUnitTest.cs" />
     <Compile Include="SysUnitTest.cs" />
+    <Compile Include="ProcessorTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

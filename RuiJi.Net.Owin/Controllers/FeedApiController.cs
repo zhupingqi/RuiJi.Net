@@ -157,6 +157,7 @@ namespace RuiJi.Net.Owin.Controllers
             return feed;
         }
 
+        #region 存储抓取结果
         [HttpPost]
         public bool SaveContent(ContentModel content, string shard = "")
         {
@@ -207,7 +208,8 @@ namespace RuiJi.Net.Owin.Controllers
             }
 
             return new { };
-        }
+        } 
+        #endregion
 
         [HttpPost]
         public void UpdateRule(RuleModel rule)
@@ -258,6 +260,35 @@ namespace RuiJi.Net.Owin.Controllers
             }
         }
 
+        [HttpPost]
+        public object TestRule(RuleModel rule)
+        {
+            var c = new Crawler();
+            var response = c.Request(rule.Url,rule.Method);
+            if(response != null && response.Data != null)
+            {
+                var content = response.Data.ToString();
+                var block = RuiJiExpression.ParserBlock(rule.RuiJiExpression);
+                var r = new ExtractRequest();
+                r.Content = content;
+                r.Blocks = new List<ExtractFeatureBlock> {
+                    new ExtractFeatureBlock {
+                        Block = block,
+                        Feature = rule.Feature
+                    }
+                };
+
+                var results = Extracter.Extract(r);
+
+                var result = results.OrderByDescending(m => m.Metas.Count).FirstOrDefault();
+                result.Content = null;
+
+                return result;
+            }
+
+            return new { };
+        }
+
         #region 节点函数
         [HttpGet]
         public object Funcs(int offset, int limit)
@@ -304,7 +335,6 @@ namespace RuiJi.Net.Owin.Controllers
             return true;
         }
         #endregion
-
     }
 
     public class CrawlTaskModel
@@ -359,13 +389,16 @@ namespace RuiJi.Net.Owin.Controllers
                     reporter.Report("正在提取地址 " + url);
                     var result = visitor.Extract(url);
 
-                    var cm = new ContentModel();
-                    cm.FeedId = model.FeedId;
-                    cm.Url = url;
-                    cm.Metas = result.Metas;
-                    cm.CDate = DateTime.Now;
+                    if (result != null)
+                    {
+                        var cm = new ContentModel();
+                        cm.FeedId = model.FeedId;
+                        cm.Url = url;
+                        cm.Metas = result.Metas;
+                        cm.CDate = DateTime.Now;
 
-                    results.Add(cm);
+                        results.Add(cm);
+                    }
                 }
             }
 

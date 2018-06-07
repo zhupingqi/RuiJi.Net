@@ -146,23 +146,43 @@ namespace RuiJi.Net.Owin
             );
             #endregion
 
+            #region Rule Api
+            config.Routes.MapHttpRoute(
+                name: "UrlRule",
+                routeTemplate: "api/fp/rule",
+                defaults: new { controller = "FeedApi", action = "UrlRule" }
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "RuleList",
+                routeTemplate: "api/rules",
+                defaults: new { controller = "FeedApi", action = "Rules" }
+            );
+
+            config.Routes.MapHttpRoute(
+               name: "UpdateRule",
+               routeTemplate: "api/rule/update",
+               defaults: new { controller = "FeedApi", action = "UpdateRule" }
+           );
+
+            config.Routes.MapHttpRoute(
+                name: "TestRule",
+                routeTemplate: "api/rule/test",
+                defaults: new { controller = "FeedApi", action = "TestRule" }
+            );
+
+            config.Routes.MapHttpRoute(
+                    name: "GetRule",
+                    routeTemplate: "api/rule",
+                    defaults: new { controller = "FeedApi", action = "GetRule" }
+                ); 
+            #endregion
+
             #region Feed Api
             config.Routes.MapHttpRoute(
                     name: "FeedList",
                     routeTemplate: "api/feeds",
                     defaults: new { controller = "FeedApi", action = "Feeds" }
-                );
-
-            config.Routes.MapHttpRoute(
-                    name: "RuleList",
-                    routeTemplate: "api/rules",
-                    defaults: new { controller = "FeedApi", action = "Rules" }
-                );
-
-            config.Routes.MapHttpRoute(
-                    name: "UrlRule",
-                    routeTemplate: "api/fp/rule",
-                    defaults: new { controller = "FeedApi", action = "UrlRule" }
                 );
 
             config.Routes.MapHttpRoute(
@@ -196,23 +216,13 @@ namespace RuiJi.Net.Owin
                 );
 
             config.Routes.MapHttpRoute(
-                   name: "UpdateRule",
-                   routeTemplate: "api/rule/update",
-                   defaults: new { controller = "FeedApi", action = "UpdateRule" }
-               );
-
-            config.Routes.MapHttpRoute(
-                    name: "GetRule",
-                    routeTemplate: "api/rule",
-                    defaults: new { controller = "FeedApi", action = "GetRule" }
-                );
-
-            config.Routes.MapHttpRoute(
                     name: "RunCrawl",
                     routeTemplate: "api/feed/crawl",
                     defaults: new { controller = "FeedApi", action = "RunCrawl" }
                 );
+            #endregion
 
+            #region Content Api
             config.Routes.MapHttpRoute(
                 name: "SaveContent",
                 routeTemplate: "api/fp/content/save",
@@ -220,10 +230,10 @@ namespace RuiJi.Net.Owin
             );
 
             config.Routes.MapHttpRoute(
-                    name: "GetContent",
-                    routeTemplate: "api/fp/content",
-                    defaults: new { controller = "FeedApi", action = "GetContent" }
-                );
+                name: "GetContent",
+                routeTemplate: "api/fp/content",
+                defaults: new { controller = "FeedApi", action = "GetContent" }
+            );
             #endregion
 
             #region Funcs Api

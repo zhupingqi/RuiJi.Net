@@ -81,7 +81,7 @@ namespace RuiJi.Net.Node.Feed.LTS
                             var visitor = new Visitor();
 
                             var result = visitor.Extract(qm.Url);
-                            if (result!=null)
+                            if (result != null)
                             {
                                 var cm = new ContentModel();
                                 cm.FeedId = qm.FeedId;

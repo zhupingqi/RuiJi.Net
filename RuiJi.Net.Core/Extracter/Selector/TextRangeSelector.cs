@@ -31,7 +31,7 @@ namespace RuiJi.Net.Core.Extracter.Selector
 
         protected override SelectorTypeEnum SetSelectType()
         {
-            return SelectorTypeEnum.TEXT;
+            return SelectorTypeEnum.TEXTRANGE;
         }
     }
 }
