@@ -104,11 +104,11 @@ namespace RuiJi.Net.Owin.Controllers
 
             if (leaderNode != null)
             {
-                var nv = leaderNode.GetChildren("/config/proxy");
+                var nv = leaderNode.GetChildren("/live_nodes/proxy");
                 foreach (var n in nv.AllKeys)
                 {
                     var d = leaderNode.GetData(n);
-                    if (d.Data == "{\"type\":\"feed\"}") {
+                    if (d.Data == "feed proxy") {
                         return n.Split('/').Last();
                     }
                 }

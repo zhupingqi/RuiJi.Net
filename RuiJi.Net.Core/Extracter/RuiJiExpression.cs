@@ -177,12 +177,12 @@ namespace RuiJi.Net.Core.Extracter
                         else if (p.EndsWith(":html"))
                         {
                             selector.Type = CssTypeEnum.InnerHtml;
-                            selector.Value = Regex.Replace(p, ":html", "").Trim();
+                            selector.Value = Regex.Replace(p, ":html$", "").Trim();
                         }
                         else if (p.EndsWith(":text"))
                         {
                             selector.Type = CssTypeEnum.Text;
-                            selector.Value = Regex.Replace(p, ":text", "").Trim();
+                            selector.Value = Regex.Replace(p, ":text$", "").Trim();
                         }
                         else
                         {
