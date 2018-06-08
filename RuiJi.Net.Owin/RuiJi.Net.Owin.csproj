@@ -242,20 +242,25 @@
     <Content Include="www\misc\feed\feeds.html" />
     <Content Include="www\misc\feed\feeds.js" />
     <Content Include="www\fonts\font-awesome.min.css" />
-    <Content Include="www\misc\feed\func.html" />
-    <Content Include="www\misc\feed\funcs.html" />
-    <Content Include="www\misc\feed\funcs.js" />
+    <Content Include="www\misc\setting\func.html" />
+    <Content Include="www\misc\setting\funcs.html" />
+    <Content Include="www\misc\setting\funcs.js" />
     <Content Include="www\misc\feed\rule.html" />
     <Content Include="www\misc\log.js" />
     <Content Include="www\misc\main.js" />
     <Content Include="www\misc\node.html" />
     <Content Include="www\misc\node.js" />
-    <Content Include="www\misc\feed\plugin.js" />
+    <Content Include="www\misc\setting\node.js" />
+    <Content Include="www\misc\setting\plugin.js" />
     <Content Include="www\misc\proto.js" />
     <Content Include="www\misc\feed\rules.html" />
     <Content Include="www\misc\feed\rules.js" />
-    <Content Include="www\misc\feed\setting.html" />
-    <Content Include="www\misc\feed\setting.js" />
+    <Content Include="www\misc\setting\proxy.js" />
+    <Content Include="www\misc\setting\setting.html" />
+    <Content Include="www\misc\setting\setting.js" />
+    <Content Include="www\misc\setting\entry.js" />
+    <Content Include="www\misc\setting\storage.js" />
+    <Content Include="www\misc\setting\ua.js" />
     <Content Include="www\misc\site.css" />
     <Content Include="www\misc\feed\statistics.js" />
     <Content Include="www\misc\status.html" />
@@ -530,7 +535,6 @@
     <Folder Include="conf\config\proxy\" />
     <Folder Include="conf\live_nodes\" />
     <Folder Include="Utils\" />
-    <Folder Include="www\misc\feed\plugin\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

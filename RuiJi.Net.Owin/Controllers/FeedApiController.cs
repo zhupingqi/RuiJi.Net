@@ -357,6 +357,12 @@ namespace RuiJi.Net.Owin.Controllers
             return new { };
         }
 
+        [HttpGet]
+        public object GetFunc(int id)
+        {
+            return FuncLiteDb.GetFunc(id);
+        }
+
         [HttpPost]
         public object FuncTest(FuncModel func)
         {

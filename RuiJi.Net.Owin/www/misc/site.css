@@ -29,7 +29,7 @@
     width:400px;
 }
 
-#tab_panel_feed > ul > li > a {
+#tab_panel_feed > ul > li > a, #tab_panel_setting > ul > li > a {
     padding-right: 20px;
 }
 

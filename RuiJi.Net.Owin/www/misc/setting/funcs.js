@@ -4,8 +4,8 @@
 
     var module = {
         init: function () {
-            var tmp = utils.loadTemplate("/misc/feed/funcs.html", false);
-            var func = utils.loadTemplate("/misc/feed/func.html", false);
+            var tmp = utils.loadTemplate("/misc/setting/funcs.html", false);
+            var func = utils.loadTemplate("/misc/setting/func.html", false);
 
             $(document).on("click", "#add_func", function () {
                 BootstrapDialog.show({
@@ -32,11 +32,56 @@
                 });
             });
 
+            $(document).on("click", "#tb_funcs .fa-edit", function () {
+                var ele = $(this);
+                var id = ele.closest("tr").find("td").eq(1).text();
+                var f = $(func);
+                f.find("input[name='id']").val(id);
+
+                $.getJSON("http://" + proxyUrl + "/api/func?id=" + id, function (d) {
+                    for (var p in d) {
+                        var v = d[p];
+                        var ele = f.find("[name='" + p + "']").eq(0);
+
+                        ele.attr("value", v);
+                        ele.text(v);
+
+                        if (ele.is(":hidden")) {
+                            ele.next().attr("value", v);
+                        }
+                    }
+
+                    BootstrapDialog.show({
+                        title: 'Edit Func',
+                        message: f.prop("outerHTML"),
+                        closable: false,
+                        nl2br: false,
+                        buttons: [{
+                            label: 'Test',
+                            action: function (dialog) {
+                                module.test();
+                            }
+                        }, {
+                            label: 'Ok',
+                            action: function (dialog) {
+                                module.update(dialog);
+                            }
+                        }, {
+                            label: 'Close',
+                            action: function (dialog) {
+                                dialog.close();
+                            }
+                        }]
+                    });
+                });
+            });
+
             tmp = $(tmp);
+            tmp.find("#tb_funcs").attr("data-url", "http://" + proxyUrl + "/api/funcs");
             $("#tab_panel_funcs").html(tmp.prop("outerHTML"));
 
             var $table = $('#tb_funcs').bootstrapTable({
-                url: "http://" + proxyUrl + "/api/funcs",
+                //url: "http://" + proxyUrl + "/api/funcs",
                 method: 'get',
                 toolbar: '#toolbar_funcs',
                 striped: true,
@@ -46,40 +91,6 @@
                 sortOrder: "asc",
                 queryParams: module.queryParams,
                 sidePagination: "server",
-                columns: [{
-                    field: "name",
-                    title: "Name",
-                    editable: {
-                        type: 'text',
-                        title: 'Name',
-                        validate: function (v) {
-                            if (!v) return 'name not null';
-
-                        }
-                    }
-                }, {
-                    field: "code",
-                    title: "Code",
-                    editable: {
-                        type: 'text',
-                        title: 'Code',
-                        validate: function (v) {
-                            if (!v) return 'code not null';
-
-                        }
-                    }
-
-                }, {
-                    field: "sample",
-                    title: "Sample",
-                    editable: {
-                        type: 'text',
-                        title: 'Sample'
-                    }
-                }, {
-                    field: "actions",
-                    title: "Actions"
-                }],
                 pageNumber: 1,
                 pageSize: 10,
                 pageList: [10, 25, 50, 100],
@@ -91,31 +102,39 @@
                 uniqueId: "ID",
                 cardView: false,
                 detailView: false,
-                onEditableSave: function (field, row, oldValue, $el) {
-                    $.ajax({
-                        type: "post",
-                        url: "api/funcs/update",
-                        data: row,
-                        dataType: 'JSON',
-                        success: function (data, status) {
-                            if (data) {
-                                alert('提交数据成功');
-                            }
-                            else {
-                                $el.text(oldValue);
-                            }
-                            $table = $('#tb_funcs').bootstrapTable("resetView");
-                        },
-                        error: function () {
-                            $el.text(oldValue);
-                            //swal('编辑失败');
-                        },
-                        complete: function () {
-
-                        }
-
-                    });
+                onPostBody: function (e) {
+                    if (e.length > 0) {
+                        $('#tb_funcs > tbody > tr').map(function (i, m) {
+                            $(m).find("td:last").html("<i class='fa fa-edit'></i>");
+                        });
+                    }
                 }
+                //,
+                //onEditableSave: function (field, row, oldValue, $el) {
+                //    $.ajax({
+                //        type: "post",
+                //        url: "api/funcs/update",
+                //        data: row,
+                //        dataType: 'JSON',
+                //        success: function (data, status) {
+                //            if (data) {
+                //                alert('提交数据成功');
+                //            }
+                //            else {
+                //                $el.text(oldValue);
+                //            }
+                //            $table = $('#tb_funcs').bootstrapTable("resetView");
+                //        },
+                //        error: function () {
+                //            $el.text(oldValue);
+                //            //swal('编辑失败');
+                //        },
+                //        complete: function () {
+
+                //        }
+
+                //    });
+                //}
             });
         },
         queryParams: function (params) {
@@ -136,7 +155,7 @@
             });
 
             $.ajax({
-                url: "/api/funcs/test",
+                url: "/api/func/test",
                 data: JSON.stringify(d),
                 type: "POST",
                 contentType: "application/json",
@@ -163,7 +182,7 @@
             }
 
             $.ajax({
-                url: "/api/funcs/update",
+                url: "/api/func/update",
                 data: JSON.stringify(d),
                 type: "POST",
                 contentType: "application/json",

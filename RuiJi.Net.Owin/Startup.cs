@@ -256,14 +256,20 @@ namespace RuiJi.Net.Owin
                 );
 
             config.Routes.MapHttpRoute(
+                    name: "GetFunc",
+                    routeTemplate: "api/func",
+                    defaults: new { controller = "FeedApi", action = "GetFunc" }
+                );
+
+            config.Routes.MapHttpRoute(
                     name: "UpdateFunc",
-                    routeTemplate: "api/funcs/update",
+                    routeTemplate: "api/func/update",
                     defaults: new { controller = "FeedApi", action = "UpdateFunc" }
                 );
 
             config.Routes.MapHttpRoute(
                     name: "FuncTest",
-                    routeTemplate: "api/funcs/test",
+                    routeTemplate: "api/func/test",
                     defaults: new { controller = "FeedApi", action = "FuncTest" }
                 );
             #endregion
