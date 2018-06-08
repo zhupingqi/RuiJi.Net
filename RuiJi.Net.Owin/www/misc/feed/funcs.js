@@ -98,7 +98,7 @@
                         data: row,
                         dataType: 'JSON',
                         success: function (data, status) {
-                            if (status == "success") {
+                            if (data) {
                                 alert('提交数据成功');
                             }
                             else {

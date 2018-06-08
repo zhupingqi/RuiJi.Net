@@ -368,11 +368,11 @@ namespace RuiJi.Net.Owin.Controllers
         [HttpPost]
         public object UpdateFunc(FuncModel func)
         {
-            if (func.Name == "now" || func.Name == "tick")
+            if (func.Name == "now" || func.Name == "ticks")
                 return false;
 
             var f = FuncLiteDb.GetFunc(func.Name);
-            if (f != null)
+            if (f != null && f.Id == 0)
                 return false;
 
             FuncLiteDb.AddOrUpdate(func);
