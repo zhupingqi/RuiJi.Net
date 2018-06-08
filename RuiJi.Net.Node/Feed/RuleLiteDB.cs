@@ -51,13 +51,17 @@ namespace RuiJi.Net.Node.Feed
             }
         }
 
-        public static void Remove(int id)
+        public static bool Remove(int[] ids)
         {
             using (var db = new LiteDatabase(@"LiteDb/Rules.db"))
             {
                 var col = db.GetCollection<RuleModel>("rules");
-                col.Delete(id);
+                ids.ToList().ForEach((m) => {
+                    col.Delete(m);
+                });                
             }
+
+            return true;
         }
 
         public static void CreateIndex()

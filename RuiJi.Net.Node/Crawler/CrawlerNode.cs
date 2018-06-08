@@ -47,12 +47,10 @@ namespace RuiJi.Net.Node.Crawler
 
         protected override void OnStartup()
         {
-            var stat = zooKeeper.Exists("/live_nodes/crawler/" + BaseUrl, false);
-            if (stat == null)
-                zooKeeper.Create("/live_nodes/crawler/" + BaseUrl, null, Ids.OPEN_ACL_UNSAFE, CreateMode.Ephemeral);
+            base.CreateLiveNode("/live_nodes/crawler/" + BaseUrl,null);
 
             //create crawler config in zookeeper
-            stat = zooKeeper.Exists("/config/crawler/" + BaseUrl, false);
+            var stat = zooKeeper.Exists("/config/crawler/" + BaseUrl, false);
             if (stat == null)
             {
                 var d = new CrawlerConfig()

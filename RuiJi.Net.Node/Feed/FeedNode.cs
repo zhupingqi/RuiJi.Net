@@ -29,11 +29,9 @@ namespace RuiJi.Net.Node.Feed
 
         protected override void OnStartup()
         {
-            var stat = zooKeeper.Exists("/live_nodes/feed/" + BaseUrl, false);
-            if (stat == null)
-                zooKeeper.Create("/live_nodes/feed/" + BaseUrl, null, Ids.OPEN_ACL_UNSAFE, CreateMode.Ephemeral);
+            base.CreateLiveNode("/live_nodes/feed/" + BaseUrl, null);
 
-            stat = zooKeeper.Exists("/config/feed/" + BaseUrl, false);
+            var stat = zooKeeper.Exists("/config/feed/" + BaseUrl, false);
             if (stat == null)
             {
                 var d = new NodeConfig()

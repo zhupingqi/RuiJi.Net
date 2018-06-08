@@ -1,4 +1,4 @@
-﻿define(['jquery', 'utils', 'sweetAlert', 'bootstrapDialog', 'bootstrapTable','jsonViewer'], function ($, utils) {
+﻿define(['jquery', 'utils', 'sweetAlert', 'bootstrapDialog', 'bootstrapTable', 'jsonViewer'], function ($, utils) {
     var proxyUrl = "";
 
     var module = {
@@ -6,6 +6,7 @@
             var tmp = utils.loadTemplate("/misc/feed/rules.html", false);
             var ruleTmp = utils.loadTemplate("/misc/feed/rule.html", false);
 
+            //#region event
             $(document).on("click", "#add_rule", function () {
                 BootstrapDialog.show({
                     title: '添加 Rule',
@@ -17,10 +18,10 @@
                         action: function (dialog) {
                             module.test();
                         }
-                    },{
+                    }, {
                         label: 'Ok',
                         action: function (dialog) {
-                            module.update();
+                            module.update(dialog);
                         }
                     }, {
                         label: 'Close',
@@ -69,7 +70,7 @@
                             action: function (dialog) {
                                 module.test();
                             }
-                        },{
+                        }, {
                             label: 'Ok',
                             action: function (dialog) {
                                 module.update();
@@ -91,6 +92,27 @@
 
                 ele.closest("div").find("textarea").eq(ele.index()).show().siblings("textarea").hide();
             });
+
+            $(document).on("click", "#toolbar_rules a[remove]", function () {
+                swal({
+                    title: "确定删除吗？",
+                    text: "你将无法恢复该规则！",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "确定删除！",
+                    cancelButtonText: "取消删除！",
+                    closeOnConfirm: false
+                },
+                    function () {
+                        var ids = $("#rules_list td :checked").parent().next().map(function () { return $(this).text(); }).get().join(",");
+                        if(ids != "")
+                            module.remove(ids);
+                        else
+                            swal("错误！", "未选择任何规则。", "success");
+                    });
+            });
+            //#endregion
 
             tmp = $(tmp);
             tmp.find("#tb_rules").attr("data-url", "http://" + proxyUrl + "/api/rules");
@@ -142,7 +164,7 @@
                 fn();
             });
         },
-        update: function () {
+        update: function (dialog) {
             var d = {};
             var validate = true;
             var msg = "need";
@@ -179,6 +201,8 @@
                 contentType: "application/json",
                 success: function (res) {
                     swal("完成");
+                    dialog.close();
+                    $('#tb_rules').bootstrapTable("refresh");
                 }
             });
         },
@@ -224,6 +248,18 @@
                     };
 
                     $('#rule_test_result').jsonViewer(res, options);
+                }
+            });
+        },
+        remove: function (ids) {
+            var url = "http://" + proxyUrl + "/api/rule/remove?ids=" + ids;
+
+            $.getJSON(url, function (res) {
+                if (res) {
+                    swal("删除！", "规则已经被删除。", "success");
+                    $('#tb_rules').bootstrapTable("refresh");
+                } else {
+                    swal("删除失败！", "删除规则发生错误。", "success");
                 }
             });
         }

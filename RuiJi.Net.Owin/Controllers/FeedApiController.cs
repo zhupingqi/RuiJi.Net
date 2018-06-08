@@ -19,6 +19,7 @@ namespace RuiJi.Net.Owin.Controllers
 {
     public class FeedApiController : ApiController
     {
+        #region Rule
         [HttpGet]
         public object Feeds(int offset, int limit)
         {
@@ -79,6 +80,59 @@ namespace RuiJi.Net.Owin.Controllers
             return new { };
         }
 
+        [HttpPost]
+        public void UpdateRule(RuleModel rule)
+        {
+            RuleLiteDb.AddOrUpdate(rule);
+        }
+
+        [HttpGet]
+        public object GetRule(int id)
+        {
+            var feed = RuleLiteDb.GetRule(id);
+
+            return feed;
+        }
+
+        [HttpGet]
+        public bool RemoveRule(string ids)
+        {
+            var removes = ids.Split(',').Select(m => Convert.ToInt32(m)).ToArray();
+
+            return RuleLiteDb.Remove(removes);
+        }
+
+        [HttpPost]
+        public object TestRule(RuleModel rule)
+        {
+            var c = new Crawler();
+            var response = c.Request(rule.Url, rule.Method);
+            if (response != null && response.Data != null)
+            {
+                var content = response.Data.ToString();
+                var block = RuiJiExpression.ParserBlock(rule.RuiJiExpression);
+                var r = new ExtractRequest();
+                r.Content = content;
+                r.Blocks = new List<ExtractFeatureBlock> {
+                    new ExtractFeatureBlock {
+                        Block = block,
+                        Feature = rule.Feature
+                    }
+                };
+
+                var results = Extracter.Extract(r);
+
+                var result = results.OrderByDescending(m => m.Metas.Count).FirstOrDefault();
+                result.Content = null;
+
+                return result;
+            }
+
+            return new { };
+        }
+        #endregion
+
+        #region Feed
         [HttpGet]
         public object FeedJob(string pages)
         {
@@ -157,6 +211,39 @@ namespace RuiJi.Net.Owin.Controllers
             return feed;
         }
 
+        [HttpPost]
+        public object TestFeed(FeedModel feed)
+        {
+            var c = new Crawler();
+            var response = c.Request(feed.Address, feed.Method);
+            if (response != null && response.Data != null)
+            {
+                var compile = new CompileFeedAddress();
+                feed.Address = compile.Compile(feed.Address);
+
+                var job = new FeedJob();
+                var snap = job.DoTask(feed, false);
+
+                var block = RuiJiExpression.ParserBlock(feed.RuiJiExpression);
+
+                var result = RuiJiExtracter.Extract(snap.Content, block);
+                result.Content = null;
+
+                foreach (var t in result.Tiles)
+                {
+                    t.Content = null;
+                }
+
+                return result;
+
+                //var j = new FeedExtractJob();
+                //return j.ExtractAddress(snap);
+            }
+
+            return new { };
+        }
+        #endregion
+
         #region 存储抓取结果
         [HttpPost]
         public bool SaveContent(ContentModel content, string shard = "")
@@ -211,20 +298,6 @@ namespace RuiJi.Net.Owin.Controllers
         } 
         #endregion
 
-        [HttpPost]
-        public void UpdateRule(RuleModel rule)
-        {
-            RuleLiteDb.AddOrUpdate(rule);
-        }
-
-        [HttpGet]
-        public object GetRule(int id)
-        {
-            var feed = RuleLiteDb.GetRule(id);
-
-            return feed;
-        }
-
         [HttpGet]
         public object RunCrawl([FromUri]CrawlTaskModel crawlTask)
         {
@@ -258,35 +331,6 @@ namespace RuiJi.Net.Owin.Controllers
                     taskId = task.TaskId
                 };
             }
-        }
-
-        [HttpPost]
-        public object TestRule(RuleModel rule)
-        {
-            var c = new Crawler();
-            var response = c.Request(rule.Url,rule.Method);
-            if(response != null && response.Data != null)
-            {
-                var content = response.Data.ToString();
-                var block = RuiJiExpression.ParserBlock(rule.RuiJiExpression);
-                var r = new ExtractRequest();
-                r.Content = content;
-                r.Blocks = new List<ExtractFeatureBlock> {
-                    new ExtractFeatureBlock {
-                        Block = block,
-                        Feature = rule.Feature
-                    }
-                };
-
-                var results = Extracter.Extract(r);
-
-                var result = results.OrderByDescending(m => m.Metas.Count).FirstOrDefault();
-                result.Content = null;
-
-                return result;
-            }
-
-            return new { };
         }
 
         #region 节点函数
