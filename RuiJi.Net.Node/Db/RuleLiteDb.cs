@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RuiJi.Net.Node.Feed.Db
+namespace RuiJi.Net.Node.Db
 {
     public class RuleLiteDb
     {

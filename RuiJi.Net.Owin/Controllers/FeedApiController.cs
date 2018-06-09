@@ -1,15 +1,16 @@
 ﻿using Newtonsoft.Json;
+using RuiJi.Net.Core.Crawler;
 using RuiJi.Net.Core.Extracter;
 using RuiJi.Net.Core.Utils;
 using RuiJi.Net.Core.Utils.Page;
 using RuiJi.Net.Core.Utils.Tasks;
 using RuiJi.Net.Node;
-using RuiJi.Net.Node.Feed;
-using RuiJi.Net.Node.Feed.Db;
+using RuiJi.Net.Node.Db;
 using RuiJi.Net.Node.Feed.LTS;
 using RuiJi.Net.NodeVisitor;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -296,7 +297,7 @@ namespace RuiJi.Net.Owin.Controllers
             }
 
             return new { };
-        } 
+        }
         #endregion
 
         [HttpGet]
@@ -333,53 +334,6 @@ namespace RuiJi.Net.Owin.Controllers
                 };
             }
         }
-
-        #region Proxys
-        [HttpGet]
-        public object Proxys(int offset, int limit)
-        {
-            var node = ServerManager.Get(Request.RequestUri.Authority);
-
-            if (node.NodeType == Node.NodeTypeEnum.FEEDPROXY)
-            {
-                var paging = new Paging();
-                paging.CurrentPage = (offset / limit) + 1;
-                paging.PageSize = limit;
-
-                return new
-                {
-                    rows = ProxyLiteDb.GetModels(paging),
-                    total = paging.Count
-                };
-            }
-
-            return new { };
-        }
-
-        [HttpPost]
-        public object UpdateProxy(ProxyModel proxy)
-        {
-            ProxyLiteDb.AddOrUpdate(proxy);
-
-            return true;
-        }
-
-        [HttpGet]
-        public object GetProxy(int id)
-        {
-            var feed = ProxyLiteDb.Get(id);
-
-            return feed;
-        }
-
-        [HttpGet]
-        public bool RemoveProxy(string ids)
-        {
-            var removes = ids.Split(',').Select(m => Convert.ToInt32(m)).ToArray();
-
-            return ProxyLiteDb.Remove(removes);
-        }
-        #endregion
 
         #region 节点函数
         [HttpGet]

@@ -141,8 +141,8 @@ namespace RuiJi.Net.Owin
 
             config.Routes.MapHttpRoute(
                 name: "FeedProxyUrl",
-                routeTemplate: "api/zoo/feedproxy",
-                defaults: new { controller = "ZooApi", action = "FeedProxy" }
+                routeTemplate: "api/zoo/proxys",
+                defaults: new { controller = "ZooApi", action = "GetProxys" }
             );
             #endregion
 
@@ -298,26 +298,32 @@ namespace RuiJi.Net.Owin
             config.Routes.MapHttpRoute(
                 name: "ProxysList",
                 routeTemplate: "api/proxys",
-                defaults: new { controller = "FeedApi", action = "Proxys" }
+                defaults: new { controller = "CrawlerProxyApi", action = "Proxys" }
             );
 
             config.Routes.MapHttpRoute(
                     name: "GetProxy",
                     routeTemplate: "api/proxy",
-                    defaults: new { controller = "FeedApi", action = "GetProxy" }
+                    defaults: new { controller = "CrawlerProxyApi", action = "GetProxy" }
                 );
 
             config.Routes.MapHttpRoute(
                     name: "UpdateProxy",
                     routeTemplate: "api/proxy/update",
-                    defaults: new { controller = "FeedApi", action = "UpdateProxy" }
+                    defaults: new { controller = "CrawlerProxyApi", action = "UpdateProxy" }
                 );
 
             config.Routes.MapHttpRoute(
                     name: "RemoveProxy",
                     routeTemplate: "api/proxy/remove",
-                    defaults: new { controller = "FeedApi", action = "RemoveProxy" }
-                ); 
+                    defaults: new { controller = "CrawlerProxyApi", action = "RemoveProxy" }
+                );
+
+            config.Routes.MapHttpRoute(
+                    name: "ProxyPing",
+                    routeTemplate: "api/proxy/ping",
+                    defaults: new { controller = "CrawlerProxyApi", action = "ProxyPing" }
+                );
             #endregion
 
             config.Routes.MapHttpRoute(

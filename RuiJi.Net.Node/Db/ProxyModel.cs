@@ -6,8 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RuiJi.Net.Node.Feed.Db
+namespace RuiJi.Net.Node.Db
 {
+    public enum ProxyTypeEnum
+    {
+        HTTP,
+        HTTPS
+    }
+
     public class ProxyModel
     {
         [JsonProperty("id")]
@@ -24,6 +30,10 @@ namespace RuiJi.Net.Node.Feed.Db
 
         [JsonProperty("password")]
         public string Password { get; set; }
+
+        [JsonProperty("type")]
+        [JsonConverter(typeof(EnumConvert<ProxyTypeEnum>))]
+        public ProxyTypeEnum Type { get; set; }
 
         [JsonProperty("status")]
         [JsonConverter(typeof(EnumConvert<Status>))]

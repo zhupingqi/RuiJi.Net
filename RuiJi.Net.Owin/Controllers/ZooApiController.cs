@@ -4,6 +4,7 @@ using RestSharp;
 using RuiJi.Net.Node;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -98,29 +99,28 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpGet]
-        public object FeedProxy()
+        public object GetProxys()
         {
             var leaderNode = GetLeaderNode();
 
             if (leaderNode != null)
             {
+                var results = new Dictionary<string,string>();
                 var nv = leaderNode.GetChildren("/live_nodes/proxy");
                 foreach (var n in nv.AllKeys)
                 {
                     var d = leaderNode.GetData(n);
-                    if (d.Data == "feed proxy") {
-                        return n.Split('/').Last();
-                    }
+                    results.Add(d.Data, n.Split('/').Last());
                 }
 
-                return "";
+                return results;
             }
             else
             {
                 var leaderBaseUrl = ServerManager.GetNode(Request.RequestUri.Port.ToString()).NodeBase.LeaderBaseUrl;
 
                 var client = new RestClient("http://" + leaderBaseUrl);
-                var restRequest = new RestRequest("api/zoo/feedproxy");
+                var restRequest = new RestRequest("api/zoo/proxys");
                 restRequest.Method = Method.GET;
 
                 var restResponse = client.Execute(restRequest);

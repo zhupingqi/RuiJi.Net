@@ -6,10 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RuiJi.Net.Node.Feed.Db
+namespace RuiJi.Net.Node.Db
 {
     public class ProxyLiteDb
     {
+        private static int start = 0;
+        private static object _lck = new object();
+
         static ProxyLiteDb()
         {
             CreateIndex();
@@ -49,15 +52,18 @@ namespace RuiJi.Net.Node.Feed.Db
         {
             using (var db = new LiteDatabase(@"LiteDb/Proxys.db"))
             {
-                var col = db.GetCollection<ProxyModel>("proxys");
-
-                if (proxy.Id == 0)
+                lock (_lck)
                 {
-                    if(col.Count(m=>m.Ip == proxy.Ip && m.Port == proxy.Port) == 0)
-                        col.Insert(proxy);
+                    var col = db.GetCollection<ProxyModel>("proxys");
+
+                    if (proxy.Id == 0)
+                    {
+                        if (col.Count(m => m.Ip == proxy.Ip && m.Port == proxy.Port) == 0)
+                            col.Insert(proxy);
+                    }
+                    else
+                        col.Update(proxy);
                 }
-                else
-                    col.Update(proxy);
             }
         }
 
@@ -65,8 +71,11 @@ namespace RuiJi.Net.Node.Feed.Db
         {
             using (var db = new LiteDatabase(@"LiteDb/Proxys.db"))
             {
-                var col = db.GetCollection<ProxyModel>("proxys");
-                col.Delete(id);
+                lock (_lck)
+                {
+                    var col = db.GetCollection<ProxyModel>("proxys");
+                    col.Delete(id);
+                }
             }
         }
 
@@ -74,10 +83,14 @@ namespace RuiJi.Net.Node.Feed.Db
         {
             using (var db = new LiteDatabase(@"LiteDb/Proxys.db"))
             {
-                var col = db.GetCollection<ProxyModel>("proxys");
-                ids.ToList().ForEach((m) => {
-                    col.Delete(m);
-                });
+                lock (_lck)
+                {
+                    var col = db.GetCollection<ProxyModel>("proxys");
+                    ids.ToList().ForEach((m) =>
+                    {
+                        col.Delete(m);
+                    });
+                }
             }
 
             return true;
@@ -101,6 +114,26 @@ namespace RuiJi.Net.Node.Feed.Db
                 var col = db.GetCollection<ProxyModel>("proxys");
 
                 return col.Find(m => m.Id == id).FirstOrDefault();
+            }
+        }
+
+        public static ProxyModel Get()
+        {
+            using (var db = new LiteDatabase(@"LiteDb/Proxys.db"))
+            {
+                lock (_lck)
+                {
+                    var col = db.GetCollection<ProxyModel>("proxys");
+                    var count = col.Count(m => m.Status == Status.ON);
+
+                    if (count == 0)
+                        return null;
+
+                    if (start >= count)
+                        start = 0;
+
+                    return col.Find(m => m.Status == Status.ON).Skip(start).Take(1).FirstOrDefault();
+                }
             }
         }
     }

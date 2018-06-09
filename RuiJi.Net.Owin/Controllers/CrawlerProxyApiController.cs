@@ -10,6 +10,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using RuiJi.Net.NodeVisitor;
+using RuiJi.Net.Core.Utils.Page;
+using RuiJi.Net.Node.Db;
+using System.Diagnostics;
 
 namespace RuiJi.Net.Owin.Controllers
 {
@@ -41,6 +44,16 @@ namespace RuiJi.Net.Owin.Controllers
                         };
                 }
 
+                var p = ProxyLiteDb.Get();
+                if(p != null)
+                {
+                    request.Proxy = new RequestProxy();
+                    request.Proxy.Host = (p.Type == Node.Db.ProxyTypeEnum.HTTP ? "https://" : "http://") + p.Ip;
+                    request.Proxy.Port = p.Port;
+                    request.Proxy.Username = p.UserName;
+                    request.Proxy.Password = p.Password;
+                }
+
                 var client = new RestClient("http://" + result.BaseUrl);
                 var restRequest = new RestRequest("api/crawl");
                 restRequest.Method = Method.POST;
@@ -51,6 +64,11 @@ namespace RuiJi.Net.Owin.Controllers
 
                 var response = JsonConvert.DeserializeObject<Response>(restResponse.Content);
                 response.ElectInfo = result.BaseUrl + "/" + result.ClientIp;
+
+                if (p != null)
+                {
+                    response.Proxy = request.Proxy.Host;
+                }
 
                 return response;
             }
@@ -71,5 +89,82 @@ namespace RuiJi.Net.Owin.Controllers
             }
             return new { };
         }
+
+        #region Proxys
+        [HttpGet]
+        public object Proxys(int offset, int limit)
+        {
+            var node = ServerManager.Get(Request.RequestUri.Authority);
+
+            if (node.NodeType == Node.NodeTypeEnum.CRAWLERPROXY)
+            {
+                var paging = new Paging();
+                paging.CurrentPage = (offset / limit) + 1;
+                paging.PageSize = limit;
+
+                return new
+                {
+                    rows = ProxyLiteDb.GetModels(paging),
+                    total = paging.Count
+                };
+            }
+
+            return new { };
+        }
+
+        [HttpPost]
+        public object UpdateProxy(ProxyModel proxy)
+        {
+            ProxyLiteDb.AddOrUpdate(proxy);
+
+            return true;
+        }
+
+        [HttpGet]
+        public object GetProxy(int id)
+        {
+            var feed = ProxyLiteDb.Get(id);
+
+            return feed;
+        }
+
+        [HttpGet]
+        public bool RemoveProxy(string ids)
+        {
+            var removes = ids.Split(',').Select(m => Convert.ToInt32(m)).ToArray();
+
+            return ProxyLiteDb.Remove(removes);
+        }
+
+        [HttpGet]
+        public int ProxyPing(int id)
+        {
+            try
+            {
+                var watch = new Stopwatch();
+                watch.Start();
+
+                var crawler = new RuiJiCrawler();
+                var request = new Request("http://2017.ip138.com/ic.asp");
+
+                var proxy = ProxyLiteDb.Get(id);
+                var host = (proxy.Type == Node.Db.ProxyTypeEnum.HTTP ? "http" : "https") + proxy.Ip;
+                request.Proxy = new RequestProxy(host, proxy.Port, proxy.UserName, proxy.Password);
+
+                var response = crawler.Request(request);
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    watch.Stop();
+                    return watch.Elapsed.Milliseconds;
+                }
+            }
+            catch
+            {
+                return -2;
+            }
+
+            return -1;
+        }
+        #endregion
     }
 }

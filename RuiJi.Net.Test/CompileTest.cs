@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RuiJi.Net.Core.Utils;
 using RuiJi.Net.Node.Feed;
-using RuiJi.Net.Node.Feed.Db;
+using RuiJi.Net.Node.Db;
 using RuiJi.Net.Owin.Controllers;
 
 namespace RuiJi.Net.Test

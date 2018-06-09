@@ -21,7 +21,7 @@
                 onPostBody: function (e) {
                     if (e.length > 0) {
                         $('#tb_proxys > tbody > tr').map(function (i, m) {
-                            $(m).find("td:last").html("<i class='fa fa-edit'></i></i>");
+                            $(m).find("td:last").html("<i class='fa fa-edit'></i><i class='fa fa-terminal'></i><span></span>");
                         });
                     }
                 }
@@ -82,11 +82,6 @@
                         closable: false,
                         nl2br: false,
                         buttons: [{
-                            label: 'Test',
-                            action: function (dialog) {
-                                module.test();
-                            }
-                        }, {
                             label: 'Ok',
                             action: function (dialog) {
                                 module.update(dialog);
@@ -98,6 +93,15 @@
                             }
                         }]
                     });
+                });
+            });
+
+            $(document).on("click", "#tb_proxys .fa-terminal", function () {
+                var ele = $(this);
+                var id = ele.closest("tr").find("td").eq(1).text();                
+
+                $.getJSON("http://" + proxyUrl + "/api/proxy/ping?id=" + id, function (d) {
+                    ele.next().html("&nbsp;&nbsp;" + d + " ms");
                 });
             });
 
@@ -116,8 +120,8 @@
             return temp;
         },
         getProxy: function (fn) {
-            $.getJSON("/api/zoo/feedproxy", function (url) {
-                proxyUrl = url;
+            $.getJSON("/api/zoo/proxys", function (proxys) {
+                proxyUrl = proxys["crawler proxy"];
 
                 fn();
             });

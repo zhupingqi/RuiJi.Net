@@ -18,15 +18,20 @@
             <input type="text" class="form-control" name="password">
         </div>
         <div class="input-group">
+            <span class="input-group-addon">Type</span>
+            <input type="text" class="form-control" name="type" value="HTTP">
+        </div>
+        <div>HTTP/HTTPS</div>
+        <div class="input-group">
             <span class="input-group-addon">Status</span>
             <input type="hidden" name="status" value="true">
             <div class="btn-group" data-toggle="buttons">
                 <label class="btn btn-mjdark2 active">
-                    Run
+                    ON
                     <input type="radio" autocomplete="off" value="ON">
                 </label>
                 <label class="btn btn-mjdark2">
-                    Pause
+                    OFF
                     <input type="radio" autocomplete="off" value="OFF">
                 </label>
             </div>

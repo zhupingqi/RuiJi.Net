@@ -167,8 +167,8 @@
             return temp;
         },
         getProxy: function (fn) {
-            $.getJSON("/api/zoo/feedproxy", function (url) {
-                proxyUrl = url;
+            $.getJSON("/api/zoo/proxys", function (proxys) {
+                proxyUrl = proxys["feed proxy"];
 
                 fn();
             });
