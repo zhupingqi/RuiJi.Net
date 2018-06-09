@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RuiJi.Net.Node.Feed
+namespace RuiJi.Net.Node.Feed.Db
 {
     public class ContentLiteDb
     {
@@ -26,7 +26,7 @@ namespace RuiJi.Net.Node.Feed
             }
         }
 
-        public static List<ContentModel> GetContents(Paging page, string shard, int feedID = 0)
+        public static List<ContentModel> GetModels(Paging page, string shard, int feedID = 0)
         {
             using (var db = new LiteDatabase(@"LiteDb/Content/" + shard + ".db"))
             {

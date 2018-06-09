@@ -294,6 +294,32 @@ namespace RuiJi.Net.Owin
                 );
             #endregion
 
+            #region Online Proxy
+            config.Routes.MapHttpRoute(
+                name: "ProxysList",
+                routeTemplate: "api/proxys",
+                defaults: new { controller = "FeedApi", action = "Proxys" }
+            );
+
+            config.Routes.MapHttpRoute(
+                    name: "GetProxy",
+                    routeTemplate: "api/proxy",
+                    defaults: new { controller = "FeedApi", action = "GetProxy" }
+                );
+
+            config.Routes.MapHttpRoute(
+                    name: "UpdateProxy",
+                    routeTemplate: "api/proxy/update",
+                    defaults: new { controller = "FeedApi", action = "UpdateProxy" }
+                );
+
+            config.Routes.MapHttpRoute(
+                    name: "RemoveProxy",
+                    routeTemplate: "api/proxy/remove",
+                    defaults: new { controller = "FeedApi", action = "RemoveProxy" }
+                ); 
+            #endregion
+
             config.Routes.MapHttpRoute(
                 name: "Default",
                 routeTemplate: "api/{controller}/{action}",

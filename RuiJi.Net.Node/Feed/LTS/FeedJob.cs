@@ -4,6 +4,7 @@ using Quartz;
 using RestSharp;
 using RuiJi.Net.Core.Crawler;
 using RuiJi.Net.Core.Extracter;
+using RuiJi.Net.Node.Feed.Db;
 using System;
 using System.Collections.Generic;
 using System.IO;

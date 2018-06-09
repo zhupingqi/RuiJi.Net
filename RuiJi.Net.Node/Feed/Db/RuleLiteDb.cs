@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RuiJi.Net.Node.Feed
+namespace RuiJi.Net.Node.Feed.Db
 {
     public class RuleLiteDb
     {
@@ -17,7 +17,7 @@ namespace RuiJi.Net.Node.Feed
             CreateIndex();
         }
 
-        public static List<RuleModel> GetRuleModels(Paging page)
+        public static List<RuleModel> GetModels(Paging page)
         {
             using (var db = new LiteDatabase(@"LiteDb/Rules.db"))
             {
@@ -51,6 +51,15 @@ namespace RuiJi.Net.Node.Feed
             }
         }
 
+        public static bool Remove(int id)
+        {
+            using (var db = new LiteDatabase(@"LiteDb/Rules.db"))
+            {
+                var col = db.GetCollection<RuleModel>("rules");
+                return col.Delete(id);
+            }
+        }
+
         public static bool Remove(int[] ids)
         {
             using (var db = new LiteDatabase(@"LiteDb/Rules.db"))
@@ -58,7 +67,7 @@ namespace RuiJi.Net.Node.Feed
                 var col = db.GetCollection<RuleModel>("rules");
                 ids.ToList().ForEach((m) => {
                     col.Delete(m);
-                });                
+                });
             }
 
             return true;
@@ -91,7 +100,7 @@ namespace RuiJi.Net.Node.Feed
             }
         }
 
-        public static RuleModel GetRule(int id)
+        public static RuleModel Get(int id)
         {
             using (var db = new LiteDatabase(@"LiteDb/Rules.db"))
             {

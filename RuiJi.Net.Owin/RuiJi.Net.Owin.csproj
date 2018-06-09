@@ -255,7 +255,9 @@
     <Content Include="www\misc\proto.js" />
     <Content Include="www\misc\feed\rules.html" />
     <Content Include="www\misc\feed\rules.js" />
-    <Content Include="www\misc\setting\proxy.js" />
+    <Content Include="www\misc\setting\proxy.html" />
+    <Content Include="www\misc\setting\proxys.html" />
+    <Content Include="www\misc\setting\proxys.js" />
     <Content Include="www\misc\setting\setting.html" />
     <Content Include="www\misc\setting\setting.js" />
     <Content Include="www\misc\setting\entry.js" />

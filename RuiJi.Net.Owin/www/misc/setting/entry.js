@@ -30,10 +30,10 @@
                         lib: 'setting/ua'
                     },
                     {
-                        id: 'proxy',
+                        id: 'proxys',
                         text: '代理',
                         type: 'lib',
-                        lib: 'setting/proxy'
+                        lib: 'setting/proxys'
                     },
                     {
                         id: 'plugin',

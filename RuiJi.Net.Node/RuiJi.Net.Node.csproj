@@ -75,19 +75,22 @@
     <Compile Include="Crawler\CrawlerConfig.cs" />
     <Compile Include="Extracter\ExtracterManager.cs" />
     <Compile Include="Extracter\ExtracterProxyNode.cs" />
-    <Compile Include="Feed\ContentLiteDb.cs" />
+    <Compile Include="Feed\Db\ContentLiteDb.cs" />
+    <Compile Include="Feed\Db\ProxyModel.cs" />
+    <Compile Include="Feed\Db\Status.cs" />
     <Compile Include="Feed\FeedProxyStorage.cs" />
-    <Compile Include="Feed\FuncModel.cs" />
+    <Compile Include="Feed\Db\FuncModel.cs" />
     <Compile Include="Feed\LTS\ContentQueue.cs" />
     <Compile Include="Feed\LTS\FeedExtracter.cs" />
     <Compile Include="Feed\LTS\FeedExtractJob.cs" />
     <Compile Include="Feed\LTS\FeedExtractScheduler.cs" />
     <Compile Include="Feed\LTS\FeedJob.cs" />
-    <Compile Include="Feed\FeedLiteDb.cs" />
-    <Compile Include="Feed\FeedModel.cs" />
+    <Compile Include="Feed\Db\FeedLiteDb.cs" />
+    <Compile Include="Feed\Db\FeedModel.cs" />
     <Compile Include="Feed\LTS\FeedScheduler.cs" />
     <Compile Include="Feed\LTS\FeedSnapshot.cs" />
-    <Compile Include="Feed\FuncLiteDb.cs" />
+    <Compile Include="Feed\Db\FuncLiteDb.cs" />
+    <Compile Include="Feed\Db\ProxyLiteDb.cs" />
     <Compile Include="NodeConfig.cs" />
     <Compile Include="Extracter\ExtracterNode.cs" />
     <Compile Include="Configuration\NodeConfigurationElementCollection.cs" />
@@ -98,8 +101,8 @@
     <Compile Include="NodeTypeEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="NodeBase.cs" />
-    <Compile Include="Feed\RuleLiteDb.cs" />
-    <Compile Include="Feed\RuleModel.cs" />
+    <Compile Include="Feed\Db\RuleLiteDb.cs" />
+    <Compile Include="Feed\Db\RuleModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

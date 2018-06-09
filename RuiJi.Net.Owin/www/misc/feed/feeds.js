@@ -4,6 +4,32 @@
     var module = {
         init: function () {
             var tmp = utils.loadTemplate("/misc/feed/feeds.html", false);
+
+            tmp = $(tmp);
+            tmp.find("#tb_feeds").attr("data-url", "http://" + proxyUrl + "/api/feeds");
+
+            $("#tab_panel_feeds").html(tmp.prop("outerHTML"));
+
+            var $table = $('#tb_feeds').bootstrapTable({
+                toolbar: '#toolbar_feeds',
+                pagination: true,
+                queryParams: module.queryParams,
+                sidePagination: "server",
+                showColumns: true,
+                showRefresh: true,
+                height: 530,
+                onPostBody: function (e) {
+                    if (e.length > 0) {
+                        $('#tb_feeds > tbody > tr').map(function (i, m) {
+                            $(m).find("td:last").html("<i class='fa fa-edit'></i><i class='fa fa-eye'></i><i class='fa fa-history'></i><i class='fa fa-random'></i>");
+                        });
+                    }
+                }
+            });
+
+            module.initEvent();
+        },
+        initEvent: function () {
             var feed = utils.loadTemplate("/misc/feed/feed.html", false);
             var crawl = utils.loadTemplate("/misc/feed/crawl.html", false);
 
@@ -18,7 +44,7 @@
                         action: function (dialog) {
                             module.test();
                         }
-                    },{
+                    }, {
                         label: 'Ok',
                         action: function (dialog) {
                             module.update(dialog);
@@ -75,7 +101,7 @@
                             action: function (dialog) {
                                 module.test();
                             }
-                        },{
+                        }, {
                             label: 'Ok',
                             action: function (dialog) {
                                 module.update(dialog);
@@ -129,40 +155,6 @@
             $(document).on("click", "#feed_dialog .btn-mjdark2", function () {
                 var ele = $(this);
                 ele.closest(".input-group").find("input").val(ele.find("input").val());
-            });
-
-            tmp = $(tmp);
-            tmp.find("#tb_feeds").attr("data-url", "http://" + proxyUrl + "/api/feeds");
-
-            $("#tab_panel_feeds").html(tmp.prop("outerHTML"));
-
-            var $table = $('#tb_feeds').bootstrapTable({
-                toolbar: '#toolbar_feeds',
-                striped: true,
-                cache: false,
-                pagination: true,
-                sortable: false,
-                sortOrder: "asc",
-                queryParams: module.queryParams,
-                sidePagination: "server",
-                pageNumber: 1,
-                pageSize: 10,
-                pageList: [10, 25, 50, 100],
-                showColumns: true,
-                showRefresh: true,
-                minimumCountColumns: 2,
-                clickToSelect: true,
-                height: 500,
-                uniqueId: "ID",
-                cardView: false,
-                detailView: false,
-                onPostBody: function (e) {
-                    if (e.length > 0) {
-                        $('#tb_feeds > tbody > tr').map(function (i, m) {
-                            $(m).find("td:last").html("<i class='fa fa-edit'></i><i class='fa fa-eye'></i><i class='fa fa-history'></i><i class='fa fa-random'></i>");
-                        });
-                    }
-                }
             });
         },
         queryParams: function (params) {

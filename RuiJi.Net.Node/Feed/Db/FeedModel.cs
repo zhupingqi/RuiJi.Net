@@ -10,7 +10,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RuiJi.Net.Node.Feed
+namespace RuiJi.Net.Node.Feed.Db
 {
     public enum FeedTypeEnum
     {
@@ -19,12 +19,6 @@ namespace RuiJi.Net.Node.Feed
         JS,
         JSON,
         JSONP
-    }
-
-    public enum FeedStatus
-    {
-        ON,
-        OFF
     }
 
     public class FeedModel
@@ -70,8 +64,8 @@ namespace RuiJi.Net.Node.Feed
         public string Scheduling { get; set; }
 
         [JsonProperty("status")]
-        [JsonConverter(typeof(EnumConvert<FeedStatus>))]
-        public FeedStatus Status { get; set; }
+        [JsonConverter(typeof(EnumConvert<Status>))]
+        public Status Status { get; set; }
 
         [JsonProperty("feedonly")]
         public bool FeedOnly { get; set; }

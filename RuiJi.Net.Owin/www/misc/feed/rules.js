@@ -4,9 +4,34 @@
     var module = {
         init: function () {
             var tmp = utils.loadTemplate("/misc/feed/rules.html", false);
+
+            tmp = $(tmp);
+            tmp.find("#tb_rules").attr("data-url", "http://" + proxyUrl + "/api/rules");
+
+            $("#tab_panel_rules").html(tmp.prop("outerHTML"));
+
+            var $table = $('#tb_rules').bootstrapTable({
+                toolbar: '#toolbar_rules',
+                pagination: true,
+                queryParams: module.queryParams,
+                sidePagination: "server",
+                showColumns: true,
+                showRefresh: true,
+                height: 530,
+                onPostBody: function (e) {
+                    if (e.length > 0) {
+                        $('#tb_rules > tbody > tr').map(function (i, m) {
+                            $(m).find("td:last").html("<i class='fa fa-edit'></i><i class='fa fa-history'></i>");
+                        });
+                    }
+                }
+            });
+
+            module.initEvent();
+        },
+        initEvent: function () {
             var ruleTmp = utils.loadTemplate("/misc/feed/rule.html", false);
 
-            //#region event
             $(document).on("click", "#add_rule", function () {
                 BootstrapDialog.show({
                     title: '添加 Rule',
@@ -106,46 +131,11 @@
                 },
                     function () {
                         var ids = $("#rules_list td :checked").parent().next().map(function () { return $(this).text(); }).get().join(",");
-                        if(ids != "")
+                        if (ids != "")
                             module.remove(ids);
                         else
                             swal("错误！", "未选择任何规则。", "success");
                     });
-            });
-            //#endregion
-
-            tmp = $(tmp);
-            tmp.find("#tb_rules").attr("data-url", "http://" + proxyUrl + "/api/rules");
-
-            $("#tab_panel_rules").html(tmp.prop("outerHTML"));
-
-            var $table = $('#tb_rules').bootstrapTable({
-                toolbar: '#toolbar_rules',
-                striped: true,
-                cache: false,
-                pagination: true,
-                sortable: false,
-                sortOrder: "asc",
-                queryParams: module.queryParams,
-                sidePagination: "server",
-                pageNumber: 1,
-                pageSize: 10,
-                pageList: [10, 25, 50, 100],
-                showColumns: true,
-                showRefresh: true,
-                minimumCountColumns: 2,
-                clickToSelect: true,
-                height: 500,
-                uniqueId: "ID",
-                cardView: false,
-                detailView: false,
-                onPostBody: function (e) {
-                    if (e.length > 0) {
-                        $('#tb_rules > tbody > tr').map(function (i, m) {
-                            $(m).find("td:last").html("<i class='fa fa-edit'></i><i class='fa fa-history'></i>");
-                        });
-                    }
-                }
             });
         },
         queryParams: function (params) {

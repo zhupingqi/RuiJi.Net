@@ -5,6 +5,7 @@ using RuiJi.Net.Core.Utils.Page;
 using RuiJi.Net.Core.Utils.Tasks;
 using RuiJi.Net.Node;
 using RuiJi.Net.Node.Feed;
+using RuiJi.Net.Node.Feed.Db;
 using RuiJi.Net.Node.Feed.LTS;
 using RuiJi.Net.NodeVisitor;
 using System;
@@ -54,7 +55,7 @@ namespace RuiJi.Net.Owin.Controllers
 
                 return new
                 {
-                    rows = RuleLiteDb.GetRuleModels(paging),
+                    rows = RuleLiteDb.GetModels(paging),
                     total = paging.Count
                 };
             }
@@ -89,7 +90,7 @@ namespace RuiJi.Net.Owin.Controllers
         [HttpGet]
         public object GetRule(int id)
         {
-            var feed = RuleLiteDb.GetRule(id);
+            var feed = RuleLiteDb.Get(id);
 
             return feed;
         }
@@ -145,7 +146,7 @@ namespace RuiJi.Net.Owin.Controllers
                 {
                     var ps = pages.Split(',').Select(m => Convert.ToInt32(m)).ToArray();
                     var feeds = FeedLiteDb.GetFeedModels(ps, 50);
-                    feeds.RemoveAll(m => m.Status == FeedStatus.OFF);
+                    feeds.RemoveAll(m => m.Status == Status.OFF);
 
                     var compile = new CompileFeedAddress();
                     foreach (var feed in feeds)
@@ -279,7 +280,7 @@ namespace RuiJi.Net.Owin.Controllers
 
                 return new
                 {
-                    rows = ContentLiteDb.GetContents(paging, shard, feedId).Select(m => new
+                    rows = ContentLiteDb.GetModels(paging, shard, feedId).Select(m => new
                     {
                         id = m.Id,
                         feedId = m.FeedId,
@@ -333,6 +334,53 @@ namespace RuiJi.Net.Owin.Controllers
             }
         }
 
+        #region Proxys
+        [HttpGet]
+        public object Proxys(int offset, int limit)
+        {
+            var node = ServerManager.Get(Request.RequestUri.Authority);
+
+            if (node.NodeType == Node.NodeTypeEnum.FEEDPROXY)
+            {
+                var paging = new Paging();
+                paging.CurrentPage = (offset / limit) + 1;
+                paging.PageSize = limit;
+
+                return new
+                {
+                    rows = ProxyLiteDb.GetModels(paging),
+                    total = paging.Count
+                };
+            }
+
+            return new { };
+        }
+
+        [HttpPost]
+        public object UpdateProxy(ProxyModel proxy)
+        {
+            ProxyLiteDb.AddOrUpdate(proxy);
+
+            return true;
+        }
+
+        [HttpGet]
+        public object GetProxy(int id)
+        {
+            var feed = ProxyLiteDb.Get(id);
+
+            return feed;
+        }
+
+        [HttpGet]
+        public bool RemoveProxy(string ids)
+        {
+            var removes = ids.Split(',').Select(m => Convert.ToInt32(m)).ToArray();
+
+            return ProxyLiteDb.Remove(removes);
+        }
+        #endregion
+
         #region 节点函数
         [HttpGet]
         public object Funcs(int offset, int limit)
@@ -345,7 +393,7 @@ namespace RuiJi.Net.Owin.Controllers
                 paging.CurrentPage = (offset / limit) + 1;
                 paging.PageSize = limit;
 
-                var list = FuncLiteDb.GetFuncModels(paging);
+                var list = FuncLiteDb.GetModels(paging);
 
                 return new
                 {
@@ -360,7 +408,7 @@ namespace RuiJi.Net.Owin.Controllers
         [HttpGet]
         public object GetFunc(int id)
         {
-            return FuncLiteDb.GetFunc(id);
+            return FuncLiteDb.Get(id);
         }
 
         [HttpPost]
@@ -377,7 +425,7 @@ namespace RuiJi.Net.Owin.Controllers
             if (func.Name == "now" || func.Name == "ticks")
                 return false;
 
-            var f = FuncLiteDb.GetFunc(func.Name);
+            var f = FuncLiteDb.Get(func.Name);
             if (f != null && f.Id == 0)
                 return false;
 
@@ -504,7 +552,7 @@ namespace RuiJi.Net.Owin.Controllers
                     }
                 default:
                     {
-                        var f = FuncLiteDb.GetFunc(function);
+                        var f = FuncLiteDb.Get(function);
                         if (f != null)
                         {
                             code = string.Format(f.Code, args);
