@@ -21,9 +21,12 @@ namespace RuiJi.Net.Cmd
 {
     public class Program
     {
+        private static ILog logger;
         static Program()
         {
-
+            var logAppenders = new List<ILogAppender>() { new RollingFileLogAppender("server"), new MemoryLogAppender() };
+            Logger.Instance.Add("server", logAppenders);
+            logger = Logger.Instance.GetLogger("server");
         }
 
         ~Program()
@@ -34,13 +37,7 @@ namespace RuiJi.Net.Cmd
         static void Main(string[] args)
         {
             //LogManager.GetCurrentLoggers().First().Info("Program started!");
-            var logAppenders = new List<AppenderType>();
-            logAppenders.Add(new AppenderType(AppenderTypeEnum.INFO, "info"));
-            logAppenders.Add(new AppenderType(AppenderTypeEnum.ERROR, "error"));
-            logAppenders.Add(new AppenderType(AppenderTypeEnum.FATAL, "fatal"));
-            logAppenders.Add(new AppenderType(AppenderTypeEnum.MESSAGE, "all"));
-            Logger.Instance.AddNewLogger("server", "main".ToLower(), logAppenders);
-            var logger = Logger.Instance.GetLogger("server", "main").Logger;
+
             logger.Info("Program started!");
             ServerManager.StartServers();
 
@@ -51,6 +48,7 @@ namespace RuiJi.Net.Cmd
                 var cmd = Console.ReadLine();
                 if (cmd == "quit")
                 {
+                    logger.Info("Program quit!");
                     break;
                 }
 
@@ -61,10 +59,14 @@ namespace RuiJi.Net.Cmd
                     {
                         var port = sp[1];
                         if (port == "all")
+                        {
                             ServerManager.StopAll();
+                            logger.Info("Program stop all!");
+                        }
                         else
                         {
                             ServerManager.Stop(port);
+                            logger.Info("Program stop " + port + "!");
                         }
                     }
                     else
@@ -81,6 +83,7 @@ namespace RuiJi.Net.Cmd
             }
 
             ServerManager.StopAll();
+            logger.Info("Program stop all!");
         }
     }
 }

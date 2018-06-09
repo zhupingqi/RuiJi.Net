@@ -36,24 +36,24 @@ namespace RuiJi.Net.Core.Utils.Log
         }
         public ILog Logger { get; set; }
 
-        public ILoggerRepository Repository { get; set; }
+        private ILoggerRepository Repository { get; set; }
 
         public List<object> Messages { get; private set; }
 
         /// <summary>
         /// 是否启用监察缓存消息
         /// </summary>
-        public bool WatchMessage { get; set; }
+        private bool WatchMessage { get; set; }
 
         /// <summary>
         /// 单对象日志消息最大缓存数量
         /// </summary>
-        public int MaxMessageCount { get; set; }
+        private int MaxMessageCount { get; set; }
 
         /// <summary>
         /// 监察缓存消息
         /// </summary>
-        public void Watch()
+        private void Watch()
         {
             while (WatchMessage)
             {

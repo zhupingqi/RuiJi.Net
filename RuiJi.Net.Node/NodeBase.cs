@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using log4net;
+using Newtonsoft.Json;
 using Org.Apache.Zookeeper.Data;
 using RuiJi.Net.Core.Utils;
 using RuiJi.Net.Core.Utils.Log;
@@ -15,6 +16,8 @@ namespace RuiJi.Net.Node
 {
     public abstract class NodeBase
     {
+        private static ILog logger;
+
         protected ZooKeeper zooKeeper;
 
         public string ZkServer { get; protected set; }
@@ -52,7 +55,7 @@ namespace RuiJi.Net.Node
 
         public virtual void Start()
         {
-            var logger = Logger.Instance.GetLogger(BaseUrl, NodeType.ToString().ToLower()).Logger;
+            var logger = Logger.Instance.GetLogger(BaseUrl);
 
             if (string.IsNullOrEmpty(BaseUrl) || string.IsNullOrEmpty(ZkServer))
             {

@@ -1,4 +1,5 @@
-﻿using Microsoft.Owin.Hosting;
+﻿using log4net;
+using Microsoft.Owin.Hosting;
 using RuiJi.Net.Core.Utils;
 using RuiJi.Net.Core.Utils.Log;
 using RuiJi.Net.Node;
@@ -98,15 +99,8 @@ namespace RuiJi.Net.Owin
                         break;
                     }
             }
-            var logAppenders = new List<AppenderType>();
-            logAppenders.Add(new AppenderType(AppenderTypeEnum.INFO, "info"));
-            logAppenders.Add(new AppenderType(AppenderTypeEnum.ERROR, "error"));
-            logAppenders.Add(new AppenderType(AppenderTypeEnum.FATAL, "fatal"));
-            logAppenders.Add(new AppenderType(AppenderTypeEnum.MESSAGE, "all"));
-            Logger.Instance.AddNewLogger(NodeBase.BaseUrl, NodeBase.NodeType.ToString().ToLower(), logAppenders);
-
-            var logger = Logger.Instance.GetLogger(NodeBase.BaseUrl, NodeBase.NodeType.ToString().ToLower()).Logger;
-            logger.Info("Web Api Server Start At http://" + baseUrl + " with " + nodeType + " node");
+            var logAppenders = new List<ILogAppender>() { new RollingFileLogAppender(NodeBase.BaseUrl), new MemoryLogAppender() };
+            Logger.Instance.Add(NodeBase.BaseUrl, logAppenders);
 
             NodeBase.Start();
             resetEvent = new ManualResetEvent(false);
