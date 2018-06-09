@@ -30,12 +30,10 @@ namespace RuiJi.Net.Node.Extracter
 
         protected override void OnStartup()
         {
-            var stat = zooKeeper.Exists("/live_nodes/extracter/" + BaseUrl, false);
-            if (stat == null)
-                zooKeeper.Create("/live_nodes/extracter/" + BaseUrl, null, Ids.OPEN_ACL_UNSAFE, CreateMode.Ephemeral);
+            base.CreateLiveNode("/live_nodes/extracter/" + BaseUrl, null);
 
             //create extreacter config in zookeeper
-            stat = zooKeeper.Exists("/config/extracter/" + BaseUrl, false);
+            var stat = zooKeeper.Exists("/config/extracter/" + BaseUrl, false);
             if (stat == null)
             {
                 var d = new NodeConfig()

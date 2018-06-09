@@ -30,5 +30,7 @@ namespace RuiJi.Net.Core.Crawler
         public Uri RequestUri { get; set; }
 
         public string ElectInfo { get; set; }
+
+        public string Proxy { get; set; }
     }
 }

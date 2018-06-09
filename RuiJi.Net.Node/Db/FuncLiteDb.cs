@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RuiJi.Net.Node.Feed
+namespace RuiJi.Net.Node.Db
 {
     public class FuncLiteDb
     {
@@ -15,7 +15,7 @@ namespace RuiJi.Net.Node.Feed
             CreateIndex();
         }
 
-        public static List<FuncModel> GetFuncModels(Paging page)
+        public static List<FuncModel> GetModels(Paging page)
         {
             using (var db = new LiteDatabase(@"LiteDb/Funcs.db"))
             {
@@ -57,6 +57,19 @@ namespace RuiJi.Net.Node.Feed
             }
         }
 
+        public static bool Remove(int[] ids)
+        {
+            using (var db = new LiteDatabase(@"LiteDb/Rules.db"))
+            {
+                var col = db.GetCollection<RuleModel>("rules");
+                ids.ToList().ForEach((m) => {
+                    col.Delete(m);
+                });
+            }
+
+            return true;
+        }
+
         public static void CreateIndex()
         {
             using (var db = new LiteDatabase(@"LiteDb/Funcs.db"))
@@ -66,7 +79,7 @@ namespace RuiJi.Net.Node.Feed
             }
         }
 
-        public static FuncModel GetFunc(int id)
+        public static FuncModel Get(int id)
         {
             using (var db = new LiteDatabase(@"LiteDb/Funcs.db"))
             {
@@ -76,7 +89,7 @@ namespace RuiJi.Net.Node.Feed
             }
         }
 
-        public static FuncModel GetFunc(string name)
+        public static FuncModel Get(string name)
         {
             using (var db = new LiteDatabase(@"LiteDb/Funcs.db"))
             {

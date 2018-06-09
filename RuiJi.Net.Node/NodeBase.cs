@@ -156,6 +156,15 @@ namespace RuiJi.Net.Node
                 zooKeeper.Create("/overseer/election", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
         }
 
+        protected void CreateLiveNode(string path,byte[] data)
+        {
+            var stat = zooKeeper.Exists(path, false);
+            if (stat != null)
+                zooKeeper.Delete(path, -1);
+
+            zooKeeper.Create(path, data, Ids.OPEN_ACL_UNSAFE, CreateMode.Ephemeral);
+        }
+
         private void CreateOverseerNode()
         {
             var nodes = zooKeeper.GetChildren("/overseer/election", null);

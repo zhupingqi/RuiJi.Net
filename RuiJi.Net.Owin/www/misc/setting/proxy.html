@@ -1,0 +1,40 @@
+﻿<div class="row-fluid" id="proxy_dialog">
+    <form id="func_form">
+        <div class="input-group">
+            <span class="input-group-addon">Ip</span>
+            <input type="hidden" name="id" value="0">
+            <input type="text" class="form-control required" name="ip">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">Port</span>
+            <input type="text" class="form-control required" name="port">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">UserName</span>
+            <input type="text" class="form-control" name="username">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">Password</span>
+            <input type="text" class="form-control" name="password">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">Type</span>
+            <input type="text" class="form-control" name="type" value="HTTP">
+        </div>
+        <div>HTTP/HTTPS</div>
+        <div class="input-group">
+            <span class="input-group-addon">Status</span>
+            <input type="hidden" name="status" value="true">
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-mjdark2 active">
+                    ON
+                    <input type="radio" autocomplete="off" value="ON">
+                </label>
+                <label class="btn btn-mjdark2">
+                    OFF
+                    <input type="radio" autocomplete="off" value="OFF">
+                </label>
+            </div>
+        </div>
+    </form>
+</div>

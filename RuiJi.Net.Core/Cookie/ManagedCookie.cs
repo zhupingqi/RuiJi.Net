@@ -43,31 +43,34 @@ namespace RuiJi.Net.Core.Cookie
         {
             if (setCookie == null)
                 return;
-
-            var uri = new Uri(url);
-            var reg = new Regex(@"(expires=[^,]*,[\s]*[\d]*-[^-]*-)([\d]*)([\s]*[\d]*:[\d]*:[\d]*[\s]GMT)");
-            var ms = reg.Matches(setCookie);
-            foreach (Match m in ms)
+            try
             {
-                string f0 = m.Groups[0].Value;
-                string f1 = m.Groups[1].Value;
-                string f2 = m.Groups[2].Value;
-                string f3 = m.Groups[3].Value;
+                var uri = new Uri(url);
+                var reg = new Regex(@"(expires=[^,]*,[\s]*[\d]*-[^-]*-)([\d]*)([\s]*[\d]*:[\d]*:[\d]*[\s]GMT)");
+                var ms = reg.Matches(setCookie);
+                foreach (Match m in ms)
+                {
+                    string f0 = m.Groups[0].Value;
+                    string f1 = m.Groups[1].Value;
+                    string f2 = m.Groups[2].Value;
+                    string f3 = m.Groups[3].Value;
 
-                if (f2.Length == 2)
-                    setCookie = setCookie.Replace(f0, f1 + "20" + f2 + f3);
+                    if (f2.Length == 2)
+                        setCookie = setCookie.Replace(f0, f1 + "20" + f2 + f3);
+                }
+
+                _container.SetCookies(uri, setCookie);
+
+                var tmp = new List<string>();
+
+                foreach (System.Net.Cookie cookie in _container.GetCookies(uri))
+                {
+                    tmp.Add(cookie.Name + "=" + cookie.Value + ";expires=" + cookie.Expires.ToString("r") + "; domain=" + cookie.Domain + "; path=" + cookie.Path);
+                }
+
+                Cookie = string.Join(",", tmp.ToArray());
             }
-
-            _container.SetCookies(uri, setCookie);
-
-            var tmp = new List<string>();
-
-            foreach (System.Net.Cookie cookie in _container.GetCookies(uri))
-            {
-                tmp.Add(cookie.Name + "=" + cookie.Value + ";expires=" + cookie.Expires.ToString("r") + "; domain=" + cookie.Domain + "; path=" + cookie.Path);
-            }
-
-            Cookie = string.Join(",", tmp.ToArray());
+            catch { }
         }
 
         public string GetCookie(string url)

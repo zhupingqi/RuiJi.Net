@@ -4,6 +4,32 @@
     var module = {
         init: function () {
             var tmp = utils.loadTemplate("/misc/feed/feeds.html", false);
+
+            tmp = $(tmp);
+            tmp.find("#tb_feeds").attr("data-url", "http://" + proxyUrl + "/api/feeds");
+
+            $("#tab_panel_feeds").html(tmp.prop("outerHTML"));
+
+            var $table = $('#tb_feeds').bootstrapTable({
+                toolbar: '#toolbar_feeds',
+                pagination: true,
+                queryParams: module.queryParams,
+                sidePagination: "server",
+                showColumns: true,
+                showRefresh: true,
+                height: 530,
+                onPostBody: function (e) {
+                    if (e.length > 0) {
+                        $('#tb_feeds > tbody > tr').map(function (i, m) {
+                            $(m).find("td:last").html("<i class='fa fa-edit'></i><i class='fa fa-eye'></i><i class='fa fa-history'></i><i class='fa fa-random'></i>");
+                        });
+                    }
+                }
+            });
+
+            module.initEvent();
+        },
+        initEvent: function () {
             var feed = utils.loadTemplate("/misc/feed/feed.html", false);
             var crawl = utils.loadTemplate("/misc/feed/crawl.html", false);
 
@@ -14,9 +40,14 @@
                     closable: false,
                     nl2br: false,
                     buttons: [{
+                        label: 'Test',
+                        action: function (dialog) {
+                            module.test();
+                        }
+                    }, {
                         label: 'Ok',
                         action: function (dialog) {
-                            module.update();
+                            module.update(dialog);
                         }
                     }, {
                         label: 'Close',
@@ -66,10 +97,14 @@
                         closable: false,
                         nl2br: false,
                         buttons: [{
+                            label: 'Test',
+                            action: function (dialog) {
+                                module.test();
+                            }
+                        }, {
                             label: 'Ok',
                             action: function (dialog) {
-                                module.update();
-                                dialog.close();
+                                module.update(dialog);
                             }
                         }, {
                             label: 'Close',
@@ -121,40 +156,6 @@
                 var ele = $(this);
                 ele.closest(".input-group").find("input").val(ele.find("input").val());
             });
-
-            tmp = $(tmp);
-            tmp.find("#tb_feeds").attr("data-url", "http://" + proxyUrl + "/api/feeds");
-
-            $("#tab_panel_feeds").html(tmp.prop("outerHTML"));
-
-            var $table = $('#tb_feeds').bootstrapTable({
-                toolbar: '#toolbar_feeds',
-                striped: true,
-                cache: false,
-                pagination: true,
-                sortable: false,
-                sortOrder: "asc",
-                queryParams: module.queryParams,
-                sidePagination: "server",
-                pageNumber: 1,
-                pageSize: 10,
-                pageList: [10, 25, 50, 100],
-                showColumns: true,
-                showRefresh: true,
-                minimumCountColumns: 2,
-                clickToSelect: true,
-                height: 500,
-                uniqueId: "ID",
-                cardView: false,
-                detailView: false,
-                onPostBody: function (e) {
-                    if (e.length > 0) {
-                        $('#tb_feeds > tbody > tr').map(function (i, m) {
-                            $(m).find("td:last").html("<i class='fa fa-edit'></i><i class='fa fa-eye'></i><i class='fa fa-history'></i><i class='fa fa-random'></i>");
-                        });
-                    }
-                }
-            });
         },
         queryParams: function (params) {
             var temp = {
@@ -166,13 +167,13 @@
             return temp;
         },
         getProxy: function (fn) {
-            $.getJSON("/api/zoo/feedproxy", function (url) {
-                proxyUrl = url;
+            $.getJSON("/api/zoo/proxys", function (proxys) {
+                proxyUrl = proxys["feed proxy"];
 
                 fn();
             });
         },
-        update: function () {
+        update: function (dialog) {
             var d = {};
             var validate = true;
             var msg = "need";
@@ -209,6 +210,53 @@
                 contentType: "application/json",
                 success: function (res) {
                     swal("完成");
+                    dialog.close();
+                    $('#tb_feeds').bootstrapTable("refresh");
+                }
+            });
+        },
+        test: function () {
+            var d = {};
+            var validate = true;
+            var msg = "need";
+
+            $("input.required", "#feed_dialog").each(function (index, e) {
+                e = $(e);
+                var v = e.val();
+                if ($.trim(e.val()) == "") {
+                    validate = false;
+                    msg += "\n" + e.attr("name");
+                }
+            });
+
+            if (!validate) {
+                swal(msg);
+                return;
+            }
+
+            $("input[name]:not(:disabled),textarea", "#feed_dialog").each(function (index, e) {
+                e = $(e);
+                var v = e.val();
+                if (v == "true")
+                    d[e.attr("name")] = true;
+                else if (v == "false")
+                    d[e.attr("name")] = false;
+                else
+                    d[e.attr("name")] = v;
+            });
+
+            $.ajax({
+                url: "/api/feed/test",
+                data: JSON.stringify(d),
+                type: "POST",
+                contentType: "application/json",
+                success: function (res) {
+                    var options = {
+                        collapsed: false,
+                        withQuotes: true
+                    };
+
+                    $('#feed_test_result').jsonViewer(res, options);
                 }
             });
         },

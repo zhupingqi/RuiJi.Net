@@ -24,12 +24,10 @@ namespace RuiJi.Net.Node.Crawler
 
         protected override void OnStartup()
         {
-            var stat = zooKeeper.Exists("/live_nodes/proxy/" + BaseUrl, false);
-            if (stat == null)
-                zooKeeper.Create("/live_nodes/proxy/" + BaseUrl, "crawler proxy".GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Ephemeral);
+            base.CreateLiveNode("/live_nodes/proxy/" + BaseUrl, "crawler proxy".GetBytes());
 
             //create crawler proxy config in zookeeper
-            stat = zooKeeper.Exists("/config/proxy/" + BaseUrl, false);
+            var stat = zooKeeper.Exists("/config/proxy/" + BaseUrl, false);
             if (stat == null)
             {
                 var d = new

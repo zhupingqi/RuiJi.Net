@@ -22,24 +22,6 @@
                         text: '规则',
                         type: 'lib',
                         lib: 'feed/rules'
-                    },
-                    {
-                        id: 'plugin',
-                        text: '插件',
-                        type: 'lib',
-                        lib: 'feed/plugin'
-                    },
-                    {
-                        id: 'setting',
-                        text: '设置',
-                        type: 'lib',
-                        lib: 'feed/setting'
-                    },
-                    {
-                        id: 'funcs',
-                        text: '函数',
-                        type: 'lib',
-                        lib: 'feed/funcs'
                     }
                 ]
             });

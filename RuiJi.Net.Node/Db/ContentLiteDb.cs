@@ -1,5 +1,6 @@
 ﻿using LiteDB;
 using RuiJi.Net.Core.Utils.Page;
+using RuiJi.Net.Node.Feed;
 using RuiJi.Net.Node.Feed.LTS;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RuiJi.Net.Node.Feed
+namespace RuiJi.Net.Node.Db
 {
     public class ContentLiteDb
     {
@@ -18,15 +19,25 @@ namespace RuiJi.Net.Node.Feed
                 var col = db.GetCollection<ContentModel>("contents");
                 col.EnsureIndex(m => m.FeedId);
                 col.EnsureIndex(m => m.Id);
+                col.EnsureIndex(m => m.Url);
 
                 if (content.Id == 0)
-                    col.Insert(content);
-                else
-                    col.Update(content);
+                {
+                    var c = col.Find(m => m.Url == content.Url).FirstOrDefault();
+                    if (c == null)
+                    {
+                        content.CDate = DateTime.Now;
+                        col.Insert(content);
+                        return;
+                    }
+                    content.Id = c.Id;
+                }                   
+
+                col.Update(content);
             }
         }
 
-        public static List<ContentModel> GetContents(Paging page, string shard, int feedID = 0)
+        public static List<ContentModel> GetModels(Paging page, string shard, int feedID = 0)
         {
             using (var db = new LiteDatabase(@"LiteDb/Content/" + shard + ".db"))
             {

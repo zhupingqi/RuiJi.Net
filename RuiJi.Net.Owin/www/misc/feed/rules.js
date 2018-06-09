@@ -1,9 +1,35 @@
-﻿define(['jquery', 'utils', 'sweetAlert', 'bootstrapDialog', 'bootstrapTable','jsonViewer'], function ($, utils) {
+﻿define(['jquery', 'utils', 'sweetAlert', 'bootstrapDialog', 'bootstrapTable', 'jsonViewer'], function ($, utils) {
     var proxyUrl = "";
 
     var module = {
         init: function () {
             var tmp = utils.loadTemplate("/misc/feed/rules.html", false);
+
+            tmp = $(tmp);
+            tmp.find("#tb_rules").attr("data-url", "http://" + proxyUrl + "/api/rules");
+
+            $("#tab_panel_rules").html(tmp.prop("outerHTML"));
+
+            var $table = $('#tb_rules').bootstrapTable({
+                toolbar: '#toolbar_rules',
+                pagination: true,
+                queryParams: module.queryParams,
+                sidePagination: "server",
+                showColumns: true,
+                showRefresh: true,
+                height: 530,
+                onPostBody: function (e) {
+                    if (e.length > 0) {
+                        $('#tb_rules > tbody > tr').map(function (i, m) {
+                            $(m).find("td:last").html("<i class='fa fa-edit'></i><i class='fa fa-history'></i>");
+                        });
+                    }
+                }
+            });
+
+            module.initEvent();
+        },
+        initEvent: function () {
             var ruleTmp = utils.loadTemplate("/misc/feed/rule.html", false);
 
             $(document).on("click", "#add_rule", function () {
@@ -17,10 +43,10 @@
                         action: function (dialog) {
                             module.test();
                         }
-                    },{
+                    }, {
                         label: 'Ok',
                         action: function (dialog) {
-                            module.update();
+                            module.update(dialog);
                         }
                     }, {
                         label: 'Close',
@@ -69,7 +95,7 @@
                             action: function (dialog) {
                                 module.test();
                             }
-                        },{
+                        }, {
                             label: 'Ok',
                             action: function (dialog) {
                                 module.update();
@@ -92,38 +118,24 @@
                 ele.closest("div").find("textarea").eq(ele.index()).show().siblings("textarea").hide();
             });
 
-            tmp = $(tmp);
-            tmp.find("#tb_rules").attr("data-url", "http://" + proxyUrl + "/api/rules");
-
-            $("#tab_panel_rules").html(tmp.prop("outerHTML"));
-
-            var $table = $('#tb_rules').bootstrapTable({
-                toolbar: '#toolbar_rules',
-                striped: true,
-                cache: false,
-                pagination: true,
-                sortable: false,
-                sortOrder: "asc",
-                queryParams: module.queryParams,
-                sidePagination: "server",
-                pageNumber: 1,
-                pageSize: 10,
-                pageList: [10, 25, 50, 100],
-                showColumns: true,
-                showRefresh: true,
-                minimumCountColumns: 2,
-                clickToSelect: true,
-                height: 500,
-                uniqueId: "ID",
-                cardView: false,
-                detailView: false,
-                onPostBody: function (e) {
-                    if (e.length > 0) {
-                        $('#tb_rules > tbody > tr').map(function (i, m) {
-                            $(m).find("td:last").html("<i class='fa fa-edit'></i><i class='fa fa-history'></i>");
-                        });
-                    }
-                }
+            $(document).on("click", "#toolbar_rules a[remove]", function () {
+                swal({
+                    title: "确定删除吗？",
+                    text: "你将无法恢复该规则！",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "确定删除！",
+                    cancelButtonText: "取消删除！",
+                    closeOnConfirm: false
+                },
+                    function () {
+                        var ids = $("#rules_list td :checked").parent().next().map(function () { return $(this).text(); }).get().join(",");
+                        if (ids != "")
+                            module.remove(ids);
+                        else
+                            swal("错误！", "未选择任何规则。", "success");
+                    });
             });
         },
         queryParams: function (params) {
@@ -136,13 +148,13 @@
             return temp;
         },
         getProxy: function (fn) {
-            $.getJSON("/api/zoo/feedproxy", function (url) {
-                proxyUrl = url;
+            $.getJSON("/api/zoo/proxys", function (proxys) {
+                proxyUrl = proxys["feed proxy"];
 
                 fn();
             });
         },
-        update: function () {
+        update: function (dialog) {
             var d = {};
             var validate = true;
             var msg = "need";
@@ -179,6 +191,8 @@
                 contentType: "application/json",
                 success: function (res) {
                     swal("完成");
+                    dialog.close();
+                    $('#tb_rules').bootstrapTable("refresh");
                 }
             });
         },
@@ -224,6 +238,18 @@
                     };
 
                     $('#rule_test_result').jsonViewer(res, options);
+                }
+            });
+        },
+        remove: function (ids) {
+            var url = "http://" + proxyUrl + "/api/rule/remove?ids=" + ids;
+
+            $.getJSON(url, function (res) {
+                if (res) {
+                    swal("删除！", "规则已经被删除。", "success");
+                    $('#tb_rules').bootstrapTable("refresh");
+                } else {
+                    swal("删除失败！", "删除规则发生错误。", "success");
                 }
             });
         }

@@ -7,6 +7,7 @@ using RuiJi.Net.Core.Extracter;
 using RuiJi.Net.Core.Extracter.Enum;
 using RuiJi.Net.Core.Extracter.Selector;
 using RuiJi.Net.Node.Feed;
+using RuiJi.Net.Node.Db;
 
 namespace RuiJi.Net.Test
 {

@@ -141,8 +141,8 @@ namespace RuiJi.Net.Owin
 
             config.Routes.MapHttpRoute(
                 name: "FeedProxyUrl",
-                routeTemplate: "api/zoo/feedproxy",
-                defaults: new { controller = "ZooApi", action = "FeedProxy" }
+                routeTemplate: "api/zoo/proxys",
+                defaults: new { controller = "ZooApi", action = "GetProxys" }
             );
             #endregion
 
@@ -175,7 +175,13 @@ namespace RuiJi.Net.Owin
                     name: "GetRule",
                     routeTemplate: "api/rule",
                     defaults: new { controller = "FeedApi", action = "GetRule" }
-                ); 
+                );
+
+            config.Routes.MapHttpRoute(
+                    name: "RemoveRule",
+                    routeTemplate: "api/rule/remove",
+                    defaults: new { controller = "FeedApi", action = "RemoveRule" }
+                );
             #endregion
 
             #region Feed Api
@@ -220,6 +226,12 @@ namespace RuiJi.Net.Owin
                     routeTemplate: "api/feed/crawl",
                     defaults: new { controller = "FeedApi", action = "RunCrawl" }
                 );
+
+            config.Routes.MapHttpRoute(
+                    name: "TestFeed",
+                    routeTemplate: "api/feed/test",
+                    defaults: new { controller = "FeedApi", action = "TestFeed" }
+                );
             #endregion
 
             #region Content Api
@@ -244,14 +256,20 @@ namespace RuiJi.Net.Owin
                 );
 
             config.Routes.MapHttpRoute(
+                    name: "GetFunc",
+                    routeTemplate: "api/func",
+                    defaults: new { controller = "FeedApi", action = "GetFunc" }
+                );
+
+            config.Routes.MapHttpRoute(
                     name: "UpdateFunc",
-                    routeTemplate: "api/funcs/update",
+                    routeTemplate: "api/func/update",
                     defaults: new { controller = "FeedApi", action = "UpdateFunc" }
                 );
 
             config.Routes.MapHttpRoute(
                     name: "FuncTest",
-                    routeTemplate: "api/funcs/test",
+                    routeTemplate: "api/func/test",
                     defaults: new { controller = "FeedApi", action = "FuncTest" }
                 );
             #endregion
@@ -273,6 +291,38 @@ namespace RuiJi.Net.Owin
                     name: "DllInfo",
                     routeTemplate: "api/info/dll",
                     defaults: new { controller = "InfoApi", action = "Dll" }
+                );
+            #endregion
+
+            #region Online Proxy
+            config.Routes.MapHttpRoute(
+                name: "ProxysList",
+                routeTemplate: "api/proxys",
+                defaults: new { controller = "CrawlerProxyApi", action = "Proxys" }
+            );
+
+            config.Routes.MapHttpRoute(
+                    name: "GetProxy",
+                    routeTemplate: "api/proxy",
+                    defaults: new { controller = "CrawlerProxyApi", action = "GetProxy" }
+                );
+
+            config.Routes.MapHttpRoute(
+                    name: "UpdateProxy",
+                    routeTemplate: "api/proxy/update",
+                    defaults: new { controller = "CrawlerProxyApi", action = "UpdateProxy" }
+                );
+
+            config.Routes.MapHttpRoute(
+                    name: "RemoveProxy",
+                    routeTemplate: "api/proxy/remove",
+                    defaults: new { controller = "CrawlerProxyApi", action = "RemoveProxy" }
+                );
+
+            config.Routes.MapHttpRoute(
+                    name: "ProxyPing",
+                    routeTemplate: "api/proxy/ping",
+                    defaults: new { controller = "CrawlerProxyApi", action = "ProxyPing" }
                 );
             #endregion
 

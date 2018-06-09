@@ -13,6 +13,7 @@ using RuiJi.Net.Core;
 using System.IO;
 using Newtonsoft.Json;
 using RuiJi.Net.Core.Utils;
+using RuiJi.Net.Node.Db;
 
 namespace RuiJi.Net.Node.Feed.LTS
 {

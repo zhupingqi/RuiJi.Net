@@ -1,0 +1,36 @@
+﻿<div>
+    <div id="toolbar_proxy">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                批量操作 <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="javascript:;">停用</a></li>
+                <li><a href="javascript:;">删除</a></li>
+            </ul>
+        </div>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="submit" class="btn btn-default" id="add_proxy">添加</button>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="submit" class="btn btn-default" id="proxy_update">更新代理</button>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="submit" class="btn btn-default" id="proxy_shard">贡献代理</button>
+    </div>
+    <div id="proxy_list">
+        <table id="tb_proxys" data-toggle="table" data-url="">
+            <thead>
+                <tr>
+                    <th data-checkbox="true" data-width="30px">&nbsp;</th>
+                    <th data-field="id" data-width="40px">Id</th>
+                    <th data-field="ip">Ip</th>
+                    <th data-field="port">Port</th>
+                    <th data-field="username">UserName</th>
+                    <th data-field="password">Password</th>
+                    <th data-field="type">Type</th>
+                    <th data-field="status">Status</th>
+                    <th data-width="110px">Actions</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>

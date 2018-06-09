@@ -41,6 +41,12 @@
                         text: '抓取结果',
                         type: 'lib',
                         lib: 'content'
+                    },
+                    {
+                        id: 'setting',
+                        text: '设置',
+                        type: 'lib',
+                        lib: 'setting/entry'
                     }
                 ]
             });

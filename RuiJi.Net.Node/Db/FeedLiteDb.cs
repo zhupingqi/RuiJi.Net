@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RuiJi.Net.Node.Feed
+namespace RuiJi.Net.Node.Db
 {
     public class FeedLiteDb
     {
@@ -56,6 +56,28 @@ namespace RuiJi.Net.Node.Feed
                 else
                     col.Update(feed);
             }
+        }
+
+        public static bool Remove(int id)
+        {
+            using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
+            {
+                var col = db.GetCollection<FeedModel>("feeds");
+                return col.Delete(id);
+            }
+        }
+
+        public static bool Remove(int[] ids)
+        {
+            using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
+            {
+                var col = db.GetCollection<FeedModel>("feeds");
+                ids.ToList().ForEach((m) => {
+                    col.Delete(m);
+                });
+            }
+
+            return true;
         }
 
         public static void CreateIndex()
