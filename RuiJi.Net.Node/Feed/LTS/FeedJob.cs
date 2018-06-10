@@ -48,6 +48,7 @@ namespace RuiJi.Net.Node.Feed.LTS
                     var node = context.JobDetail.JobDataMap.Get("node") as FeedNode;
 
                     var feeds = GetFeedJobs(proxyUrl, node);
+                    var compile = new CompileFeedAddress();
 
                     var stpStartInfo = new STPStartInfo
                     {
@@ -61,12 +62,18 @@ namespace RuiJi.Net.Node.Feed.LTS
 
                     foreach (var feed in feeds)
                     {
-                        var item = pool.QueueWorkItem((u) =>
+                        var addrs = compile.Compile(feed.Address);
+                        foreach (var addr in addrs)
                         {
-                            DoTask(u, true);
-                        }, feed);
+                            feed.Address = addr;
 
-                        waits.Add(item);
+                            var item = pool.QueueWorkItem((u) =>
+                            {
+                                DoTask(u, true);
+                            }, feed);
+
+                            waits.Add(item);
+                        }
                     }
 
                     SmartThreadPool.WaitAll(waits.ToArray());

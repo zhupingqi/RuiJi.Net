@@ -15,7 +15,7 @@ namespace RuiJi.Net.NodeVisitor
     {
         public static List<ExtractFeatureBlock> GetExtractBlock(string url)
         {
-            var proxyUrl = ProxyManager.Instance.Elect(ProxyTypeEnum.Feed);
+            var proxyUrl = ProxyManager.Instance.Elect(NodeProxyTypeEnum.Feed);
 
             if (string.IsNullOrEmpty(proxyUrl))
                 throw new Exception("no available extracter proxy servers");
@@ -38,7 +38,7 @@ namespace RuiJi.Net.NodeVisitor
 
         public static bool SaveContent(object content)
         {
-            var proxyUrl = ProxyManager.Instance.Elect(ProxyTypeEnum.Feed);
+            var proxyUrl = ProxyManager.Instance.Elect(NodeProxyTypeEnum.Feed);
 
             if (string.IsNullOrEmpty(proxyUrl))
                 throw new Exception("no available extracter proxy servers");

@@ -1,11 +1,9 @@
 ﻿define(['jquery', 'utils', 'sweetAlert','flatJson', 'bootstrapDialog', 'bootstrapTable'], function ($, utils) {
-    var proxyUrl = "";
-
     var module = {
         init: function () {
             var tmp = utils.loadTemplate("/misc/content.html", false);
             tmp = $(tmp);
-            tmp.find("#tb_contents").attr("data-url", "http://" + proxyUrl + "/api/fp/content");
+            tmp.find("#tb_contents").attr("data-url", "/api/fp/content");
 
             $("#tab_panel_content").html(tmp.prop("outerHTML"));
 
@@ -44,17 +42,8 @@
                 statu: $("#txt_search_statu").val()
             };
             return temp;
-        },
-        getProxy: function (fn) {
-            $.getJSON("/api/zoo/proxys", function (proxys) {
-                proxyUrl = proxys["feed proxy"];
-
-                fn();
-            });
         }
     };
 
-    module.getProxy(function () {
-        module.init();
-    });
+    module.init();
 });

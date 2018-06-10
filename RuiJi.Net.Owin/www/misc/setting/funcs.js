@@ -1,13 +1,10 @@
 ﻿define(['jquery', 'utils', 'sweetAlert', 'bootstrapDialog', 'bootstrapTable'], function ($, utils) {
-
-    var proxyUrl = "";
-
     var module = {
         init: function () {
             var tmp = utils.loadTemplate("/misc/setting/funcs.html", false);
 
             tmp = $(tmp);
-            tmp.find("#tb_funcs").attr("data-url", "http://" + proxyUrl + "/api/funcs");
+            tmp.find("#tb_funcs").attr("data-url", "/api/funcs");
             $("#tab_panel_funcs").html(tmp.prop("outerHTML"));
 
             var $table = $('#tb_funcs').bootstrapTable({
@@ -63,7 +60,7 @@
                 var f = $(func);
                 f.find("input[name='id']").val(id);
 
-                $.getJSON("http://" + proxyUrl + "/api/func?id=" + id, function (d) {
+                $.getJSON("/api/func?id=" + id, function (d) {
                     for (var p in d) {
                         var v = d[p];
                         var ele = f.find("[name='" + p + "']").eq(0);
@@ -161,17 +158,8 @@
                         swal("添加失败");
                 }
             });
-        },
-        getProxy: function (fn) {
-            $.getJSON("/api/zoo/proxys", function (proxys) {
-                proxyUrl = proxys["feed proxy"];
-
-                fn();
-            });
         }
     };
 
-    module.getProxy(function () {
-        module.init();
-    });
+    module.init();
 });

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RestSharp;
 using RuiJi.Net.Core.Crawler;
 using RuiJi.Net.Core.Extracter;
 using RuiJi.Net.Core.Utils;
@@ -23,72 +24,43 @@ namespace RuiJi.Net.Owin.Controllers
     {
         #region Rule
         [HttpGet]
-        public object Feeds(int offset, int limit)
-        {
-            var node = ServerManager.Get(Request.RequestUri.Authority);
-
-            if (node.NodeType == Node.NodeTypeEnum.FEEDPROXY)
-            {
-                var paging = new Paging();
-                paging.CurrentPage = (offset / limit) + 1;
-                paging.PageSize = limit;
-
-                return new
-                {
-                    rows = FeedLiteDb.GetFeedModels(paging),
-                    total = paging.Count
-                };
-            }
-
-            return new { };
-        }
-
-        [HttpGet]
+        [NodeRoute(Target = NodeProxyTypeEnum.Feed)]
         public object Rules(int offset, int limit)
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
 
-            if (node.NodeType == Node.NodeTypeEnum.FEEDPROXY)
+            var paging = new Paging();
+            paging.CurrentPage = (offset / limit) + 1;
+            paging.PageSize = limit;
+
+            return new
             {
-                var paging = new Paging();
-                paging.CurrentPage = (offset / limit) + 1;
-                paging.PageSize = limit;
-
-                return new
-                {
-                    rows = RuleLiteDb.GetModels(paging),
-                    total = paging.Count
-                };
-            }
-
-            return new { };
+                rows = RuleLiteDb.GetModels(paging),
+                total = paging.Count
+            };
         }
 
         [HttpGet]
+        [NodeRoute(Target = NodeProxyTypeEnum.Feed)]
         public object UrlRule(string url, bool useBlock = false)
         {
-            var node = ServerManager.Get(Request.RequestUri.Authority);
-
-            if (node.NodeType == Node.NodeTypeEnum.FEEDPROXY)
+            if (useBlock)
+                return RuleLiteDb.Match(url).Select(m => new ExtractFeatureBlock(JsonConvert.DeserializeObject<ExtractBlock>(m.BlockExpression), m.Feature)).ToList();
+            else
             {
-                if (useBlock)
-                    return RuleLiteDb.Match(url).Select(m => new ExtractFeatureBlock(JsonConvert.DeserializeObject<ExtractBlock>(m.BlockExpression), m.Feature)).ToList();
-                else
-                {
-                    return RuleLiteDb.Match(url).Select(m => new ExtractFeatureBlock(RuiJiExpression.ParserBlock(m.RuiJiExpression), m.Feature)).ToList();
-                }
+                return RuleLiteDb.Match(url).Select(m => new ExtractFeatureBlock(RuiJiExpression.ParserBlock(m.RuiJiExpression), m.Feature)).ToList();
             }
-
-            return new { };
         }
 
         [HttpPost]
+        [NodeRoute(Target = NodeProxyTypeEnum.Feed)]
         public void UpdateRule(RuleModel rule)
         {
             RuleLiteDb.AddOrUpdate(rule);
         }
 
         [HttpGet]
+        [NodeRoute(Target = NodeProxyTypeEnum.Feed)]
         public object GetRule(int id)
         {
             var feed = RuleLiteDb.Get(id);
@@ -97,6 +69,7 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpGet]
+        [NodeRoute(Target = NodeProxyTypeEnum.Feed)]
         public bool RemoveRule(string ids)
         {
             var removes = ids.Split(',').Select(m => Convert.ToInt32(m)).ToArray();
@@ -136,27 +109,31 @@ namespace RuiJi.Net.Owin.Controllers
 
         #region Feed
         [HttpGet]
+        [NodeRoute(Target = NodeProxyTypeEnum.Feed)]
+        public object Feeds(int offset, int limit)
+        {
+            var paging = new Paging();
+            paging.CurrentPage = (offset / limit) + 1;
+            paging.PageSize = limit;
+
+            return new
+            {
+                rows = FeedLiteDb.GetFeedModels(paging),
+                total = paging.Count
+            };
+        }
+
+        [HttpGet]
+        [NodeRoute(Target = NodeProxyTypeEnum.Feed)]
         public object FeedJob(string pages)
         {
             try
             {
+                var ps = pages.Split(',').Select(m => Convert.ToInt32(m)).ToArray();
+                var feeds = FeedLiteDb.GetFeedModels(ps, 50);
+                feeds.RemoveAll(m => m.Status == Status.OFF);
 
-                var node = ServerManager.Get(Request.RequestUri.Authority);
-
-                if (node.NodeType == Node.NodeTypeEnum.FEEDPROXY)
-                {
-                    var ps = pages.Split(',').Select(m => Convert.ToInt32(m)).ToArray();
-                    var feeds = FeedLiteDb.GetFeedModels(ps, 50);
-                    feeds.RemoveAll(m => m.Status == Status.OFF);
-
-                    var compile = new CompileFeedAddress();
-                    foreach (var feed in feeds)
-                    {
-                        feed.Address = compile.Compile(feed.Address);
-                    }
-
-                    return feeds;
-                }
+                return feeds;
             }
             catch { }
 
@@ -168,18 +145,13 @@ namespace RuiJi.Net.Owin.Controllers
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
 
-            if (node.NodeType == Node.NodeTypeEnum.FEED)
-            {
-                var d = node.GetData("/config/feed/" + Request.RequestUri.Authority).Data;
-                var config = JsonConvert.DeserializeObject<NodeConfig>(d);
+            var d = node.GetData("/config/feed/" + Request.RequestUri.Authority).Data;
+            var config = JsonConvert.DeserializeObject<NodeConfig>(d);
 
-                if (config.Pages == null)
-                    config.Pages = new int[0];
+            if (config.Pages == null)
+                config.Pages = new int[0];
 
-                return string.Join(",", config.Pages);
-            }
-
-            return "";
+            return string.Join(",", config.Pages);
         }
 
         [HttpPost]
@@ -187,20 +159,18 @@ namespace RuiJi.Net.Owin.Controllers
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
 
-            if (node.NodeType == Node.NodeTypeEnum.FEED)
-            {
-                var path = "/config/feed/" + Request.RequestUri.Authority;
+            var path = "/config/feed/" + Request.RequestUri.Authority;
 
-                var data = node.GetData("/config/feed/" + Request.RequestUri.Authority);
-                var config = JsonConvert.DeserializeObject<NodeConfig>(data.Data);
-                config.Pages = pages.Split(',').Select(m => Convert.ToInt32(m)).ToArray();
+            var data = node.GetData("/config/feed/" + Request.RequestUri.Authority);
+            var config = JsonConvert.DeserializeObject<NodeConfig>(data.Data);
+            config.Pages = pages.Split(',').Select(m => Convert.ToInt32(m)).ToArray();
 
-                node.SetData(path, JsonConvert.SerializeObject(config));
-            }
+            node.SetData(path, JsonConvert.SerializeObject(config));
         }
 
         [HttpPost]
-        public void UpdateFeed(FeedModel feed)
+        [NodeRoute(Target = NodeProxyTypeEnum.Feed)]
+        public void UpdateFeed([FromBody]FeedModel feed)
         {
             FeedLiteDb.AddOrUpdate(feed);
         }
@@ -219,28 +189,35 @@ namespace RuiJi.Net.Owin.Controllers
             try
             {
                 var compile = new CompileFeedAddress();
-                feed.Address = compile.Compile(feed.Address);
+                var addrs = compile.Compile(feed.Address);
+                var results = new List<ExtractResult>();
 
-                var job = new FeedJob();
-                var snap = job.DoTask(feed, false);
+                foreach (var addr in addrs)
+                {
+                    feed.Address = addr;
+                    var job = new FeedJob();
+                    var snap = job.DoTask(feed, false);
 
-                var block = RuiJiExpression.ParserBlock(feed.RuiJiExpression);
+                    var block = RuiJiExpression.ParserBlock(feed.RuiJiExpression);
 
-                var result = RuiJiExtracter.Extract(snap.Content, block);
-                CrawlTaskFunc.ClearContent(result);
+                    var result = RuiJiExtracter.Extract(snap.Content, block);
+                    CrawlTaskFunc.ClearContent(result);
 
-                return result;
+                    results.Add(result);
+                }
+
+                return results;
             }
-            catch (Exception ex){
+            catch (Exception ex)
+            {
                 return ex;
             }
-
-            return new { };
         }
         #endregion
 
         #region 存储抓取结果
         [HttpPost]
+        [NodeRoute(Target = NodeProxyTypeEnum.Feed)]
         public bool SaveContent(ContentModel content, string shard = "")
         {
             try
@@ -259,37 +236,33 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpGet]
+        [NodeRoute(Target = NodeProxyTypeEnum.Feed)]
         public object GetContent(int offset, int limit, string shard = "", int feedId = 0)
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
 
-            if (node.NodeType == Node.NodeTypeEnum.FEEDPROXY)
+            var paging = new Paging();
+            paging.CurrentPage = (offset / limit) + 1;
+            paging.PageSize = limit;
+
+            if (string.IsNullOrEmpty(shard))
+                shard = DateTime.Now.ToString("yyyyMM");
+
+            return new
             {
-                var paging = new Paging();
-                paging.CurrentPage = (offset / limit) + 1;
-                paging.PageSize = limit;
-
-                if (string.IsNullOrEmpty(shard))
-                    shard = DateTime.Now.ToString("yyyyMM");
-
-                return new
+                rows = ContentLiteDb.GetModels(paging, shard, feedId).Select(m => new
                 {
-                    rows = ContentLiteDb.GetModels(paging, shard, feedId).Select(m => new
+                    id = m.Id,
+                    feedId = m.FeedId,
+                    url = m.Url,
+                    metas = m.Metas.Select(n => new
                     {
-                        id = m.Id,
-                        feedId = m.FeedId,
-                        url = m.Url,
-                        metas = m.Metas.Select(n => new
-                        {
-                            name = n.Key,
-                            content = n.Value
-                        })
-                    }),
-                    total = paging.Count
-                };
-            }
-
-            return new { };
+                        name = n.Key,
+                        content = n.Value
+                    })
+                }),
+                total = paging.Count
+            };
         }
         #endregion
 
@@ -330,29 +303,26 @@ namespace RuiJi.Net.Owin.Controllers
 
         #region 节点函数
         [HttpGet]
+        [NodeRoute(Target = NodeProxyTypeEnum.Feed)]
         public object Funcs(int offset, int limit)
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
 
-            if (node.NodeType == Node.NodeTypeEnum.FEEDPROXY)
+            var paging = new Paging();
+            paging.CurrentPage = (offset / limit) + 1;
+            paging.PageSize = limit;
+
+            var list = FuncLiteDb.GetModels(paging);
+
+            return new
             {
-                var paging = new Paging();
-                paging.CurrentPage = (offset / limit) + 1;
-                paging.PageSize = limit;
-
-                var list = FuncLiteDb.GetModels(paging);
-
-                return new
-                {
-                    rows = list,
-                    total = list.Count
-                };
-            }
-
-            return new { };
+                rows = list,
+                total = list.Count
+            };
         }
 
         [HttpGet]
+        [NodeRoute(Target = NodeProxyTypeEnum.Feed)]
         public object GetFunc(int id)
         {
             return FuncLiteDb.Get(id);
@@ -367,6 +337,7 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpPost]
+        [NodeRoute(Target = NodeProxyTypeEnum.Feed)]
         public object UpdateFunc(FuncModel func)
         {
             if (func.Name == "now" || func.Name == "ticks")
@@ -409,52 +380,57 @@ namespace RuiJi.Net.Owin.Controllers
             reporter.Report("正在下载 Feed");
 
             var compile = new CompileFeedAddress();
-            feed.Address = compile.Compile(feed.Address);
+            var addrs = compile.Compile(feed.Address);
 
-            var job = new FeedJob();
-            var snap = job.DoTask(feed, false);
-            reporter.Report("Feed 下载完成");
-
-            var block = RuiJiExpression.ParserBlock(feed.RuiJiExpression);
-
-            var feedResult = RuiJiExtracter.Extract(snap.Content, block);
-            results.Add(feedResult);
-
-            reporter.Report("正在提取Feed地址");
-            var j = new FeedExtractJob();
-            var urls = j.ExtractAddress(snap);
-            reporter.Report("Feed地址提取完成");
-
-            if (!string.IsNullOrEmpty(snap.RuiJiExpression))
+            foreach (var addr in addrs)
             {
-                var visitor = new Visitor();
+                feed.Address = addr;
 
-                foreach (var url in urls)
+                var job = new FeedJob();
+                var snap = job.DoTask(feed, false);
+                reporter.Report("Feed 下载完成");
+
+                var block = RuiJiExpression.ParserBlock(feed.RuiJiExpression);
+
+                var feedResult = RuiJiExtracter.Extract(snap.Content, block);
+                results.Add(feedResult);
+
+                reporter.Report("正在提取Feed地址");
+                var j = new FeedExtractJob();
+                var urls = j.ExtractAddress(snap);
+                reporter.Report("Feed地址提取完成");
+
+                if (!string.IsNullOrEmpty(snap.RuiJiExpression))
                 {
-                    reporter.Report("正在提取地址 " + url);
-                    var result = visitor.Extract(url);
+                    var visitor = new Visitor();
 
-                    if (result != null)
+                    foreach (var url in urls)
                     {
-                        var cm = new ContentModel();
-                        cm.FeedId = model.FeedId;
-                        cm.Url = url;
-                        cm.Metas = result.Metas;
-                        cm.CDate = DateTime.Now;
+                        reporter.Report("正在提取地址 " + url);
+                        var result = visitor.Extract(url);
 
-                        results.Add(cm);
+                        if (result != null)
+                        {
+                            var cm = new ContentModel();
+                            cm.FeedId = model.FeedId;
+                            cm.Url = url;
+                            cm.Metas = result.Metas;
+                            cm.CDate = DateTime.Now;
+
+                            results.Add(cm);
+                        }
                     }
                 }
-            }
 
-            reporter.Report("计算完成");
+                reporter.Report("计算完成");
 
-            if (!model.IncludeContent)
-            {
-                results.ForEach((m) =>
+                if (!model.IncludeContent)
                 {
-                    ClearContent(m);
-                });
+                    results.ForEach((m) =>
+                    {
+                        ClearContent(m);
+                    });
+                }
             }
 
             return results;
@@ -479,39 +455,6 @@ namespace RuiJi.Net.Owin.Controllers
         }
     }
 
-    public class CompileFeedAddress : CompileUrl
-    {
-        public override string FormatCode(string function, object[] args)
-        {
-            var code = "";
-
-            switch (function)
-            {
-                case "now":
-                    {
-                        code = string.Format("result = DateTime.Now.ToString(\"{0}\");", args);
-                        break;
-                    }
-                case "ticks":
-                    {
-                        code = string.Format("result = DateTime.Now.Ticks;");
-                        break;
-                    }
-                default:
-                    {
-                        var f = FuncLiteDb.Get(function);
-                        if (f != null)
-                        {
-                            code = string.Format(f.Code, args);
-                        }
-                        break;
-                    }
-            }
-
-            return code;
-        }
-    }
-
     public class ComplieFuncTest : CompileUrl
     {
         private string code;
@@ -521,9 +464,9 @@ namespace RuiJi.Net.Owin.Controllers
             this.code = code;
         }
 
-        public override string FormatCode(string function, object[] args)
+        public override string FormatCode(CompileExtract extract)
         {
-            var formatCode = string.Format(code, args);
+            var formatCode = string.Format(code, extract.Args);
 
             return formatCode;
         }

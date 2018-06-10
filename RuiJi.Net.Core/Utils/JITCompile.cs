@@ -23,19 +23,17 @@ namespace RuiJi.Net.Core.Utils
             using System.Reflection;
 
             sealed class RuiJiCompile
-            {
-                public static object v;
-                
+            {                
                 public static void Main()
                 {
                     
                 }
 
-                public static object Exec()
+                public static List<object> Exec()
                 {
-                    object result;
+                    var results = new List<object>();
                     " + code + @"
-                    return result;
+                    return results;
                 }
             }";
         }
@@ -51,7 +49,7 @@ namespace RuiJi.Net.Core.Utils
             return compiler.CompileAssemblyFromSource(parameters, codes);
         }
 
-        public static string GetResult(string code)
+        public static List<string> GetResult(string code)
         {
             code = GenerateCode(code);
             var result = Compile(code);
@@ -64,11 +62,11 @@ namespace RuiJi.Net.Core.Utils
                     es += er.ErrorText;
                 }
 
-                return es;
+                return new List<string> { es };
             }
 
             Type type = result.CompiledAssembly.GetType("RuiJiCompile");
-            return type.GetMethod("Exec").Invoke(null, new string[] { }).ToString();
+            return (type.GetMethod("Exec").Invoke(null, new string[] { }) as List<object>).Select(m=>m.ToString()).ToList();
         }
     }
 }

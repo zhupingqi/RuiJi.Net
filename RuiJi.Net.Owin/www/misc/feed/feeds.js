@@ -1,12 +1,10 @@
 ﻿define(['jquery', 'utils', 'sweetAlert', 'bootstrapDialog', 'bootstrapTable','jsonViewer'], function ($, utils) {
-    var proxyUrl = "";
-
     var module = {
         init: function () {
             var tmp = utils.loadTemplate("/misc/feed/feeds.html", false);
 
             tmp = $(tmp);
-            tmp.find("#tb_feeds").attr("data-url", "http://" + proxyUrl + "/api/feeds");
+            tmp.find("#tb_feeds").attr("data-url", "/api/feeds");
 
             $("#tab_panel_feeds").html(tmp.prop("outerHTML"));
 
@@ -73,7 +71,7 @@
                 var f = $(feed);
                 f.find("input[name='id']").val(id);
 
-                $.getJSON("http://" + proxyUrl + "/api/feed?id=" + id, function (d) {
+                $.getJSON("/api/feed?id=" + id, function (d) {
                     for (var p in d) {
                         var v = d[p];
                         var ele = f.find("[name='" + p + "']").eq(0);
@@ -122,7 +120,7 @@
                 var f = $(crawl);
                 f.find("input[name='id']").val(id);
 
-                $.getJSON("http://" + proxyUrl + "/api/feed?id=" + id, function (d) {
+                $.getJSON("/api/feed?id=" + id, function (d) {
                     f.find("#crawl_info").html("正在使用 " + d.address + " <br/>进行即时抓取，点击Start开始");
 
                     BootstrapDialog.show({
@@ -145,13 +143,6 @@
                 });
             });
 
-            $(document).on("click", "#feed_dialog ul.nav li", function () {
-                var ele = $(this);
-                ele.addClass("active").siblings().removeClass("active");
-
-                ele.closest("div").find("textarea").eq(ele.index()).show().siblings("textarea").hide();
-            });
-
             $(document).on("click", "#feed_dialog .btn-mjdark2", function () {
                 var ele = $(this);
                 ele.closest(".input-group").find("input").val(ele.find("input").val());
@@ -165,13 +156,6 @@
                 statu: $("#txt_search_statu").val()
             };
             return temp;
-        },
-        getProxy: function (fn) {
-            $.getJSON("/api/zoo/proxys", function (proxys) {
-                proxyUrl = proxys["feed proxy"];
-
-                fn();
-            });
         },
         update: function (dialog) {
             var d = {};
@@ -204,7 +188,7 @@
             });
 
             $.ajax({
-                url: "http://" + proxyUrl + "/api/feed/update",
+                url: "/api/feed/update",
                 data: JSON.stringify(d),
                 type: 'POST',
                 contentType: "application/json",
@@ -262,7 +246,7 @@
         },
         start: function (feedId, taskId) {
 
-            var url = "http://" + proxyUrl + "/api/feed/crawl?feedId=" + feedId;
+            var url = "/api/feed/crawl?feedId=" + feedId;
             if (taskId && taskId > 0) {
                 url += "&taskId=" + taskId;
             }
@@ -283,7 +267,5 @@
         }
     };
 
-    module.getProxy(function () {
-        module.init();
-    });
+    module.init();
 });

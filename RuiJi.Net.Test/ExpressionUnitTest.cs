@@ -201,7 +201,7 @@ css #listnav a[href]
             var url = "http://app.cannews.com.cn/roll.php?do=query&callback=jsonp1475197217819&_={# ticks() #}&date={# now(\"yyyy-MM-dd\") #}&size=20&page=1";
 
             var f = new CompileFeedAddress();
-            url = f.Compile(url);
+            //url = f.Compile(url);
 
             var c = new RuiJiCrawler();
             var response = c.Request(new Request(url));

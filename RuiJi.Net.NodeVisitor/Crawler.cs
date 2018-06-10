@@ -19,7 +19,7 @@ namespace RuiJi.Net.NodeVisitor
 
         public Response Request(Request request, bool usecp = false)
         {
-            var proxyUrl = ProxyManager.Instance.Elect(ProxyTypeEnum.Crawler);
+            var proxyUrl = ProxyManager.Instance.Elect(NodeProxyTypeEnum.Crawler);
 
             if (string.IsNullOrEmpty(proxyUrl))
                 throw new Exception("no available crawler proxy servers");
@@ -78,7 +78,7 @@ namespace RuiJi.Net.NodeVisitor
 
         public CrawlerElectResult Elect(CrawlerElectRequest request)
         {
-            var proxyUrl = ProxyManager.Instance.Elect(ProxyTypeEnum.Crawler);
+            var proxyUrl = ProxyManager.Instance.Elect(NodeProxyTypeEnum.Crawler);
 
             if (string.IsNullOrEmpty(proxyUrl))
                 throw new Exception("no available crawler proxy servers");

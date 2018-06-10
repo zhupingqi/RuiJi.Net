@@ -1,12 +1,10 @@
 ﻿define(['jquery', 'utils', 'sweetAlert', 'bootstrapDialog', 'bootstrapTable', 'jsonViewer'], function ($, utils) {
-    var proxyUrl = "";
-
     var module = {
         init: function () {
             var tmp = utils.loadTemplate("/misc/feed/rules.html", false);
 
             tmp = $(tmp);
-            tmp.find("#tb_rules").attr("data-url", "http://" + proxyUrl + "/api/rules");
+            tmp.find("#tb_rules").attr("data-url", "/api/rules");
 
             $("#tab_panel_rules").html(tmp.prop("outerHTML"));
 
@@ -72,7 +70,7 @@
                 var f = $(ruleTmp);
                 f.find("input[name='id']").val(id);
 
-                $.getJSON("http://" + proxyUrl + "/api/rule?id=" + id, function (d) {
+                $.getJSON("/api/rule?id=" + id, function (d) {
                     for (var p in d) {
                         var v = d[p];
                         var ele = f.find("[name='" + p + "']").eq(0);
@@ -111,13 +109,6 @@
                 });
             });
 
-            $(document).on("click", "#rule_dialog ul.nav li", function () {
-                var ele = $(this);
-                ele.addClass("active").siblings().removeClass("active");
-
-                ele.closest("div").find("textarea").eq(ele.index()).show().siblings("textarea").hide();
-            });
-
             $(document).on("click", "#toolbar_rules a[remove]", function () {
                 swal({
                     title: "确定删除吗？",
@@ -146,13 +137,6 @@
                 statu: $("#txt_search_statu").val()
             };
             return temp;
-        },
-        getProxy: function (fn) {
-            $.getJSON("/api/zoo/proxys", function (proxys) {
-                proxyUrl = proxys["feed proxy"];
-
-                fn();
-            });
         },
         update: function (dialog) {
             var d = {};
@@ -185,7 +169,7 @@
             });
 
             $.ajax({
-                url: "http://" + proxyUrl + "/api/rule/update",
+                url: "/api/rule/update",
                 data: JSON.stringify(d),
                 type: 'POST',
                 contentType: "application/json",
@@ -242,7 +226,7 @@
             });
         },
         remove: function (ids) {
-            var url = "http://" + proxyUrl + "/api/rule/remove?ids=" + ids;
+            var url = "/api/rule/remove?ids=" + ids;
 
             $.getJSON(url, function (res) {
                 if (res) {
@@ -255,7 +239,5 @@
         }
     };
 
-    module.getProxy(function () {
-        module.init();
-    });
+    module.init();
 });

@@ -100,7 +100,7 @@ namespace RuiJi.Net.NodeVisitor
             }
         }
 
-        public string Elect(ProxyTypeEnum proxyType)
+        public string Elect(NodeProxyTypeEnum proxyType)
         {
             var p = proxys.Where(m => m.Type == proxyType).OrderBy(m => m.Counts).FirstOrDefault();
             if (p != null)
