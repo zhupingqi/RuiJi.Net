@@ -17,7 +17,66 @@ namespace RuiJi.Net.NodeVisitor
 
         }
 
-        public Response Request(Request request)
+        public Response Request(Request request, bool usecp = false)
+        {
+            var proxyUrl = ProxyManager.Instance.Elect(ProxyTypeEnum.Crawler);
+
+            if (string.IsNullOrEmpty(proxyUrl))
+                throw new Exception("no available crawler proxy servers");
+
+            if (usecp)
+            {
+                var client = new RestClient("http://" + proxyUrl);
+                var restRequest = new RestRequest("api/cp/crawl");
+                restRequest.Method = Method.POST;
+                restRequest.AddJsonBody(request);
+                restRequest.Timeout = request.Timeout;
+
+                var restResponse = client.Execute(restRequest);
+
+                var response = JsonConvert.DeserializeObject<Response>(restResponse.Content);
+
+                return response;
+            }
+            else
+            {
+                var elect = Elect(new CrawlerElectRequest
+                {
+                    ElectIp = true,
+                    ElectProxy = true,
+                    Uri = request.Uri
+                });
+
+                request.Proxy = elect.Proxy;
+
+                var client = new RestClient("http://" + elect.BaseUrl);
+                var restRequest = new RestRequest("api/crawl");
+                restRequest.Method = Method.POST;
+                restRequest.AddJsonBody(request);
+                restRequest.Timeout = request.Timeout;
+
+                var restResponse = client.Execute(restRequest);
+
+                var response = JsonConvert.DeserializeObject<Response>(restResponse.Content);
+
+                if (elect.Proxy != null)
+                {
+                    response.Proxy = request.Proxy.Host;
+                }
+
+                return response;
+            }
+        }
+
+        public Response Request(string url, string method = "GET", bool usecp = false)
+        {
+            var request = new Request(url);
+            request.Method = method;
+
+            return Request(request, usecp);
+        }
+
+        public CrawlerElectResult Elect(CrawlerElectRequest request)
         {
             var proxyUrl = ProxyManager.Instance.Elect(ProxyTypeEnum.Crawler);
 
@@ -25,24 +84,16 @@ namespace RuiJi.Net.NodeVisitor
                 throw new Exception("no available crawler proxy servers");
 
             var client = new RestClient("http://" + proxyUrl);
-            var restRequest = new RestRequest("api/cp/crawl");
+            var restRequest = new RestRequest("api/cp/elect?_=" + DateTime.Now.Ticks);
             restRequest.Method = Method.POST;
             restRequest.AddJsonBody(request);
-            restRequest.Timeout = request.Timeout;
+            restRequest.Timeout = 15000;
 
             var restResponse = client.Execute(restRequest);
 
-            var response = JsonConvert.DeserializeObject<Response>(restResponse.Content);
+            var response = JsonConvert.DeserializeObject<CrawlerElectResult>(restResponse.Content);
 
             return response;
-        }
-
-        public Response Request(string url,string method = "GET")
-        {
-            var request = new Request(url);
-            request.Method = method;
-
-            return Request(request);
         }
     }
 }

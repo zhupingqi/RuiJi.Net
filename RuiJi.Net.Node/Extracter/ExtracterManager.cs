@@ -1,4 +1,5 @@
-﻿using RuiJi.Net.Node.Crawler;
+﻿using RuiJi.Net.Core.Crawler;
+using RuiJi.Net.Node.Crawler;
 using System;
 using System.Collections.Generic;
 using System.Linq;

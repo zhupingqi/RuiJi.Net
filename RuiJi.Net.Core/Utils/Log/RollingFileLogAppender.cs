@@ -66,12 +66,14 @@ namespace RuiJi.Net.Core.Utils.Log
             var result = new List<IAppender>();
             Levels = Levels == null || Levels.Count == 0 ? new List<Level>() { Level.Info, Level.Error, Level.Fatal } : Levels;
 
+            var path = Path.Replace(":","_");
+
             foreach (var level in Levels)
             {
                 var appender = new RollingFileAppender();
 
                 appender.AppendToFile = true;
-                appender.File = "logs/" + Path + "/" + level.ToString().ToLower() + ".log";
+                appender.File = "logs/" + path + "/" + level.ToString().ToLower() + ".log";
                 appender.ImmediateFlush = true;
                 appender.LockingModel = new FileAppender.MinimalLock();
                 appender.Name = level.ToString().ToLower() + "Appender";

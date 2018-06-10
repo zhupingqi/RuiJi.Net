@@ -90,6 +90,48 @@ namespace RuiJi.Net.Owin.Controllers
             return new { };
         }
 
+        [HttpPost]
+        [WebApiCacheAttribute(Duration = 0)]
+        public object Elect(CrawlerElectRequest request)
+        {
+            var node = ServerManager.Get(Request.RequestUri.Authority);
+
+            if (node.NodeType == Node.NodeTypeEnum.CRAWLERPROXY)
+            {
+                var result =  new CrawlerElectResult();
+
+                if (request.ElectIp)
+                {
+                    result = CrawlerManager.Instance.ElectIP(request.Uri);
+                    if (result == null)
+                        return new Response
+                        {
+                            StatusCode = System.Net.HttpStatusCode.Conflict,
+                            Data = "no clrawler ip elect!"
+                        };
+                }
+
+                if (request.ElectProxy)
+                {
+                    var p = ProxyLiteDb.Get();
+                    if (p != null)
+                    {
+                        result.Proxy = new RequestProxy();
+                        result.Proxy.Host = (p.Type == Node.Db.ProxyTypeEnum.HTTP ? "https://" : "http://") + p.Ip;
+                        result.Proxy.Port = p.Port;
+                        result.Proxy.Username = p.UserName;
+                        result.Proxy.Password = p.Password;
+                    }
+                }
+
+                return result;
+            }
+            else
+            {
+                return new Crawler().Elect(request);
+            }
+        }
+
         #region Proxys
         [HttpGet]
         public object Proxys(int offset, int limit)

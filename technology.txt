@@ -9,7 +9,18 @@ PhantomJS is a headless WebKit scriptable with a JavaScript API. It has fast and
 Install-Package PhantomJS -Version 2.1.1
 
 Hadoop
-Spark
+Spark 
+
+数据分析
+Hive 
+Pig
+
+数据采集
+Sqoop
+Flume
+HUB web管理
+Oozie 工作流调度
+
 
 据alpha版还需添加些功能
 数据存储

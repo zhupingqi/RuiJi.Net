@@ -24,7 +24,7 @@
                         lib: 'feed/rules'
                     }
                 ]
-            });
+            });       
 
             $(document).keydown(function (event) {
                 if (event.keyCode == 9 && event.target.tagName == "TEXTAREA") {

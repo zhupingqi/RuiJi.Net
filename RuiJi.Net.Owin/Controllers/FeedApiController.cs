@@ -216,9 +216,7 @@ namespace RuiJi.Net.Owin.Controllers
         [HttpPost]
         public object TestFeed(FeedModel feed)
         {
-            var c = new Crawler();
-            var response = c.Request(feed.Address, feed.Method);
-            if (response != null && response.Data != null)
+            try
             {
                 var compile = new CompileFeedAddress();
                 feed.Address = compile.Compile(feed.Address);
@@ -229,17 +227,12 @@ namespace RuiJi.Net.Owin.Controllers
                 var block = RuiJiExpression.ParserBlock(feed.RuiJiExpression);
 
                 var result = RuiJiExtracter.Extract(snap.Content, block);
-                result.Content = null;
-
-                foreach (var t in result.Tiles)
-                {
-                    t.Content = null;
-                }
+                CrawlTaskFunc.ClearContent(result);
 
                 return result;
-
-                //var j = new FeedExtractJob();
-                //return j.ExtractAddress(snap);
+            }
+            catch (Exception ex){
+                return ex;
             }
 
             return new { };
@@ -467,7 +460,7 @@ namespace RuiJi.Net.Owin.Controllers
             return results;
         }
 
-        private void ClearContent(object obj)
+        public static void ClearContent(object obj)
         {
             var result = obj as ExtractResult;
             if (result == null)

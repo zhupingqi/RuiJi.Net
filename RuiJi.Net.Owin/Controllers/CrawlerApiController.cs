@@ -18,7 +18,7 @@ namespace RuiJi.Net.Owin.Controllers
     public class CrawlerApiController : ApiController
     {
         [HttpPost]
-        //[WebApiCacheAttribute(Duration = 10)]
+        [WebApiCacheAttribute(Duration = 10)]
         public Response Crawl(Request request)
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
