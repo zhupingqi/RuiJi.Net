@@ -239,16 +239,22 @@ define(['jquery'], function ($) {
         requestHash: function (tabs, href, prefix) {
             if (href !== "" && href.substr(0, 1) == "#") {
                 var lib = href.substr(1);
-                var uri = new URL(window.location.origin + "/" + lib);
-                lib = uri.pathname.substr(1);
+                if (lib.indexOf("?") != -1) {
+                    lib = lib.substr(0, lib.indexOf("?"));
+                }
 
                 for (var i = 0; i < tabs.length; i++) {
                     var d = tabs[i];
                     if (d.lib == lib) {
                         require([lib]);
-                        uri = new URL(window.location.origin + "/" + window.location.hash.substr(1));
-                        window.location.hash = d.lib + uri.search;
-                        break;
+                        var search = "";
+                        var hash = window.location.hash.substr(1);
+
+                        if (hash.indexOf("?") != -1) {
+                            search = hash.substr(hash.indexOf("?"));
+                            window.location.hash = d.lib + search;
+                            break;
+                        }
                     }
                 }
             }
@@ -260,8 +266,12 @@ define(['jquery'], function ($) {
             if (window.location.hash.length == 0)
                 return "";
 
-            var uri = new URL(window.location.origin + "/" + window.location.hash.substr(1));
-            return uri.pathname.substr(1);
+            var hash = window.location.hash.substr(1);
+            if (hash.indexOf("?") != -1) {
+                return hash.substr(0, hash.indexOf("?"));
+            } else {
+                return hash;
+            }
         }
     };
 
