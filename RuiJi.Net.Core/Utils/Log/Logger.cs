@@ -38,7 +38,7 @@ namespace RuiJi.Net.Core.Utils.Log
         }
 
         public ILog GetLogger(string key)
-        { 
+        {
             if (!Logs.ContainsKey(key))
                 return null;
             return Logs[key].Logger;
@@ -48,30 +48,82 @@ namespace RuiJi.Net.Core.Utils.Log
         /// 添加日志类型
         /// </summary>
         /// <param name="key">节点地址</param>
-        /// <param name="types">需要添加的日志追加器集合</param>
-        public void Add(string key, List<ILogAppender> logAppenders)
+        /// <param name="logAppenders">需要添加的日志追加器集合</param>
+        public bool Add(string key, List<ILogAppender> logAppenders)
         {
-            var repository = LogManager.CreateRepository(key);
-
-            var hasMemory = false;
-            var maxMessageCount = 0;
-            foreach (var ap in logAppenders)
+            try
             {
-                var appenders = ap.GetAppender();
-                foreach (var appender in appenders)
+                var repository = LogManager.CreateRepository(key);
+
+                var hasMemory = false;
+                var maxMessageCount = 0;
+                foreach (var ap in logAppenders)
                 {
-                    BasicConfigurator.Configure(repository, appender);
+                    var appenders = ap.GetAppender();
+                    foreach (var appender in appenders)
+                    {
+                        BasicConfigurator.Configure(repository, appender);
+                    }
+
+                    if (ap is MemoryLogAppender)
+                    {
+                        hasMemory = true;
+                        maxMessageCount = (ap as MemoryLogAppender).MaxMessageCount;
+                    }
                 }
 
-                if (ap is MemoryLogAppender)
-                {
-                    hasMemory = true;
-                    maxMessageCount = (ap as MemoryLogAppender).MaxMessageCount;
-                }
+                if (!Logs.ContainsKey(key))
+                    Logs.Add(key, new LogModel(LogManager.GetLogger(key, "MyLog"), repository, hasMemory, maxMessageCount));
+                return true;
+            }
+            catch
+            {
+                return false;
             }
 
-            if (!Logs.ContainsKey(key))
-                Logs.Add(key, new LogModel(LogManager.GetLogger(key, "MyLog"), repository, hasMemory, maxMessageCount));
+        }
+
+        /// <summary>
+        /// 更新日志设置
+        /// </summary>
+        /// <param name="key">节点地址</param>
+        /// <param name="logAppenders">需要添加的日志追加器集合</param>
+        public bool Reset(string key, List<ILogAppender> logAppenders)
+        {
+            try
+            {
+                //不存在情况下添加
+                if (!Logs.ContainsKey(key))
+                {
+                    return Add(key, logAppenders);
+                }
+                var repository = Logs[key].Repository;
+                repository.ResetConfiguration();
+
+                var hasMemory = false;
+                var maxMessageCount = 0;
+                foreach (var ap in logAppenders)
+                {
+                    var appenders = ap.GetAppender();
+                    foreach (var appender in appenders)
+                    {
+                        BasicConfigurator.Configure(repository, appender);
+                    }
+
+                    if (ap is MemoryLogAppender)
+                    {
+                        hasMemory = true;
+                        maxMessageCount = (ap as MemoryLogAppender).MaxMessageCount;
+                    }
+                }
+
+                Logs[key] = new LogModel(LogManager.GetLogger(key, "MyLog"), repository, hasMemory, maxMessageCount);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         /// <summary>
