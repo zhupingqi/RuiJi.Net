@@ -9,6 +9,7 @@ using RuiJi.Net.Node.Db;
 using RuiJi.Net.Node.Feed.LTS;
 using RuiJi.Net.NodeVisitor;
 using RuiJi.Net.Owin.Controllers;
+using RuiJi.Net.Node;
 
 namespace RuiJi.Net.Test
 {
