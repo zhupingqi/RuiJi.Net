@@ -14,7 +14,7 @@ namespace RuiJi.Net.Core.Extracter
         public string Name { get; set; }
 
         [JsonProperty("content", NullValueHandling = NullValueHandling.Ignore)]
-        public string Content { get; set; }
+        public object Content { get; set; }
 
         [JsonProperty("tiles", NullValueHandling = NullValueHandling.Ignore)]
         public ExtractResultCollection Tiles { get; set; }
@@ -23,7 +23,7 @@ namespace RuiJi.Net.Core.Extracter
         public ExtractResultCollection Blocks { get; set; }
 
         [JsonProperty("metas", NullValueHandling = NullValueHandling.Ignore)]
-        public Dictionary<string, string> Metas { get;set; }
+        public Dictionary<string, object> Metas { get;set; }
 
         [JsonProperty("paging", NullValueHandling = NullValueHandling.Ignore)]
         public List<string> Paging
@@ -44,7 +44,7 @@ namespace RuiJi.Net.Core.Extracter
 
                 foreach (var t in pageBlock.Tiles)
                 {
-                    dic.Add(t.Content);
+                    dic.Add(t.Content.ToString());
                 }
 
                 return dic;

@@ -23,6 +23,6 @@ namespace RuiJi.Net.Node.Db
         public string Url { get; set; }
 
         [JsonProperty("metas")]
-        public Dictionary<string, string> Metas { get; set; }
+        public Dictionary<string, object> Metas { get; set; }
     }
 }

@@ -64,7 +64,7 @@ namespace RuiJi.Net.Test
 
             var r = RuiJiExtracter.Extract(content, block);
 
-            Assert.IsTrue(r.Content.Length > 0);
+            Assert.IsTrue(r.Content.ToString().Length > 0);
             Assert.IsTrue(r.Tiles.Count > 0);
         }
 
@@ -112,7 +112,7 @@ namespace RuiJi.Net.Test
                 Content = content
             });
 
-            Assert.IsTrue(r[0].Content.Length > 0);
+            Assert.IsTrue(r[0].Content.ToString().Length > 0);
             Assert.IsTrue(r[0].Tiles.Count > 0);
         }
 
@@ -138,7 +138,7 @@ namespace RuiJi.Net.Test
                 Content = content
             });
 
-            Assert.IsTrue(r[0].Content.Length > 0);
+            Assert.IsTrue(r[0].Content.ToString().Length > 0);
             Assert.IsTrue(r[0].Tiles.Count > 0);
         }
     }

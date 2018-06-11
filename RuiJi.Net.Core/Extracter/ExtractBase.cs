@@ -9,10 +9,17 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Extracter
 {
+    public enum ContentTypeEnum
+    {
+
+    }
+
     public class ExtractBase
     {
         [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
         public string Name { get; set; }
+
+        public Type ContentType { get; set; }
 
         [JsonProperty("selectors",ItemConverterType = typeof(ISelectorConverter))]
         public List<ISelector> Selectors { get; set; }
@@ -21,6 +28,7 @@ namespace RuiJi.Net.Core.Extracter
         {
             Name = name;
             Selectors = new List<ISelector>();
+            ContentType = typeof(string);
         }
     }
 }

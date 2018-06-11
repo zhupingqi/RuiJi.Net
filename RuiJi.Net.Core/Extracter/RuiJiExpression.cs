@@ -36,6 +36,11 @@ namespace RuiJi.Net.Core.Extracter
                                 block.Selectors = b.Selectors;
                                 break;
                             }
+                        case "[storage]":
+                            {
+
+                                break;
+                            }
                         case "[blocks]":
                             {
                                 var bs = lines[key].Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
@@ -135,13 +140,70 @@ namespace RuiJi.Net.Core.Extracter
 
             foreach (var line in lines)
             {
-                if (line.Trim().StartsWith("#"))
+                var ln = line.Trim();
+
+                if (ln.StartsWith("#"))
                 {
-                    eb.Name = line.Trim().TrimStart('#');
+                    ln = ln.TrimStart('#');
+                    if (ln.LastIndexOf("_") == -1)
+                    {
+                        eb.Name = ln;
+                        eb.ContentType = typeof(string);
+                    }
+                    else
+                    {
+                        var t = ln.Substring(ln.LastIndexOf("_") + 1);
+                        eb.Name = ln.Substring(0, ln.LastIndexOf("_"));
+
+                        switch (t)
+                        {
+                            case "i":
+                                {
+                                    eb.ContentType = typeof(int);
+                                    break;
+                                }
+                            case "s":
+                                {
+                                    eb.ContentType = typeof(string);
+                                    break;
+                                }
+                            case "l":
+                                {
+                                    eb.ContentType = typeof(long);
+                                    break;
+                                }
+                            case "b":
+                                {
+                                    eb.ContentType = typeof(bool);
+                                    break;
+                                }
+                            case "f":
+                                {
+                                    eb.ContentType = typeof(float);
+                                    break;
+                                }
+                            case "d":
+                                {
+                                    eb.ContentType = typeof(double);
+                                    break;
+                                }
+                            case "dt":
+                                {
+                                    eb.ContentType = typeof(DateTime);
+                                    break;
+                                }
+                            default:
+                                {
+                                    eb.Name = ln;
+                                    eb.ContentType = typeof(string);
+                                    break;
+                                }
+                        }
+                    }
                 }
                 else
                 {
-                    var s = ParserSelector(line.Trim());
+                    var s = ParserSelector(ln);
                     if (s != null)
                         eb.Selectors.Add(s);
                 }

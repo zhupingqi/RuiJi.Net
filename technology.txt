@@ -21,6 +21,7 @@ Flume
 HUB web管理
 Oozie 工作流调度
 
+Tesseract orc
 
 据alpha版还需添加些功能
 数据存储

@@ -1,4 +1,5 @@
 ﻿using CsQuery;
+using Newtonsoft.Json;
 using RuiJi.Net.Core.Extracter.Enum;
 using RuiJi.Net.Core.Extracter.Processor;
 using RuiJi.Net.Core.Extracter.Selector;
@@ -34,7 +35,7 @@ namespace RuiJi.Net.Core.Extracter
                 }
 
                 var r = Extract(request.Content, b);
-                if (r.Content.Length > 0)
+                if (r.Content.ToString().Length > 0)
                 {
                     r = Extract(request.Content, block.Block);
                     results.Add(r);
@@ -67,7 +68,7 @@ namespace RuiJi.Net.Core.Extracter
 
             if (block.Blocks != null && block.Blocks.Count > 0)
             {
-                result.Blocks = Extract(result.Content, block.Blocks);
+                result.Blocks = Extract(result.Content.ToString(), block.Blocks);
             }
 
             if (block.TileSelector != null && block.TileSelector.Selectors.Count > 0)
@@ -101,13 +102,14 @@ namespace RuiJi.Net.Core.Extracter
             var pr = ProcessorFactory.Process(content, extractBase.Selectors);
 
             var results = new ExtractResultCollection();
+            Type t = extractBase.ContentType;
 
             foreach (var m in pr.Matches)
             {
                 var result = new ExtractResult
                 {
                     Name = "tile",
-                    Content = m
+                    Content = Convert.ChangeType(m,extractBase.ContentType)
                 };
 
                 results.Add(result);
@@ -141,9 +143,9 @@ namespace RuiJi.Net.Core.Extracter
             return results;
         }
 
-        public static Dictionary<string, string> ExtractMeta(string content, ExtractMetaCollection metas)
+        public static Dictionary<string, object> ExtractMeta(string content, ExtractMetaCollection metas)
         {
-            var results = new Dictionary<string, string>();
+            var results = new Dictionary<string, object>();
 
             foreach (var key in metas.Keys)
             {

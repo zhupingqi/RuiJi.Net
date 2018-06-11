@@ -9,6 +9,7 @@ using RuiJi.Net.Node.Db;
 using RuiJi.Net.Node.Feed.LTS;
 using RuiJi.Net.NodeVisitor;
 using RuiJi.Net.Owin.Controllers;
+using RuiJi.Net.Node;
 
 namespace RuiJi.Net.Test
 {
@@ -213,13 +214,63 @@ jpath $..url
             var b = RuiJiExpression.ParserBlock(expression);
             var result = RuiJiExtracter.Extract(response.Data.ToString(), b);
 
-            Assert.IsTrue(result.Content.Length > 0);
+            Assert.IsTrue(result.Content.ToString().Length > 0);
         }
 
         [TestMethod]
         public void TestFeature()
         {
 
+        }
+
+        [TestMethod]
+        public void TestExpressionType()
+        {
+            var block = @"
+[block]
+#name_dda_ee
+css .entry-content:html
+
+[blocks]
+    @block1
+    @block2
+
+[tile]
+    #aa_l
+    css a:ohtml
+
+    [meta]
+        #time_dt
+        css time:text
+
+[meta]
+    #time_dt
+    css time:text
+
+    #words_i
+    css .author:text
+
+    #score_d
+    css .entry-title:text
+
+    #score_1_f
+    css .entry-content:html
+
+    #hasLink_b
+    css h4 a[href] -r
+
+[block]
+#block1
+css .list1
+
+[block]
+#block2
+css .list2
+";
+
+            var m = RuiJiExpression.ParserBlock(block);
+
+            Assert.IsTrue(m.Metas.Count > 0);
         }
     }
 }

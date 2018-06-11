@@ -114,43 +114,47 @@ namespace RuiJi.Net.Node.Feed.LTS
 
         public void DoTask(string path)
         {
-            var filename = path.Substring(path.LastIndexOf(@"\") + 1);
-            var sp = filename.Split('_');
-            var feedId = Convert.ToInt32(sp[0]);
-            var content = File.ReadAllText(path);
-
-            var feed = JsonConvert.DeserializeObject<FeedSnapshot>(content);
-            var url = feed.Url;
-
-            var urls = ExtractAddress(feed);
-
-            var hisFile = AppDomain.CurrentDomain.BaseDirectory + @"history\" + feedId + ".txt";
-            var urlsHistory = new string[0];
-            if (File.Exists(hisFile))
+            try
             {
-                urlsHistory = File.ReadAllLines(hisFile, Encoding.UTF8);
+                var filename = path.Substring(path.LastIndexOf(@"\") + 1);
+                var sp = filename.Split('_');
+                var feedId = Convert.ToInt32(sp[0]);
+                var content = File.ReadAllText(path);
+
+                var feed = JsonConvert.DeserializeObject<FeedSnapshot>(content);
+                var url = feed.Url;
+
+                var urls = ExtractAddress(feed);
+
+                var hisFile = AppDomain.CurrentDomain.BaseDirectory + @"history\" + feedId + ".txt";
+                var urlsHistory = new string[0];
+                if (File.Exists(hisFile))
+                {
+                    urlsHistory = File.ReadAllLines(hisFile, Encoding.UTF8);
+                }
+
+                File.WriteAllLines(hisFile, urls, Encoding.UTF8);
+
+                urls.RemoveAll(m => urlsHistory.Contains(m));
+                urls.RemoveAll(m => string.IsNullOrEmpty(m));
+                urls.RemoveAll(m => !Uri.IsWellFormedUriString(m, UriKind.Absolute));
+
+                foreach (var u in urls)
+                {
+                    var qm = new QueueModel();
+                    qm.FeedId = feedId;
+                    qm.Url = u;
+
+                    ContentQueue.Instance.Enqueue(qm);
+                }
+
+                var destFile = path.Replace("snapshot", "pre").Replace(filename, feedId + ".txt");
+                if (File.Exists(destFile))
+                    File.Delete(destFile);
+
+                File.Move(path, destFile);
             }
-
-            File.WriteAllLines(hisFile, urls, Encoding.UTF8);
-
-            urls.RemoveAll(m => urlsHistory.Contains(m));
-            urls.RemoveAll(m => string.IsNullOrEmpty(m));
-            urls.RemoveAll(m => !Uri.IsWellFormedUriString(m, UriKind.Absolute));
-
-            foreach (var u in urls)
-            {
-                var qm = new QueueModel();
-                qm.FeedId = feedId;
-                qm.Url = u;
-
-                ContentQueue.Instance.Enqueue(qm);
-            }
-
-            var destFile = path.Replace("snapshot", "pre").Replace(filename, feedId + ".txt");
-            if (File.Exists(destFile))
-                File.Delete(destFile);
-
-            File.Move(path, destFile);
+            catch { }
         }
 
         public List<string> ExtractAddress(FeedSnapshot feed)
@@ -180,7 +184,7 @@ namespace RuiJi.Net.Node.Feed.LTS
             {
                 foreach (var item in result.Tiles)
                 {
-                    var href = item.Content;
+                    var href = item.Content.ToString();
                     if (href.Contains("#"))
                     {
                         href = href.Substring(0, href.IndexOf('#'));
