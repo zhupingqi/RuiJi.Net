@@ -1,12 +1,10 @@
 ﻿define(['jquery', 'utils', 'sweetAlert', 'bootstrapDialog', 'bootstrapTable'], function ($, utils) {
-
-
     var module = {
         init: function () {
             var tmp = utils.loadTemplate("/misc/setting/proxys.html", false);
 
             tmp = $(tmp);
-            tmp.find("#tb_proxys").attr("data-url", "http://" + proxyUrl + "/api/proxys");
+            tmp.find("#tb_proxys").attr("data-url", "/api/proxys");
 
             $("#tab_panel_proxys").html(tmp.prop("outerHTML"));
 
@@ -58,7 +56,7 @@
                 var f = $(tmp);
                 f.find("input[name='id']").val(id);
 
-                $.getJSON("http://" + proxyUrl + "/api/proxy?id=" + id, function (d) {
+                $.getJSON("/api/proxy?id=" + id, function (d) {
                     for (var p in d) {
                         var v = d[p];
                         var ele = f.find("[name='" + p + "']").eq(0);
@@ -100,7 +98,7 @@
                 var ele = $(this);
                 var id = ele.closest("tr").find("td").eq(1).text();                
 
-                $.getJSON("http://" + proxyUrl + "/api/proxy/ping?id=" + id, function (d) {
+                $.getJSON("/api/proxy/ping?id=" + id, function (d) {
                     ele.next().html("&nbsp;&nbsp;" + d + " ms");
                 });
             });
@@ -118,13 +116,6 @@
                 statu: $("#txt_search_statu").val()
             };
             return temp;
-        },
-        getProxy: function (fn) {
-            $.getJSON("/api/zoo/proxys", function (proxys) {
-                proxyUrl = proxys["crawler proxy"];
-
-                fn();
-            });
         },
         update: function (dialog) {
             var d = {};
@@ -157,7 +148,7 @@
             });
 
             $.ajax({
-                url: "http://" + proxyUrl + "/api/proxy/update",
+                url: "/api/proxy/update",
                 data: JSON.stringify(d),
                 type: 'POST',
                 contentType: "application/json",
@@ -170,7 +161,5 @@
         }
     };
 
-    module.getProxy(function () {
-        module.init();
-    });
+    module.init();
 });

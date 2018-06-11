@@ -83,6 +83,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CompileFeedAddress.cs" />
     <Compile Include="Configuration\NodeConfigurationSection.cs" />
     <Compile Include="Configuration\NodeConfigurationElement.cs" />
     <Compile Include="Crawler\CrawlerManager.cs" />

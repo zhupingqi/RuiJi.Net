@@ -36,7 +36,7 @@ namespace RuiJi.Net.Core.Utils.Log
         }
         public ILog Logger { get; set; }
 
-        private ILoggerRepository Repository { get; set; }
+        public ILoggerRepository Repository { get; set; }
 
         public List<object> Messages { get; private set; }
 

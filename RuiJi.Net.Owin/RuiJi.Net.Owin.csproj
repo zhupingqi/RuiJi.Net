@@ -110,6 +110,7 @@
     <Compile Include="Controllers\FeedApiController.cs" />
     <Compile Include="Controllers\InfoApiController.cs" />
     <Compile Include="Controllers\ZooApiController.cs" />
+    <Compile Include="NodeRouteAttribute.cs" />
     <Compile Include="ServerManager.cs" />
     <Compile Include="SystemInfo.cs" />
     <Compile Include="WebApiCacheAttribute.cs" />

@@ -19,6 +19,7 @@ namespace RuiJi.Net.Owin.Controllers
     public class CrawlerProxyApiController : ApiController
     {
         [HttpPost]
+        [NodeRoute(Target = NodeProxyTypeEnum.Crawler)]
         //[WebApiCacheAttribute(Duration = 10)]
         public Response Crawl(Request request)
         {
@@ -150,8 +151,20 @@ namespace RuiJi.Net.Owin.Controllers
                     total = paging.Count
                 };
             }
+            else
+            {
+                var baseUrl = ProxyManager.Instance.Elect(NodeVisitor.NodeProxyTypeEnum.Crawler);
 
-            return new { };
+                var client = new RestClient("http://" + baseUrl);
+                var restRequest = new RestRequest("api/proxys");
+                restRequest.Method = Method.GET;
+
+                var restResponse = client.Execute(restRequest);
+
+                var response = JsonConvert.DeserializeObject<object>(restResponse.Content);
+
+                return response;
+            }
         }
 
         [HttpPost]

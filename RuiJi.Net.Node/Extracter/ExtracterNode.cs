@@ -40,7 +40,8 @@ namespace RuiJi.Net.Node.Extracter
                 {
                     Name = BaseUrl,
                     baseUrl = BaseUrl,
-                    Proxy = ProxyUrl
+                    Proxy = ProxyUrl,
+                    Pages = new int[0]
                 };
                 zooKeeper.Create("/config/extracter/" + BaseUrl, JsonConvert.SerializeObject(d).GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
             }

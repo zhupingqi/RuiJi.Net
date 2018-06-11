@@ -28,7 +28,7 @@
                     for (var p in cur[i]) {
                         var c = cur[i][p];
                         if (c.length > 200)
-                            c = $(c).text().substr(0, 200);
+                            c = $("<div>" + c + "</div>").text().substr(0, 200);
 
                         if (content == "")
                             content = c;

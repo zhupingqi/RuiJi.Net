@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.NodeVisitor
 {
-    public enum ProxyTypeEnum
+    public enum NodeProxyTypeEnum
     {
         Crawler,
         Extracter,
@@ -15,21 +15,21 @@ namespace RuiJi.Net.NodeVisitor
 
     public class LiveProxy
     {
-        public ProxyTypeEnum Type { get; set; }
+        public NodeProxyTypeEnum Type { get; set; }
 
         public string BaseUrl { get; set; }
 
         public ulong Counts { get; set; }
 
-        public static ProxyTypeEnum GetType(string data)
+        public static NodeProxyTypeEnum GetType(string data)
         {
             if (data.IndexOf("crawler") != -1)
-                return ProxyTypeEnum.Crawler;
+                return NodeProxyTypeEnum.Crawler;
 
             if (data.IndexOf("extracter") != -1)
-                return ProxyTypeEnum.Extracter;
+                return NodeProxyTypeEnum.Extracter;
 
-            return ProxyTypeEnum.Feed;
+            return NodeProxyTypeEnum.Feed;
         }
     }
 }
