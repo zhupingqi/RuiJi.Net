@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Cookie
 {
-    public class ManagedCookie
+    public class CookieFile
     {
         [JsonProperty("ip")]
         public string Ip { get; set; }
@@ -18,9 +18,12 @@ namespace RuiJi.Net.Core.Cookie
         public string Cookie
         {
             get;
-            private set;
+            set;
         }
+    }
 
+    public class ManagedCookie
+    {
         private CookieContainer _container;
 
         public ManagedCookie()
@@ -28,21 +31,16 @@ namespace RuiJi.Net.Core.Cookie
             _container = new CookieContainer();
         }
 
-        public ManagedCookie(string ip ,string url, string setCookie)
+        public ManagedCookie(string url, string setCookie)
             : this()
         {
-            if (ip.IndexOf("/") != -1)
-                throw new ArgumentException("路径包含非法字符");
-
-            this.Ip = ip;
-
             Update(url,setCookie);
         }
 
-        public void Update(string url,string setCookie)
+        public string Update(string url,string setCookie)
         {
             if (setCookie == null)
-                return;
+                return null;
             try
             {
                 var uri = new Uri(url);
@@ -68,9 +66,11 @@ namespace RuiJi.Net.Core.Cookie
                     tmp.Add(cookie.Name + "=" + cookie.Value + ";expires=" + cookie.Expires.ToString("r") + "; domain=" + cookie.Domain + "; path=" + cookie.Path);
                 }
 
-                Cookie = string.Join(",", tmp.ToArray());
+                return string.Join(",", tmp.ToArray());
             }
             catch { }
+
+            return null;
         }
 
         public string GetCookie(string url)

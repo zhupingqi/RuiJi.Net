@@ -36,9 +36,9 @@ namespace RuiJi.Net.Test
         [TestMethod]
         public void TestSessionCrawler()
         {
-            ServerManager.StartServers();
+            //ServerManager.StartServers();
 
-            var crawler = new SessionCrawler();
+            var crawler = new RuiJiCrawler();
             var request = new Request("http://www.baidu.com/");
             var response = crawler.Request(request);
 
@@ -49,7 +49,10 @@ namespace RuiJi.Net.Test
 
             Assert.IsTrue(response.Headers.Count(m => m.Key == "Set-Cookie") == 0);
 
-            ServerManager.StopAll();
+            request = new Request("http://www.kuaidaili.com/");
+            response = crawler.Request(request);
+
+            Assert.IsTrue(response.Headers.Count(m => m.Key == "Set-Cookie") == 0);
         }
         
 

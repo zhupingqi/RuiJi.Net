@@ -43,23 +43,33 @@ namespace RuiJi.Net.Core.Cookie
                 foreach (var file in Directory.GetFiles(dir))
                 {
                     var json = File.ReadAllText(file, Encoding.UTF8);
-                    var cookie = JsonConvert.DeserializeObject<ManagedCookie>(json);
+                    var cookieFile = JsonConvert.DeserializeObject<CookieFile>(json);
                     var host = file.Substring(file.LastIndexOf(@"\")+1);
                     host = host.Substring(0,host.LastIndexOf("."));
                     host = "http://" + host + "/";
-                    cookie.Update(host, cookie.Cookie);
 
-                    if (!cookies.ContainsKey(cookie.Ip))
-                        cookies.Add(cookie.Ip, cookie);
+                    if (!cookies.ContainsKey(cookieFile.Ip))
+                    {
+                        var cookie = new ManagedCookie();
+                        cookie.Update(host, cookieFile.Cookie);
+
+                        cookies.Add(cookieFile.Ip, cookie);
+                    }
                     else
-                        cookies[cookie.Ip] = cookie;
+                    {
+                        cookies[cookieFile.Ip].Update(host, cookieFile.Cookie);
+                    }
                 }
             }
         }
 
-        private void Save(string ip ,string url, ManagedCookie cookie)
+        private void Save(string ip ,string url, string cookie)
         {
-            var json = JsonConvert.SerializeObject(cookie);
+            var cookieFile = new CookieFile();
+            cookieFile.Ip = ip;
+            cookieFile.Cookie = cookie;
+
+            var json = JsonConvert.SerializeObject(cookieFile);
             ip = AppDomain.CurrentDomain.BaseDirectory + @"/cookies/" + ip;
             if (!Directory.Exists(ip))
                 Directory.CreateDirectory(ip);
@@ -71,16 +81,21 @@ namespace RuiJi.Net.Core.Cookie
         {
             lock (_lck)
             {
+                var cookie = "";
+
                 if (cookies.ContainsKey(ip))
                 {
-                    cookies[ip].Update(url, setCookie);
+                    cookie = cookies[ip].Update(url, setCookie);
                 }
                 else
                 {
-                    cookies.Add(ip, new ManagedCookie(ip, url, setCookie));
+                    var manager = new ManagedCookie();
+                    cookie = manager.Update(url, setCookie);
+
+                    cookies.Add(ip, manager);
                 }
 
-                Save(ip, url, cookies[ip]);
+                Save(ip, url, cookie);
             }
         }
 
