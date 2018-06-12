@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RuiJi.Net.Core;
+using RuiJi.Net.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;

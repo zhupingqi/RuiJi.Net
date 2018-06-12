@@ -14,6 +14,7 @@ using System.IO;
 using Newtonsoft.Json;
 using RuiJi.Net.Core.Utils;
 using RuiJi.Net.Node.Db;
+using RuiJi.Net.Storage;
 
 namespace RuiJi.Net.Node.Feed.LTS
 {
@@ -31,7 +32,6 @@ namespace RuiJi.Net.Node.Feed.LTS
         private MessageQueue<QueueModel> queue;
         private SmartThreadPool pool;
         private STPStartInfo stpStartInfo;
-        private IStorage<ContentModel> storage;
         private string path;
 
         static ContentQueue()
@@ -45,7 +45,7 @@ namespace RuiJi.Net.Node.Feed.LTS
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
 
-            storage = new FeedProxyStorage();
+            
 
             queue = new MessageQueue<QueueModel>();
             queue.ContentChanged += queue_ContentChanged;
@@ -72,7 +72,7 @@ namespace RuiJi.Net.Node.Feed.LTS
         {
             if (args.Action == QueueChangedActionEnum.Enqueue)
             {
-                pool.QueueWorkItem(() =>
+                pool.QueueWorkItem((Amib.Threading.Action)(() =>
                 {
                     try
                     {
@@ -90,19 +90,16 @@ namespace RuiJi.Net.Node.Feed.LTS
                                 cm.Metas = result.Metas;
                                 cm.CDate = DateTime.Now;
 
-                                if (!storage.Save(cm))
+                                var connectString = string.Format(@"LiteDb/Content/{0}.db", DateTime.Now.ToString("yyyyMM"));
+                                var storage = new LiteDbStorage(connectString, "contents");
+                                if (storage.Insert(cm) == -1)
                                     File.AppendAllText(path + @"\" + EncryptHelper.GetMD5Hash(qm.Url) + ".json", JsonConvert.SerializeObject(cm));
                             }
                         }
                     }
                     catch { }
-                });
+                }));
             }
-        }
-
-        private void Save(List<ExtractResult> articles)
-        {
-            throw new NotImplementedException();
         }
 
         internal void Enqueue(QueueModel v)

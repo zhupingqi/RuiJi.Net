@@ -119,7 +119,6 @@
     <Compile Include="Extracter\Selector\TextRangeSelector.cs" />
     <Compile Include="Extracter\Selector\XPathSelector.cs" />
     <Compile Include="Crawler\Request.cs" />
-    <Compile Include="IStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Crawler\Response.cs" />
     <Compile Include="Queue\QueueChangedEventHandler.cs" />

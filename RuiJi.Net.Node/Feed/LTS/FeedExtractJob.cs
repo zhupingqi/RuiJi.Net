@@ -80,6 +80,7 @@ namespace RuiJi.Net.Node.Feed.LTS
                             }, file);
                             waits.Add(item);
                         }
+
                         SmartThreadPool.WaitAll(waits.ToArray());
                         pool.Shutdown(true, 1000);
                         pool.Dispose();

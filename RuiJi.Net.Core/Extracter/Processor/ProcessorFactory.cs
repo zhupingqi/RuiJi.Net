@@ -45,6 +45,9 @@ namespace RuiJi.Net.Core.Extracter.Processor
             {
                 foreach (var selector in selectors)
                 {
+                    if (selector == null)
+                        continue;
+
                     var processer = ProcessorFactory.GetProcessor(selector);
                     result = processer.Process(selector, result);
                 }

@@ -225,6 +225,10 @@
       <Project>{97673817-f983-4ce8-919e-d2e43e46144c}</Project>
       <Name>RuiJi.Net.Node</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RuiJi.Net.Storage\RuiJi.Net.Storage.csproj">
+      <Project>{39D023C5-67EF-4396-967B-396EFA9770C2}</Project>
+      <Name>RuiJi.Net.Storage</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="conf\config\online_proxy.txt" />

@@ -9,6 +9,7 @@ using RuiJi.Net.Node;
 using RuiJi.Net.Node.Db;
 using RuiJi.Net.Node.Feed.LTS;
 using RuiJi.Net.NodeVisitor;
+using RuiJi.Net.Storage;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -225,7 +226,9 @@ namespace RuiJi.Net.Owin.Controllers
                 if (string.IsNullOrEmpty(shard))
                     shard = DateTime.Now.ToString("yyyyMM");
 
-                ContentLiteDb.AddOrUpdate(content, shard);
+                var storage = new LiteDbStorage(@"LiteDb/Content/" + shard + ".db", "contents");
+                storage.Insert(content);
+
             }
             catch
             {
@@ -253,7 +256,7 @@ namespace RuiJi.Net.Owin.Controllers
                 rows = ContentLiteDb.GetModels(paging, shard, feedId).Select(m => new
                 {
                     id = m.Id,
-                    feedId = m.FeedId,
+                    feedId = m.Id,
                     url = m.Url,
                     metas = m.Metas.Select(n => new
                     {
@@ -412,7 +415,7 @@ namespace RuiJi.Net.Owin.Controllers
                         if (result != null)
                         {
                             var cm = new ContentModel();
-                            cm.FeedId = model.FeedId;
+                            cm.Id = model.FeedId;
                             cm.Url = url;
                             cm.Metas = result.Metas;
                             cm.CDate = DateTime.Now;
