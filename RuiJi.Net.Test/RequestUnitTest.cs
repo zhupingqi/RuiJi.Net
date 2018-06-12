@@ -72,5 +72,25 @@ namespace RuiJi.Net.Test
 
             Assert.AreEqual(response.ResponseUri.ToString(), "http://www.baidu.com");
         }
+
+        [TestMethod]
+        public void TestMime()
+        {
+            var crawler = new RuiJiCrawler();
+            var request = new Request("http://img10.jiuxian.com/2018/0111/cd51bb851410404388155b3ec2c505cf4.jpg");
+            var response = crawler.Request(request);
+
+            Assert.IsTrue(response.IsRaw);
+
+            request = new Request("https://avatars0.githubusercontent.com/u/16769087?s=460&v=4");
+            response = crawler.Request(request);
+
+            Assert.IsTrue(response.IsRaw);
+
+            request = new Request("http://www.baidu.com/");
+            response = crawler.Request(request);
+
+            Assert.IsFalse(response.IsRaw);
+        }
     }
 }

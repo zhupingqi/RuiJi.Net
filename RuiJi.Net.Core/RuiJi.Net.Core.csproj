@@ -140,6 +140,7 @@
     <Compile Include="Utils\Log\MemoryLogAppender.cs" />
     <Compile Include="Utils\Log\RollingFileLogAppender.cs" />
     <Compile Include="Utils\Log\SMTPLogAppender.cs" />
+    <Compile Include="Utils\MimeDetect.cs" />
     <Compile Include="Utils\Page\AjaxPaging.cs" />
     <Compile Include="Utils\Page\IUrlPaging.cs" />
     <Compile Include="Utils\Page\Paging.cs" />
@@ -164,8 +165,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="mimes.dat" />
     <None Include="packages.config" />
     <None Include="public_suffix_list.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="text_mime.dat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

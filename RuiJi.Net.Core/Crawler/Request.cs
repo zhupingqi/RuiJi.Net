@@ -16,8 +16,6 @@ namespace RuiJi.Net.Core.Crawler
 
         public NameValueCollection Data { get; set; }
 
-        public bool IsRaw { get; set; }
-
         public string Charset { get; set; }
 
         public string Method { get; set; }

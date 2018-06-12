@@ -45,13 +45,17 @@ namespace RuiJi.Net.Core.Crawler
             response.Headers = WebHeader.FromWebHeader(httpResponse.Headers);
             response.RequestUri = request.Uri;
             response.ResponseUri = httpResponse.ResponseUri;
-            response.IsRaw = request.IsRaw;
             response.Method = request.Method;
 
-            if(request.UseCookie)
+            if(!string.IsNullOrEmpty(httpResponse.ContentType))
+                response.IsRaw = MimeDetect.IsRaw(httpResponse.ContentType);
+            else
+                response.IsRaw = MimeDetect.IsRaw(httpResponse.ResponseUri);
+
+            if (request.UseCookie)
                 SetCookie(request, httpResponse.Headers.Get("Set-Cookie"));
 
-            if (request.IsRaw)
+            if (response.IsRaw)
             {
                 response.Data = buff;
             }

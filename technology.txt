@@ -1,3 +1,5 @@
+https://www.iana.org/assignments/media-types/media-types.xhtml
+
 open source projects that may be possible to use in the future
 
 cassandra

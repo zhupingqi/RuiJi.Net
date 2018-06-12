@@ -183,37 +183,6 @@ namespace RuiJi.Net.Owin.Controllers
 
             return feed;
         }
-
-        [HttpPost]
-        public object TestFeed(FeedModel feed)
-        {
-            try
-            {
-                var compile = new CompileFeedAddress();
-                var addrs = compile.Compile(feed.Address);
-                var results = new List<ExtractResult>();
-
-                foreach (var addr in addrs)
-                {
-                    feed.Address = addr;
-                    var job = new FeedJob();
-                    var snap = job.DoTask(feed, false);
-
-                    var block = RuiJiExpression.ParserBlock(feed.RuiJiExpression);
-
-                    var result = RuiJiExtracter.Extract(snap.Content, block);
-                    CrawlTaskFunc.ClearContent(result);
-
-                    results.Add(result);
-                }
-
-                return results;
-            }
-            catch (Exception ex)
-            {
-                return ex;
-            }
-        }
         #endregion
 
         #region 存储抓取结果
@@ -269,6 +238,38 @@ namespace RuiJi.Net.Owin.Controllers
         }
         #endregion
 
+        #region Test
+        [HttpPost]
+        public object TestFeed(FeedModel feed)
+        {
+            try
+            {
+                var compile = new CompileFeedAddress();
+                var addrs = compile.Compile(feed.Address);
+                var results = new List<ExtractResult>();
+
+                foreach (var addr in addrs)
+                {
+                    feed.Address = addr;
+                    var job = new FeedJob();
+                    var snap = job.DoTask(feed, false);
+
+                    var block = RuiJiExpression.ParserBlock(feed.RuiJiExpression);
+
+                    var result = RuiJiExtracter.Extract(snap.Content, block);
+                    CrawlTaskFunc.ClearContent(result);
+
+                    results.Add(result);
+                }
+
+                return results;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+
         [HttpGet]
         public object RunCrawl([FromUri]CrawlTaskModel crawlTask)
         {
@@ -302,7 +303,8 @@ namespace RuiJi.Net.Owin.Controllers
                     taskId = task.TaskId
                 };
             }
-        }
+        } 
+        #endregion
 
         #region 节点函数
         [HttpGet]
@@ -446,9 +448,20 @@ namespace RuiJi.Net.Owin.Controllers
                 return;
 
             if (result.Blocks != null || result.Metas != null || result.Tiles != null)
+            {
                 result.Content = null;
+            }
 
-            if (result.Blocks != null && result.Blocks.Count > 0)
+            if (result.Tiles != null)
+            {
+                foreach (var tile in result.Tiles)
+                {
+                    if (tile.Metas != null)
+                        tile.Content = null;
+                }
+            }
+
+                if (result.Blocks != null && result.Blocks.Count > 0)
             {
                 result.Blocks.ForEach((m) =>
                 {
