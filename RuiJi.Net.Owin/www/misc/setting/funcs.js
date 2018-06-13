@@ -18,7 +18,7 @@
                 onPostBody: function (e) {
                     if (e.length > 0) {
                         $('#tb_funcs > tbody > tr').map(function (i, m) {
-                            $(m).find("td:last").html("<i class='fa fa-edit'></i>");
+                            $(m).find("td:last").html("<i class='fa fa-edit'></i><i class='fa fa-minus-circle'></i>");
                         });
                     }
                 }
@@ -52,6 +52,42 @@
                         }
                     }]
                 });
+            });
+
+            $(document).on("click", "#delete_funcs", function () {
+                var select = $("#tb_funcs").bootstrapTable('getSelections');
+                if (select.length <= 0) {
+                    swal("请至少选中一行");
+                }
+                else {
+                    if (confirm("确认删除选中函数？")) {
+                        var ids = "";
+                        $.map(select, function (n) {
+                            ids += n.id + ",";
+                        })
+
+                        $.getJSON("api/func/remove?ids=" + ids, function (d) {
+                            if (d) {
+                                swal("完成");
+                                $('#tb_funcs').bootstrapTable("refresh");
+                            }
+                        });
+                    }
+                }
+            });
+
+            $(document).on("click", "#tb_funcs .fa-minus-circle", function () {
+                var ele = $(this);
+                var id = ele.closest("tr").find("td").eq(1).text();
+
+                if (confirm("确认删除此条函数？")) {
+                    $.getJSON("api/func/remove?ids=" + id, function (d) {
+                        if (d) {
+                            swal("完成");
+                            $('#tb_funcs').bootstrapTable("refresh");
+                        }
+                    });
+                }
             });
 
             $(document).on("click", "#tb_funcs .fa-edit", function () {

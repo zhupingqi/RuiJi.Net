@@ -59,9 +59,9 @@ namespace RuiJi.Net.Node.Db
 
         public static bool Remove(int[] ids)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Rules.db"))
+            using (var db = new LiteDatabase(@"LiteDb/Funcs.db"))
             {
-                var col = db.GetCollection<RuleModel>("rules");
+                var col = db.GetCollection<RuleModel>("funcs");
                 ids.ToList().ForEach((m) => {
                     col.Delete(m);
                 });
