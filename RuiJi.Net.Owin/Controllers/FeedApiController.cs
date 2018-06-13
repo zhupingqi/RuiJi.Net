@@ -10,9 +10,11 @@ using RuiJi.Net.Node.Db;
 using RuiJi.Net.Node.Feed.LTS;
 using RuiJi.Net.NodeVisitor;
 using RuiJi.Net.Storage;
+using RuiJi.Net.Storage.Model;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -253,7 +255,7 @@ namespace RuiJi.Net.Owin.Controllers
 
         #region Test
         [HttpPost]
-        public object TestFeed(FeedModel feed)
+        public object TestFeed(FeedModel feed,[FromUri]bool down)
         {
             try
             {
@@ -271,6 +273,27 @@ namespace RuiJi.Net.Owin.Controllers
 
                     var result = RuiJiExtracter.Extract(snap.Content, block);
                     CrawlTaskFunc.ClearContent(result);
+
+                    if (down)
+                    {
+                        var v = new Visitor();
+                        var s = new FileStorage(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"download"));
+
+                        var files = result.Content.ToString().Replace("\r\n", "\n").Split('\n');
+                        foreach (var file in files)
+                        {
+                            if (!string.IsNullOrEmpty(file))
+                            {
+                                var res = v.Request(file);
+                                var c = new DownloadContentModel();
+                                c.Url = file.Trim();
+                                c.IsRaw = res.IsRaw;
+                                c.Data = res.Data;
+
+                                s.Insert(c);
+                            }
+                        }
+                    }
 
                     results.Add(result);
 

@@ -73,7 +73,6 @@
     <Compile Include="Crawler\CrawlerNode.cs" />
     <Compile Include="Crawler\CrawlerProxyNode.cs" />
     <Compile Include="Crawler\CrawlerConfig.cs" />
-    <Compile Include="Db\ContentModel.cs" />
     <Compile Include="Extracter\ExtracterManager.cs" />
     <Compile Include="Extracter\ExtracterProxyNode.cs" />
     <Compile Include="Db\ContentLiteDb.cs" />

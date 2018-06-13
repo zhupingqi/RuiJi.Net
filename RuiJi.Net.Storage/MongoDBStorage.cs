@@ -1,4 +1,5 @@
 ﻿using MongoDB.Driver;
+using RuiJi.Net.Storage.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Storage
 {
-    public class MongoDBStorage : StorageBase
+    public class MongoDBStorage : StorageBase<IContentModel>
     {
         public MongoDBStorage(string connectString, string databaseName, string collectionName) : base(connectString, databaseName, collectionName)
         {

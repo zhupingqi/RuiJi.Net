@@ -7,34 +7,31 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Storage
 {
-    public class MsSqlStorage : StorageBase<IContentModel>
+    public class WebApiStorage : IStorage<IContentModel>
     {
-        public MsSqlStorage(string folder, string databaseName, string collectionName) : base(folder, databaseName, collectionName)
-        {
+        public string ConnectString { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        }
-
-        public override int Insert(IContentModel content)
+        public void CreateIndex(string field, bool unique = false)
         {
             throw new NotImplementedException();
         }
 
-        public override int Insert(IContentModel[] contents)
+        public int Insert(IContentModel content)
         {
             throw new NotImplementedException();
         }
 
-        public override bool Remove(int id)
+        public int Insert(IContentModel[] contents)
         {
             throw new NotImplementedException();
         }
 
-        public override bool Remove(string url)
+        public bool Remove(int id)
         {
             throw new NotImplementedException();
         }
 
-        public override bool Update(IContentModel content)
+        public bool Update(IContentModel content)
         {
             throw new NotImplementedException();
         }

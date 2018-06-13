@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RuiJi.Net.Storage.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Storage
 {
-    public class SolrStorage : StorageBase
+    public class SolrStorage : StorageBase<IContentModel>
     {
         public SolrStorage(string connectString, string databaseName = "", string collectionName = "") : base(connectString, databaseName, collectionName)
         {

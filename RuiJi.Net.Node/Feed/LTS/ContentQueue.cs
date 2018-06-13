@@ -15,6 +15,7 @@ using Newtonsoft.Json;
 using RuiJi.Net.Core.Utils;
 using RuiJi.Net.Node.Db;
 using RuiJi.Net.Storage;
+using RuiJi.Net.Storage.Model;
 
 namespace RuiJi.Net.Node.Feed.LTS
 {

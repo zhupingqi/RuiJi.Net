@@ -2,6 +2,7 @@
 using RuiJi.Net.Core.Utils.Page;
 using RuiJi.Net.Node.Feed;
 using RuiJi.Net.Node.Feed.LTS;
+using RuiJi.Net.Storage.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;

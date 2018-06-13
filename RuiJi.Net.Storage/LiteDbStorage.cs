@@ -1,4 +1,5 @@
 ﻿using LiteDB;
+using RuiJi.Net.Storage.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Storage
 {
-    public class LiteDbStorage : StorageBase
+    public class LiteDbStorage : StorageBase<IContentModel>
     {
         public LiteDbStorage(string connectString, string collectionName) : base(connectString, "", collectionName)
         {

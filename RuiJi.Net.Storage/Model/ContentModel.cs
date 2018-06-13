@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using RuiJi.Net.Core;
 using RuiJi.Net.Storage;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RuiJi.Net.Node.Db
+namespace RuiJi.Net.Storage.Model
 {
     public class ContentModel : IContentModel
     {

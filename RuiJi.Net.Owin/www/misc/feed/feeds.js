@@ -1,4 +1,4 @@
-﻿define(['jquery', 'utils', 'sweetAlert', 'bootstrapDialog', 'bootstrapTable','jsonViewer'], function ($, utils) {
+﻿define(['jquery', 'utils', 'sweetAlert', 'bootstrapDialog', 'bootstrapTable', 'jsonViewer'], function ($, utils) {
     var module = {
         init: function () {
             var tmp = utils.loadTemplate("/misc/feed/feeds.html", false);
@@ -41,6 +41,11 @@
                         label: 'Test',
                         action: function (dialog) {
                             module.test();
+                        }
+                    }, {
+                        label: 'Download Target',
+                            action: function (dialog) {
+                                module.test(true);
                         }
                     }, {
                         label: 'Ok',
@@ -98,6 +103,11 @@
                             label: 'Test',
                             action: function (dialog) {
                                 module.test();
+                            }
+                        }, {
+                            label: 'Download Target',
+                            action: function (dialog) {
+                                module.test(true);
                             }
                         }, {
                             label: 'Ok',
@@ -199,7 +209,9 @@
                 }
             });
         },
-        test: function () {
+        test: function (down) {
+            down = down || false;
+
             var d = {};
             var validate = true;
             var msg = "need";
@@ -230,7 +242,7 @@
             });
 
             $.ajax({
-                url: "/api/feed/test",
+                url: "/api/feed/test?down=" + down,
                 data: JSON.stringify(d),
                 type: "POST",
                 contentType: "application/json",

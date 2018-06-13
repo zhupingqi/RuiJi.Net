@@ -13,6 +13,24 @@ namespace RuiJi.Net.NodeVisitor
 {
     public class Visitor
     {
+        public Response Request(string url, string method = "GET",string ip = "")
+        {
+            var request = new Request(url);
+            request.Method = method;
+
+            var cralwer = new Crawler();
+            if (!string.IsNullOrEmpty(ip))
+                request.Ip = ip;
+
+            return cralwer.Request(url);
+        }
+
+        public Response Request(Request request)
+        {
+            var cralwer = new Crawler();
+            return cralwer.Request(request);
+        }
+
         public ExtractResult Extract(string url, string method = "GET", string ip = "")
         {
             var request = new Request(url);
@@ -22,7 +40,7 @@ namespace RuiJi.Net.NodeVisitor
             if (!string.IsNullOrEmpty(ip))
                 request.Ip = ip;
 
-            var response = cralwer.Request(url);
+            var response = cralwer.Request(request);
             var content = response.Data.ToString();
 
             var blocks = Feeder.GetExtractBlock(url);
