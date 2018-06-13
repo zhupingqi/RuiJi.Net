@@ -41,6 +41,7 @@ namespace RuiJi.Net.Core.Utils.Log
         {
             if (!Logs.ContainsKey(key))
                 return null;
+
             return Logs[key].Logger;
         }
 

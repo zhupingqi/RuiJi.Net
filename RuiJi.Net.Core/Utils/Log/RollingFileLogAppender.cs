@@ -82,6 +82,7 @@ namespace RuiJi.Net.Core.Utils.Log
                 appender.AddFilter(GetLevelFilter(level, level));
                 appender.ActivateOptions();
             }
+
             return result;
         }
     }

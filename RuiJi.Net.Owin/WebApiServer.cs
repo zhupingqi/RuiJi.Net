@@ -99,6 +99,7 @@ namespace RuiJi.Net.Owin
                         break;
                     }
             }
+
             var logAppenders = new List<ILogAppender>() { new RollingFileLogAppender(NodeBase.BaseUrl), new MemoryLogAppender() };
             Logger.Instance.Add(NodeBase.BaseUrl, logAppenders);
 

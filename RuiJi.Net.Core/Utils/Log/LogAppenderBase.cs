@@ -15,6 +15,8 @@ namespace RuiJi.Net.Core.Utils.Log
     /// </summary>
     public abstract class LogAppenderBase : ILogAppender
     {
+        public string Pattern { get; set; }
+
         /// <summary>
         /// 日志等级（Email和Memory追加器则为最小等级;例：info,error,fatal）
         /// </summary>
@@ -39,7 +41,6 @@ namespace RuiJi.Net.Core.Utils.Log
             Layout = new LayoutModel();
         }
 
-
         public LogAppenderBase(LayoutModel layout)
         {
             Levels = null;
@@ -51,7 +52,6 @@ namespace RuiJi.Net.Core.Utils.Log
             Levels = levels;
             Layout = layout;
         }
-
 
         /// <summary>
         /// 获取等级范围筛选器
@@ -81,6 +81,11 @@ namespace RuiJi.Net.Core.Utils.Log
             layout.Header = hearder + Environment.NewLine;
             layout.Footer = footer + Environment.NewLine;
             return layout;
+        }
+
+        protected virtual string SetPattern()
+        {
+            return "%d [%t] - %m%n";
         }
     }
 }

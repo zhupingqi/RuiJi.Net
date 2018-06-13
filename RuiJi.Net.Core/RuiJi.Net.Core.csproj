@@ -141,6 +141,12 @@
     <Compile Include="Utils\Log\RollingFileLogAppender.cs" />
     <Compile Include="Utils\Log\SMTPLogAppender.cs" />
     <Compile Include="Utils\MimeDetect.cs" />
+    <Compile Include="Utils\NLog\AppenderBase.cs" />
+    <Compile Include="Utils\NLog\IAppender.cs" />
+    <Compile Include="Utils\NLog\Logger.cs" />
+    <Compile Include="Utils\NLog\MemoryAppender.cs" />
+    <Compile Include="Utils\NLog\RollingFileAppender.cs" />
+    <Compile Include="Utils\NLog\SmtpAppender.cs" />
     <Compile Include="Utils\Page\AjaxPaging.cs" />
     <Compile Include="Utils\Page\IUrlPaging.cs" />
     <Compile Include="Utils\Page\Paging.cs" />

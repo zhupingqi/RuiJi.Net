@@ -18,6 +18,7 @@ namespace RuiJi.Net.Core.Utils.Log
     public class LogModel
     {
         private Thread watcher;
+
         public LogModel() { }
 
         public LogModel(ILog logger, ILoggerRepository repository, bool watchMessage, int maxMessageCount = 1000)
@@ -30,10 +31,12 @@ namespace RuiJi.Net.Core.Utils.Log
             watcher = new Thread(new ThreadStart(Watch));
             watcher.Start();
         }
+
         ~LogModel()
         {
             watcher.Abort();
         }
+
         public ILog Logger { get; set; }
 
         public ILoggerRepository Repository { get; set; }
