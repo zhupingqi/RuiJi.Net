@@ -54,7 +54,7 @@ namespace RuiJi.Net.Test
             //});
 
 
-            block.TileSelector.Metas.AddMeta("title",new List<ISelector> {
+            block.TileSelector.Metas.AddMeta("title", new List<ISelector> {
                 new CssSelector(".pt-cv-title")
             });
 
@@ -102,7 +102,8 @@ namespace RuiJi.Net.Test
                 new CssSelector(".pt-cv-readmore","href")
             });
 
-            var r = Extracter.Extract(new ExtractRequest {
+            var r = Extracter.Extract(new ExtractRequest
+            {
                 Blocks = new List<ExtractFeatureBlock> {
                     new ExtractFeatureBlock
                     {
@@ -140,6 +141,40 @@ namespace RuiJi.Net.Test
 
             Assert.IsTrue(r[0].Content.ToString().Length > 0);
             Assert.IsTrue(r[0].Tiles.Count > 0);
+        }
+
+        [TestMethod]
+        public void TestPaging()
+        {
+            var crawler = new RuiJiCrawler();
+            var request = new Request("https://www.kuaidaili.com/free/inha/10");
+
+            var response = crawler.Request(request);
+            var content = response.Data.ToString();
+
+            var exp = @"
+[tile]
+	css table.table-bordered tr:gt(0):ohtml
+
+	[meta]
+	#ip
+	css td[data-title='IP']:text
+
+    #port
+    css td[data-title='PORT']:text
+
+[paging]
+css #listnav a[href]";
+
+            var block = RuiJiExpression.ParserBlock(exp);
+            var result = RuiJiExtracter.Extract(content, block);
+
+            if (result.Paging != null && result.Paging.Count > 0)
+            {
+                result = PagingExtracter.Extract(request.Uri, result, block);
+            }
+
+            Assert.IsTrue(true);
         }
     }
 }

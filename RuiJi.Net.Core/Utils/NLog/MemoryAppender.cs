@@ -23,12 +23,21 @@ namespace RuiJi.Net.Core.Utils.NLog
 
         private bool watchMessage;
 
-        private List<string> Messages;
+        private string key;
+
+        private static Dictionary<string,List<string>> Messages;
+
+        private static object _lck = new object();
+
+        static MemoryAppender()
+        {
+            Messages = new Dictionary<string, List<string>>();
+        }
 
         public MemoryAppender(int maxMessage = 1000)
         {
             this.MaxMessage = maxMessage;
-            Messages = new List<string>();
+            
             Levels = new List<log4net.Core.Level>
             {
                 Level.Fatal
@@ -37,6 +46,8 @@ namespace RuiJi.Net.Core.Utils.NLog
 
         public override void Configure(string key, ILoggerRepository repository)
         {
+            this.key = key;
+
             var appender = new log4net.Appender.MemoryAppender();
             appender.Name = "MemoryAppender";
             appender.Threshold = Levels[0];
@@ -56,9 +67,13 @@ namespace RuiJi.Net.Core.Utils.NLog
 
         public void Start()
         {
+            Messages.Add(key, new List<string>());
             watchMessage = true;
 
-            watcher = new Thread(new ThreadStart(Watch));
+            watcher = new Thread(()=> {
+                Watch(key);
+            });
+
             watcher.Start();
         }
 
@@ -71,46 +86,48 @@ namespace RuiJi.Net.Core.Utils.NLog
                 watcher.Abort();
                 watcher = null;
             }
+
+            Messages.Remove(key);
         }
 
-        public string[] GetMessage()
+        public static string[] GetMessage(string key)
         {
-            lock (this)
+            lock (_lck)
             {
-                var msgs = Messages.ToArray();
+                var msgs = Messages[key].ToArray();
 
-                Messages.Clear();
+                Messages[key].Clear();
 
                 return msgs;
             }
         }
 
-        private void Watch()
+        private void Watch(string key)
         {
             while (watchMessage)
             {
                 var events = memoryAppender.GetEvents();
                 if (events != null && events.Length > 0)
                 {
-                    lock (this)
+                    lock (_lck)
                     {
                         foreach (var ev in events)
                         {
                             var layout = new PatternLayout(Pattern);
                             layout.ActivateOptions();
-                            var t = new StringWriter();
-                            layout.Format(t, ev);
+                            var w = new StringWriter();
+                            layout.Format(w, ev);
 
-                            var msgObj = t.GetStringBuilder().ToString();
+                            var msg = w.GetStringBuilder().ToString();
+                            Messages[key].Insert(0, msg);
 
-                            while (Messages.Count > MaxMessage)
+                            while (Messages[key].Count > MaxMessage)
                             {
-                                Messages.RemoveAt(Messages.Count - 1);
+                                Messages[key].RemoveAt(Messages.Count - 1);
                             }
-
-                            Messages.Insert(0, msgObj);
                         }
                     }
+                    memoryAppender.Clear();
                 }
 
                 Thread.Sleep(5000);

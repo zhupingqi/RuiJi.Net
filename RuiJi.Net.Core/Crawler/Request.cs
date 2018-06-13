@@ -46,5 +46,11 @@ namespace RuiJi.Net.Core.Crawler
             this.Uri = new Uri(url);
             this.Ip = ip;
         }
+
+        public Request(Uri uri, string ip = "") : this()
+        {
+            this.Uri = uri;
+            this.Ip = ip;
+        }
     }
 }

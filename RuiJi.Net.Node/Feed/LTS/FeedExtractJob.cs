@@ -165,7 +165,7 @@ namespace RuiJi.Net.Node.Feed.LTS
 
             if (feed.UseBlock)
             {
-                if(!string.IsNullOrEmpty(feed.BlockExpression))
+                if (!string.IsNullOrEmpty(feed.BlockExpression))
                     block = JsonConvert.DeserializeObject<ExtractBlock>(feed.BlockExpression);
             }
             else

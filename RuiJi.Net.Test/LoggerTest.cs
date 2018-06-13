@@ -21,7 +21,7 @@ namespace RuiJi.Net.Test
             Logger.GetLogger("main").Error("error");
             Logger.GetLogger("main").Fatal("fatal");
 
-            Thread.Sleep(30000);
+            Thread.Sleep(300000);
 
             Assert.IsTrue(true);
         }

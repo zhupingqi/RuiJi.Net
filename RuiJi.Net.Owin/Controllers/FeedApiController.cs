@@ -89,6 +89,7 @@ namespace RuiJi.Net.Owin.Controllers
                 var block = RuiJiExpression.ParserBlock(rule.RuiJiExpression);
                 var r = new ExtractRequest();
                 r.Content = content;
+
                 r.Blocks = new List<ExtractFeatureBlock> {
                     new ExtractFeatureBlock {
                         Block = block,
@@ -303,7 +304,7 @@ namespace RuiJi.Net.Owin.Controllers
                     taskId = task.TaskId
                 };
             }
-        } 
+        }
         #endregion
 
         #region 节点函数
@@ -461,7 +462,7 @@ namespace RuiJi.Net.Owin.Controllers
                 }
             }
 
-                if (result.Blocks != null && result.Blocks.Count > 0)
+            if (result.Blocks != null && result.Blocks.Count > 0)
             {
                 result.Blocks.ForEach((m) =>
                 {
