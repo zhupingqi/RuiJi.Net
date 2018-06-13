@@ -44,7 +44,8 @@ namespace RuiJi.Net.Core.Extracter
 
                 foreach (var t in pageBlock.Tiles)
                 {
-                    dic.Add(t.Content.ToString());
+                    if(t.Content!= null && !string.IsNullOrEmpty(t.Content.ToString()))
+                        dic.Add(t.Content.ToString());
                 }
 
                 return dic;

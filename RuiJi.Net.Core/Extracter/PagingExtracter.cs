@@ -18,7 +18,7 @@ namespace RuiJi.Net.Core.Extracter
             var pages = new Dictionary<string, ExtractResult>();
             pages.Add(uri.ToString(), result);
 
-            var lines = String.Join("\n", result.Paging);
+            var lines = String.Join("\n", result.Paging.Distinct());
             var reader = new StringReader(lines);
 
             var crawler = new RuiJiCrawler();
@@ -44,9 +44,11 @@ namespace RuiJi.Net.Core.Extracter
                 var r = RuiJiExtracter.Extract(content, block);
                 pages.Add(u.ToString(), r);
 
+                result.Metas["content"] = result.Metas["content"].ToString() + r.Metas["content"].ToString();
+
                 if (r.Paging != null && r.Paging.Count > 0)
                 {
-                    var nlines = String.Join("\n", r.Paging);
+                    var nlines = String.Join("\n", r.Paging.Distinct());
                     var diff = diffBuilder.BuildDiffModel(lines, nlines);
 
                     nlines = string.Join("\n", diff.Lines.Select(m => m.Text));

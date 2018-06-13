@@ -169,7 +169,42 @@ css #listnav a[href]";
             var block = RuiJiExpression.ParserBlock(exp);
             var result = RuiJiExtracter.Extract(content, block);
 
-            if (result.Paging != null && result.Paging.Count > 0)
+            if (result.Paging != null && result.Paging.Count > 0 && result.Metas != null && result.Metas.ContainsKey("content"))
+            {
+                result = PagingExtracter.Extract(request.Uri, result, block);
+            }
+
+            Assert.IsTrue(true);
+        }
+
+        [TestMethod]
+        public void TestPaging2()
+        {
+            var crawler = new RuiJiCrawler();
+            var request = new Request("https://3w.huanqiu.com/a/4e2d56fd7f51/7DHitRASkPC?p=1&agt=8");
+
+            var response = crawler.Request(request);
+            var content = response.Data.ToString();
+
+            var exp = @"
+[meta]
+	#title
+	css h1.a-title
+
+	#date_dt
+	css .time:text
+
+	#content
+	css .a-con:ohtml
+
+[paging]
+css .a-page
+css a[href]";
+
+            var block = RuiJiExpression.ParserBlock(exp);
+            var result = RuiJiExtracter.Extract(content, block);
+
+            if (result.Paging != null && result.Paging.Count > 0 && result.Metas != null && result.Metas.ContainsKey("content"))
             {
                 result = PagingExtracter.Extract(request.Uri, result, block);
             }

@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DiffPlex, Version=1.2.0.0, Culture=neutral, PublicKeyToken=1d35e91d1bd7bc0f, processorArchitecture=MSIL">
+      <HintPath>..\packages\DiffPlex.1.2.1\lib\portable-net40+sl50+win+wpa81+wp80\DiffPlex.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
     </Reference>

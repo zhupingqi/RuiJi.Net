@@ -81,6 +81,12 @@ namespace RuiJi.Net.Owin.Controllers
         [HttpPost]
         public object TestRule(RuleModel rule)
         {
+            //var v = new Visitor();
+            //var result = v.Extract(rule.Url);
+            //CrawlTaskFunc.ClearContent(result);
+
+            //return result;
+
             var c = new Crawler();
             var response = c.Request(rule.Url, rule.Method);
             if (response != null && response.Data != null)
@@ -100,6 +106,12 @@ namespace RuiJi.Net.Owin.Controllers
                 var results = Extracter.Extract(r);
 
                 var result = results.OrderByDescending(m => m.Metas.Count).FirstOrDefault();
+
+                if (result.Paging != null && result.Paging.Count > 0 && result.Metas != null && result.Metas.ContainsKey("content"))
+                {
+                    result = PagingExtracter.Extract(new Uri(rule.Url), result, block);
+                }
+
                 result.Content = null;
 
                 return result;
@@ -261,6 +273,12 @@ namespace RuiJi.Net.Owin.Controllers
                     CrawlTaskFunc.ClearContent(result);
 
                     results.Add(result);
+
+                    //var v = new Visitor();
+                    //var result = v.Extract(addr);
+                    //CrawlTaskFunc.ClearContent(result);
+
+                    //results.Add(result);
                 }
 
                 return results;
