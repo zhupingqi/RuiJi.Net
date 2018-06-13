@@ -306,57 +306,6 @@ namespace RuiJi.Net.Owin.Controllers
             }
         }
         #endregion
-
-        #region 节点函数
-        [HttpGet]
-        [NodeRoute(Target = NodeProxyTypeEnum.Feed)]
-        public object Funcs(int offset, int limit)
-        {
-            var node = ServerManager.Get(Request.RequestUri.Authority);
-
-            var paging = new Paging();
-            paging.CurrentPage = (offset / limit) + 1;
-            paging.PageSize = limit;
-
-            var list = FuncLiteDb.GetModels(paging);
-
-            return new
-            {
-                rows = list,
-                total = list.Count
-            };
-        }
-
-        [HttpGet]
-        [NodeRoute(Target = NodeProxyTypeEnum.Feed)]
-        public object GetFunc(int id)
-        {
-            return FuncLiteDb.Get(id);
-        }
-
-        [HttpPost]
-        public object FuncTest(FuncModel func)
-        {
-            var code = "{# " + func.Sample + " #}";
-            var test = new ComplieFuncTest(func.Code);
-            return test.Compile(code);
-        }
-
-        [HttpPost]
-        [NodeRoute(Target = NodeProxyTypeEnum.Feed)]
-        public object UpdateFunc(FuncModel func)
-        {
-            if (func.Name == "now" || func.Name == "ticks")
-                return false;
-
-            var f = FuncLiteDb.Get(func.Name);
-            if (f != null && f.Id == 0)
-                return false;
-
-            FuncLiteDb.AddOrUpdate(func);
-            return true;
-        }
-        #endregion
     }
 
     public class CrawlTaskModel
@@ -469,23 +418,6 @@ namespace RuiJi.Net.Owin.Controllers
                     ClearContent(m);
                 });
             }
-        }
-    }
-
-    public class ComplieFuncTest : CompileUrl
-    {
-        private string code;
-
-        public ComplieFuncTest(string code)
-        {
-            this.code = code;
-        }
-
-        public override string FormatCode(CompileExtract extract)
-        {
-            var formatCode = string.Format(code, extract.Args);
-
-            return formatCode;
         }
     }
 }

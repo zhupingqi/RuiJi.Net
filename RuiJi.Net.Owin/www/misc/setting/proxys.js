@@ -19,7 +19,7 @@
                 onPostBody: function (e) {
                     if (e.length > 0) {
                         $('#tb_proxys > tbody > tr').map(function (i, m) {
-                            $(m).find("td:last").html("<i class='fa fa-edit'></i><i class='fa fa-terminal'></i><span></span>");
+                            $(m).find("td:last").html("<i class='fa fa-edit'></i><i class='fa fa-terminal'></i><i class='fa fa-minus-circle'></i><span></span>");
                         });
                     }
                 }
@@ -48,6 +48,28 @@
                         }
                     }]
                 });
+            });
+
+            $(document).on("click", "#delete_proxys", function () {
+                var select = $("#tb_proxys").bootstrapTable('getSelections'); 
+                if (select.length <= 0) {
+                    swal("请至少选中一行");
+                }
+                else {
+                    if (confirm("确认删除选中代理？")) {
+                        var ids = "";
+                        $.map(select, function (n) {
+                            ids += n.id + ",";
+                        })
+                        
+                        $.getJSON("api/proxy/remove?ids=" + ids, function (d) {
+                            if (d) {
+                                swal("完成");
+                                $('#tb_proxys').bootstrapTable("refresh");
+                            }
+                        });
+                    }
+                }
             });
 
             $(document).on("click", "#tb_proxys .fa-edit", function () {
@@ -103,6 +125,20 @@
                 });
             });
 
+            $(document).on("click", "#tb_proxys .fa-minus-circle", function () {
+                var ele = $(this);
+                var id = ele.closest("tr").find("td").eq(1).text();
+
+                if (confirm("确认删除此条代理？")) {
+                    $.getJSON("api/proxy/remove?ids=" + id, function (d) {
+                        if (d) {
+                            swal("完成");
+                            $('#tb_proxys').bootstrapTable("refresh");
+                        }
+                    });
+                }
+            });
+            
             $(document).on("click", "#proxy_dialog .btn-mjdark2", function () {
                 var ele = $(this);
                 ele.closest(".input-group").find("input").val(ele.find("input").val());

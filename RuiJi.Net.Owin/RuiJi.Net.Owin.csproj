@@ -109,6 +109,7 @@
     <Compile Include="Controllers\CrawlerApiController.cs" />
     <Compile Include="Controllers\FeedApiController.cs" />
     <Compile Include="Controllers\InfoApiController.cs" />
+    <Compile Include="Controllers\SettingApiController.cs" />
     <Compile Include="Controllers\ZooApiController.cs" />
     <Compile Include="NodeRouteAttribute.cs" />
     <Compile Include="ServerManager.cs" />

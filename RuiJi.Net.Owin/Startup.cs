@@ -258,25 +258,31 @@ namespace RuiJi.Net.Owin
             config.Routes.MapHttpRoute(
                     name: "FuncsList",
                     routeTemplate: "api/funcs",
-                    defaults: new { controller = "FeedApi", action = "Funcs" }
+                    defaults: new { controller = "SettingApi", action = "Funcs" }
                 );
 
             config.Routes.MapHttpRoute(
                     name: "GetFunc",
                     routeTemplate: "api/func",
-                    defaults: new { controller = "FeedApi", action = "GetFunc" }
+                    defaults: new { controller = "SettingApi", action = "GetFunc" }
                 );
 
             config.Routes.MapHttpRoute(
                     name: "UpdateFunc",
                     routeTemplate: "api/func/update",
-                    defaults: new { controller = "FeedApi", action = "UpdateFunc" }
+                    defaults: new { controller = "SettingApi", action = "UpdateFunc" }
+                );
+
+            config.Routes.MapHttpRoute(
+                    name: "RemoveFunc",
+                    routeTemplate: "api/func/remove",
+                    defaults: new { controller = "SettingApi", action = "RemoveFunc" }
                 );
 
             config.Routes.MapHttpRoute(
                     name: "FuncTest",
                     routeTemplate: "api/func/test",
-                    defaults: new { controller = "FeedApi", action = "FuncTest" }
+                    defaults: new { controller = "SettingApi", action = "FuncTest" }
                 );
             #endregion
 
@@ -304,31 +310,31 @@ namespace RuiJi.Net.Owin
             config.Routes.MapHttpRoute(
                 name: "ProxysList",
                 routeTemplate: "api/proxys",
-                defaults: new { controller = "CrawlerProxyApi", action = "Proxys" }
+                defaults: new { controller = "SettingApi", action = "Proxys" }
             );
 
             config.Routes.MapHttpRoute(
                     name: "GetProxy",
                     routeTemplate: "api/proxy",
-                    defaults: new { controller = "CrawlerProxyApi", action = "GetProxy" }
+                    defaults: new { controller = "SettingApi", action = "GetProxy" }
                 );
 
             config.Routes.MapHttpRoute(
                     name: "UpdateProxy",
                     routeTemplate: "api/proxy/update",
-                    defaults: new { controller = "CrawlerProxyApi", action = "UpdateProxy" }
+                    defaults: new { controller = "SettingApi", action = "UpdateProxy" }
                 );
 
             config.Routes.MapHttpRoute(
                     name: "RemoveProxy",
                     routeTemplate: "api/proxy/remove",
-                    defaults: new { controller = "CrawlerProxyApi", action = "RemoveProxy" }
+                    defaults: new { controller = "SettingApi", action = "RemoveProxy" }
                 );
 
             config.Routes.MapHttpRoute(
                     name: "ProxyPing",
                     routeTemplate: "api/proxy/ping",
-                    defaults: new { controller = "CrawlerProxyApi", action = "ProxyPing" }
+                    defaults: new { controller = "SettingApi", action = "ProxyPing" }
                 );
             #endregion
 
