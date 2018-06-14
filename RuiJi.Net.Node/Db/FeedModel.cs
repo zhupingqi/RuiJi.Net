@@ -67,6 +67,10 @@ namespace RuiJi.Net.Node.Db
         [JsonConverter(typeof(EnumConvert<Status>))]
         public Status Status { get; set; }
 
+        [JsonProperty("runJs")]
+        [JsonConverter(typeof(EnumConvert<Status>))]
+        public Status RunJS { get; set; }
+
         [JsonProperty("feedonly")]
         public bool FeedOnly { get; set; }
 

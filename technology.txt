@@ -10,6 +10,8 @@ Phantomjs
 PhantomJS is a headless WebKit scriptable with a JavaScript API. It has fast and native support for various web standards: DOM handling, CSS selector, JSON, Canvas, and SVG.
 Install-Package PhantomJS -Version 2.1.1
 
+casperjs
+
 Hadoop
 Spark 
 

@@ -66,6 +66,7 @@
     <Compile Include="SysUnitTest.cs" />
     <Compile Include="ProcessorTest.cs" />
     <Compile Include="LoggerTest.cs" />
+    <Compile Include="PhantomCrawlerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
