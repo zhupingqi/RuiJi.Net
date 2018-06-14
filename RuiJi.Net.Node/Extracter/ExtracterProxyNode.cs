@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RuiJi.Net.Core;
-using RuiJi.Net.Core.Utils;
+using RuiJi.Net.Core.Utils.Log;
 using RuiJi.Net.Node.Extracter;
 using System;
 using System.Collections.Generic;
@@ -83,7 +83,7 @@ namespace RuiJi.Net.Node.Extracter
                     case EventType.NodeChildrenChanged:
                         {
                             node.LoadLiveExtracter();
-                            Console.WriteLine("detected extracter node change");
+                            Logger.GetLogger(node.BaseUrl).Info("detected extracter node change");
                             break;
                         }
                 }

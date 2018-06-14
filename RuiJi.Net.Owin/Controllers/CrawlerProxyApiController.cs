@@ -32,18 +32,22 @@ namespace RuiJi.Net.Owin.Controllers
                 if (!string.IsNullOrEmpty(request.Ip))
                 {
                     result = CrawlerManager.Instance.GetServer(request.Ip);
-                    request.Ip = result.ClientIp;
                 }
                 else
                 {
                     result = CrawlerManager.Instance.ElectIP(request.Uri);
                     if (result == null)
+                    {
                         return new Response
                         {
                             StatusCode = System.Net.HttpStatusCode.Conflict,
                             Data = "no clrawler ip elect!"
                         };
+                    }
+                    request.Ip = result.ClientIp;
                 }
+
+                request.Elect = result.BaseUrl;
 
                 var p = ProxyLiteDb.Get();
                 if(p != null)
@@ -75,7 +79,7 @@ namespace RuiJi.Net.Owin.Controllers
             }
             else
             {
-                return new Crawler().Request(request);
+                return Crawler.Request(request);
             }
         }
 
@@ -93,44 +97,38 @@ namespace RuiJi.Net.Owin.Controllers
 
         [HttpPost]
         [WebApiCacheAttribute(Duration = 0)]
+        [NodeRoute(Target = NodeProxyTypeEnum.Crawler)]
         public object Elect(CrawlerElectRequest request)
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
 
-            if (node.NodeType == Node.NodeTypeEnum.CRAWLERPROXY)
+            var result = new CrawlerElectResult();
+
+            if (request.ElectIp)
             {
-                var result =  new CrawlerElectResult();
-
-                if (request.ElectIp)
-                {
-                    result = CrawlerManager.Instance.ElectIP(request.Uri);
-                    if (result == null)
-                        return new Response
-                        {
-                            StatusCode = System.Net.HttpStatusCode.Conflict,
-                            Data = "no clrawler ip elect!"
-                        };
-                }
-
-                if (request.ElectProxy)
-                {
-                    var p = ProxyLiteDb.Get();
-                    if (p != null)
+                result = CrawlerManager.Instance.ElectIP(request.Uri);
+                if (result == null)
+                    return new Response
                     {
-                        result.Proxy = new RequestProxy();
-                        result.Proxy.Host = (p.Type == Node.Db.ProxyTypeEnum.HTTP ? "https://" : "http://") + p.Ip;
-                        result.Proxy.Port = p.Port;
-                        result.Proxy.Username = p.UserName;
-                        result.Proxy.Password = p.Password;
-                    }
-                }
+                        StatusCode = System.Net.HttpStatusCode.Conflict,
+                        Data = "no clrawler ip elect!"
+                    };
+            }
 
-                return result;
-            }
-            else
+            if (request.ElectProxy)
             {
-                return new Crawler().Elect(request);
+                var p = ProxyLiteDb.Get();
+                if (p != null)
+                {
+                    result.Proxy = new RequestProxy();
+                    result.Proxy.Host = (p.Type == Node.Db.ProxyTypeEnum.HTTP ? "https://" : "http://") + p.Ip;
+                    result.Proxy.Port = p.Port;
+                    result.Proxy.Username = p.UserName;
+                    result.Proxy.Password = p.Password;
+                }
             }
+
+            return result;
         }
     }
 }

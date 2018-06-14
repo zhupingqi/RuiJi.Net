@@ -44,7 +44,7 @@ namespace RuiJi.Net.Owin.Controllers
             }
             else
             {
-                return new Crawler().Request(request);
+                return Crawler.Request(request);
             }
         }
 

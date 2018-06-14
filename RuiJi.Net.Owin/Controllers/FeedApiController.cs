@@ -79,48 +79,6 @@ namespace RuiJi.Net.Owin.Controllers
 
             return RuleLiteDb.Remove(removes);
         }
-
-        [HttpPost]
-        public object TestRule(RuleModel rule)
-        {
-            //var v = new Visitor();
-            //var result = v.Extract(rule.Url);
-            //CrawlTaskFunc.ClearContent(result);
-
-            //return result;
-
-            var c = new Crawler();
-            var response = c.Request(rule.Url, rule.Method);
-            if (response != null && response.Data != null)
-            {
-                var content = response.Data.ToString();
-                var block = RuiJiExpression.ParserBlock(rule.RuiJiExpression);
-                var r = new ExtractRequest();
-                r.Content = content;
-
-                r.Blocks = new List<ExtractFeatureBlock> {
-                    new ExtractFeatureBlock {
-                        Block = block,
-                        Feature = rule.Feature
-                    }
-                };
-
-                var results = Extracter.Extract(r);
-
-                var result = results.OrderByDescending(m => m.Metas.Count).FirstOrDefault();
-
-                if (result.Paging != null && result.Paging.Count > 0 && result.Metas != null && result.Metas.ContainsKey("content"))
-                {
-                    result = PagingExtracter.Extract(new Uri(rule.Url), result, block);
-                }
-
-                result.Content = null;
-
-                return result;
-            }
-
-            return new { };
-        }
         #endregion
 
         #region Feed
@@ -254,8 +212,50 @@ namespace RuiJi.Net.Owin.Controllers
         #endregion
 
         #region Test
+
         [HttpPost]
-        public object TestFeed(FeedModel feed,[FromUri]bool down)
+        public object TestRule(RuleModel rule, [FromUri]bool debug = false)
+        {
+            //var v = new Visitor();
+            //var result = v.Extract(rule.Url);
+            //CrawlTaskFunc.ClearContent(result);
+
+            //return result;
+
+            var response = Crawler.Request(rule.Url, rule.Method);
+            if (response != null && response.Data != null)
+            {
+                var content = response.Data.ToString();
+                var block = RuiJiExpression.ParserBlock(rule.RuiJiExpression);
+                var r = new ExtractRequest();
+                r.Content = content;
+
+                r.Blocks = new List<ExtractFeatureBlock> {
+                    new ExtractFeatureBlock {
+                        Block = block,
+                        Feature = rule.Feature
+                    }
+                };
+
+                var results = Extracter.Extract(r);
+
+                var result = results.OrderByDescending(m => m.Metas.Count).FirstOrDefault();
+
+                if (debug && result.Paging != null && result.Paging.Count > 0 && result.Metas != null && result.Metas.ContainsKey("content"))
+                {
+                    result = PagingExtracter.MergeContent(new Uri(rule.Url), result, block);
+                }
+
+                result.Content = null;
+
+                return result;
+            }
+
+            return new { };
+        }
+
+        [HttpPost]
+        public object TestFeed(FeedModel feed,[FromUri]bool down, [FromUri]bool debug = false)
         {
             try
             {
@@ -272,11 +272,12 @@ namespace RuiJi.Net.Owin.Controllers
                     var block = RuiJiExpression.ParserBlock(feed.RuiJiExpression);
 
                     var result = RuiJiExtracter.Extract(snap.Content, block);
-                    CrawlTaskFunc.ClearContent(result);
+
+                    if(debug)
+                        CrawlTaskFunc.ClearContent(result);
 
                     if (down)
                     {
-                        var v = new Visitor();
                         var s = new FileStorage(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"download"));
 
                         var files = result.Content.ToString().Replace("\r\n", "\n").Split('\n');
@@ -284,7 +285,7 @@ namespace RuiJi.Net.Owin.Controllers
                         {
                             if (!string.IsNullOrEmpty(file))
                             {
-                                var res = v.Request(file);
+                                var res = Crawler.Request(file);
                                 var c = new DownloadContentModel();
                                 c.Url = file.Trim();
                                 c.IsRaw = res.IsRaw;
@@ -398,12 +399,10 @@ namespace RuiJi.Net.Owin.Controllers
 
                 if (!string.IsNullOrEmpty(snap.RuiJiExpression))
                 {
-                    var visitor = new Visitor();
-
                     foreach (var url in urls)
                     {
                         reporter.Report("正在提取地址 " + url);
-                        var result = visitor.Extract(url);
+                        var result = Cooperater.GetResult(url);
 
                         if (result != null)
                         {

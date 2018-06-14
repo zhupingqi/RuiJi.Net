@@ -7,14 +7,32 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Extracter
 {
     public class PagingExtracter
     {
-        public static ExtractResult Extract(Uri uri, ExtractResult result, ExtractBlock block)
+        public delegate void PageDownloadHandler(Uri uri, ExtractResult result);
+
+        public static ExtractResult MergeContent(Uri uri, ExtractResult result, ExtractBlock block, int maxRetry = 10)
         {
+            var content = "";
+
+            DownloadPage(uri, result, block, (u,r) => {
+                content += r.Metas["content"].ToString();
+            });
+
+            result.Metas["content"] = content;
+
+            return result;
+        }
+
+        public static void DownloadPage(Uri uri, ExtractResult result, ExtractBlock block, PageDownloadHandler handler, int maxRetry = 10)
+        {
+            handler(uri,result);
+
             var pages = new Dictionary<string, ExtractResult>();
             pages.Add(uri.ToString(), result);
 
@@ -42,22 +60,25 @@ namespace RuiJi.Net.Core.Extracter
                 var content = response.Data.ToString();
 
                 var r = RuiJiExtracter.Extract(content, block);
-                pages.Add(u.ToString(), r);
-
-                result.Metas["content"] = result.Metas["content"].ToString() + r.Metas["content"].ToString();
-
-                if (r.Paging != null && r.Paging.Count > 0)
+                if (r.Paging == null || r.Paging.Count == 0)
                 {
-                    var nlines = String.Join("\n", r.Paging.Distinct());
-                    var diff = diffBuilder.BuildDiffModel(lines, nlines);
+                    Thread.Sleep(5000);
+                    if (--maxRetry == 0)
+                        break;
 
-                    nlines = string.Join("\n", diff.Lines.Select(m => m.Text));
-                    reader = new StringReader(nlines);
-                    url = reader.ReadLine();
+                    continue;
                 }
-            }
 
-            return result;
+                pages.Add(u.ToString(), r);
+                handler(u, r);
+
+                var nlines = String.Join("\n", r.Paging.Distinct());
+                var diff = diffBuilder.BuildDiffModel(lines, nlines);
+
+                nlines = string.Join("\n", diff.Lines.Select(m => m.Text));
+                reader = new StringReader(nlines);
+                url = reader.ReadLine();
+            }
         }
     }
 }

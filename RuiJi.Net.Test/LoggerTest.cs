@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RuiJi.Net.Core.Utils.NLog;
+using RuiJi.Net.Core.Utils.Log;
 
 namespace RuiJi.Net.Test
 {

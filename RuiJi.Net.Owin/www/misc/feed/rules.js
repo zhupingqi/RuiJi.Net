@@ -96,8 +96,7 @@
                         }, {
                             label: 'Ok',
                             action: function (dialog) {
-                                module.update();
-                                dialog.close();
+                                module.update(dialog);
                             }
                         }, {
                             label: 'Close',

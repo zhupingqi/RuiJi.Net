@@ -21,12 +21,12 @@ namespace RuiJi.Net.Cmd
 {
     public class Program
     {
-        private static ILog logger;
         static Program()
         {
-            var logAppenders = new List<ILogAppender>() { new RollingFileLogAppender("server"), new MemoryLogAppender() };
-            Logger.Instance.Add("server", logAppenders);
-            logger = Logger.Instance.GetLogger("server");
+            Logger.Add("", new List<IAppender> {
+                new RollingFileAppender(""),
+                new ConsoleAppender()
+            });
         }
 
         ~Program()
@@ -36,9 +36,8 @@ namespace RuiJi.Net.Cmd
 
         static void Main(string[] args)
         {
-            //LogManager.GetCurrentLoggers().First().Info("Program started!");
+            Logger.GetLogger("").Info("Program started!");
 
-            logger.Info("Program started!");
             ServerManager.StartServers();
 
             while (true)
@@ -48,7 +47,7 @@ namespace RuiJi.Net.Cmd
                 var cmd = Console.ReadLine();
                 if (cmd == "quit")
                 {
-                    logger.Info("Program quit!");
+                    Logger.GetLogger("").Info("Program quit!");
                     break;
                 }
 
@@ -61,12 +60,12 @@ namespace RuiJi.Net.Cmd
                         if (port == "all")
                         {
                             ServerManager.StopAll();
-                            logger.Info("Program stop all!");
+                            Logger.GetLogger("").Info("Program stop all!");
                         }
                         else
                         {
                             ServerManager.Stop(port);
-                            logger.Info("Program stop " + port + "!");
+                            Logger.GetLogger("").Info("Program stop " + port + "!");
                         }
                     }
                     else
@@ -83,7 +82,8 @@ namespace RuiJi.Net.Cmd
             }
 
             ServerManager.StopAll();
-            logger.Info("Program stop all!");
+
+            Logger.GetLogger("").Info("Program stop all!");
         }
     }
 }

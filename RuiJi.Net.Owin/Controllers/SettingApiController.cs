@@ -148,7 +148,7 @@ namespace RuiJi.Net.Owin.Controllers
                 var request = new Request("http://2017.ip138.com/ic.asp");
 
                 var proxy = ProxyLiteDb.Get(id);
-                var host = (proxy.Type == Node.Db.ProxyTypeEnum.HTTP ? "http" : "https") + proxy.Ip;
+                var host = (proxy.Type == Node.Db.ProxyTypeEnum.HTTP ? "http://" : "https://") + proxy.Ip;
                 request.Proxy = new RequestProxy(host, proxy.Port, proxy.UserName, proxy.Password);
 
                 var response = crawler.Request(request);
@@ -158,7 +158,7 @@ namespace RuiJi.Net.Owin.Controllers
                     return watch.Elapsed.Milliseconds;
                 }
             }
-            catch
+            catch(Exception ex)
             {
                 return -2;
             }

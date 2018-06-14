@@ -16,8 +16,6 @@ namespace RuiJi.Net.Node
 {
     public abstract class NodeBase
     {
-        private static ILog logger;
-
         protected ZooKeeper zooKeeper;
 
         public string ZkServer { get; protected set; }
@@ -55,23 +53,27 @@ namespace RuiJi.Net.Node
 
         public virtual void Start()
         {
-            var logger = Logger.Instance.GetLogger(BaseUrl);
-
             if (string.IsNullOrEmpty(BaseUrl) || string.IsNullOrEmpty(ZkServer))
             {
-                logger.Fatal("BaseUrl and ZkServer must be set,call setup method!");
+                Logger.GetLogger(BaseUrl).Fatal("BaseUrl and ZkServer must be set,call setup method!");
                 throw new Exception("BaseUrl and ZkServer must be set,call setup method!");
             }
+
+            Logger.Add(BaseUrl, new List<IAppender> {
+                new RollingFileAppender(BaseUrl),
+                new MemoryAppender(),
+                new ConsoleAppender()
+            });
+
+            Logger.GetLogger(BaseUrl).Info("Start WebApiServer At http://" + BaseUrl + " with " + NodeType.ToString() + " node");
 
             var resetEvent = new ManualResetEvent(false);
             var watcher = new SessionWatcher(this, resetEvent);
 
             try
             {
-                logger.Info("node " + BaseUrl + " ready to startup!");
-                Console.WriteLine("node " + BaseUrl + " ready to startup!");
-                logger.Info("try connect to zookeeper server : " + ZkServer);
-                Console.WriteLine("try connect to zookeeper server : " + ZkServer);
+                Logger.GetLogger(BaseUrl).Info("node " + BaseUrl + " ready to startup!");
+                Logger.GetLogger(BaseUrl).Info("try connect to zookeeper server : " + ZkServer);
 
                 zooKeeper = new ZooKeeper(ZkServer, TimeSpan.FromSeconds(30), watcher);
                 resetEvent.WaitOne();
@@ -83,8 +85,7 @@ namespace RuiJi.Net.Node
             }
             catch (Exception ex)
             {
-                logger.Error(ex.Message);
-                Console.WriteLine(ex.Message);
+                Logger.GetLogger(BaseUrl).Error(ex.Message);
             }
         }
 
@@ -182,17 +183,17 @@ namespace RuiJi.Net.Node
                 {
                     zooKeeper.Create("/overseer/leader", BaseUrl.GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Ephemeral);
                     IsLeader = true;
-                    Console.WriteLine("current leader is " + BaseUrl);
+                    Logger.GetLogger(BaseUrl).Info("current leader is " + BaseUrl);
                 }
             }
             catch (ZooKeeperNet.KeeperException.NodeExistsException ex)
             {
                 IsLeader = false;
-                Console.WriteLine(BaseUrl + " run for leader failed!");
+                Logger.GetLogger(BaseUrl).Info(BaseUrl + " run for leader failed!");
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Logger.GetLogger(BaseUrl).Error(ex.Message);
             }
 
             LeaderBaseUrl = GetLeader();
@@ -211,7 +212,7 @@ namespace RuiJi.Net.Node
             }
             catch (Exception ex)
             {
-                Console.WriteLine(BaseUrl + " read leader failed!");
+                Logger.GetLogger(BaseUrl).Error(BaseUrl + " read leader failed!");
             }
 
             return null;
@@ -316,7 +317,7 @@ namespace RuiJi.Net.Node
                     {
                         case KeeperState.Disconnected:
                             {
-                                Console.WriteLine("disconnected with zookeeper server");
+                                Logger.GetLogger(service.BaseUrl).Error("disconnected with zookeeper server");
                                 if (!service.force)
                                     service.Start();
                                 service.force = false;
@@ -324,19 +325,19 @@ namespace RuiJi.Net.Node
                             }
                         case KeeperState.Expired:
                             {
-                                Console.WriteLine("connected expired! reconnect!");
+                                Logger.GetLogger(service.BaseUrl).Error("connected expired! reconnect!");
                                 service.Start();
                                 break;
                             }
                         case KeeperState.SyncConnected:
                             {
-                                Console.WriteLine("zookeeper server connected!");
+                                Logger.GetLogger(service.BaseUrl).Info("zookeeper server connected!");
                                 resetEvent.Set();
                                 break;
                             }
                         case KeeperState.NoSyncConnected:
                             {
-                                Console.WriteLine("zookeeper server NoSyncConnected!");
+                                Logger.GetLogger(service.BaseUrl).Info("zookeeper server NoSyncConnected!");
                                 break;
                             }
                         case KeeperState.Unknown:
@@ -360,7 +361,7 @@ namespace RuiJi.Net.Node
             {
                 if (@event.Type == EventType.NodeDeleted)
                 {
-                    Console.WriteLine("leader offline, run for leader");
+                    Logger.GetLogger(service.BaseUrl).Error("leader offline, run for leader");
                     service.RunForLeaderNode();
                 }
             }

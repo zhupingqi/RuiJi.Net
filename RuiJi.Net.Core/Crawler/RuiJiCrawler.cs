@@ -1,5 +1,6 @@
 ﻿using RuiJi.Net.Core.Cookie;
 using RuiJi.Net.Core.Utils;
+using RuiJi.Net.Core.Utils.Log;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -24,6 +25,8 @@ namespace RuiJi.Net.Core.Crawler
 
         public Response Request(Request request)
         {
+            Logger.GetLogger(request.Elect).Info("request " + request.Uri.ToString() + " with ip:" + request.Ip + (request.Proxy != null ? (" proxy:" + request.Proxy.Host + ":" + request.Proxy.Port) : ""));
+
             if(!string.IsNullOrEmpty(request.Ip))
             {
                 if (!IPHelper.IsHostIPAddress(IPAddress.Parse(request.Ip)))

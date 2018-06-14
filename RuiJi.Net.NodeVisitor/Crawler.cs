@@ -12,12 +12,7 @@ namespace RuiJi.Net.NodeVisitor
 {
     public class Crawler
     {
-        public Crawler()
-        {
-
-        }
-
-        public Response Request(Request request, bool usecp = false)
+        public static Response Request(Request request, bool usecp = false)
         {
             var proxyUrl = ProxyManager.Instance.Elect(NodeProxyTypeEnum.Crawler);
 
@@ -48,6 +43,9 @@ namespace RuiJi.Net.NodeVisitor
                 });
 
                 request.Proxy = elect.Proxy;
+                request.Elect = elect.BaseUrl;
+                if(string.IsNullOrEmpty(request.Ip))
+                    request.Ip = elect.ClientIp;
 
                 var client = new RestClient("http://" + elect.BaseUrl);
                 var restRequest = new RestRequest("api/crawl");
@@ -68,7 +66,7 @@ namespace RuiJi.Net.NodeVisitor
             }
         }
 
-        public Response Request(string url, string method = "GET", bool usecp = false)
+        public static Response Request(string url, string method = "GET", bool usecp = false)
         {
             var request = new Request(url);
             request.Method = method;
@@ -76,7 +74,7 @@ namespace RuiJi.Net.NodeVisitor
             return Request(request, usecp);
         }
 
-        public CrawlerElectResult Elect(CrawlerElectRequest request)
+        public static CrawlerElectResult Elect(CrawlerElectRequest request)
         {
             var proxyUrl = ProxyManager.Instance.Elect(NodeProxyTypeEnum.Crawler);
 

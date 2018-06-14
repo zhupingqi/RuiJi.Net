@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RuiJi.Net.Core;
-using RuiJi.Net.Core.Utils;
+using RuiJi.Net.Core.Utils.Log;
 using RuiJi.Net.Node.Crawler;
 using System;
 using System.Collections.Generic;
@@ -96,7 +96,7 @@ namespace RuiJi.Net.Node.Crawler
                     case EventType.NodeChildrenChanged:
                         {
                             node.LoadLiveCrawler();
-                            Console.WriteLine("detected crawler node change");
+                            Logger.GetLogger(node.BaseUrl).Info("detected crawler node change");
                             break;
                         }
                 }

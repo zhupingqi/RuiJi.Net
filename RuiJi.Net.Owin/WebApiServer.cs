@@ -63,8 +63,6 @@ namespace RuiJi.Net.Owin
             baseUrl = IPHelper.FixLocalUrl(baseUrl);
 
             app = WebApp.Start<Startup>("http://" + baseUrl);
-            Console.WriteLine("Web Api Server Start At http://" + baseUrl + " with " + nodeType + " node");
-            Console.WriteLine();
 
             switch (nodeType)
             {
@@ -100,10 +98,8 @@ namespace RuiJi.Net.Owin
                     }
             }
 
-            var logAppenders = new List<ILogAppender>() { new RollingFileLogAppender(NodeBase.BaseUrl), new MemoryLogAppender() };
-            Logger.Instance.Add(NodeBase.BaseUrl, logAppenders);
+            NodeBase.Start();            
 
-            NodeBase.Start();
             resetEvent = new ManualResetEvent(false);
             resetEvent.WaitOne();
         }

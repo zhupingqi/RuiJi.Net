@@ -1,4 +1,5 @@
 ﻿using Microsoft.Owin.Hosting;
+using RuiJi.Net.Core.Utils.Log;
 using RuiJi.Net.Node;
 using RuiJi.Net.Node.Configuration;
 using System;
@@ -48,7 +49,7 @@ namespace RuiJi.Net.Owin
                 server.Stop();
                 //servers.Remove(server);
 
-                Console.WriteLine("server port with " + port + " stop!");
+                Logger.GetLogger("").Info("server port with " + port + " stop!");
             }
 
             tasks.RemoveAll(m=>m.Status != TaskStatus.Running);
@@ -68,6 +69,8 @@ namespace RuiJi.Net.Owin
 
                 if (File.Exists(path))
                 {
+                    Logger.GetLogger("").Info("start up embed zookeeper");
+
                     zkProcess = new Process();
                     zkProcess.StartInfo.FileName = path;
                     zkProcess.StartInfo.UseShellExecute = false;
@@ -91,7 +94,7 @@ namespace RuiJi.Net.Owin
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine(ex.Message);
+                        Logger.GetLogger("").Info(ex.Message);
                     }
                 });
 
@@ -107,7 +110,7 @@ namespace RuiJi.Net.Owin
             {
                 if (server.Running)
                 {
-                    Console.WriteLine("server " + server.NodeBase.BaseUrl + " already running!");
+                    Logger.GetLogger("").Info("server " + server.NodeBase.BaseUrl + " already running!");
                 }
                 else
                 {
@@ -119,18 +122,18 @@ namespace RuiJi.Net.Owin
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine(ex.Message);
+                            Logger.GetLogger("").Info(ex.Message);
                         }
                     });
 
                     tasks.Add(t);
-                    
-                    Console.WriteLine("server " + server.NodeBase.BaseUrl + " restart!");
+
+                    Logger.GetLogger("").Info("server " + server.NodeBase.BaseUrl + " restart!");
                 }
             }
             else
             {
-                Console.WriteLine("server not find");
+                Logger.GetLogger("").Info("server not find");
             }
         }
 
@@ -147,15 +150,15 @@ namespace RuiJi.Net.Owin
                 servers.ForEach(m =>
                 {
                     m.Stop();
-                    Console.WriteLine("server port with " + m.Port + " stop!");
+                    Logger.GetLogger("").Info("server port with " + m.Port + " stop!");
                 });
                 servers.Clear();
             }
             catch(Exception ex) {
-                Console.WriteLine(ex.Message);
+                Logger.GetLogger("").Info(ex.Message);
             }
 
-            Console.WriteLine("all server stop!");
+            Logger.GetLogger("").Info("all server stop!");
         }
 
         public static NodeBase GetLeader()

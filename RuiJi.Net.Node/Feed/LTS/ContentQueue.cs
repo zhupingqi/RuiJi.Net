@@ -80,9 +80,7 @@ namespace RuiJi.Net.Node.Feed.LTS
                         QueueModel qm;
                         if (queue.TryDequeue(out qm))
                         {
-                            var visitor = new Visitor();
-
-                            var result = visitor.Extract(qm.Url);
+                            var result = NodeVisitor.Cooperater.GetResult(qm.Url);
                             if (result != null)
                             {
                                 var cm = new ContentModel();

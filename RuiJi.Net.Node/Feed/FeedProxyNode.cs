@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RuiJi.Net.Core;
-using RuiJi.Net.Core.Utils;
+using RuiJi.Net.Core.Utils.Log;
 using RuiJi.Net.Node.Extracter;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ZooKeeperNet;
-using LiteDB;
 
 namespace RuiJi.Net.Node.Feed
 {
@@ -72,7 +71,7 @@ namespace RuiJi.Net.Node.Feed
                     case EventType.NodeChildrenChanged:
                         {
                             node.LoadLiveFeed();
-                            Console.WriteLine("detected feed node change");
+                            Logger.GetLogger(node.BaseUrl).Info("detected feed node change");
                             break;
                         }
                 }

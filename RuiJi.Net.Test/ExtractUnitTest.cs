@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using RuiJi.Net.Core.Crawler;
 using RuiJi.Net.Core.Extracter;
 using RuiJi.Net.Core.Extracter.Enum;
 using RuiJi.Net.Core.Extracter.Selector;
 using RuiJi.Net.NodeVisitor;
 using RuiJi.Net.Owin;
+using RuiJi.Net.Storage;
+using RuiJi.Net.Storage.Model;
 
 namespace RuiJi.Net.Test
 {
@@ -73,7 +77,7 @@ namespace RuiJi.Net.Test
         {
             ServerManager.StartServers();
 
-            var response = new Crawler().Request("http://www.ruijihg.com/%e5%bc%80%e5%8f%91/");
+            var response = Crawler.Request("http://www.ruijihg.com/%e5%bc%80%e5%8f%91/");
 
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 return;
@@ -122,7 +126,7 @@ namespace RuiJi.Net.Test
         {
             ServerManager.StartServers();
 
-            var response = new Crawler().Request("http://www.ruijihg.com/2018/05/20/ruiji-solr-net/");
+            var response = Crawler.Request("http://www.ruijihg.com/2018/05/20/ruiji-solr-net/");
 
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 return;
@@ -169,9 +173,18 @@ css #listnav a[href]";
             var block = RuiJiExpression.ParserBlock(exp);
             var result = RuiJiExtracter.Extract(content, block);
 
-            if (result.Paging != null && result.Paging.Count > 0 && result.Metas != null && result.Metas.ContainsKey("content"))
+            if (result.Paging != null && result.Paging.Count > 0 && result.Tiles != null)
             {
-                result = PagingExtracter.Extract(request.Uri, result, block);
+                var storage = new FileStorage(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"download"));
+
+                PagingExtracter.DownloadPage(request.Uri, result, block,(u,res)=> {
+                    var c = new DownloadContentModel();
+                    c.Url = u.AbsolutePath.Trim();
+                    c.IsRaw = false;
+                    c.Data = JsonConvert.SerializeObject(res.Tiles);
+
+                    storage.Insert(c);
+                },int.MaxValue);
             }
 
             Assert.IsTrue(true);
@@ -206,7 +219,7 @@ css a[href]";
 
             if (result.Paging != null && result.Paging.Count > 0 && result.Metas != null && result.Metas.ContainsKey("content"))
             {
-                result = PagingExtracter.Extract(request.Uri, result, block);
+                result = PagingExtracter.MergeContent(request.Uri, result, block);
             }
 
             Assert.IsTrue(true);

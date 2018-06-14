@@ -176,9 +176,7 @@ css #listnav a[href]
         [TestMethod]
         public void TestUrlExtract()
         {
-            var visitor = new Visitor();
-
-            var result = visitor.Extract("http://www.cannews.com.cn/2018/0606/177699.shtml");
+            var result = Cooperater.GetResult("http://www.cannews.com.cn/2018/0606/177699.shtml");
 
             Assert.IsTrue(true);
         }

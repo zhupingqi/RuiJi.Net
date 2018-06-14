@@ -121,11 +121,12 @@ namespace RuiJi.Net.Node.Feed.LTS
                 if (feed.Headers != null)
                     request.Headers = feed.Headers;
                 request.Headers.Add(new WebHeader("Referer", request.Uri.AbsoluteUri));
+                //request.Headers.Add(new WebHeader("Referer", "https://www.baidu.com/link?url=GEyGoQq22aGfAidB32foRlg2BWxPgspy0KlenTlTNoucDZr0sdVFfXrwtO6xs_Xe&wd=&eqid=9c546d780000aeba000000025b2248a2"));
                 request.Method = feed.Method;
                 if (feed.Method == "POST" && !string.IsNullOrEmpty(feed.PostParam))
                     request.PostParam = feed.PostParam;
 
-                var response = new RuiJi.Net.NodeVisitor.Crawler().Request(request);
+                var response = NodeVisitor.Crawler.Request(request);
 
                 if (response != null && response.StatusCode == HttpStatusCode.OK)
                 {

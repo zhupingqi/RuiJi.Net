@@ -22,6 +22,10 @@ namespace RuiJi.Net.Storage
             {
                 var ext = Path.GetExtension(content.Url).ToLower();
                 var name = GetMD5Hash(content.Url);
+                if(string.IsNullOrEmpty(ext))
+                {
+                    ext = ".txt";
+                }
 
                 var path = Path.Combine(ConnectString, name + ext);
 

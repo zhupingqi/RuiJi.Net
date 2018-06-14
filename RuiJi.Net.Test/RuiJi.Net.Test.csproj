@@ -95,6 +95,10 @@
       <Project>{0E98716C-4A38-45D4-8B53-7705A342AA42}</Project>
       <Name>RuiJi.Net.Owin</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RuiJi.Net.Storage\RuiJi.Net.Storage.csproj">
+      <Project>{39D023C5-67EF-4396-967B-396EFA9770C2}</Project>
+      <Name>RuiJi.Net.Storage</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

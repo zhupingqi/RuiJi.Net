@@ -132,7 +132,7 @@ namespace RuiJi.Net.Node.Db
                     if (start >= count)
                         start = 0;
 
-                    return col.Find(m => m.Status == Status.ON).Skip(start).Take(1).FirstOrDefault();
+                    return col.Find(m => m.Status == Status.ON).Skip(start++).Take(1).FirstOrDefault();
                 }
             }
         }
