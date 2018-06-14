@@ -52,6 +52,14 @@ namespace RuiJi.Net.Node.Db
         [JsonProperty("feature")]
         public string Feature { get; set; }
 
+        [JsonProperty("status")]
+        [JsonConverter(typeof(EnumConvert<Status>))]
+        public Status Status { get; set; }
+
+        [JsonProperty("runJs")]
+        [JsonConverter(typeof(EnumConvert<Status>))]
+        public Status RunJS { get; set; }
+
         [JsonProperty("block")]
         public string BlockExpression { get; set; }
 

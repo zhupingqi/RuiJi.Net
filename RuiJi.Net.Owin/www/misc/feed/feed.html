@@ -87,10 +87,9 @@
             <span class="input-group-addon">Scheduling</span>
             <input type="text" class="form-control required" name="scheduling">
         </div>
-        <div id="feed_test_result"></div>
-        <div class="input-group">
+        <div class="input-group status">
             <span class="input-group-addon">Status</span>
-            <input type="hidden" name="status" value="true">
+            <input type="hidden" name="status" value="ON">
             <div class="btn-group" data-toggle="buttons">
                 <label class="btn btn-mjdark2 active">
                     ON
@@ -102,5 +101,20 @@
                 </label>
             </div>
         </div>
+        <div class="input-group runjs">
+            <span class="input-group-addon">RunJs</span>
+            <input type="hidden" name="runJs" value="OFF">
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-mjdark2">
+                    ON
+                    <input type="radio" autocomplete="off" value="ON">
+                </label>
+                <label class="btn btn-mjdark2 active">
+                    OFF
+                    <input type="radio" autocomplete="off" value="OFF">
+                </label>
+            </div>
+        </div>
+        <div id="feed_test_result"></div>
     </form>
 </div>

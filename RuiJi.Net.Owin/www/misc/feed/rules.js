@@ -81,6 +81,16 @@
                         if (ele.is(":hidden")) {
                             ele.next().attr("value", v);
                         }
+
+                        if (p == "status" && v == "OFF") {
+                            f.find("div.status :radio[value='ON']").parent().removeClass("active");
+                            f.find("div.status :radio[value='OFF']").parent().addClass("active");
+                        }
+
+                        if (p == "runJs" && v == "ON") {
+                            f.find("div.runjs :radio[value='OFF']").parent().removeClass("active");
+                            f.find("div.runjs :radio[value='ON']").parent().addClass("active");
+                        }
                     }
 
                     BootstrapDialog.show({
@@ -126,6 +136,11 @@
                         else
                             swal("错误！", "未选择任何规则。", "success");
                     });
+            });
+
+            $(document).on("click", "#rule_dialog .btn-mjdark2", function () {
+                var ele = $(this);
+                ele.closest(".input-group").find(":hidden").val(ele.find("input").val());
             });
         },
         queryParams: function (params) {

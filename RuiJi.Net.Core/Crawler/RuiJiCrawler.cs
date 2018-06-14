@@ -27,6 +27,14 @@ namespace RuiJi.Net.Core.Crawler
         {
             Logger.GetLogger(request.Elect).Info("request " + request.Uri.ToString() + " with ip:" + request.Ip + (request.Proxy != null ? (" proxy:" + request.Proxy.Host + ":" + request.Proxy.Port) : ""));
 
+            if(request.RunJS)
+            {
+                var p = new PhantomCrawler();
+                var res = p.Request(request);
+
+                return res;
+            }
+
             if(!string.IsNullOrEmpty(request.Ip))
             {
                 if (!IPHelper.IsHostIPAddress(IPAddress.Parse(request.Ip)))

@@ -27,9 +27,16 @@ namespace RuiJi.Net.Core.Crawler
             var extension = Path.GetExtension(request.Uri.ToString()).ToLower();
             var file = "ph_download/" + ShortGUID() + extension;
 
-            var args = "proxy.js " + Uri.EscapeUriString(request.Uri.ToString()) + " " + file;
+            var args = "";
             if (request.Proxy != null)
-                args += " " + request.Proxy.Host + " " + request.Proxy.Port + " " + request.Proxy.Username + " " + request.Proxy.Password;
+            {
+                args += "--proxy=" + new Uri(request.Proxy.Host).Host + ":" + request.Proxy.Port + " --proxy-type=http";
+                if (!string.IsNullOrEmpty(request.Proxy.Username))
+                    args += " " + request.Proxy.Username;
+                if (!string.IsNullOrEmpty(request.Proxy.Password))
+                    args += " " + request.Proxy.Password;
+            }
+            args += " proxy.js " + Uri.EscapeUriString(request.Uri.ToString()) + " " + file;
 
             var p = new Process();
             p.StartInfo.FileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "phantomjs.exe");
@@ -42,7 +49,6 @@ namespace RuiJi.Net.Core.Crawler
             p.Start();
 
             p.WaitForExit(15000);
-            p.Kill();
             p.Dispose();
             p = null;
 

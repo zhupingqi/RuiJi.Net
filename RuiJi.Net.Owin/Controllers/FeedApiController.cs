@@ -222,7 +222,11 @@ namespace RuiJi.Net.Owin.Controllers
 
             //return result;
 
-            var response = Crawler.Request(rule.Url, rule.Method);
+            var request = new Request(rule.Url);
+            request.Method = rule.Method;
+            request.RunJS = (rule.RunJS == Status.ON);
+
+            var response = Crawler.Request(request);
             if (response != null && response.Data != null)
             {
                 var content = response.Data.ToString();

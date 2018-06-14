@@ -118,6 +118,7 @@ namespace RuiJi.Net.Node.Feed.LTS
             try
             {
                 var request = new Request(feed.Address);
+                request.RunJS = (feed.RunJS == Status.ON);
                 if (feed.Headers != null)
                     request.Headers = feed.Headers;
                 request.Headers.Add(new WebHeader("Referer", request.Uri.AbsoluteUri));

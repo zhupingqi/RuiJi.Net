@@ -89,8 +89,13 @@
                         }
 
                         if (p == "status" && v == "OFF") {
-                            f.find(":radio[value='ON']").parent().removeClass("active");
-                            f.find(":radio[value='OFF']").parent().addClass("active");
+                            f.find("div.status :radio[value='ON']").parent().removeClass("active");
+                            f.find("div.status :radio[value='OFF']").parent().addClass("active");
+                        }
+
+                        if (p == "runJs" && v == "ON") {
+                            f.find("div.runjs :radio[value='OFF']").parent().removeClass("active");
+                            f.find("div.runjs :radio[value='ON']").parent().addClass("active");
                         }
                     }
 
@@ -155,7 +160,7 @@
 
             $(document).on("click", "#feed_dialog .btn-mjdark2", function () {
                 var ele = $(this);
-                ele.closest(".input-group").find("input").val(ele.find("input").val());
+                ele.closest(".input-group").find(":hidden").val(ele.find("input").val());
             });
         },
         queryParams: function (params) {

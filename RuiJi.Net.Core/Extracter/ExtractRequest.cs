@@ -15,6 +15,9 @@ namespace RuiJi.Net.Core.Extracter
         [JsonProperty("block")]
         public ExtractBlock Block { get; set; }
 
+        [JsonProperty("runJs")]
+        public bool RunJS { get; set; }
+
         public ExtractFeatureBlock()
         { }
 
