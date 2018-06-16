@@ -49,7 +49,7 @@ namespace RuiJi.Net.Owin.Controllers
 
                 request.Elect = result.BaseUrl;
 
-                var p = ProxyLiteDb.Get();
+                var p = ProxyLiteDb.Get(request.Uri.Scheme);
                 if(p != null)
                 {
                     request.Proxy = new RequestProxy();
@@ -117,7 +117,7 @@ namespace RuiJi.Net.Owin.Controllers
 
             if (request.ElectProxy)
             {
-                var p = ProxyLiteDb.Get();
+                var p = ProxyLiteDb.Get(request.Uri.Scheme);
                 if (p != null)
                 {
                     result.Proxy = new RequestProxy();

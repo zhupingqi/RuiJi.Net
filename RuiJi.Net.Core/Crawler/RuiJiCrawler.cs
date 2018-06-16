@@ -27,19 +27,36 @@ namespace RuiJi.Net.Core.Crawler
         {
             Logger.GetLogger(request.Elect).Info("request " + request.Uri.ToString() + " with ip:" + request.Ip + (request.Proxy != null ? (" proxy:" + request.Proxy.Host + ":" + request.Proxy.Port) : ""));
 
-            if(request.RunJS)
+            if (request.RunJS)
             {
                 var p = new PhantomCrawler();
                 var res = p.Request(request);
+                if (request.UseCookie && res.Headers != null)
+                {
+                    var cookies = res.Headers.Where(m => m.Name == "Set-Cookie").Select(m => m.Value).ToList();
+                    if (cookies.Count > 0)
+                    {
+                        var c = string.Join("", cookies).Replace("\n",",");
+                        SetCookie(request, c);
+                        res.Cookie = GetCookie(request);
+                    }
+                }
+
+                res.ElectInfo = request.Elect;
+                res.RequestUri = request.Uri;
+                res.Method = request.Method;
+                if (res.Proxy != null)
+                    res.Proxy = request.Proxy.Host;
 
                 return res;
             }
 
-            if(!string.IsNullOrEmpty(request.Ip))
+            if (!string.IsNullOrEmpty(request.Ip))
             {
                 if (!IPHelper.IsHostIPAddress(IPAddress.Parse(request.Ip)))
                 {
-                    return new Response {
+                    return new Response
+                    {
                         IsRaw = false,
                         StatusCode = HttpStatusCode.BadRequest,
                         Data = "specified Ip is invalid!"
@@ -48,6 +65,15 @@ namespace RuiJi.Net.Core.Crawler
             }
 
             var httpResponse = GetHttpWebResponse(request);
+            if (httpResponse == null)
+            {
+                var r = new Response();
+                r.StatusCode = HttpStatusCode.BadRequest;
+                r.Data = "httpResponse is null";
+
+                return r;
+            }
+
             var buff = GetResponseBuff(httpResponse);
 
             var response = new Response();
@@ -58,7 +84,7 @@ namespace RuiJi.Net.Core.Crawler
             response.ResponseUri = httpResponse.ResponseUri;
             response.Method = request.Method;
 
-            if(!string.IsNullOrEmpty(httpResponse.ContentType))
+            if (!string.IsNullOrEmpty(httpResponse.ContentType))
                 response.IsRaw = MimeDetect.IsRaw(httpResponse.ContentType);
             else
                 response.IsRaw = MimeDetect.IsRaw(httpResponse.ResponseUri);
@@ -114,12 +140,12 @@ namespace RuiJi.Net.Core.Crawler
                 httpRequest.Headers.Add("Cookie", cookie);
             }
 
-            if (request.Proxy != null && String.IsNullOrEmpty(request.Proxy.Host + request.Proxy.Port))
+            if (request.Proxy != null && !String.IsNullOrEmpty(request.Proxy.Host + request.Proxy.Port))
             {
-                var proxy = new WebProxy(request.Proxy.Host,request.Proxy.Port);
+                var proxy = new WebProxy(request.Proxy.Host, request.Proxy.Port);
 
                 if (!string.IsNullOrEmpty(request.Proxy.Username + request.Proxy.Password))
-                { 
+                {
                     proxy.Credentials = new NetworkCredential(request.Proxy.Username, request.Proxy.Password);
                 }
 
@@ -168,15 +194,15 @@ namespace RuiJi.Net.Core.Crawler
                 return request.Cookie;
 
             var ip = request.Ip;
-            if(string.IsNullOrEmpty(request.Ip))
+            if (string.IsNullOrEmpty(request.Ip))
             {
                 ip = IPHelper.GetDefaultIPAddress().ToString();
             }
 
-            return IpCookieManager.Instance.Get(ip, request.Uri.ToString());
+            return IpCookieManager.Instance.GetCookieHeader(ip, request.Uri.ToString());
         }
 
-        private void SetCookie(Request request,string setCookie)
+        private void SetCookie(Request request, string setCookie)
         {
             if (string.IsNullOrEmpty(setCookie))
                 return;
@@ -187,7 +213,7 @@ namespace RuiJi.Net.Core.Crawler
                 ip = IPHelper.GetDefaultIPAddress().ToString();
             }
 
-            IpCookieManager.Instance.Update(ip, request.Uri.ToString(), setCookie);
+            IpCookieManager.Instance.UpdateCookie(ip, request.Uri.ToString(), setCookie);
         }
 
         private void PreprocessHeader(HttpWebRequest request, List<WebHeader> headers)
@@ -197,10 +223,11 @@ namespace RuiJi.Net.Core.Crawler
 
             foreach (var header in headers)
             {
-                if (ignoreHeader.Exists(m => m == header.Key))
+                if (ignoreHeader.Exists(m => m == header.Name))
                     continue;
 
-                switch (header.Key) {
+                switch (header.Name)
+                {
                     case "Referer":
                         {
                             request.Referer = header.Value;
@@ -221,11 +248,12 @@ namespace RuiJi.Net.Core.Crawler
                             request.ContentType = header.Value;
                             break;
                         }
-                    default: {
-                            request.Headers.Remove(header.Key);
+                    default:
+                        {
+                            request.Headers.Remove(header.Name);
                             if (!string.IsNullOrEmpty(header.Value))
                             {
-                                request.Headers.Add(header.Key, header.Value);
+                                request.Headers.Add(header.Name, header.Value);
                             }
                             break;
                         }

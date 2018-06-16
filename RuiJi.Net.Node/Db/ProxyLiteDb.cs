@@ -117,22 +117,23 @@ namespace RuiJi.Net.Node.Db
             }
         }
 
-        public static ProxyModel Get()
+        public static ProxyModel Get(string scheme)
         {
             using (var db = new LiteDatabase(@"LiteDb/Proxys.db"))
             {
                 lock (_lck)
                 {
                     var col = db.GetCollection<ProxyModel>("proxys");
-                    var count = col.Count(m => m.Status == Status.ON);
+                    var t = (scheme.ToLower() == "http") ? ProxyTypeEnum.HTTP : ProxyTypeEnum.HTTPS;
+                    var count = col.Count(m => m.Status == Status.ON && m.Type == t);
 
                     if (count == 0)
                         return null;
 
                     if (start >= count)
-                        start = 0;
+                        start = 0;                   
 
-                    return col.Find(m => m.Status == Status.ON).Skip(start++).Take(1).FirstOrDefault();
+                    return col.Find(m => m.Status == Status.ON && m.Type == t).Skip(start++).Take(1).FirstOrDefault();
                 }
             }
         }

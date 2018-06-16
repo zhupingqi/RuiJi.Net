@@ -26,15 +26,11 @@ namespace RuiJi.Net.Core.Cookie
     {
         private CookieContainer _container;
 
+        public int Channel { get; set; }
+
         public ManagedCookie()
         {
             _container = new CookieContainer();
-        }
-
-        public ManagedCookie(string url, string setCookie)
-            : this()
-        {
-            Update(url,setCookie);
         }
 
         public string Update(string url,string setCookie)
@@ -44,19 +40,9 @@ namespace RuiJi.Net.Core.Cookie
             try
             {
                 var uri = new Uri(url);
-                var reg = new Regex(@"(expires=[^,]*,[\s]*[\d]*-[^-]*-)([\d]*)([\s]*[\d]*:[\d]*:[\d]*[\s]GMT)");
+                var reg = new Regex(@"expires=(.*?)[\s]GMT");
                 var ms = reg.Matches(setCookie);
-                foreach (Match m in ms)
-                {
-                    string f0 = m.Groups[0].Value;
-                    string f1 = m.Groups[1].Value;
-                    string f2 = m.Groups[2].Value;
-                    string f3 = m.Groups[3].Value;
-
-                    if (f2.Length == 2)
-                        setCookie = setCookie.Replace(f0, f1 + "20" + f2 + f3);
-                }
-
+                setCookie = Regex.Replace(setCookie, @"expires=(.*?)[\s]GMT", "expires=Tue, 15 Jun 2038 22:57:20 GMT");
                 _container.SetCookies(uri, setCookie);
 
                 var tmp = new List<string>();
@@ -68,14 +54,22 @@ namespace RuiJi.Net.Core.Cookie
 
                 return string.Join(",", tmp.ToArray());
             }
-            catch { }
+            catch (Exception ex)
+            {
+
+            }
 
             return null;
         }
 
-        public string GetCookie(string url)
+        public string GetCookieHeader(string url)
         {
             return _container.GetCookieHeader(new Uri(url)).ToString();
+        }
+
+        public CookieCollection GetCookie(string url)
+        {
+            return _container.GetCookies(new Uri(url));
         }
     }
 }

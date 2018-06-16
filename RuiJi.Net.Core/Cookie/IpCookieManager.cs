@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using Newtonsoft.Json;
+using System.Net;
 
 namespace RuiJi.Net.Core.Cookie
 {
@@ -63,7 +64,7 @@ namespace RuiJi.Net.Core.Cookie
             }
         }
 
-        private void Save(string ip ,string url, string cookie)
+        private void SaveCookieFile(string ip ,string url, string cookie)
         {
             var cookieFile = new CookieFile();
             cookieFile.Ip = ip;
@@ -77,7 +78,7 @@ namespace RuiJi.Net.Core.Cookie
             File.WriteAllText(ip + "/" + (new Uri(url)).Host + ".txt", json, Encoding.UTF8);
         }
 
-        public void Update(string ip,string url, string setCookie)
+        public void UpdateCookie(string ip,string url, string setCookie)
         {
             lock (_lck)
             {
@@ -95,20 +96,31 @@ namespace RuiJi.Net.Core.Cookie
                     cookies.Add(ip, manager);
                 }
 
-                Save(ip, url, cookie);
+                SaveCookieFile(ip, url, cookie);
             }
         }
 
-        public string Get(string ip, string url)
+        public string GetCookieHeader(string ip, string url, int channel = 0)
         {
             lock (_lck)
             {
                 if (!cookies.ContainsKey(ip))
                 {
-                    //var setCookie = SogouCookie.NewSogouCookie(path);
-                    //Update(path, url, setCookie);
-
                     return "";
+                }
+
+                var cookie = cookies[ip].GetCookieHeader(url);
+                return cookie;
+            }
+        }
+
+        public CookieCollection GetCookie(string ip, string url, int channel = 0)
+        {
+            lock (_lck)
+            {
+                if (!cookies.ContainsKey(ip))
+                {
+                    return new CookieCollection();
                 }
 
                 var cookie = cookies[ip].GetCookie(url);
@@ -116,7 +128,7 @@ namespace RuiJi.Net.Core.Cookie
             }
         }
 
-        public void Remove(string ip, string url)
+        public void RemoveCookie(string ip, string url, int channel = 0)
         { 
             
         }

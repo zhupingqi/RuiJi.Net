@@ -42,17 +42,17 @@ namespace RuiJi.Net.Test
             var request = new Request("http://www.baidu.com/");
             var response = crawler.Request(request);
 
-            Assert.IsTrue(response.Headers.Count(m => m.Key == "Set-Cookie") > 0);
+            Assert.IsTrue(response.Headers.Count(m => m.Name == "Set-Cookie") > 0);
 
             request = new Request("http://www.baidu.com/about/");
             response = crawler.Request(request);
 
-            Assert.IsTrue(response.Headers.Count(m => m.Key == "Set-Cookie") == 0);
+            Assert.IsTrue(response.Headers.Count(m => m.Name == "Set-Cookie") == 0);
 
             request = new Request("http://www.kuaidaili.com/");
             response = crawler.Request(request);
 
-            Assert.IsTrue(response.Headers.Count(m => m.Key == "Set-Cookie") == 0);
+            Assert.IsTrue(response.Headers.Count(m => m.Name == "Set-Cookie") == 0);
         }
         
 

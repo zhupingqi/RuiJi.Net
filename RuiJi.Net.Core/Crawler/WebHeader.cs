@@ -10,8 +10,8 @@ namespace RuiJi.Net.Core.Crawler
 {
     public class WebHeader
     {
-        [JsonProperty("key")]
-        public string Key { get; set; }
+        [JsonProperty("name")]
+        public string Name { get; set; }
 
         [JsonProperty("value")]
         public string Value { get; set; }
@@ -23,7 +23,7 @@ namespace RuiJi.Net.Core.Crawler
 
         public WebHeader(string key,string value)
         {
-            this.Key = key;
+            this.Name = key;
             this.Value = value;
         }
 
@@ -34,7 +34,7 @@ namespace RuiJi.Net.Core.Crawler
             foreach (string key in headers.Keys)
             {
                 hs.Add(new WebHeader() { 
-                   Key = key,
+                   Name = key,
                    Value = headers[key]
                 });
             }
