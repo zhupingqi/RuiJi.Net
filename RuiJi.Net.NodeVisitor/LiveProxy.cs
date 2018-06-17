@@ -8,9 +8,9 @@ namespace RuiJi.Net.NodeVisitor
 {
     public enum NodeProxyTypeEnum
     {
-        Crawler,
-        Extracter,
-        Feed
+        CRAWLERPROXY = 0,
+        EXTRACTERPROXY = 1,
+        FEEDPROXY = 2
     }
 
     public class LiveProxy
@@ -24,12 +24,12 @@ namespace RuiJi.Net.NodeVisitor
         public static NodeProxyTypeEnum GetType(string data)
         {
             if (data.IndexOf("crawler") != -1)
-                return NodeProxyTypeEnum.Crawler;
+                return NodeProxyTypeEnum.CRAWLERPROXY;
 
             if (data.IndexOf("extracter") != -1)
-                return NodeProxyTypeEnum.Extracter;
+                return NodeProxyTypeEnum.EXTRACTERPROXY;
 
-            return NodeProxyTypeEnum.Feed;
+            return NodeProxyTypeEnum.FEEDPROXY;
         }
     }
 }

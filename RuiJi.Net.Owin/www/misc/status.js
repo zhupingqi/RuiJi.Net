@@ -10,7 +10,7 @@
                 module.reloadSystem();
             }, 5000);
 
-            $.getJSON('/api/info/server?baseUrl=' + window.location.href, function (d) {
+            $.getJSON('/api/info/server', function (d) {
                 var t = utils.template("status_server_info", d);
                 $("#server_info").prepend(t);
             });

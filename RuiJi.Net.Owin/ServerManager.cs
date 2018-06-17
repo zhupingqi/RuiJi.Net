@@ -55,11 +55,6 @@ namespace RuiJi.Net.Owin
             tasks.RemoveAll(m=>m.Status != TaskStatus.Running);
         }
 
-        internal static WebApiServer GetNode(string port)
-        {
-            return servers.SingleOrDefault(m => m.Port == port);
-        }
-
         public static void StartServers()
         {
             var zkServer = ConfigurationManager.AppSettings["zkPath"];
@@ -172,6 +167,9 @@ namespace RuiJi.Net.Owin
 
         public static NodeBase Get(string baseUrl)
         {
+            //aliyun nat...
+            baseUrl = baseUrl.Replace("118.31.61.230", "172.16.50.52");
+
             var temp = servers.SingleOrDefault(m => m.NodeBase.BaseUrl.ToLower() == baseUrl.ToLower());
             return servers.SingleOrDefault(m=>m.NodeBase.BaseUrl.ToLower() == baseUrl.ToLower()).NodeBase;            
         }

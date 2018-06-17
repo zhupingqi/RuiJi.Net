@@ -12,6 +12,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web.Http;
 using RuiJi.Net.NodeVisitor;
+using RuiJi.Net.Node;
 
 namespace RuiJi.Net.Owin.Controllers
 {
@@ -83,32 +84,26 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpGet]
-        public string[] Ips()
+        [NodeRoute(Target = NodeTypeEnum.CRAWLER, RouteArgumentName = "baseUrl")]
+        public string[] Ips(string baseUrl)
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
 
-            if (node.NodeType == Node.NodeTypeEnum.CRAWLER)
-            {
-                return IPHelper.GetHostIPAddress().Select(m => m.ToString()).ToArray();
-            }
-
-            return new string[0];
+            return IPHelper.GetHostIPAddress().Select(m => m.ToString()).ToArray();
         }
 
         [HttpPost]
-        public void SetIps([FromBody]string[] ips)
+        [NodeRoute(Target = NodeTypeEnum.CRAWLER, RouteArgumentName = "baseUrl")]
+        public void SetIps([FromBody]string[] ips,[FromUri]string baseUrl)
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
 
-            if (node.NodeType == Node.NodeTypeEnum.CRAWLER)
-            {
-                var path = "/config/crawler/" + Request.RequestUri.Authority;
+            var path = "/config/crawler/" + Request.RequestUri.Authority;
 
-                var data = node.GetData("/config/crawler/" + Request.RequestUri.Authority);
-                var config = JsonConvert.DeserializeObject<CrawlerConfig>(data.Data);
-                config.Ips = ips;
-                node.SetData(path, JsonConvert.SerializeObject(config));
-            }
+            var data = node.GetData("/config/crawler/" + Request.RequestUri.Authority);
+            var config = JsonConvert.DeserializeObject<CrawlerConfig>(data.Data);
+            config.Ips = ips;
+            node.SetData(path, JsonConvert.SerializeObject(config));
         }
     }
 }

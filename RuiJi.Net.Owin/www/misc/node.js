@@ -11,7 +11,7 @@
                 }).get();
 
                 var crawler = $("#active_node_crawler").text();
-                var url = "http://" + crawler + "/api/crawler/ips/set";
+                var url = "/api/crawler/ips/set?baseUrl=" + crawler;
 
                 $.ajax({
                     url: url,
@@ -26,9 +26,9 @@
 
             $(document).on("click", "#save_feed", function () {
                 var pages = $("#node_pages").val();
-
                 var feed = $("#active_node_feed").text();
-                var url = "http://" + feed + "/api/feed/page/set";
+
+                var url = "/api/feed/page/set?baseUrl=" + feed;
 
                 $.ajax({
                     url: url,
@@ -61,7 +61,7 @@
                         if (path.startWith("/config/crawler/")) {
                             $("#crawler_node_set").show();
                             var crawler = path.replace("/config/crawler/", "");
-                            var url = "http://" + crawler + "/api/crawler/ips";
+                            var url = "/api/crawler/ips?baseUrl=" + crawler;
 
                             $("#active_node_crawler").text(crawler);
 
@@ -82,7 +82,7 @@
                         if (path.startWith("/config/feed/")) {
                             $("#feed_node_set").show();
                             var feed = path.replace("/config/feed/", "");
-                            var url = "http://" + feed + "/api/feed/page";
+                            var url = "/api/feed/page?baseUrl=" + feed;
 
                             $("#active_node_feed").text(feed);
 

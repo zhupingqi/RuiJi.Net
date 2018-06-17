@@ -233,8 +233,6 @@ define(['jquery'], function ($) {
             if ($.isFunction(fn)) {
                 fn();
             }
-
-
         },
         requestHash: function (tabs, href, prefix) {
             if (href !== "" && href.substr(0, 1) == "#") {
@@ -252,9 +250,10 @@ define(['jquery'], function ($) {
 
                         if (hash.indexOf("?") != -1) {
                             search = hash.substr(hash.indexOf("?"));
-                            window.location.hash = d.lib + search;
-                            break;
-                        }
+                        } 
+
+                        window.location.hash = d.lib + search;
+                        break;
                     }
                 }
             }

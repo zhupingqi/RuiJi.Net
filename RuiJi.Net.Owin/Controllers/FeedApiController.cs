@@ -27,7 +27,7 @@ namespace RuiJi.Net.Owin.Controllers
     {
         #region Rule
         [HttpGet]
-        [NodeRoute(Target = NodeProxyTypeEnum.Feed)]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
         public object Rules(int offset, int limit)
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
@@ -44,7 +44,7 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpGet]
-        [NodeRoute(Target = NodeProxyTypeEnum.Feed)]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
         public object UrlRule(string url, bool useBlock = false)
         {
             if (useBlock)
@@ -56,14 +56,14 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpPost]
-        [NodeRoute(Target = NodeProxyTypeEnum.Feed)]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
         public void UpdateRule(RuleModel rule)
         {
             RuleLiteDb.AddOrUpdate(rule);
         }
 
         [HttpGet]
-        [NodeRoute(Target = NodeProxyTypeEnum.Feed)]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
         public object GetRule(int id)
         {
             var feed = RuleLiteDb.Get(id);
@@ -72,7 +72,7 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpGet]
-        [NodeRoute(Target = NodeProxyTypeEnum.Feed)]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
         public bool RemoveRule(string ids)
         {
             var removes = ids.Split(',').Select(m => Convert.ToInt32(m)).ToArray();
@@ -83,7 +83,7 @@ namespace RuiJi.Net.Owin.Controllers
 
         #region Feed
         [HttpGet]
-        [NodeRoute(Target = NodeProxyTypeEnum.Feed)]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
         public object Feeds(int offset, int limit)
         {
             var paging = new Paging();
@@ -98,7 +98,7 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpGet]
-        [NodeRoute(Target = NodeProxyTypeEnum.Feed)]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
         public object FeedJob(string pages)
         {
             try
@@ -115,7 +115,8 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpGet]
-        public string GetFeedPage()
+        [NodeRoute(Target = NodeTypeEnum.FEED, RouteArgumentName = "baseUrl")]
+        public string GetFeedPage(string baseUrl)
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
 
@@ -129,7 +130,8 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpPost]
-        public void SetFeedPage([FromBody]string pages)
+        [NodeRoute(Target = NodeTypeEnum.FEED, RouteArgumentName = "baseUrl")]
+        public void SetFeedPage([FromBody]string pages, [FromUri]string baseUrl)
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
 
@@ -143,7 +145,7 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpPost]
-        [NodeRoute(Target = NodeProxyTypeEnum.Feed)]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
         public void UpdateFeed([FromBody]FeedModel feed)
         {
             FeedLiteDb.AddOrUpdate(feed);
@@ -160,7 +162,7 @@ namespace RuiJi.Net.Owin.Controllers
 
         #region 存储抓取结果
         [HttpPost]
-        [NodeRoute(Target = NodeProxyTypeEnum.Feed)]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
         public bool SaveContent(ContentModel content, string shard = "")
         {
             try
@@ -181,7 +183,7 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpGet]
-        [NodeRoute(Target = NodeProxyTypeEnum.Feed)]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
         public object GetContent(int offset, int limit, string shard = "", int feedId = 0)
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
@@ -203,7 +205,7 @@ namespace RuiJi.Net.Owin.Controllers
                     metas = m.Metas.Select(n => new
                     {
                         name = n.Key,
-                        content = n.Value
+                        content = n.Value.ToString().Length > 50 ? n.Value.ToString().Substring(0,50) : n.Value.ToString()
                     })
                 }),
                 total = paging.Count

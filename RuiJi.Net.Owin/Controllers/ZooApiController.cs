@@ -31,7 +31,7 @@ namespace RuiJi.Net.Owin.Controllers
             }
             else
             {
-                var leaderBaseUrl = ServerManager.GetNode(Request.RequestUri.Port.ToString()).NodeBase.LeaderBaseUrl;
+                var leaderBaseUrl = ServerManager.Get(Request.RequestUri.Authority).LeaderBaseUrl;
 
                 if (string.IsNullOrEmpty(leaderBaseUrl))
                     return null;
@@ -59,7 +59,7 @@ namespace RuiJi.Net.Owin.Controllers
             }
             else
             {
-                var leaderBaseUrl = ServerManager.GetNode(Request.RequestUri.Port.ToString()).NodeBase.LeaderBaseUrl;
+                var leaderBaseUrl = ServerManager.Get(Request.RequestUri.Authority).LeaderBaseUrl;
 
                 var client = new RestClient("http://" + leaderBaseUrl);
                 var restRequest = new RestRequest("api/zoo/node?path=" + path);
@@ -84,43 +84,10 @@ namespace RuiJi.Net.Owin.Controllers
             }
             else
             {
-                var leaderBaseUrl = ServerManager.GetNode(Request.RequestUri.Port.ToString()).NodeBase.LeaderBaseUrl;
+                var leaderBaseUrl = ServerManager.Get(Request.RequestUri.Authority).LeaderBaseUrl;
 
                 var client = new RestClient("http://" + leaderBaseUrl);
                 var restRequest = new RestRequest("api/zoo/cluster");
-                restRequest.Method = Method.GET;
-
-                var restResponse = client.Execute(restRequest);
-
-                var response = JsonConvert.DeserializeObject<object>(restResponse.Content);
-
-                return response;
-            }
-        }
-
-        [HttpGet]
-        public object GetProxys()
-        {
-            var leaderNode = GetLeaderNode();
-
-            if (leaderNode != null)
-            {
-                var results = new Dictionary<string,string>();
-                var nv = leaderNode.GetChildren("/live_nodes/proxy");
-                foreach (var n in nv.AllKeys)
-                {
-                    var d = leaderNode.GetData(n);
-                    results.Add(d.Data, n.Split('/').Last());
-                }
-
-                return results;
-            }
-            else
-            {
-                var leaderBaseUrl = ServerManager.GetNode(Request.RequestUri.Port.ToString()).NodeBase.LeaderBaseUrl;
-
-                var client = new RestClient("http://" + leaderBaseUrl);
-                var restRequest = new RestRequest("api/zoo/proxys");
                 restRequest.Method = Method.GET;
 
                 var restResponse = client.Execute(restRequest);

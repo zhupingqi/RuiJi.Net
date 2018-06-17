@@ -13,13 +13,14 @@ using RuiJi.Net.NodeVisitor;
 using RuiJi.Net.Core.Utils.Page;
 using RuiJi.Net.Node.Db;
 using System.Diagnostics;
+using RuiJi.Net.Node;
 
 namespace RuiJi.Net.Owin.Controllers
 {
     public class CrawlerProxyApiController : ApiController
     {
         [HttpPost]
-        [NodeRoute(Target = NodeProxyTypeEnum.Crawler)]
+        [NodeRoute(Target = NodeTypeEnum.CRAWLERPROXY)]
         //[WebApiCacheAttribute(Duration = 10)]
         public Response Crawl(Request request)
         {
@@ -97,7 +98,7 @@ namespace RuiJi.Net.Owin.Controllers
 
         [HttpPost]
         [WebApiCacheAttribute(Duration = 0)]
-        [NodeRoute(Target = NodeProxyTypeEnum.Crawler)]
+        [NodeRoute(Target = NodeTypeEnum.CRAWLERPROXY)]
         public object Elect(CrawlerElectRequest request)
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);

@@ -17,7 +17,9 @@ namespace RuiJi.Net.Owin
 {
     public class NodeRouteAttribute : ActionFilterAttribute
     {
-        public NodeProxyTypeEnum Target { get; set; }
+        public NodeTypeEnum Target { get; set; }
+
+        public string RouteArgumentName { get; set; }
 
         public NodeRouteAttribute()
         {
@@ -27,10 +29,23 @@ namespace RuiJi.Net.Owin
         public override void OnActionExecuting(HttpActionContext actionContext)
         {
             var node = ServerManager.Get(actionContext.Request.RequestUri.Authority);
+            if (node == null)
+            {
+                actionContext.Response = actionContext.Request.CreateResponse(actionContext.Request.RequestUri.Authority + " no node mapping this uri");
+            }
 
             if ((int)node.NodeType != (int)Target)
             {
-                var baseUrl = ProxyManager.Instance.Elect(Target);
+                var baseUrl = "";
+
+                if ((int)Target < 3)
+                {
+                     baseUrl = ProxyManager.Instance.Elect((NodeProxyTypeEnum)Target);                    
+                }
+                else
+                {
+                    baseUrl = actionContext.ActionArguments[RouteArgumentName].ToString();
+                }
 
                 var client = new RestClient("http://" + baseUrl);
                 var restRequest = new RestRequest(actionContext.Request.RequestUri.PathAndQuery);

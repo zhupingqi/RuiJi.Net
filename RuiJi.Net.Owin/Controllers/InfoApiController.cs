@@ -39,9 +39,9 @@ namespace RuiJi.Net.Owin.Controllers
         /// <param name="baseUrl"></param>
         /// <returns></returns>
         [HttpGet]
-        public object Server(string baseUrl)
+        public object Server()
         {
-            baseUrl = new Uri(baseUrl).Authority;
+            var baseUrl = Request.RequestUri.Authority;
             var server = ServerManager.Get(baseUrl);
 
             SystemInfo sys = new SystemInfo();

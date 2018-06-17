@@ -3,6 +3,7 @@ using RestSharp;
 using RuiJi.Net.Core.Crawler;
 using RuiJi.Net.Core.Utils;
 using RuiJi.Net.Core.Utils.Page;
+using RuiJi.Net.Node;
 using RuiJi.Net.Node.Db;
 using RuiJi.Net.NodeVisitor;
 using System;
@@ -13,6 +14,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 
 namespace RuiJi.Net.Owin.Controllers
@@ -21,7 +23,7 @@ namespace RuiJi.Net.Owin.Controllers
     {
         #region 节点函数
         [HttpGet]
-        [NodeRoute(Target = NodeProxyTypeEnum.Feed)]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
         public object Funcs(int offset, int limit)
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
@@ -40,7 +42,7 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpGet]
-        [NodeRoute(Target = NodeProxyTypeEnum.Feed)]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
         public object GetFunc(int id)
         {
             return FuncLiteDb.Get(id);
@@ -55,7 +57,7 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpPost]
-        [NodeRoute(Target = NodeProxyTypeEnum.Feed)]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
         public object UpdateFunc(FuncModel func)
         {
             if (func.Name == "now" || func.Name == "ticks")
@@ -98,7 +100,7 @@ namespace RuiJi.Net.Owin.Controllers
             }
             else
             {
-                var baseUrl = ProxyManager.Instance.Elect(NodeVisitor.NodeProxyTypeEnum.Crawler);
+                var baseUrl = ProxyManager.Instance.Elect(NodeVisitor.NodeProxyTypeEnum.CRAWLERPROXY);
 
                 var client = new RestClient("http://" + baseUrl);
                 var restRequest = new RestRequest("api/proxys");
@@ -164,6 +166,21 @@ namespace RuiJi.Net.Owin.Controllers
             }
 
             return -1;
+        }
+
+        [HttpGet]
+        public object Ping ()
+        {
+            var request = ((Microsoft.Owin.OwinContext)Request.Properties["MS_OwinContext"]).Request;
+
+            return new {
+                Uri = request.Uri,
+                RemoteIpAddress = request.RemoteIpAddress,
+                RemotePort = request.RemotePort.Value,
+                LocalIpAddress = request.LocalIpAddress,
+                LocalPort = request.LocalPort,
+
+            };
         }
         #endregion
     }
