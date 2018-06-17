@@ -40,8 +40,17 @@ namespace RuiJi.Net.Core.Cookie
             try
             {
                 var uri = new Uri(url);
-                var reg = new Regex(@"expires=(.*?)[\s]GMT");
+                var reg = new Regex(@"Path=(.*?)[;|,]|Path=(.*)");
                 var ms = reg.Matches(setCookie);
+                foreach (Match m in ms)
+                {
+                    var p = uri.AbsolutePath;
+                    if (m.Value != "Path=/" && p != m.Value)
+                    {
+                        setCookie = setCookie.Replace(m.Value, "Path=/");
+                    }
+                }
+
                 setCookie = Regex.Replace(setCookie, @"expires=(.*?)[\s]GMT", "expires=Tue, 15 Jun 2038 22:57:20 GMT");
                 _container.SetCookies(uri, setCookie);
 
