@@ -82,39 +82,22 @@ namespace RuiJi.Net.Owin.Controllers
 
         #region Proxys
         [HttpGet]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
         public object Proxys(int offset, int limit)
         {
-            var node = ServerManager.Get(Request.RequestUri.Authority);
+            var paging = new Paging();
+            paging.CurrentPage = (offset / limit) + 1;
+            paging.PageSize = limit;
 
-            if (node.NodeType == Node.NodeTypeEnum.CRAWLERPROXY)
+            return new
             {
-                var paging = new Paging();
-                paging.CurrentPage = (offset / limit) + 1;
-                paging.PageSize = limit;
-
-                return new
-                {
-                    rows = ProxyLiteDb.GetModels(paging),
-                    total = paging.Count
-                };
-            }
-            else
-            {
-                var baseUrl = ProxyManager.Instance.Elect(NodeVisitor.NodeProxyTypeEnum.CRAWLERPROXY);
-
-                var client = new RestClient("http://" + baseUrl);
-                var restRequest = new RestRequest("api/proxys");
-                restRequest.Method = Method.GET;
-
-                var restResponse = client.Execute(restRequest);
-
-                var response = JsonConvert.DeserializeObject<object>(restResponse.Content);
-
-                return response;
-            }
+                rows = ProxyLiteDb.GetModels(paging),
+                total = paging.Count
+            };
         }
 
         [HttpPost]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
         public object UpdateProxy(ProxyModel proxy)
         {
             ProxyLiteDb.AddOrUpdate(proxy);
@@ -123,6 +106,7 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpGet]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
         public object GetProxy(int id)
         {
             var feed = ProxyLiteDb.Get(id);
@@ -131,6 +115,7 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpGet]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
         public bool RemoveProxy(string ids)
         {
             var removes = ids.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Select(m => Convert.ToInt32(m)).ToArray();

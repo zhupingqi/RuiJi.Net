@@ -48,6 +48,8 @@ namespace RuiJi.Net.Core.Crawler
                 if (res.Proxy != null)
                     res.Proxy = request.Proxy.Ip;
 
+                Logger.GetLogger(request.Elect).Info(request.Uri.ToString() + " response status is " + res.StatusCode.ToString());
+
                 return res;
             }
 
@@ -104,6 +106,8 @@ namespace RuiJi.Net.Core.Crawler
                 response.Cookie = GetCookie(request);
             }
             httpResponse.Close();
+
+            Logger.GetLogger(request.Elect).Info(request.Uri.ToString() + " response status is " + response.StatusCode.ToString());
 
             return response;
         }
