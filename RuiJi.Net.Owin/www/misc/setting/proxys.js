@@ -121,7 +121,11 @@
                 var id = ele.closest("tr").find("td").eq(1).text();                
 
                 $.getJSON("/api/proxy/ping?id=" + id, function (d) {
-                    ele.next().html("&nbsp;&nbsp;" + d + " ms");
+                    if (d.code == 200)
+                        ele.next().html("&nbsp;&nbsp;" + d.elspsed + " ms");
+                    else {
+                        ele.next().html("&nbsp;&nbsp;" + d.code + " " + d.msg);
+                    }
                 });
             });
 

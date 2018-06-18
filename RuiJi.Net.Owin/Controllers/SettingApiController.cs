@@ -139,12 +139,13 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpGet]
-        public int ProxyPing(int id)
+        public object ProxyPing(int id)
         {
+            var watch = new Stopwatch();
+            watch.Start();
+
             try
             {
-                var watch = new Stopwatch();
-                watch.Start();
 
                 var crawler = new RuiJiCrawler();
                 var request = new Request("http://2017.ip138.com/ic.asp");
@@ -153,18 +154,27 @@ namespace RuiJi.Net.Owin.Controllers
                 request.Proxy = new RequestProxy(proxy.Ip, proxy.Port, proxy.UserName, proxy.Password);
 
                 var response = crawler.Request(request);
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+
+                watch.Stop();
+
+                return new
                 {
-                    watch.Stop();
-                    return watch.Elapsed.Milliseconds;
-                }
+                    elspsed = watch.Elapsed.Milliseconds,
+                    code = response.StatusCode,
+                    msg = response.StatusCode.ToString()
+                };
             }
             catch(Exception ex)
             {
-                return -2;
-            }
+                watch.Stop();
 
-            return -1;
+                return new
+                {
+                    elspsed = watch.Elapsed.Milliseconds,
+                    code = -1,
+                    msg = ex.Message
+                }; 
+            }
         }
 
         [HttpGet]

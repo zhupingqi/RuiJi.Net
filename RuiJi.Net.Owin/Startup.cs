@@ -312,6 +312,12 @@ namespace RuiJi.Net.Owin
                 );
             #endregion
 
+            config.Routes.MapHttpRoute(
+                    name: "Logger",
+                    routeTemplate: "api/log",
+                    defaults: new { controller = "LogApi", action = "Log" }
+                );
+
             #region Online Proxy
             config.Routes.MapHttpRoute(
                 name: "ProxysList",

@@ -1,6 +1,7 @@
 ﻿requirejs.config({
     urlArgs: 'ver=1.0.0.0',
     baseUrl: "/misc",
+    waitSeconds: 0,
     paths: {
         jquery: '/scripts/jquery-3.1.1.min',
         template: '/scripts/template-web',

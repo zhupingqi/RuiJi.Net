@@ -17,15 +17,13 @@ namespace RuiJi.Net.Core.Utils.Log
     {
         public int MaxMessage { get; set; }
 
-        public log4net.Appender.MemoryAppender memoryAppender { get; private set; }
-
         private Thread watcher;
 
         private bool watchMessage;
 
         private string key;
 
-        private static Dictionary<string,List<string>> Messages;
+        private static Dictionary<string, List<string>> Messages;
 
         private static object _lck = new object();
 
@@ -37,41 +35,60 @@ namespace RuiJi.Net.Core.Utils.Log
         public MemoryAppender(int maxMessage = 1000)
         {
             this.MaxMessage = maxMessage;
-            
-            Levels = new List<log4net.Core.Level>
-            {
-                Level.Fatal
-            };
+
+            //Levels = new List<log4net.Core.Level>
+            //{
+            //    Level.Fatal
+            //};
         }
 
         public override void Configure(string key, ILoggerRepository repository)
         {
             this.key = key;
+            var appenders = new List<log4net.Appender.MemoryAppender>();
 
-            var appender = new log4net.Appender.MemoryAppender();
-            appender.Name = "MemoryAppender";
-            appender.Threshold = Levels[0];
+            foreach (var level in Levels)
+            {
+                var appender = new log4net.Appender.MemoryAppender();
+                appender.Name = "MemoryAppender";
+                appender.Threshold = level;
 
-            var layout = new PatternLayout(Pattern);
-            layout.ActivateOptions();
-            appender.Layout = layout;
+                var layout = new PatternLayout(Pattern);
+                layout.ActivateOptions();
+                appender.Layout = layout;
 
-            appender.ActivateOptions();
+                appender.ActivateOptions();
 
-            BasicConfigurator.Configure(repository, appender);
+                BasicConfigurator.Configure(repository, appender);
 
-            memoryAppender = appender;
+                appenders.Add(appender);
+            }
 
-            Start();
+            //var appender = new log4net.Appender.MemoryAppender();
+            //appender.Name = "MemoryAppender";
+            //appender.Threshold = Levels[0];
+
+            //var layout = new PatternLayout(Pattern);
+            //layout.ActivateOptions();
+            //appender.Layout = layout;
+
+            //appender.ActivateOptions();
+
+            //BasicConfigurator.Configure(repository, appender);
+
+            // memoryAppender = appender;
+
+            Start(key, appenders);
         }
 
-        public void Start()
+        public void Start(string key, List<log4net.Appender.MemoryAppender> appenders)
         {
             Messages.Add(key, new List<string>());
             watchMessage = true;
 
-            watcher = new Thread(()=> {
-                Watch(key);
+            watcher = new Thread(() =>
+            {
+                Watch(key, appenders);
             });
 
             watcher.Start();
@@ -94,22 +111,40 @@ namespace RuiJi.Net.Core.Utils.Log
         {
             lock (_lck)
             {
-                var msgs = Messages[key].ToArray();
+                if (Messages.ContainsKey(key))
+                {
+                    var msgs = Messages[key].ToArray();
 
-                Messages[key].Clear();
+                    Messages[key].Clear();
 
-                return msgs;
+                    return msgs;
+                }
+
+                return new string[0];
             }
         }
 
-        private void Watch(string key)
+        private void Watch(string key, List<log4net.Appender.MemoryAppender> appenders)
         {
             while (watchMessage)
             {
-                var events = memoryAppender.GetEvents();
-                if (events != null && events.Length > 0)
+                lock (_lck)
                 {
-                    lock (_lck)
+                    var events = new List<LoggingEvent>();
+
+                    foreach (var appender in appenders)
+                    {
+                        var evs = appender.GetEvents();
+                        if (evs != null && evs.Length > 0)
+                        {
+                            events.AddRange(evs);
+                            appender.Clear();
+                        }
+                    }
+
+                    events = events.OrderBy(m => m.TimeStamp).ToList();
+
+                    if (events.Count > 0)
                     {
                         foreach (var ev in events)
                         {
@@ -127,7 +162,6 @@ namespace RuiJi.Net.Core.Utils.Log
                             }
                         }
                     }
-                    memoryAppender.Clear();
                 }
 
                 Thread.Sleep(5000);
