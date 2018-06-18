@@ -304,6 +304,12 @@ namespace RuiJi.Net.Owin
                     routeTemplate: "api/info/dll",
                     defaults: new { controller = "InfoApi", action = "Dll" }
                 );
+
+            config.Routes.MapHttpRoute(
+                    name: "GitPulse",
+                    routeTemplate: "api/git/pulse",
+                    defaults: new { controller = "InfoApi", action = "Pulse" }
+                );
             #endregion
 
             #region Online Proxy

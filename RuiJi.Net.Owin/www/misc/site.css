@@ -1,23 +1,22 @@
-﻿#header
-{
-    height:50px;
+﻿#header {
+    height: 50px;
 }
 
     #header h1 {
         text-indent: 5px;
     }
 
-    #header h1 a {
-        text-decoration: none;
-        font-family: arial;
-    }
+        #header h1 a {
+            text-decoration: none;
+            font-family: arial;
+        }
 
 #wrapper {
     position: relative;
 }
 
-#main_menu_tabs > ul > li > a{
-    width:100%;
+#main_menu_tabs > ul > li > a {
+    width: 100%;
 }
 
 #main_menu_tabs > div {
@@ -26,20 +25,20 @@
 }
 
 #tree {
-    width:400px;
+    width: 400px;
 }
 
 #tab_panel_feed > ul > li > a, #tab_panel_setting > ul > li > a {
     padding-right: 20px;
 }
 
-.status-instance > div > span:first-child{
-    font-weight:bold;
+#tab_panel_status div > span:first-child {
+    font-weight: bold;
 }
 
-.status-instance > div > div {
+#tab_panel_status span ~ div {
     text-indent: 16px;
-    line-height:25px;
+    line-height: 25px;
 }
 
 #tab_panel_feed > div {
@@ -47,8 +46,8 @@
     min-height: 400px;
 }
 
-.input-group{
-    margin:10px;
+.input-group {
+    margin: 10px;
 }
 
     .input-group textarea {
@@ -69,13 +68,31 @@
         width: 105px;
     }
 
-textarea[name='expression']{
-    height:60px;
+textarea[name='expression'] {
+    height: 60px;
 }
 
 table td {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    max-width:400px;
+    max-width: 400px;
+}
+
+#server_info {
+    min-height: 240px;
+}
+
+#pulse img {
+    height: 32px;
+    width: 32px;
+}
+
+#pulse > div{
+    line-height:50px!important;
+    height:50px!important;
+}
+
+#pulse > div > span {
+    margin: 10px;
 }

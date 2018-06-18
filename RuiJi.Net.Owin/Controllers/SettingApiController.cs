@@ -150,8 +150,7 @@ namespace RuiJi.Net.Owin.Controllers
                 var request = new Request("http://2017.ip138.com/ic.asp");
 
                 var proxy = ProxyLiteDb.Get(id);
-                var host = (proxy.Type == Node.Db.ProxyTypeEnum.HTTP ? "http://" : "https://") + proxy.Ip;
-                request.Proxy = new RequestProxy(host, proxy.Port, proxy.UserName, proxy.Password);
+                request.Proxy = new RequestProxy(proxy.Ip, proxy.Port, proxy.UserName, proxy.Password);
 
                 var response = crawler.Request(request);
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)

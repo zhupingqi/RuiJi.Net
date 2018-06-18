@@ -25,7 +25,7 @@ namespace RuiJi.Net.Core.Crawler
 
         public Response Request(Request request)
         {
-            Logger.GetLogger(request.Elect).Info("request " + request.Uri.ToString() + " with ip:" + request.Ip + (request.Proxy != null ? (" proxy:" + request.Proxy.Host + ":" + request.Proxy.Port) : ""));
+            Logger.GetLogger(request.Elect).Info("request " + request.Uri.ToString() + " with ip:" + request.Ip + (request.Proxy != null ? (" proxy:" + request.Proxy.Ip + ":" + request.Proxy.Port) : ""));
 
             if (request.RunJS)
             {
@@ -46,7 +46,7 @@ namespace RuiJi.Net.Core.Crawler
                 res.RequestUri = request.Uri;
                 res.Method = request.Method;
                 if (res.Proxy != null)
-                    res.Proxy = request.Proxy.Host;
+                    res.Proxy = request.Proxy.Ip;
 
                 return res;
             }
@@ -140,9 +140,9 @@ namespace RuiJi.Net.Core.Crawler
                 httpRequest.Headers.Add("Cookie", cookie);
             }
 
-            if (request.Proxy != null && !String.IsNullOrEmpty(request.Proxy.Host + request.Proxy.Port))
+            if (request.Proxy != null && !String.IsNullOrEmpty(request.Proxy.Ip + request.Proxy.Port))
             {
-                var proxy = new WebProxy(request.Proxy.Host, request.Proxy.Port);
+                var proxy = new WebProxy(request.Proxy.Ip, request.Proxy.Port);
 
                 if (!string.IsNullOrEmpty(request.Proxy.Username + request.Proxy.Password))
                 {

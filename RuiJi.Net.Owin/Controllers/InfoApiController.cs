@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using RestSharp;
+using RuiJi.Net.Core.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -74,6 +77,18 @@ namespace RuiJi.Net.Owin.Controllers
                 versions.Add(dll + " " + version.ToString());
             }
             return new { versions };
+        }
+
+        [HttpGet]
+        public object Pulse()
+        {
+            var client = new RestClient("https://github.com");
+            var restRequest = new RestRequest("/zhupingqi/RuiJi.Net/pulse_committer_data/monthly");
+            restRequest.Method = Method.GET;
+            restRequest.JsonSerializer = new NewtonJsonSerializer();
+            restRequest.AddHeader("Referer", "https://github.com/zhupingqi/RuiJi.Net/pulse");
+
+            return JsonConvert.DeserializeObject<object>(client.Execute(restRequest).Content);
         }
     }
 }

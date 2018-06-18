@@ -9,11 +9,23 @@ namespace RuiJi.Net.Core.Crawler
 {
     public class RequestProxy
     {
-        [JsonProperty("host")]
-        public string Host { get; set; }
+        [JsonProperty("Ip")]
+        public string Ip { get; set; }
 
         [JsonProperty("port")]
         public int Port { get; set; }
+
+        [JsonProperty("scheme")]
+        public string Scheme { get; set; }
+
+        [JsonIgnore]
+        public string Host
+        {
+            get
+            {
+                return  Scheme + "://" + Ip;
+            }
+        }
 
         [JsonProperty("username")]
         public string Username { get; set; }
@@ -26,9 +38,9 @@ namespace RuiJi.Net.Core.Crawler
 
         }
 
-        public RequestProxy(string host,int port)
+        public RequestProxy(string ip,int port)
         {
-            this.Host = host;
+            this.Ip = ip;
             this.Port = port;
         }
 

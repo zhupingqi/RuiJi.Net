@@ -53,8 +53,7 @@ namespace RuiJi.Net.Core.Crawler
             var args = "";
             if (request.Proxy != null)
             {
-                var u = new Uri(request.Proxy.Host);
-                args += "--proxy=" + u.Host + ":" + request.Proxy.Port + " --proxy-type=" + u.Scheme;
+                args += "--proxy=" + request.Proxy.Host + ":" + request.Proxy.Port + " --proxy-type=" + request.Proxy.Scheme;
                 if (!string.IsNullOrEmpty(request.Proxy.Username))
                     args += " " + request.Proxy.Username;
                 if (!string.IsNullOrEmpty(request.Proxy.Password))

@@ -18,5 +18,14 @@ namespace RuiJi.Net.Test
 
             Assert.IsTrue(true);
         }
+
+        [TestMethod]
+        public void TestGitPulse()
+        {
+            var api = new InfoApiController();
+            var r = api.Pulse();
+
+            Assert.IsTrue(r.ToString().Length > 0);
+        }
     }
 }

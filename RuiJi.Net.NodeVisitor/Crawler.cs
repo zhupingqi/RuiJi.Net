@@ -59,7 +59,7 @@ namespace RuiJi.Net.NodeVisitor
 
                 if (elect.Proxy != null)
                 {
-                    response.Proxy = request.Proxy.Host;
+                    response.Proxy = request.Proxy.Ip;
                 }
 
                 return response;

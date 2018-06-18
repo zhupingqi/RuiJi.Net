@@ -54,8 +54,9 @@ namespace RuiJi.Net.Owin.Controllers
                 if(p != null)
                 {
                     request.Proxy = new RequestProxy();
-                    request.Proxy.Host = (p.Type == Node.Db.ProxyTypeEnum.HTTP ? "https://" : "http://") + p.Ip;
+                    request.Proxy.Ip = p.Ip;
                     request.Proxy.Port = p.Port;
+                    request.Proxy.Scheme = p.Type.ToString().ToLower();
                     request.Proxy.Username = p.UserName;
                     request.Proxy.Password = p.Password;
                 }
@@ -73,7 +74,7 @@ namespace RuiJi.Net.Owin.Controllers
 
                 if (p != null)
                 {
-                    response.Proxy = request.Proxy.Host;
+                    response.Proxy = request.Proxy.Ip;
                 }
 
                 return response;
@@ -122,8 +123,9 @@ namespace RuiJi.Net.Owin.Controllers
                 if (p != null)
                 {
                     result.Proxy = new RequestProxy();
-                    result.Proxy.Host = (p.Type == Node.Db.ProxyTypeEnum.HTTP ? "https://" : "http://") + p.Ip;
+                    result.Proxy.Ip = p.Ip;
                     result.Proxy.Port = p.Port;
+                    result.Proxy.Scheme = p.Type.ToString().ToLower();
                     result.Proxy.Username = p.UserName;
                     result.Proxy.Password = p.Password;
                 }

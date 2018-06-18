@@ -42,7 +42,7 @@ namespace RuiJi.Net.Test
         {
             var request = new Request("http://www.ruijihg.com/");
             request.Proxy = new RequestProxy();
-            request.Proxy.Host = "http://180.118.86.178";
+            request.Proxy.Ip = "http://180.118.86.178";
             request.Proxy.Port = 9000;
             request.RunJS = true;
 

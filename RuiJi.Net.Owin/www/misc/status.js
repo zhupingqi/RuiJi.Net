@@ -12,7 +12,7 @@
 
             $.getJSON('/api/info/server', function (d) {
                 var t = utils.template("status_server_info", d);
-                $("#server_info").prepend(t);
+                $("#server_info").append(t);
             });
 
             $.getJSON('/api/info/dll', function (vs) {
@@ -21,6 +21,14 @@
                     $d.text(v);
                     $("#dll_version").append($d);
                 });
+            });
+
+            $.getJSON('/api/git/pulse', function (vs) {
+                var div = $("<div/>");
+                $.map(vs, function (v) {
+                    div.append("<img src='" + v.gravatar + "' title='" + (v.name ? v.name: v.login) + "' /><span>" + v.commits + "</span>");
+                });
+                $("#pulse").append(div);
             });
         },
         reloadSystem: function () {
