@@ -14,7 +14,7 @@ using ZooKeeperNet;
 
 namespace RuiJi.Net.Node
 {
-    public abstract class NodeBase
+    public abstract class NodeBase : INode
     {
         protected ZooKeeper zooKeeper;
 

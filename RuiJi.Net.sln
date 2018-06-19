@@ -21,11 +21,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		technology.txt = technology.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Net.NodeVisitor", "RuiJi.Net.NodeVisitor\RuiJi.Net.NodeVisitor.csproj", "{934BEB73-E7C2-4C70-B697-A5FB2066C17E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Net.Test", "RuiJi.Net.Test\RuiJi.Net.Test.csproj", "{58F8B8EC-F5DB-4653-84DF-BF4C81ACA8ED}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Net.Storage", "RuiJi.Net.Storage\RuiJi.Net.Storage.csproj", "{39D023C5-67EF-4396-967B-396EFA9770C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Net.NodeVisitor", "RuiJi.Net.NodeVisitor\RuiJi.Net.NodeVisitor.csproj", "{934BEB73-E7C2-4C70-B697-A5FB2066C17E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,10 +49,6 @@ Global
 		{97673817-F983-4CE8-919E-D2E43E46144C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97673817-F983-4CE8-919E-D2E43E46144C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97673817-F983-4CE8-919E-D2E43E46144C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{934BEB73-E7C2-4C70-B697-A5FB2066C17E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{934BEB73-E7C2-4C70-B697-A5FB2066C17E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{934BEB73-E7C2-4C70-B697-A5FB2066C17E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{934BEB73-E7C2-4C70-B697-A5FB2066C17E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{58F8B8EC-F5DB-4653-84DF-BF4C81ACA8ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{58F8B8EC-F5DB-4653-84DF-BF4C81ACA8ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58F8B8EC-F5DB-4653-84DF-BF4C81ACA8ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -61,6 +57,10 @@ Global
 		{39D023C5-67EF-4396-967B-396EFA9770C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39D023C5-67EF-4396-967B-396EFA9770C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39D023C5-67EF-4396-967B-396EFA9770C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{934BEB73-E7C2-4C70-B697-A5FB2066C17E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{934BEB73-E7C2-4C70-B697-A5FB2066C17E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{934BEB73-E7C2-4C70-B697-A5FB2066C17E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{934BEB73-E7C2-4C70-B697-A5FB2066C17E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

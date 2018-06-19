@@ -14,7 +14,6 @@ using RuiJi.Net.Node.Extracter;
 using System.Threading;
 using RuiJi.Net.Core.Utils;
 using log4net;
-using RuiJi.Net.Node.Configuration;
 using RuiJi.Net.Core.Utils.Log;
 
 namespace RuiJi.Net.Cmd
@@ -77,7 +76,7 @@ namespace RuiJi.Net.Cmd
                 if (cmd.StartsWith("start"))
                 {
                     var port = cmd.Split(' ')[1];
-                    ServerManager.Start(port);
+                    ServerManager.Start(Convert.ToInt32(port));
                 }
             }
 

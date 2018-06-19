@@ -318,6 +318,12 @@ namespace RuiJi.Net.Owin
                     defaults: new { controller = "LogApi", action = "Log" }
                 );
 
+            config.Routes.MapHttpRoute(
+                    name: "Alone",
+                    routeTemplate: "api/alone",
+                    defaults: new { controller = "SettingApi", action = "IsAlone" }
+                );
+
             #region Online Proxy
             config.Routes.MapHttpRoute(
                 name: "ProxysList",

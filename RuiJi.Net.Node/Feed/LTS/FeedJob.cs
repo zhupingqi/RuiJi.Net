@@ -2,8 +2,10 @@
 using Newtonsoft.Json;
 using Quartz;
 using RestSharp;
+using RuiJi.Net.Core.Configuration;
 using RuiJi.Net.Core.Crawler;
 using RuiJi.Net.Core.Extracter;
+using RuiJi.Net.Core.Utils.Page;
 using RuiJi.Net.Node.Db;
 using System;
 using System.Collections.Generic;
@@ -20,6 +22,8 @@ namespace RuiJi.Net.Node.Feed.LTS
         public static bool IsRunning = false;
 
         private static string baseDir;
+
+        private static int _page = 0;
 
         static FeedJob()
         {
@@ -93,19 +97,39 @@ namespace RuiJi.Net.Node.Feed.LTS
         {
             try
             {
-                var d = node.GetData("/config/feed/" + node.BaseUrl);
-                var config = JsonConvert.DeserializeObject<NodeConfig>(d.Data);
-                var pages = config.Pages == null ? "" : string.Join(",", config.Pages);
+                if (NodeConfigurationSection.Alone)
+                {
+                    var paging = new Paging();
+                    paging.CurrentPage = _page;
+                    paging.PageSize = 50;
 
-                var client = new RestClient("http://" + proxyUrl);
-                var restRequest = new RestRequest("api/feed/job?pages=" + pages);
-                restRequest.Method = Method.GET;
+                    var results = FeedLiteDb.GetFeedModels(paging);
+                    if(_page > 0 && results.Count == 0)
+                    {
+                        _page = 0;
+                        paging.CurrentPage = _page;
+                        results = FeedLiteDb.GetFeedModels(paging);
+                    }
 
-                var restResponse = client.Execute(restRequest);
+                    _page++;
+                    return results;
+                }
+                else
+                {
+                    var d = node.GetData("/config/feed/" + node.BaseUrl);
+                    var config = JsonConvert.DeserializeObject<NodeConfig>(d.Data);
+                    var pages = config.Pages == null ? "" : string.Join(",", config.Pages);
 
-                var feeds = JsonConvert.DeserializeObject<List<FeedModel>>(restResponse.Content);
+                    var client = new RestClient("http://" + proxyUrl);
+                    var restRequest = new RestRequest("api/feed/job?pages=" + pages);
+                    restRequest.Method = Method.GET;
 
-                return feeds;
+                    var restResponse = client.Execute(restRequest);
+
+                    var feeds = JsonConvert.DeserializeObject<List<FeedModel>>(restResponse.Content);
+
+                    return feeds;
+                }
             }
             catch (Exception ex)
             {

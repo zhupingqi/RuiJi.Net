@@ -4,7 +4,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 
-namespace RuiJi.Net.Node.Configuration
+namespace RuiJi.Net.Core.Configuration
 {
     public class NodeConfigurationElementCollection : ConfigurationElementCollection 
     {

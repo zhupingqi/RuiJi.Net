@@ -200,8 +200,9 @@ namespace RuiJi.Net.Owin.Controllers
                 rows = ContentLiteDb.GetModels(paging, shard, feedId).Select(m => new
                 {
                     id = m.Id,
-                    feedId = m.Id,
+                    feedId = m.FeedId,
                     url = m.Url,
+                    cdate = m.CDate,
                     metas = m.Metas.Select(n => new
                     {
                         name = n.Key,

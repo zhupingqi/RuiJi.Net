@@ -13,6 +13,7 @@ namespace RuiJi.Net.Node
         FEEDPROXY = 2,
         CRAWLER = 3,
         EXTRACTER = 4,
-        FEED = 5
+        FEED = 5,
+        ALONE
     }
 }

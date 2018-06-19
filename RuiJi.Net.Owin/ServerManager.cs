@@ -1,7 +1,7 @@
 ﻿using Microsoft.Owin.Hosting;
+using RuiJi.Net.Core.Configuration;
 using RuiJi.Net.Core.Utils.Log;
 using RuiJi.Net.Node;
-using RuiJi.Net.Node.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -57,55 +57,81 @@ namespace RuiJi.Net.Owin
 
         public static void StartServers()
         {
-            var zkServer = ConfigurationManager.AppSettings["zkPath"];
-            if (!string.IsNullOrEmpty(zkServer))
+            if (NodeConfigurationSection.Alone)
             {
-                var path = AppDomain.CurrentDomain.BaseDirectory + zkServer + @"\bin\zkServer.cmd";
-
-                if (File.Exists(path))
+                var baseUrl = ConfigurationManager.AppSettings["RuiJiServer"];
+                if(string.IsNullOrEmpty(baseUrl))
                 {
-                    Logger.GetLogger("").Info("start up embed zookeeper");
-
-                    zkProcess = new Process();
-                    zkProcess.StartInfo.FileName = path;
-                    zkProcess.StartInfo.UseShellExecute = false;
-                    zkProcess.StartInfo.RedirectStandardInput = false;
-                    zkProcess.StartInfo.RedirectStandardOutput = false;
-                    zkProcess.StartInfo.RedirectStandardError = false;
-                    zkProcess.StartInfo.CreateNoWindow = false;
-                    zkProcess.Start();
+                    Logger.GetLogger("").Info("RuiJiServer not exsit in AppSettings");
+                    return;
                 }
-            }
 
-            Thread.Sleep(3000);
-
-            NodeConfigurationSection.Settings.ForEach(m =>
-            {
                 var t = Task.Factory.StartNew(() =>
                 {
                     try
                     {
-                        ServerManager.Start(m.BaseUrl, m.Type, m.ZkServer, m.Proxy);
+                        ServerManager.Start(baseUrl);
                     }
                     catch (Exception ex)
                     {
-                        Logger.GetLogger("").Info(ex.Message);
+                        Logger.GetLogger("").Fatal(ex.Message);
                     }
                 });
 
                 tasks.Add(t);
-                Thread.Sleep(1000);
-            });
+            }
+            else
+            {
+                var zkServer = ConfigurationManager.AppSettings["zkPath"];
+                if (!string.IsNullOrEmpty(zkServer))
+                {
+                    var path = AppDomain.CurrentDomain.BaseDirectory + zkServer + @"\bin\zkServer.cmd";
+
+                    if (File.Exists(path))
+                    {
+                        Logger.GetLogger("").Info("start up embed zookeeper");
+
+                        zkProcess = new Process();
+                        zkProcess.StartInfo.FileName = path;
+                        zkProcess.StartInfo.UseShellExecute = false;
+                        zkProcess.StartInfo.RedirectStandardInput = false;
+                        zkProcess.StartInfo.RedirectStandardOutput = false;
+                        zkProcess.StartInfo.RedirectStandardError = false;
+                        zkProcess.StartInfo.CreateNoWindow = false;
+                        zkProcess.Start();
+                    }
+                }
+
+                Thread.Sleep(3000);
+
+                NodeConfigurationSection.Settings.ForEach(m =>
+                {
+                    var t = Task.Factory.StartNew(() =>
+                    {
+                        try
+                        {
+                            ServerManager.Start(m.BaseUrl, m.Type, m.ZkServer, m.Proxy);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.GetLogger("").Info(ex.Message);
+                        }
+                    });
+
+                    tasks.Add(t);
+                    Thread.Sleep(1000);
+                });
+            }
         }
 
-        public static void Start(string port)
+        public static void Start(int port)
         {
-            var server = servers.SingleOrDefault(m => m.Port == port);
+            var server = servers.SingleOrDefault(m => m.Port == port.ToString());
             if (server != null)
             {
                 if (server.Running)
                 {
-                    Logger.GetLogger("").Info("server " + server.NodeBase.BaseUrl + " already running!");
+                    Logger.GetLogger("").Info("server " + server.Node.BaseUrl + " already running!");
                 }
                 else
                 {
@@ -123,13 +149,21 @@ namespace RuiJi.Net.Owin
 
                     tasks.Add(t);
 
-                    Logger.GetLogger("").Info("server " + server.NodeBase.BaseUrl + " restart!");
+                    Logger.GetLogger("").Info("server " + server.Node.BaseUrl + " restart!");
                 }
             }
             else
             {
                 Logger.GetLogger("").Info("server not find");
             }
+        }
+
+        public static void Start(string baseUrl)
+        {
+            var server = new WebApiServer();
+            servers.Add(server);
+
+            server.Start(baseUrl);
         }
 
         public static void StopAll()
@@ -158,20 +192,20 @@ namespace RuiJi.Net.Owin
 
         public static NodeBase GetLeader()
         {
-            var server = servers.SingleOrDefault(m => m.NodeBase.IsLeader);
+            var server = servers.SingleOrDefault(m => m.Node.IsLeader);
             if (server != null)
-                return server.NodeBase;
+                return (NodeBase)server.Node;
 
             return null;
         }
 
-        public static NodeBase Get(string baseUrl)
+        public static INode Get(string baseUrl)
         {
             //aliyun nat...
             baseUrl = baseUrl.Replace("118.31.61.230", "172.16.50.52");
 
-            var temp = servers.SingleOrDefault(m => m.NodeBase.BaseUrl.ToLower() == baseUrl.ToLower());
-            return servers.SingleOrDefault(m=>m.NodeBase.BaseUrl.ToLower() == baseUrl.ToLower()).NodeBase;            
+            var temp = servers.SingleOrDefault(m => m.Node.BaseUrl.ToLower() == baseUrl.ToLower());
+            return servers.SingleOrDefault(m=>m.Node.BaseUrl.ToLower() == baseUrl.ToLower()).Node;            
         }
     }
 }

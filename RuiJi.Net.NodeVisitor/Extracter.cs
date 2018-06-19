@@ -1,9 +1,12 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
+using RuiJi.Net.Core.Configuration;
 using RuiJi.Net.Core.Extensions;
 using RuiJi.Net.Core.Extracter;
+using RuiJi.Net.Core.Utils;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,29 +14,39 @@ using System.Threading.Tasks;
 namespace RuiJi.Net.NodeVisitor
 {
     public class Extracter
-    {        
+    {
         public static List<ExtractResult> Extract(ExtractRequest request)
         {
-            var proxyUrl = ProxyManager.Instance.Elect(NodeProxyTypeEnum.EXTRACTERPROXY);
+            if (NodeConfigurationSection.Alone)
+            {
+                var result = RuiJiExtracter.Extract(request);
+                return result;
+            }
+            else
+            {
+                var proxyUrl = ProxyManager.Instance.Elect(NodeProxyTypeEnum.FEEDPROXY);
 
-            if (string.IsNullOrEmpty(proxyUrl))
-                throw new Exception("no available extracter proxy servers");
+                if (string.IsNullOrEmpty(proxyUrl))
+                    throw new Exception("no available extracter proxy servers");
 
-            var client = new RestClient("http://" + proxyUrl);
-            var restRequest = new RestRequest("api/ep/extract");
-            restRequest.Method = Method.POST;
-            restRequest.JsonSerializer = new NewtonJsonSerializer();
+                proxyUrl = IPHelper.FixLocalUrl(proxyUrl);
 
-            var json = JsonConvert.SerializeObject(request);
+                var client = new RestClient("http://" + proxyUrl);
+                var restRequest = new RestRequest("api/ep/extract");
+                restRequest.Method = Method.POST;
+                restRequest.JsonSerializer = new NewtonJsonSerializer();
 
-            restRequest.AddJsonBody(json);
-            restRequest.Timeout = 15000;
+                var json = JsonConvert.SerializeObject(request);
 
-            var restResponse = client.Execute(restRequest);
+                restRequest.AddJsonBody(json);
+                restRequest.Timeout = 15000;
 
-            var response = JsonConvert.DeserializeObject<List<ExtractResult>>(restResponse.Content);
+                var restResponse = client.Execute(restRequest);
 
-            return response;
+                var response = JsonConvert.DeserializeObject<List<ExtractResult>>(restResponse.Content);
+
+                return response;
+            }            
         }
     }
 }

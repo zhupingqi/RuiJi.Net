@@ -37,6 +37,9 @@ namespace RuiJi.Net.Core.Crawler
         {
             _js = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "crawl.js"));
             _tmp_js_path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ph_download");
+
+            if (!Directory.Exists(_tmp_js_path))
+                Directory.CreateDirectory(_tmp_js_path);
         }
 
         public PhantomCrawler()
@@ -47,6 +50,8 @@ namespace RuiJi.Net.Core.Crawler
         public Response Request(Request request)
         {
             var extension = Path.GetExtension(request.Uri.ToString()).ToLower();
+            if (extension.IndexOf("?") != -1)
+                extension = extension.Substring(0, extension.IndexOf("?"));
             var guid = ShortGUID();
             var file = @"ph_download\" + guid + extension;
 

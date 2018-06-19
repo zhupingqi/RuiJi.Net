@@ -15,6 +15,8 @@ namespace RuiJi.Net.Core.Utils.Log
 {
     public class Logger
     {
+        static Dictionary<string, ILoggerRepository> logger = new Dictionary<string, ILoggerRepository>();
+
         static Logger()
         {
             
@@ -24,22 +26,30 @@ namespace RuiJi.Net.Core.Utils.Log
         {
             try
             {
+                if (string.IsNullOrEmpty(key))
+                    key = "unknown";
+
                 ILoggerRepository repository;
 
-                var log = LogManager.Exists(key);
-                if (log == null)
+                //var log = logger.ContainsKey(key);
+                if (!logger.ContainsKey(key))
+                {
                     repository = LogManager.CreateRepository(key);
+                    logger.Add(key, repository);
+                }
                 else
-                    repository = log.Logger.Repository;
+                {
+                    repository = logger[key];
+                }                    
 
                 foreach (var appender in appenders)
                 {
                     appender.Configure(key, repository);
                 }
-                
+
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return false;
             }
@@ -50,8 +60,7 @@ namespace RuiJi.Net.Core.Utils.Log
             if (string.IsNullOrEmpty(key))
                 key = "unknown";
 
-            var log = LogManager.Exists(key);
-            if (log == null)
+            if (logger.ContainsKey(key))
             {
                 Add(key, new List<IAppender> {
                      new RollingFileAppender("")

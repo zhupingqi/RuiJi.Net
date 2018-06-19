@@ -6,6 +6,7 @@ using RuiJi.Net.Node;
 using RuiJi.Net.Node.Crawler;
 using RuiJi.Net.Node.Extracter;
 using RuiJi.Net.Node.Feed;
+using RuiJi.Net.Node.Feed.LTS;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -43,7 +44,7 @@ namespace RuiJi.Net.Owin
             private set;
         }
 
-        public NodeBase NodeBase
+        public INode Node
         {
             get;
             internal set;
@@ -68,40 +69,54 @@ namespace RuiJi.Net.Owin
             {
                 case "c":
                     {
-                        NodeBase = new CrawlerNode(baseUrl, zkServer, proxy);
+                        Node = new CrawlerNode(baseUrl, zkServer, proxy);
                         break;
                     }
                 case "cp":
                     {
-                        NodeBase = new CrawlerProxyNode(baseUrl, zkServer);
+                        Node = new CrawlerProxyNode(baseUrl, zkServer);
                         break;
                     }
                 case "e":
                     {
-                        NodeBase = new ExtracterNode(baseUrl, zkServer, proxy);
+                        Node = new ExtracterNode(baseUrl, zkServer, proxy);
                         break;
                     }
                 case "ep":
                     {
-                        NodeBase = new ExtracterProxyNode(baseUrl, zkServer);
+                        Node = new ExtracterProxyNode(baseUrl, zkServer);
                         break;
                     }
                 case "f":
                     {
-                        NodeBase = new FeedNode(baseUrl, zkServer, proxy);
+                        Node = new FeedNode(baseUrl, zkServer, proxy);
                         break;
                     }
                 case "fp":
                     {
-                        NodeBase = new FeedProxyNode(baseUrl, zkServer);
+                        Node = new FeedProxyNode(baseUrl, zkServer);
                         break;
                     }
             }
 
-            NodeBase.Start();            
+            Node.Start();
 
             resetEvent = new ManualResetEvent(false);
             resetEvent.WaitOne();
+        }
+
+        public void Start(string baseUrl)
+        {
+            baseUrl = IPHelper.FixLocalUrl(baseUrl);
+
+            app = WebApp.Start<Startup>("http://" + baseUrl);
+
+            Node = new AloneNode(baseUrl);
+
+            Node.Start();
+
+            FeedScheduler.Start(baseUrl, null);
+            FeedExtractScheduler.Start();
         }
 
         public void Restart()
@@ -117,7 +132,7 @@ namespace RuiJi.Net.Owin
                 app = null;
             }
 
-            NodeBase.Stop();
+            Node.Stop();
             if (resetEvent != null)
                 resetEvent.Set();
 

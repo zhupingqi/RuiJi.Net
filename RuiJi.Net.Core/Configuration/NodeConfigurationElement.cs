@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RuiJi.Net.Node.Configuration
+namespace RuiJi.Net.Core.Configuration
 {
     public class NodeConfigurationElement : ConfigurationElement
     {

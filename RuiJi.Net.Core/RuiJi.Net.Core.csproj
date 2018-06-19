@@ -52,6 +52,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Net.Http" />
@@ -71,6 +72,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\NodeConfigurationElement.cs" />
+    <Compile Include="Configuration\NodeConfigurationElementCollection.cs" />
+    <Compile Include="Configuration\NodeConfigurationSection.cs" />
     <Compile Include="Cookie\IpCookieManager.cs" />
     <Compile Include="Cookie\ManagedCookie.cs" />
     <Compile Include="Crawler\CrawlerElectRequest.cs" />

@@ -19,6 +19,10 @@ namespace RuiJi.Net.Core.Cookie
         static IpCookieManager()
         {
             _manager = new IpCookieManager();
+
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookies");
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
         }
 
         private IpCookieManager()

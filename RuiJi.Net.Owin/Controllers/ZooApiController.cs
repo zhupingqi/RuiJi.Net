@@ -31,7 +31,7 @@ namespace RuiJi.Net.Owin.Controllers
             }
             else
             {
-                var leaderBaseUrl = ServerManager.Get(Request.RequestUri.Authority).LeaderBaseUrl;
+                var leaderBaseUrl = (ServerManager.Get(Request.RequestUri.Authority) as NodeBase).LeaderBaseUrl;
 
                 if (string.IsNullOrEmpty(leaderBaseUrl))
                     return null;
@@ -59,7 +59,7 @@ namespace RuiJi.Net.Owin.Controllers
             }
             else
             {
-                var leaderBaseUrl = ServerManager.Get(Request.RequestUri.Authority).LeaderBaseUrl;
+                var leaderBaseUrl = (ServerManager.Get(Request.RequestUri.Authority) as NodeBase).LeaderBaseUrl;
 
                 var client = new RestClient("http://" + leaderBaseUrl);
                 var restRequest = new RestRequest("api/zoo/node?path=" + path);
@@ -84,7 +84,7 @@ namespace RuiJi.Net.Owin.Controllers
             }
             else
             {
-                var leaderBaseUrl = ServerManager.Get(Request.RequestUri.Authority).LeaderBaseUrl;
+                var leaderBaseUrl = (ServerManager.Get(Request.RequestUri.Authority) as NodeBase).LeaderBaseUrl;
 
                 var client = new RestClient("http://" + leaderBaseUrl);
                 var restRequest = new RestRequest("api/zoo/cluster");

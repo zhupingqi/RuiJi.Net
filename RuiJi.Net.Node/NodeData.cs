@@ -11,7 +11,7 @@ namespace RuiJi.Net.Node
     public class NodeData
     {
         [JsonProperty("stat")]
-        public Stat Stat { get; set; }
+        public object Stat { get; set; }
 
         [JsonProperty("data")]
         public string Data { get; set; }

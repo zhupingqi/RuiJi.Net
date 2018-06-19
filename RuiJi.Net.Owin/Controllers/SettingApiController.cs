@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
+using RuiJi.Net.Core.Configuration;
 using RuiJi.Net.Core.Crawler;
 using RuiJi.Net.Core.Utils;
 using RuiJi.Net.Core.Utils.Page;
@@ -177,6 +178,12 @@ namespace RuiJi.Net.Owin.Controllers
             };
         }
         #endregion
+
+        [HttpGet]
+        public bool IsAlone()
+        {
+            return NodeConfigurationSection.Alone;
+        }
     }
 
     public class ComplieFuncTest : CompileUrl

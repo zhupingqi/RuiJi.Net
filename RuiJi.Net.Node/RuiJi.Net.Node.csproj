@@ -65,9 +65,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AloneNode.cs" />
     <Compile Include="CompileFeedAddress.cs" />
-    <Compile Include="Configuration\NodeConfigurationSection.cs" />
-    <Compile Include="Configuration\NodeConfigurationElement.cs" />
     <Compile Include="Crawler\CrawlerManager.cs" />
     <Compile Include="Crawler\CrawlerProxyNodeModeEnum.cs" />
     <Compile Include="Crawler\CrawlerNode.cs" />
@@ -89,9 +88,9 @@
     <Compile Include="Feed\LTS\FeedSnapshot.cs" />
     <Compile Include="Db\FuncLiteDb.cs" />
     <Compile Include="Db\ProxyLiteDb.cs" />
+    <Compile Include="INode.cs" />
     <Compile Include="NodeConfig.cs" />
     <Compile Include="Extracter\ExtracterNode.cs" />
-    <Compile Include="Configuration\NodeConfigurationElementCollection.cs" />
     <Compile Include="Feed\FeedManager.cs" />
     <Compile Include="Feed\FeedProxyNode.cs" />
     <Compile Include="Feed\FeedNode.cs" />
