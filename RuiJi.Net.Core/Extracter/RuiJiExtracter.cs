@@ -106,11 +106,24 @@ namespace RuiJi.Net.Core.Extracter
 
             foreach (var m in pr.Matches)
             {
-                var result = new ExtractResult
+                ExtractResult result;
+
+                try
                 {
-                    Name = "tile",
-                    Content = Convert.ChangeType(m,extractBase.ContentType)
-                };
+                    result = new ExtractResult
+                    {
+                        Name = "tile",
+                        Content = Convert.ChangeType(m, extractBase.ContentType)
+                    };
+                }
+                catch
+                {
+                    result = new ExtractResult
+                    {
+                        Name = "tile",
+                        Content = m
+                    };
+                }
 
                 results.Add(result);
             }

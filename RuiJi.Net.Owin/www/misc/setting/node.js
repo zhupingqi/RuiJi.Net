@@ -1,4 +1,6 @@
 ﻿define(['jquery', 'utils'], function ($, utils) {
+    var alone = false;
+
     var module = {
         init: function () {
             var tmp = utils.loadTemplate("/misc/setting/node.html", false);
@@ -91,5 +93,9 @@
         }
     };
 
-    module.init();
+    $.getJSON("/api/alone", function (d) {
+        alone = d;
+
+        module.init();
+    });    
 });
