@@ -34,7 +34,7 @@ namespace RuiJi.Net.Owin
                 actionContext.Response = actionContext.Request.CreateResponse(actionContext.Request.RequestUri.Authority + " no node mapping this uri");
             }
 
-            if ((int)node.NodeType != (int)Target)
+            if ((int)node.NodeType != (int)Target && node.NodeType != NodeTypeEnum.ALONE)
             {
                 var baseUrl = "";
 

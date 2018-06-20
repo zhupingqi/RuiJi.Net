@@ -11,6 +11,13 @@ namespace RuiJi.Net.Storage
 {
     public class FileStorage : StorageBase<DownloadContentModel>
     {
+        static FileStorage()
+        {
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "download");
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+        }
+
         public FileStorage(string folder, string databaseName = "", string collectionName = "") : base(folder, databaseName, collectionName)
         {
 

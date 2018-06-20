@@ -1,10 +1,12 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
+using RuiJi.Net.Core.Configuration;
 using RuiJi.Net.Core.Extensions;
 using RuiJi.Net.Core.Extracter;
 using RuiJi.Net.Core.Utils;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,9 +15,18 @@ namespace RuiJi.Net.NodeVisitor
 {
     public class Feeder
     {
-        public static List<ExtractFeatureBlock> GetExtractBlock(string url)
+        public static List<ExtractFeatureBlock> GetExtractBlock(string url, bool useBlock = false)
         {
-            var proxyUrl = ProxyManager.Instance.Elect(NodeProxyTypeEnum.FEEDPROXY);
+            var proxyUrl = "";
+
+            if (NodeConfigurationSection.Alone)
+            {
+                proxyUrl= ConfigurationManager.AppSettings["RuiJiServer"];
+            }
+            else
+            {
+                proxyUrl = ProxyManager.Instance.Elect(NodeProxyTypeEnum.FEEDPROXY);                
+            }
 
             if (string.IsNullOrEmpty(proxyUrl))
                 throw new Exception("no available extracter proxy servers");

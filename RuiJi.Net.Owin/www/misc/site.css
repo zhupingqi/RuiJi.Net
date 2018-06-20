@@ -1,14 +1,24 @@
 ﻿#header {
-    height: 50px;
+    height: 60px;
+    line-height:60px;
 }
 
     #header h1 {
         text-indent: 5px;
+        display: inline-block;
+        height: 60px;
+        line-height: 60px;
+        margin: 0;
+        padding: 0;
     }
 
         #header h1 a {
             text-decoration: none;
             font-family: arial;
+        }
+
+        #header span{
+            display:inline-block;
         }
 
 #wrapper {

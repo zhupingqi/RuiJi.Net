@@ -2,6 +2,7 @@
 using RuiJi.Net.Storage.Model;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,13 @@ namespace RuiJi.Net.Storage
 {
     public class LiteDbStorage : StorageBase<IContentModel>
     {
+        static LiteDbStorage()
+        {
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LiteDB");
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+        }
+
         public LiteDbStorage(string connectString, string collectionName) : base(connectString, "", collectionName)
         {
 
