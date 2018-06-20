@@ -356,6 +356,14 @@ namespace RuiJi.Net.Owin
                 );
             #endregion
 
+            #region Setting Node Api
+            config.Routes.MapHttpRoute(
+                    name: "GetNode",
+                    routeTemplate: "api/nodes",
+                    defaults: new { controller = "SettingApi", action = "Nodes" }
+                );
+            #endregion
+
             config.Routes.MapHttpRoute(
                 name: "Default",
                 routeTemplate: "api/{controller}/{action}",
