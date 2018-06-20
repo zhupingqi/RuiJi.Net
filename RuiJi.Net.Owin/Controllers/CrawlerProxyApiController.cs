@@ -14,6 +14,7 @@ using RuiJi.Net.Core.Utils.Page;
 using RuiJi.Net.Node.Db;
 using System.Diagnostics;
 using RuiJi.Net.Node;
+using RuiJi.Net.Core;
 
 namespace RuiJi.Net.Owin.Controllers
 {
@@ -32,11 +33,11 @@ namespace RuiJi.Net.Owin.Controllers
 
                 if (!string.IsNullOrEmpty(request.Ip))
                 {
-                    result = CrawlerManager.Instance.GetServer(request.Ip);
+                    result = CrawlerServerManager.Instance.GetServer(request.Ip);
                 }
                 else
                 {
-                    result = CrawlerManager.Instance.ElectIP(request.Uri);
+                    result = CrawlerServerManager.Instance.ElectIP(request.Uri);
                     if (result == null)
                     {
                         return new Response
@@ -92,7 +93,7 @@ namespace RuiJi.Net.Owin.Controllers
 
             if (node.NodeType == Node.NodeTypeEnum.CRAWLERPROXY)
             {
-                return CrawlerManager.Instance.ServerMap;
+                return CrawlerServerManager.Instance.ServerMap;
             }
             return new { };
         }
@@ -108,7 +109,7 @@ namespace RuiJi.Net.Owin.Controllers
 
             if (request.ElectIp)
             {
-                result = CrawlerManager.Instance.ElectIP(request.Uri);
+                result = CrawlerServerManager.Instance.ElectIP(request.Uri);
                 if (result == null)
                     return new Response
                     {

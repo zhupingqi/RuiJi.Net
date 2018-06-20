@@ -69,6 +69,7 @@
     <Compile Include="ProcessorTest.cs" />
     <Compile Include="LoggerTest.cs" />
     <Compile Include="PhantomCrawlerTest.cs" />
+    <Compile Include="ProxyTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -102,6 +103,11 @@
       <Project>{39D023C5-67EF-4396-967B-396EFA9770C2}</Project>
       <Name>RuiJi.Net.Storage</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="proxy.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

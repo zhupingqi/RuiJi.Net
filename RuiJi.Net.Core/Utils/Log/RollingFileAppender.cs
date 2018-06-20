@@ -38,6 +38,7 @@ namespace RuiJi.Net.Core.Utils.Log
                 appender.AppendToFile = true;
                 appender.ImmediateFlush = true;
                 appender.LockingModel = new FileAppender.MinimalLock();
+                appender.Threshold = level;
 
                 var layout = new PatternLayout(Pattern);
                 layout.ActivateOptions();

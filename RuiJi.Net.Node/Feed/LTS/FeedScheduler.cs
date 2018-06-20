@@ -18,16 +18,17 @@ namespace RuiJi.Net.Node.Feed.LTS
             factory = new StdSchedulerFactory();
         }
 
-        public static async void Start(string proxyUrl, FeedNode feedNode)
+        public static async void Start(string baseUrl,string proxyUrl, FeedNode feedNode)
         {
             scheduler = await factory.GetScheduler();
             await scheduler.Start();
 
             IJobDetail job = JobBuilder.Create<FeedJob>().Build();
             job.JobDataMap.Add("proxyUrl", proxyUrl);
+            job.JobDataMap.Add("baseUrl", baseUrl);
             job.JobDataMap.Add("node", feedNode);
 
-            ITrigger trigger = TriggerBuilder.Create().WithCronSchedule("0 0/5 * * * ?").Build();
+            ITrigger trigger = TriggerBuilder.Create().WithCronSchedule("0 0/1 * * * ?").Build();
 
             await scheduler.ScheduleJob(job, trigger);
         }

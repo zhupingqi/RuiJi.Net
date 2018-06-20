@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
+using RuiJi.Net.Core;
 using RuiJi.Net.Core.Configuration;
 using RuiJi.Net.Core.Crawler;
 using RuiJi.Net.Core.Utils;
@@ -21,6 +22,13 @@ namespace RuiJi.Net.NodeVisitor
             {
                 var crawler = new RuiJiCrawler();
                 var response = crawler.Request(request);
+
+                if(string.IsNullOrEmpty(request.Ip))
+                {
+                    var e = CrawlerServerManager.Instance.ElectIP(request.Uri);
+                    if (e != null)
+                        request.Ip = e.ClientIp;
+                }
 
                 var maxRefresh = 2;
                 string refreshUrl;

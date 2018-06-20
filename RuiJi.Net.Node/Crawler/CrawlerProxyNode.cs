@@ -44,7 +44,7 @@ namespace RuiJi.Net.Node.Crawler
 
         protected void LoadLiveCrawler()
         {
-            CrawlerManager.Instance.Clear();
+            CrawlerServerManager.Instance.Clear();
 
             try
             {
@@ -54,7 +54,7 @@ namespace RuiJi.Net.Node.Crawler
                 {
                     var d = GetCrawlerConfig(node);
                     if (d.Proxy == BaseUrl)
-                        CrawlerManager.Instance.AddServer(node, d.Ips);
+                        CrawlerServerManager.Instance.AddServer(node, d.Ips);
                 }
             }
             catch { }
@@ -124,7 +124,7 @@ namespace RuiJi.Net.Node.Crawler
                     case EventType.NodeDataChanged:
                         {
                             var d = node.GetCrawlerConfig(baseUrl);
-                            CrawlerManager.Instance.AddServer(baseUrl, d.Ips);
+                            CrawlerServerManager.Instance.AddServer(baseUrl, d.Ips);
 
                             break;
                         }

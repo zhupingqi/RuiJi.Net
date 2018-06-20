@@ -60,7 +60,7 @@ namespace RuiJi.Net.Core.Utils.Log
             if (string.IsNullOrEmpty(key))
                 key = "unknown";
 
-            if (logger.ContainsKey(key))
+            if (!logger.ContainsKey(key))
             {
                 Add(key, new List<IAppender> {
                      new RollingFileAppender("")

@@ -219,12 +219,6 @@ namespace RuiJi.Net.Owin.Controllers
         [HttpPost]
         public object TestRule(RuleModel rule, [FromUri]bool debug = false)
         {
-            //var v = new Visitor();
-            //var result = v.Extract(rule.Url);
-            //CrawlTaskFunc.ClearContent(result);
-
-            //return result;
-
             var request = new Request(rule.Url);
             request.Method = rule.Method;
             request.RunJS = (rule.RunJS == Status.ON);
@@ -276,6 +270,12 @@ namespace RuiJi.Net.Owin.Controllers
                     var job = new FeedJob();
                     var snap = job.DoTask(feed, false);
 
+                    if (string.IsNullOrEmpty(feed.RuiJiExpression))
+                    {
+                        results.Add(new ExtractResult());
+                        continue;
+                    }
+
                     var block = RuiJiExpression.ParserBlock(feed.RuiJiExpression);
 
                     var result = RuiJiExtracter.Extract(snap.Content, block);
@@ -304,12 +304,6 @@ namespace RuiJi.Net.Owin.Controllers
                     }
 
                     results.Add(result);
-
-                    //var v = new Visitor();
-                    //var result = v.Extract(addr);
-                    //CrawlTaskFunc.ClearContent(result);
-
-                    //results.Add(result);
                 }
 
                 return results;

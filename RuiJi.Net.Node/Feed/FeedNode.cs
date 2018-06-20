@@ -43,8 +43,8 @@ namespace RuiJi.Net.Node.Feed
                 zooKeeper.Create("/config/feed/" + BaseUrl, JsonConvert.SerializeObject(d).GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
             }
 
-            FeedScheduler.Start(ProxyUrl, this);
-            FeedExtractScheduler.Start();
+            FeedScheduler.Start(BaseUrl, ProxyUrl, this);
+            FeedExtractScheduler.Start(BaseUrl);
         }
 
         protected override NodeTypeEnum SetNodeType()

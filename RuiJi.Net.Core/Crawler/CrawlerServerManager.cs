@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RuiJi.Net.Node.Crawler
+namespace RuiJi.Net.Core
 {
-    public class CrawlerManager
+    public class CrawlerServerManager
     {
         internal class HostVisit
         {
@@ -22,7 +22,7 @@ namespace RuiJi.Net.Node.Crawler
             public string ClientIp { get; set; }
         }
 
-        private static CrawlerManager _elector = null;
+        private static CrawlerServerManager _elector = null;
         private static object _lck = new object();
 
         private List<HostVisit> visits = new List<HostVisit>();
@@ -31,7 +31,7 @@ namespace RuiJi.Net.Node.Crawler
 
         public List<Server> ServerMap { get; private set; }
 
-        public static CrawlerManager Instance
+        public static CrawlerServerManager Instance
         {
             get
             {
@@ -39,12 +39,12 @@ namespace RuiJi.Net.Node.Crawler
             }
         }
 
-        static CrawlerManager()
+        static CrawlerServerManager()
         {
-            _elector = new CrawlerManager();
+            _elector = new CrawlerServerManager();
         }
 
-        private CrawlerManager()
+        private CrawlerServerManager()
         {
             ServerMap = new List<Server>();
         }

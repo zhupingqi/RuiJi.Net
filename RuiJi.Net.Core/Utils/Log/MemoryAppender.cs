@@ -142,7 +142,7 @@ namespace RuiJi.Net.Core.Utils.Log
                         }
                     }
 
-                    events = events.OrderBy(m => m.TimeStamp).ToList();
+                    events = events.OrderByDescending(m => m.TimeStamp).ToList();
 
                     if (events.Count > 0)
                     {

@@ -79,6 +79,7 @@
     <Compile Include="Cookie\ManagedCookie.cs" />
     <Compile Include="Crawler\CrawlerElectRequest.cs" />
     <Compile Include="Crawler\CrawlerElectResult.cs" />
+    <Compile Include="Crawler\CrawlerServerManager.cs" />
     <Compile Include="Crawler\PhantomCrawler.cs" />
     <Compile Include="Crawler\RuiJiCrawler.cs" />
     <Compile Include="Crawler\RequestProxy.cs" />

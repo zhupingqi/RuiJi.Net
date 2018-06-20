@@ -115,8 +115,8 @@ namespace RuiJi.Net.Owin
 
             Node.Start();
 
-            FeedScheduler.Start(baseUrl, null);
-            FeedExtractScheduler.Start();
+            FeedScheduler.Start(baseUrl, "", null);
+            FeedExtractScheduler.Start(baseUrl);
         }
 
         public void Restart()

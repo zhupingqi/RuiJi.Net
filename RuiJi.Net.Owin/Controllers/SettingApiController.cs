@@ -134,10 +134,12 @@ namespace RuiJi.Net.Owin.Controllers
             {
 
                 var crawler = new RuiJiCrawler();
-                var request = new Request("http://2017.ip138.com/ic.asp");
+                var request = new Request("https://www.baidu.com/");
+                request.Timeout = 15000;
 
                 var proxy = ProxyLiteDb.Get(id);
                 request.Proxy = new RequestProxy(proxy.Ip, proxy.Port, proxy.UserName, proxy.Password);
+                request.Proxy.Scheme = proxy.Type == ProxyTypeEnum.HTTP ? "http" : "https";
 
                 var response = crawler.Request(request);
 

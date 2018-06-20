@@ -18,12 +18,13 @@ namespace RuiJi.Net.Node.Feed.LTS
             factory = new StdSchedulerFactory();
         }
 
-        public static async void Start()
+        public static async void Start(string baseUrl)
         {
             scheduler = await factory.GetScheduler();
             await scheduler.Start();
 
             IJobDetail job = JobBuilder.Create<FeedExtractJob>().Build();
+            job.JobDataMap.Add("baseUrl", baseUrl);
 
             ITrigger trigger = TriggerBuilder.Create().WithCronSchedule("0 0/1 * * * ?").Build();
 

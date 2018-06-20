@@ -6,6 +6,7 @@ using RuiJi.Net.Core.Configuration;
 using RuiJi.Net.Core.Crawler;
 using RuiJi.Net.Core.Extracter;
 using RuiJi.Net.Core.Utils.Page;
+using RuiJi.Net.Core.Utils.Log;
 using RuiJi.Net.Node.Db;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,12 @@ namespace RuiJi.Net.Node.Feed.LTS
         private static string baseDir;
 
         private static int _page = 0;
+
+        private string baseUrl;
+
+        private string proxyUrl;
+
+        private FeedNode feedNode;
 
         static FeedJob()
         {
@@ -45,13 +52,15 @@ namespace RuiJi.Net.Node.Feed.LTS
             if (!IsRunning)
             {
                 IsRunning = true;
+                baseUrl = context.JobDetail.JobDataMap.Get("baseUrl").ToString();
+                proxyUrl = context.JobDetail.JobDataMap.Get("proxyUrl").ToString();
+                feedNode = context.JobDetail.JobDataMap.Get("node") as FeedNode;
+
+                Logger.GetLogger(baseUrl).Info("start feed job execute");
 
                 var task = Task.Factory.StartNew(() =>
-                {
-                    var proxyUrl = context.JobDetail.JobDataMap.Get("proxyUrl").ToString();
-                    var node = context.JobDetail.JobDataMap.Get("node") as FeedNode;
-
-                    var feeds = GetFeedJobs(proxyUrl, node);
+                {                   
+                    var feeds = GetFeedJobs(baseUrl,proxyUrl, feedNode);
                     var compile = new CompileFeedAddress();
 
                     var stpStartInfo = new STPStartInfo
@@ -67,6 +76,9 @@ namespace RuiJi.Net.Node.Feed.LTS
                     foreach (var feed in feeds)
                     {
                         var addrs = compile.Compile(feed.Address);
+
+                        Logger.GetLogger(baseUrl).Info("compile address " + feed.Address + " result " + string.Join(",", addrs));
+
                         foreach (var addr in addrs)
                         {
                             feed.Address = addr;
@@ -81,6 +93,7 @@ namespace RuiJi.Net.Node.Feed.LTS
                     }
 
                     SmartThreadPool.WaitAll(waits.ToArray());
+                    
                     pool.Shutdown(true, 1000);
                     pool.Dispose();
                     pool = null;
@@ -90,11 +103,15 @@ namespace RuiJi.Net.Node.Feed.LTS
                 await task;
 
                 IsRunning = false;
+
+                Logger.GetLogger(baseUrl).Info("end feed job execute");
             }
         }
 
-        private List<FeedModel> GetFeedJobs(string proxyUrl,FeedNode node)
+        private List<FeedModel> GetFeedJobs(string baseUrl,string proxyUrl, FeedNode node)
         {
+            Logger.GetLogger(baseUrl).Info("start get feed");
+
             try
             {
                 if (NodeConfigurationSection.Alone)
@@ -103,16 +120,19 @@ namespace RuiJi.Net.Node.Feed.LTS
                     paging.CurrentPage = _page;
                     paging.PageSize = 50;
 
-                    var results = FeedLiteDb.GetFeedModels(paging);
-                    if(_page > 0 && results.Count == 0)
+                    var feeds = FeedLiteDb.GetAvailableFeeds(paging);
+                    if(_page > 0 && feeds.Count == 0)
                     {
                         _page = 0;
                         paging.CurrentPage = _page;
-                        results = FeedLiteDb.GetFeedModels(paging);
+                        feeds = FeedLiteDb.GetAvailableFeeds(paging);
                     }
 
                     _page++;
-                    return results;
+
+                    Logger.GetLogger(baseUrl).Info("get feed jobs:" + feeds.Count);
+
+                    return feeds;
                 }
                 else
                 {
@@ -128,11 +148,15 @@ namespace RuiJi.Net.Node.Feed.LTS
 
                     var feeds = JsonConvert.DeserializeObject<List<FeedModel>>(restResponse.Content);
 
+                    Logger.GetLogger(baseUrl).Info("get feed jobs:" + feeds.Count);
+
                     return feeds;
                 }
             }
             catch (Exception ex)
             {
+                Logger.GetLogger(baseUrl).Info("get feed error " + ex.Message);
+
                 return new List<FeedModel>();
             }
         }
@@ -141,17 +165,28 @@ namespace RuiJi.Net.Node.Feed.LTS
         {
             try
             {
+                Logger.GetLogger(baseUrl).Info("do task -> request address " + feed.Address);
+
                 var request = new Request(feed.Address);
                 request.RunJS = (feed.RunJS == Status.ON);
                 if (feed.Headers != null)
+                {
                     request.Headers = feed.Headers;
-                request.Headers.Add(new WebHeader("Referer", request.Uri.AbsoluteUri));
-                //request.Headers.Add(new WebHeader("Referer", "https://www.baidu.com/link?url=GEyGoQq22aGfAidB32foRlg2BWxPgspy0KlenTlTNoucDZr0sdVFfXrwtO6xs_Xe&wd=&eqid=9c546d780000aeba000000025b2248a2"));
+
+                    if (request.Headers.Count(m => m.Name == "Referer") == 0)
+                        request.Headers.Add(new WebHeader("Referer", request.Uri.AbsoluteUri));
+                }
+                
                 request.Method = feed.Method;
                 if (feed.Method == "POST" && !string.IsNullOrEmpty(feed.PostParam))
                     request.PostParam = feed.PostParam;
 
                 var response = NodeVisitor.Crawler.Request(request);
+
+                if(response != null)
+                    Logger.GetLogger(baseUrl).Info("request " + feed.Address + " response code is " + response.StatusCode);
+                if(response == null)
+                    Logger.GetLogger(baseUrl).Error("request " + feed.Address + " response is null");
 
                 if (response != null && response.StatusCode == HttpStatusCode.OK)
                 {
@@ -176,6 +211,7 @@ namespace RuiJi.Net.Node.Feed.LTS
                             fileName = baseDir + @"delay\" + feed.Id + "_" + DateTime.Now.AddMinutes(feed.Delay).Ticks + ".json";
                         }
 
+                        Logger.GetLogger(baseUrl).Info(feed.Address + " response save to " + fileName);
                         File.WriteAllText(fileName, json, Encoding.UTF8);
                     }
 
@@ -184,7 +220,7 @@ namespace RuiJi.Net.Node.Feed.LTS
             }
             catch (Exception ex)
             {
-                
+                Logger.GetLogger(baseUrl).Info("do task -> request address failed " + ex.Message);
             }
 
             return null;

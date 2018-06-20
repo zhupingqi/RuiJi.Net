@@ -27,6 +27,18 @@ namespace RuiJi.Net.Node.Db
             }
         }
 
+        public static List<FeedModel> GetAvailableFeeds(Paging page)
+        {
+            using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
+            {
+                var col = db.GetCollection<FeedModel>("feeds");
+
+                page.Count = col.Count();
+
+                return col.Find(m=>m.Status == Status.ON).Skip(page.Start).Take(page.PageSize).ToList();
+            }
+        }
+
         public static List<FeedModel> GetFeedModels(int[] pages,int pageSize)
         {
             using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
@@ -38,7 +50,7 @@ namespace RuiJi.Net.Node.Db
                 pages.ToList().ForEach((page)=> {
                     var start = (page - 1) * pageSize;
 
-                    results.AddRange(col.Find(Query.All(), start, pageSize));
+                    results.AddRange(col.Find(Query.All(), start, pageSize).Where(m=>m.Status == Status.ON));
                 });
 
                 return results;

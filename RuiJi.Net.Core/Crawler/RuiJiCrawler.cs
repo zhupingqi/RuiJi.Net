@@ -7,6 +7,8 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,89 +29,100 @@ namespace RuiJi.Net.Core.Crawler
         {
             Logger.GetLogger(request.Elect).Info("request " + request.Uri.ToString() + " with ip:" + request.Ip + (request.Proxy != null ? (" proxy:" + request.Proxy.Ip + ":" + request.Proxy.Port) : ""));
 
-            if (request.RunJS)
+            try
             {
-                var p = new PhantomCrawler();
-                var res = p.Request(request);
-                if (request.UseCookie && res.Headers != null)
+                if (request.RunJS)
                 {
-                    var cookies = res.Headers.Where(m => m.Name == "Set-Cookie").Select(m => m.Value).ToList();
-                    if (cookies.Count > 0)
+                    var p = new PhantomCrawler();
+                    var res = p.Request(request);
+                    if (request.UseCookie && res.Headers != null)
                     {
-                        var c = string.Join("", cookies).Replace("\n",",");
-                        SetCookie(request, c);
-                        res.Cookie = GetCookie(request);
+                        var cookies = res.Headers.Where(m => m.Name == "Set-Cookie").Select(m => m.Value).ToList();
+                        if (cookies.Count > 0)
+                        {
+                            var c = string.Join("", cookies).Replace("\n", ",");
+                            SetCookie(request, c);
+                            res.Cookie = GetCookie(request);
+                        }
+                    }
+
+                    res.ElectInfo = request.Elect;
+                    res.RequestUri = request.Uri;
+                    res.Method = request.Method;
+                    if (res.Proxy != null)
+                        res.Proxy = request.Proxy.Ip;
+
+                    Logger.GetLogger(request.Elect).Info(request.Uri.ToString() + " response status is " + res.StatusCode.ToString());
+
+                    return res;
+                }
+
+                if (!string.IsNullOrEmpty(request.Ip))
+                {
+                    if (!IPHelper.IsHostIPAddress(IPAddress.Parse(request.Ip)))
+                    {
+                        return new Response
+                        {
+                            IsRaw = false,
+                            StatusCode = HttpStatusCode.BadRequest,
+                            Data = "specified Ip is invalid!"
+                        };
                     }
                 }
 
-                res.ElectInfo = request.Elect;
-                res.RequestUri = request.Uri;
-                res.Method = request.Method;
-                if (res.Proxy != null)
-                    res.Proxy = request.Proxy.Ip;
-
-                Logger.GetLogger(request.Elect).Info(request.Uri.ToString() + " response status is " + res.StatusCode.ToString());
-
-                return res;
-            }
-
-            if (!string.IsNullOrEmpty(request.Ip))
-            {
-                if (!IPHelper.IsHostIPAddress(IPAddress.Parse(request.Ip)))
+                var httpResponse = GetHttpWebResponse(request);
+                if (httpResponse == null)
                 {
-                    return new Response
-                    {
-                        IsRaw = false,
-                        StatusCode = HttpStatusCode.BadRequest,
-                        Data = "specified Ip is invalid!"
-                    };
-                }
-            }
+                    var r = new Response();
+                    r.StatusCode = HttpStatusCode.BadRequest;
+                    r.Data = "httpResponse is null";
 
-            var httpResponse = GetHttpWebResponse(request);
-            if (httpResponse == null)
+                    return r;
+                }
+
+                var buff = GetResponseBuff(httpResponse);
+
+                var response = new Response();
+
+                response.StatusCode = httpResponse.StatusCode;
+                response.Headers = WebHeader.FromWebHeader(httpResponse.Headers);
+                response.RequestUri = request.Uri;
+                response.ResponseUri = httpResponse.ResponseUri;
+                response.Method = request.Method;
+
+                if (!string.IsNullOrEmpty(httpResponse.ContentType))
+                    response.IsRaw = MimeDetect.IsRaw(httpResponse.ContentType);
+                else
+                    response.IsRaw = MimeDetect.IsRaw(httpResponse.ResponseUri);
+
+                if (request.UseCookie)
+                    SetCookie(request, httpResponse.Headers.Get("Set-Cookie"));
+
+                if (response.IsRaw)
+                {
+                    response.Data = buff;
+                }
+                else
+                {
+                    var result = Decoding.GetStringFromBuff(buff, httpResponse, request.Charset);
+                    response.Charset = result.CharSet;
+                    response.Data = result.Body;
+                    response.Cookie = GetCookie(request);
+                }
+                httpResponse.Close();
+
+                Logger.GetLogger(request.Elect).Info(request.Uri.ToString() + " response status is " + response.StatusCode.ToString());
+
+                return response;
+            }
+            catch (Exception ex)
             {
                 var r = new Response();
                 r.StatusCode = HttpStatusCode.BadRequest;
-                r.Data = "httpResponse is null";
+                r.Data = "response error " + ex.Message;
 
                 return r;
             }
-
-            var buff = GetResponseBuff(httpResponse);
-
-            var response = new Response();
-
-            response.StatusCode = httpResponse.StatusCode;
-            response.Headers = WebHeader.FromWebHeader(httpResponse.Headers);
-            response.RequestUri = request.Uri;
-            response.ResponseUri = httpResponse.ResponseUri;
-            response.Method = request.Method;
-
-            if (!string.IsNullOrEmpty(httpResponse.ContentType))
-                response.IsRaw = MimeDetect.IsRaw(httpResponse.ContentType);
-            else
-                response.IsRaw = MimeDetect.IsRaw(httpResponse.ResponseUri);
-
-            if (request.UseCookie)
-                SetCookie(request, httpResponse.Headers.Get("Set-Cookie"));
-
-            if (response.IsRaw)
-            {
-                response.Data = buff;
-            }
-            else
-            {
-                var result = Decoding.GetStringFromBuff(buff, httpResponse, request.Charset);
-                response.Charset = result.CharSet;
-                response.Data = result.Body;
-                response.Cookie = GetCookie(request);
-            }
-            httpResponse.Close();
-
-            Logger.GetLogger(request.Elect).Info(request.Uri.ToString() + " response status is " + response.StatusCode.ToString());
-
-            return response;
         }
 
         private HttpWebResponse GetHttpWebResponse(Request request)
@@ -119,7 +132,8 @@ namespace RuiJi.Net.Core.Crawler
             httpRequest.Method = request.Method;
             httpRequest.MaximumAutomaticRedirections = 3;
             httpRequest.Timeout = request.Timeout > 0 ? request.Timeout : 100000;
-            httpRequest.ReadWriteTimeout = 60000;
+            httpRequest.ReadWriteTimeout = request.Timeout > 0 ? request.Timeout : 100000;
+            httpRequest.ContinueTimeout = request.Timeout > 0 ? request.Timeout : 100000;
 
             if (httpRequest.Method == "POST" && !string.IsNullOrEmpty(request.PostParam))
             {
@@ -146,13 +160,22 @@ namespace RuiJi.Net.Core.Crawler
 
             if (request.Proxy != null && !String.IsNullOrEmpty(request.Proxy.Ip + request.Proxy.Port))
             {
-                var proxy = new WebProxy(request.Proxy.Ip, request.Proxy.Port);
+                var proxy = new WebProxy();
+                proxy.Address = new Uri(request.Proxy.Host + ":" + request.Proxy.Port);
 
                 if (!string.IsNullOrEmpty(request.Proxy.Username + request.Proxy.Password))
                 {
                     proxy.Credentials = new NetworkCredential(request.Proxy.Username, request.Proxy.Password);
                 }
 
+                if (request.Proxy.Scheme == "https")
+                {
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls11;
+                    ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) =>
+                    {
+                        return true;
+                    });
+                }
                 httpRequest.Proxy = proxy;
             }
 
@@ -168,13 +191,27 @@ namespace RuiJi.Net.Core.Crawler
                 };
             }
 
-            try
+            var task = Task.Factory.StartNew<HttpWebResponse>(() =>
             {
-                return (HttpWebResponse)httpRequest.GetResponse();
-            }
-            catch (WebException ex)
+                try
+                {
+                    return (HttpWebResponse)httpRequest.GetResponse();
+
+                }
+                catch (WebException ex)
+                {
+                    return (HttpWebResponse)ex.Response;
+                }
+            });
+
+            task.Wait(request.Timeout > 0 ? request.Timeout : 100000);
+
+            if (task.IsCompleted)
+                return task.Result;
+            else
             {
-                return (HttpWebResponse)ex.Response;
+                task.Dispose();
+                return null;
             }
         }
 

@@ -34,6 +34,8 @@ namespace RuiJi.Net.Node.Feed.LTS
 
         private static string baseDir;
 
+        private string baseUrl;
+
         static FeedExtractJob()
         {
             baseDir = AppDomain.CurrentDomain.BaseDirectory;
@@ -53,6 +55,8 @@ namespace RuiJi.Net.Node.Feed.LTS
             if (!IsRunning)
             {
                 IsRunning = true;
+
+                baseUrl = context.JobDetail.JobDataMap.Get("baseUrl").ToString();
 
                 try
                 {
