@@ -207,5 +207,10 @@ namespace RuiJi.Net.Owin
             var temp = servers.SingleOrDefault(m => m.Node.BaseUrl.ToLower() == baseUrl.ToLower());
             return servers.SingleOrDefault(m=>m.Node.BaseUrl.ToLower() == baseUrl.ToLower()).Node;            
         }
+
+        public static List<INode> Get(NodeTypeEnum @enum)
+        {
+            return servers.Where(m => m.Node.NodeType == @enum).Select(m => m.Node).ToList();
+        }
     }
 }

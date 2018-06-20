@@ -26,8 +26,8 @@ namespace RuiJi.Net.Owin.Controllers
         [HttpGet]
         public object Nodes()
         {
-            var feeds = ServerManager.Get(NodeTypeEnum.FEED);
-            var crawlers = ServerManager.Get(NodeTypeEnum.CRAWLER);
+            var feeds = ServerManager.Get(Node.NodeTypeEnum.FEED);
+            var crawlers = ServerManager.Get(Node.NodeTypeEnum.CRAWLER);
             return new
             {
                 feeds = feeds,
