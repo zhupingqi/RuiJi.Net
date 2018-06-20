@@ -21,6 +21,21 @@ namespace RuiJi.Net.Owin.Controllers
 {
     public class SettingApiController : ApiController
     {
+        #region 节点设置
+        [HttpGet]
+        public object Nodes()
+        {
+            var feeds = ServerManager.Get(NodeTypeEnum.FEED);
+            var crawlers = ServerManager.Get(NodeTypeEnum.CRAWLER);
+            return new
+            {
+                feeds = feeds,
+                crawlers = crawlers
+            };
+        }
+
+        #endregion
+
         #region 节点函数
         [HttpGet]
         [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
@@ -149,7 +164,7 @@ namespace RuiJi.Net.Owin.Controllers
                     msg = response.StatusCode.ToString()
                 };
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 watch.Stop();
 
@@ -158,16 +173,17 @@ namespace RuiJi.Net.Owin.Controllers
                     elspsed = watch.Elapsed.Milliseconds,
                     code = -1,
                     msg = ex.Message
-                }; 
+                };
             }
         }
 
         [HttpGet]
-        public object Ping ()
+        public object Ping()
         {
             var request = ((Microsoft.Owin.OwinContext)Request.Properties["MS_OwinContext"]).Request;
 
-            return new {
+            return new
+            {
                 Uri = request.Uri,
                 RemoteIpAddress = request.RemoteIpAddress,
                 RemotePort = request.RemotePort.Value,

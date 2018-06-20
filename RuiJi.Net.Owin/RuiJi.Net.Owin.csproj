@@ -258,6 +258,7 @@
     <Content Include="www\misc\node.html" />
     <Content Include="www\misc\node.js" />
     <Content Include="www\misc\setting\node.js" />
+    <Content Include="www\misc\setting\node.html" />
     <Content Include="www\misc\setting\plugin.js" />
     <Content Include="www\misc\proto.js" />
     <Content Include="www\misc\feed\rules.html" />

@@ -29,7 +29,7 @@ namespace RuiJi.Net.Owin
         ~ServerManager()
         {
             StopAll();
-            if(zkProcess!= null)
+            if (zkProcess != null)
                 zkProcess.Kill();
         }
 
@@ -52,7 +52,7 @@ namespace RuiJi.Net.Owin
                 Logger.GetLogger("").Info("server port with " + port + " stop!");
             }
 
-            tasks.RemoveAll(m=>m.Status != TaskStatus.Running);
+            tasks.RemoveAll(m => m.Status != TaskStatus.Running);
         }
 
         public static void StartServers()
@@ -149,7 +149,8 @@ namespace RuiJi.Net.Owin
                 });
                 servers.Clear();
             }
-            catch(Exception ex) {
+            catch (Exception ex)
+            {
                 Logger.GetLogger("").Info(ex.Message);
             }
 
@@ -171,7 +172,12 @@ namespace RuiJi.Net.Owin
             baseUrl = baseUrl.Replace("118.31.61.230", "172.16.50.52");
 
             var temp = servers.SingleOrDefault(m => m.NodeBase.BaseUrl.ToLower() == baseUrl.ToLower());
-            return servers.SingleOrDefault(m=>m.NodeBase.BaseUrl.ToLower() == baseUrl.ToLower()).NodeBase;            
+            return servers.SingleOrDefault(m => m.NodeBase.BaseUrl.ToLower() == baseUrl.ToLower()).NodeBase;
+        }
+
+        public static List<NodeBase> Get(NodeTypeEnum @enum)
+        {
+            return servers.Where(m => m.NodeBase.NodeType == @enum).Select(m => m.NodeBase).ToList();
         }
     }
 }

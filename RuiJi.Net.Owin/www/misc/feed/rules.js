@@ -19,7 +19,7 @@
                 onPostBody: function (e) {
                     if (e.length > 0) {
                         $('#tb_rules > tbody > tr').map(function (i, m) {
-                            $(m).find("td:last").html("<i class='fa fa-edit'></i><i class='fa fa-history'></i>");
+                            $(m).find("td:last").html("<i class='fa fa-edit'></i><i class='fa fa-history'></i><i class='fa fa-minus-circle'></i>");
                         });
                     }
                 }
@@ -53,6 +53,42 @@
                         }
                     }]
                 });
+            });
+
+            $(document).on("click", "#delete_rules", function () {
+                var select = $("#tb_rules").bootstrapTable('getSelections');
+                if (select.length <= 0) {
+                    swal("请至少选中一行");
+                }
+                else {
+                    if (confirm("确认删除选中规则？")) {
+                        var ids = "";
+                        $.map(select, function (n) {
+                            ids += n.id + ",";
+                        })
+
+                        $.getJSON("api/rule/remove?ids=" + ids, function (d) {
+                            if (d) {
+                                swal("完成");
+                                $('#tb_rules').bootstrapTable("refresh");
+                            }
+                        });
+                    }
+                }
+            });
+
+            $(document).on("click", "#tb_rules .fa-minus-circle", function () {
+                var ele = $(this);
+                var id = ele.closest("tr").find("td").eq(1).text();
+
+                if (confirm("确认删除此条规则？")) {
+                    $.getJSON("api/rule/remove?ids=" + id, function (d) {
+                        if (d) {
+                            swal("完成");
+                            $('#tb_rules').bootstrapTable("refresh");
+                        }
+                    });
+                }
             });
 
             $(document).on("click", "#rule_dialog ul.dropdown-menu a", function () {

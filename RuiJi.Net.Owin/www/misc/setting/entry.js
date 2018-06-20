@@ -6,7 +6,7 @@
                 current: 0,
                 tabs: [
                     {
-                        id: 'crawler_node',
+                        id: 'setting_node',
                         text: '节点',
                         type: 'lib',
                         lib: 'setting/node'
