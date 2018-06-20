@@ -175,7 +175,7 @@ css #listnav a[href]";
 
             if (result.Paging != null && result.Paging.Count > 0 && result.Tiles != null)
             {
-                var storage = new FileStorage(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"download"));
+                var storage = new FileStorage(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"www","download"));
 
                 PagingExtracter.DownloadPage(request.Uri, result, block,(u,res)=> {
                     var c = new DownloadContentModel();

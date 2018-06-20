@@ -5,12 +5,12 @@
                 container: '#tab_panel_feed',
                 current: 0,
                 tabs: [
-                    {
-                        id: 'statistics',
-                        text: '统计',
-                        type: 'lib',
-                        lib: 'feed/statistics'
-                    },
+                    //{
+                    //    id: 'statistics',
+                    //    text: '统计',
+                    //    type: 'lib',
+                    //    lib: 'feed/statistics'
+                    //},
                     {
                         id: 'feeds',
                         text: '新闻源',

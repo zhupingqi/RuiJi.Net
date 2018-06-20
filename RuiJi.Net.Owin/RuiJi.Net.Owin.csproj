@@ -545,6 +545,7 @@
     <Folder Include="conf\config\proxy\" />
     <Folder Include="conf\live_nodes\" />
     <Folder Include="Utils\" />
+    <Folder Include="www\download\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

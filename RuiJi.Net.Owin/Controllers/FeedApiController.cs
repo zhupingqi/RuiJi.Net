@@ -285,12 +285,12 @@ namespace RuiJi.Net.Owin.Controllers
 
                     if (down)
                     {
-                        var s = new FileStorage(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"download"));
+                        var s = new FileStorage(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"www","download"));
 
                         var files = result.Content.ToString().Replace("\r\n", "\n").Split('\n');
                         foreach (var file in files)
                         {
-                            if (!string.IsNullOrEmpty(file))
+                            if (!string.IsNullOrEmpty(file) && Uri.IsWellFormedUriString(file,UriKind.Absolute))
                             {
                                 var res = Crawler.Request(file);
                                 var c = new DownloadContentModel();

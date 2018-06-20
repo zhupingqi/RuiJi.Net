@@ -45,6 +45,12 @@ namespace RuiJi.Net.Owin
                 RequestPath = PathString.Empty,
                 FileSystem = new PhysicalFileSystem(@".\www")
             });
+
+            app.UseDirectoryBrowser(new DirectoryBrowserOptions()
+            {
+                RequestPath = new PathString("/download"),
+                FileSystem = new PhysicalFileSystem(@".\www\download"),
+            });
         }
 
         private HttpConfiguration GetWebApiConfig()

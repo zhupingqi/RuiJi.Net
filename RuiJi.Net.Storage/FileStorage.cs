@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace RuiJi.Net.Storage
 {
@@ -13,7 +14,7 @@ namespace RuiJi.Net.Storage
     {
         static FileStorage()
         {
-            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "download");
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "www","download");
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
         }
@@ -37,15 +38,26 @@ namespace RuiJi.Net.Storage
                 var path = Path.Combine(ConnectString, name + ext);
 
                 if (content.IsRaw)
-                {                    
-                    var raw = Convert.FromBase64String(content.Data.ToString());
+                {
+                    byte[] raw;
+
+                    if (IsBase64(content.Data.ToString()))
+                    {
+                        raw = Convert.FromBase64String(content.Data.ToString());
+                    }
+                    else
+                    {
+                        raw = content.Data as byte[];
+                    }
 
                     File.WriteAllBytes(path, raw);
                 }
                 else
                     File.WriteAllText(path, content.Data.ToString());
             }
-            catch { }
+            catch(Exception ex) {
+
+            }
 
             return 0;
         }
@@ -81,6 +93,36 @@ namespace RuiJi.Net.Storage
             }
 
             return sBuilder.ToString();
+        }
+
+        private bool IsBase64(string str)
+        {
+            if (string.IsNullOrEmpty(str))
+            {
+                return false;
+            }
+            else
+            {
+                if (str.Length % 4 != 0)
+                {
+                    return false;
+                }
+
+                char[] strChars = str.ToCharArray();
+                foreach (char c in strChars)
+                {
+                    if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9')
+                        || c == '+' || c == '/' || c == '=')
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
         }
     }
 }

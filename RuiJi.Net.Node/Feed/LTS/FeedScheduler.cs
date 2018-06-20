@@ -28,7 +28,7 @@ namespace RuiJi.Net.Node.Feed.LTS
             job.JobDataMap.Add("baseUrl", baseUrl);
             job.JobDataMap.Add("node", feedNode);
 
-            ITrigger trigger = TriggerBuilder.Create().WithCronSchedule("0 0/1 * * * ?").Build();
+            ITrigger trigger = TriggerBuilder.Create().WithCronSchedule("0 0/5 * * * ?").Build();
 
             await scheduler.ScheduleJob(job, trigger);
         }
