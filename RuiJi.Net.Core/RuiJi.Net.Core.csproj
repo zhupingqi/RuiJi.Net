@@ -84,6 +84,7 @@
     <Compile Include="Crawler\RuiJiCrawler.cs" />
     <Compile Include="Crawler\RequestProxy.cs" />
     <Compile Include="Crawler\WebHeader.cs" />
+    <Compile Include="Expression\ExpressionType.cs" />
     <Compile Include="Extensions\EnumConvert.cs" />
     <Compile Include="Extensions\NewtonJsonSerializer.cs" />
     <Compile Include="Extensions\ISelectorConverter.cs" />
@@ -162,6 +163,7 @@
     <Compile Include="Utils\Page\SegmentPaging.cs" />
     <Compile Include="Utils\Page\WebPaging.cs" />
     <Compile Include="Utils\Page\_Paging.cs" />
+    <Compile Include="Expression\RuiJiExpParser.cs" />
     <Compile Include="Utils\Suffix\Domain.cs" />
     <Compile Include="Utils\Suffix\DomainParser.cs" />
     <Compile Include="Utils\Suffix\Rule.cs" />

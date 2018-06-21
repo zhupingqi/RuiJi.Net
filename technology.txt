@@ -1,4 +1,4 @@
-https://www.iana.org/assignments/media-types/media-types.xhtml
+ï»¿https://www.iana.org/assignments/media-types/media-types.xhtml
 
 open source projects that may be possible to use in the future
 
@@ -15,22 +15,32 @@ casperjs
 Hadoop
 Spark 
 
-Êı¾İ·ÖÎö
+æ•°æ®åˆ†æ
 Hive 
 Pig
 
-Êı¾İ²É¼¯
+æ•°æ®é‡‡é›†
 Sqoop
 Flume
-HUB web¹ÜÀí
-Oozie ¹¤×÷Á÷µ÷¶È
+HUB webç®¡ç†
+Oozie å·¥ä½œæµè°ƒåº¦
 
-Tesseract orc
+æ•°æ®å­˜å‚¨ âœ“X
+å‡½æ•°æ·»åŠ  âœ“
+Selectorç»“æœå¤„ç†å‡½æ•° X
+æ—¥å¿— âœ“X
+ä»£ç†æœåŠ¡å™¨ç®¡ç† âœ“
+Web Ui âœ“X
+Seedéœ€è¦åˆ†ä¸¤ç§ç±»å‹ï¼šæ£€æµ‹æ›´æ–°å‹/å³æ—¶æŠ“å–å‹ âœ“X
+Cookieä¿¡é“ X
+Cookie API X
+è‡ªåŠ¨åŒ–ç™»é™† X (https://slimerjs.org/  or  https://github.com/ariya/phantomjs/blob/master/examples/phantomwebintro.js )
 
-¾İalpha°æ»¹ĞèÌí¼ÓĞ©¹¦ÄÜ
-Êı¾İ´æ´¢
-º¯ÊıÌí¼Ó
-ÈÕÖ¾
-´úÀí·şÎñÆ÷¹ÜÀí
-Web Ui
-SeedĞèÒª·ÖÁ½ÖÖÀàĞÍ£º¼ì²â¸üĞÂĞÍ/¼´Ê±×¥È¡ĞÍ
+Redis X
+Orc(Tesseract orc) X
+RuiJi Expresss advanced setting X
+https proxy X
+Java/PHP/C# SDK X
+Download result to be packaged into zip X
+
+RuiJi.Net.Core add to nuget

@@ -258,8 +258,10 @@
                     };
 
                     $('#feed_test_result').jsonViewer(res, options);
-                    alert("下载完成");
-                    window.open("/download");
+                    if (down) {
+                        alert("下载完成");
+                        window.open("/download");
+                    }
                 }
             });
         },

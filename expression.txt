@@ -1,40 +1,65 @@
-[address]
+##request
+[address]|[feed]|[rule]
 http://www.ruijihg.com/
 
+[method]
+GET
+
+[headers]
+
+[settings]
+contentType : ''
+data : {}
+timeout : 15000
+username:""
+password:""
+type:"GET"
+
+##feature
 [expression]
 http://www.ruijihg.com/????/??/??/*
 
+[feature]
+
+##storage
+file c:\1.txt
+file 
+
+##extract
 [block]
 #name
 css .entry-content:html
 
 [blocks]
-	@block1
-	@block2
+@block1
+@block2
 
 [tile]
-	#aa
-	css a:ohtml
+#aa
+css a:ohtml
 
 	[meta]
 	#time
 	css time:text
+	proc fixtime
 
 [meta]
-	#time
-	css time:text
+#time
+css time:text
 
-	#author
-	css .author:text
+#author
+css .author:text
 
-	#title
-	css .entry-title:text
+#title
+css .entry-title:text
 
-	#content
-	css .entry-content:html
+#content
+css .entry-content:html
 
-	#link
-	css h4 a[href] -r
+#link
+css h4 a[href] -r
+
+[pagging]
 
 [block]
 #block1
