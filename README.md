@@ -7,11 +7,7 @@ RuiJi.Net support ip polling that using the server public network address and pr
 
 [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.me/RuiJiNet)
 
-# Notice !!!
-
-For the upcoming release of the alpha version, please take care of the QQ group 545931923
-
-## Document
+## Documentation
 
 Building
 
@@ -36,7 +32,7 @@ The project is under development.
 | service point ip | auto/custom Bind |
 | encoding | auto detect/by specify |
 | response | raw/string |
-| proxy | future additions |
+| proxy | http |
 
 #### Extracter
 
@@ -44,7 +40,6 @@ The project is under development.
 | :-: | :-:  |
 | selector |  css/xpath/regex/json/text range/exclude text/clear  |
 | extrac structure | block/tile/meta |
-| jsonconvert | extractblock |
 
 ## About extract structure
 
@@ -114,8 +109,6 @@ the service startup is complete!
 ##### Notice 
 ##### The RuiJi.Cmd.exe have to run as an administrator!
 
-
-            Common.StartupNodes();
 
             var request = new Request("http://www.ruijihg.com/%e5%bc%80%e5%8f%91/");
 
