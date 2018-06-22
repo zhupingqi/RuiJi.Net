@@ -8,6 +8,7 @@
     <owners>$author$</owners>
     <licenseUrl>https://github.com/zhupingqi/RuiJi.Net/blob/master/LICENSE.txt</licenseUrl>
     <projectUrl>https://github.com/zhupingqi/RuiJi.Net</projectUrl>
+    <iconUrl></iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes></releaseNotes>
