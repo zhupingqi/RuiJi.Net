@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Storage
 {
-    public class MongoDBStorage : StorageBase<IContentModel>
+    public class MongoDBStorage : StorageBase<IStorageModel>
     {
         public MongoDBStorage(string connectString, string databaseName, string collectionName) : base(connectString, databaseName, collectionName)
         {
 
         }
 
-        public override int Insert(IContentModel content)
+        public override int Insert(IStorageModel content)
         {
             var client = new MongoClient(ConnectString);
             var db = client.GetDatabase(DatabaseName);
@@ -23,21 +23,21 @@ namespace RuiJi.Net.Storage
             if (string.IsNullOrEmpty(collectionName))
                 collectionName = content.GetType().FullName;
 
-            var col = db.GetCollection<IContentModel>(collectionName);
+            var col = db.GetCollection<IStorageModel>(collectionName);
 
             col.InsertOne(content);
             
             return content.Id;
         }
 
-        public override int Insert(IContentModel[] contents)
+        public override int Insert(IStorageModel[] contents)
         {
             if (contents.Length == 0)
                 return 0;
 
             var client = new MongoClient(ConnectString);
             var db = client.GetDatabase(DatabaseName);
-            var col = db.GetCollection<IContentModel>(CollectionName);
+            var col = db.GetCollection<IStorageModel>(CollectionName);
 
             col.InsertMany(contents);
 
@@ -48,7 +48,7 @@ namespace RuiJi.Net.Storage
         {
             var client = new MongoClient(ConnectString);
             var db = client.GetDatabase(DatabaseName);
-            var col = db.GetCollection<IContentModel>(CollectionName);
+            var col = db.GetCollection<IStorageModel>(CollectionName);
 
             var result = col.DeleteOne(m=>m.Id == id);
 
@@ -59,14 +59,14 @@ namespace RuiJi.Net.Storage
         {
             var client = new MongoClient(ConnectString);
             var db = client.GetDatabase(DatabaseName);
-            var col = db.GetCollection<IContentModel>(CollectionName);
+            var col = db.GetCollection<IStorageModel>(CollectionName);
 
             var result = col.DeleteOne(m => m.Url == url);
 
             return result.DeletedCount > 0;
         }
 
-        public override bool Update(IContentModel t)
+        public override bool Update(IStorageModel t)
         {
             Remove(t.Id);
             Remove(t.Url);

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
 using RuiJi.Net.Core.Crawler;
+using RuiJi.Net.Core.Expression;
 using RuiJi.Net.Core.Extracter;
 using RuiJi.Net.Core.Utils;
 using RuiJi.Net.Core.Utils.Page;
@@ -51,7 +52,7 @@ namespace RuiJi.Net.Owin.Controllers
                 return RuleLiteDb.Match(url).Select(m => new ExtractFeatureBlock(JsonConvert.DeserializeObject<ExtractBlock>(m.BlockExpression), m.Feature)).ToList();
             else
             {
-                return RuleLiteDb.Match(url).Select(m => new ExtractFeatureBlock(RuiJiExpression.ParserBlock(m.RuiJiExpression), m.Feature)).ToList();
+                return RuleLiteDb.Match(url).Select(m => new ExtractFeatureBlock(RuiJiExtractBlockParser.ParserBlock(m.RuiJiExpression), m.Feature)).ToList();
             }
         }
 
@@ -206,7 +207,7 @@ namespace RuiJi.Net.Owin.Controllers
                     metas = m.Metas.Select(n => new
                     {
                         name = n.Key,
-                        content = n.Value.ToString().Length > 50 ? n.Value.ToString().Substring(0,50) : n.Value.ToString()
+                        content = n.Value.ToString().Length > 50 ? n.Value.ToString().Substring(0, 50) : n.Value.ToString()
                     })
                 }),
                 total = paging.Count
@@ -227,15 +228,12 @@ namespace RuiJi.Net.Owin.Controllers
             if (response != null && response.Data != null)
             {
                 var content = response.Data.ToString();
-                var block = RuiJiExpression.ParserBlock(rule.RuiJiExpression);
+                var block = RuiJiExtractBlockParser.ParserBlock(rule.RuiJiExpression);
                 var r = new ExtractRequest();
                 r.Content = content;
 
                 r.Blocks = new List<ExtractFeatureBlock> {
-                    new ExtractFeatureBlock {
-                        Block = block,
-                        Feature = rule.Feature
-                    }
+                    new ExtractFeatureBlock (block,rule.Feature)
                 };
 
                 var results = Extracter.Extract(r);
@@ -256,7 +254,7 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpPost]
-        public object TestFeed(FeedModel feed,[FromUri]bool down, [FromUri]bool debug = false)
+        public object TestFeed(FeedModel feed, [FromUri]bool down, [FromUri]bool debug = false)
         {
             try
             {
@@ -276,21 +274,21 @@ namespace RuiJi.Net.Owin.Controllers
                         continue;
                     }
 
-                    var block = RuiJiExpression.ParserBlock(feed.RuiJiExpression);
+                    var block = RuiJiExtractBlockParser.ParserBlock(feed.RuiJiExpression);
 
                     var result = RuiJiExtracter.Extract(snap.Content, block);
 
-                    if(debug)
+                    if (debug)
                         CrawlTaskFunc.ClearContent(result);
 
                     if (down)
                     {
-                        var s = new FileStorage(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"www","download"));
+                        var s = new FileStorage(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "www", "download"));
 
                         var files = result.Content.ToString().Replace("\r\n", "\n").Split('\n');
                         foreach (var file in files)
                         {
-                            if (!string.IsNullOrEmpty(file) && Uri.IsWellFormedUriString(file,UriKind.Absolute))
+                            if (!string.IsNullOrEmpty(file) && Uri.IsWellFormedUriString(file, UriKind.Absolute))
                             {
                                 var res = Crawler.Request(file);
                                 var c = new DownloadContentModel();
@@ -388,7 +386,7 @@ namespace RuiJi.Net.Owin.Controllers
                 var snap = job.DoTask(feed, false);
                 reporter.Report("Feed 下载完成");
 
-                var block = RuiJiExpression.ParserBlock(feed.RuiJiExpression);
+                var block = RuiJiExtractBlockParser.ParserBlock(feed.RuiJiExpression);
 
                 var feedResult = RuiJiExtracter.Extract(snap.Content, block);
                 results.Add(feedResult);

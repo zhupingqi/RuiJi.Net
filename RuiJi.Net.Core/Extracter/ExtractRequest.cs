@@ -4,27 +4,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using RuiJi.Net.Core.Expression;
+using RuiJi.Net.Core.Extracter.Selector;
 
 namespace RuiJi.Net.Core.Extracter
 {
     public class ExtractFeatureBlock
     {
         [JsonProperty("feature")]
-        public string Feature { get; set; }
+        public List<ISelector> Feature { get; set; }
 
         [JsonProperty("block")]
         public ExtractBlock Block { get; set; }
 
-        [JsonProperty("runJs")]
-        public bool RunJS { get; set; }
-
         public ExtractFeatureBlock()
         { }
 
-        public ExtractFeatureBlock(ExtractBlock block,string feature)
+        public ExtractFeatureBlock(ExtractBlock block, string feature)
         {
             this.Block = block;
-            this.Feature = feature;
+            var selectors = new List<ISelector>();
+
+            var sp = feature.Replace("\r\n", "\n").Split('\n');
+
+            foreach (var s in sp)
+            {
+                var selector = RuiJiExtractBlockParser.ParserSelector(s);
+                selectors.Add(selector);
+            }
+
+            this.Feature = selectors;
         }
     }
 

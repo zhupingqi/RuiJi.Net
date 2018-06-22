@@ -6,6 +6,7 @@ using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using RuiJi.Net.Core.Crawler;
+using RuiJi.Net.Core.Expression;
 using RuiJi.Net.Core.Extracter;
 using RuiJi.Net.Core.Extracter.Enum;
 using RuiJi.Net.Core.Extracter.Selector;
@@ -170,7 +171,7 @@ namespace RuiJi.Net.Test
 [paging]
 css #listnav a[href]";
 
-            var block = RuiJiExpression.ParserBlock(exp);
+            var block = RuiJiExtractBlockParser.ParserBlock(exp);
             var result = RuiJiExtracter.Extract(content, block);
 
             if (result.Paging != null && result.Paging.Count > 0 && result.Tiles != null)
@@ -214,7 +215,7 @@ css #listnav a[href]";
 css .a-page
 css a[href]";
 
-            var block = RuiJiExpression.ParserBlock(exp);
+            var block = RuiJiExtractBlockParser.ParserBlock(exp);
             var result = RuiJiExtracter.Extract(content, block);
 
             if (result.Paging != null && result.Paging.Count > 0 && result.Metas != null && result.Metas.ContainsKey("content"))

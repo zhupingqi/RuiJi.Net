@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Storage
 {
-    public class LiteDbStorage : StorageBase<IContentModel>
+    public class LiteDbStorage : StorageBase<IStorageModel>
     {
         static LiteDbStorage()
         {
@@ -23,11 +23,11 @@ namespace RuiJi.Net.Storage
 
         }
 
-        public override int Insert(IContentModel content)
+        public override int Insert(IStorageModel content)
         {
             using (var db = new LiteDatabase(ConnectString))
             {
-                var col = db.GetCollection<IContentModel>(CollectionName);
+                var col = db.GetCollection<IStorageModel>(CollectionName);
 
                 var c = col.Find(m => m.Url == content.Url).FirstOrDefault();
                 if (c == null)
@@ -42,13 +42,13 @@ namespace RuiJi.Net.Storage
             return -1;
         }
 
-        public override int Insert(IContentModel[] contents)
+        public override int Insert(IStorageModel[] contents)
         {
             var count = 0;
 
             using (var db = new LiteDatabase(ConnectString))
             {
-                var col = db.GetCollection<IContentModel>(CollectionName);
+                var col = db.GetCollection<IStorageModel>(CollectionName);
 
                 foreach (var content in contents)
                 {
@@ -70,7 +70,7 @@ namespace RuiJi.Net.Storage
         {
             using (var db = new LiteDatabase(ConnectString))
             {
-                var col = db.GetCollection<IContentModel>(CollectionName);
+                var col = db.GetCollection<IStorageModel>(CollectionName);
 
                 return col.Delete(id);
             }
@@ -80,7 +80,7 @@ namespace RuiJi.Net.Storage
         {
             using (var db = new LiteDatabase(ConnectString))
             {
-                var col = db.GetCollection<IContentModel>(CollectionName);
+                var col = db.GetCollection<IStorageModel>(CollectionName);
                 var f = col.Find(m => m.Url == url);
                 if(f.Count() > 0)
                     return col.Delete(f.First().Id);
@@ -89,11 +89,11 @@ namespace RuiJi.Net.Storage
             return false;
         }
 
-        public override bool Update(IContentModel content)
+        public override bool Update(IStorageModel content)
         {
             using (var db = new LiteDatabase(ConnectString))
             {
-                var col = db.GetCollection<IContentModel>(CollectionName);
+                var col = db.GetCollection<IStorageModel>(CollectionName);
 
                 if (content.Id > 0)
                 {
@@ -108,7 +108,7 @@ namespace RuiJi.Net.Storage
         {
             using (var db = new LiteDatabase(ConnectString))
             {
-                var col = db.GetCollection<IContentModel>(CollectionName);
+                var col = db.GetCollection<IStorageModel>(CollectionName);
                 col.EnsureIndex(m => m.Id);
                 col.EnsureIndex(m => m.Url, true);
                 col.EnsureIndex(field, unique);

@@ -103,7 +103,7 @@
     <Compile Include="Extracter\Processor\JsonPathProcessor.cs" />
     <Compile Include="Extracter\Processor\XPathProcessor.cs" />
     <Compile Include="Extracter\ProcessResult.cs" />
-    <Compile Include="Extracter\RuiJiExpression.cs" />
+    <Compile Include="Expression\RuiJiExtractBlockParser.cs" />
     <Compile Include="Extracter\RuiJiExtracter.cs" />
     <Compile Include="Extracter\ExtractBlock.cs" />
     <Compile Include="Extracter\ExtractBlockCollection.cs" />
@@ -133,6 +133,7 @@
     <Compile Include="Extracter\Selector\TextRangeSelector.cs" />
     <Compile Include="Extracter\Selector\XPathSelector.cs" />
     <Compile Include="Crawler\Request.cs" />
+    <Compile Include="IStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Crawler\Response.cs" />
     <Compile Include="Queue\QueueChangedEventHandler.cs" />
@@ -163,7 +164,7 @@
     <Compile Include="Utils\Page\SegmentPaging.cs" />
     <Compile Include="Utils\Page\WebPaging.cs" />
     <Compile Include="Utils\Page\_Paging.cs" />
-    <Compile Include="Expression\RuiJiExpParser.cs" />
+    <Compile Include="Expression\RuiJiParser.cs" />
     <Compile Include="Utils\Suffix\Domain.cs" />
     <Compile Include="Utils\Suffix\DomainParser.cs" />
     <Compile Include="Utils\Suffix\Rule.cs" />

@@ -1,6 +1,7 @@
 ﻿using Amib.Threading;
 using Newtonsoft.Json;
 using Quartz;
+using RuiJi.Net.Core.Expression;
 using RuiJi.Net.Core.Extracter;
 using RuiJi.Net.Core.Extracter.Selector;
 using System;
@@ -177,7 +178,7 @@ namespace RuiJi.Net.Node.Feed.LTS
                 if (!string.IsNullOrEmpty(feed.RuiJiExpression))
                 {
                     block.TileSelector.Selectors.Clear();
-                    var s = RuiJiExpression.ParserBase(feed.RuiJiExpression).Selectors;
+                    var s = RuiJiExtractBlockParser.ParserBase(feed.RuiJiExpression).Selectors;
                     block.TileSelector.Selectors.AddRange(s);
                 }
             }

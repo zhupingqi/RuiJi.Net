@@ -68,8 +68,6 @@
   <ItemGroup>
     <Compile Include="Model\ContentModel.cs" />
     <Compile Include="FileStorage.cs" />
-    <Compile Include="Model\IContentModel.cs" />
-    <Compile Include="IStorage.cs" />
     <Compile Include="LiteDbStorage.cs" />
     <Compile Include="MongoDBStorage.cs" />
     <Compile Include="MsSqlStorage.cs" />
@@ -82,6 +80,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RuiJi.Net.Core\RuiJi.Net.Core.csproj">
+      <Project>{a27677e3-1ce8-4a8c-b041-9f7a812546f2}</Project>
+      <Name>RuiJi.Net.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

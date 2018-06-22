@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -10,31 +11,53 @@ namespace RuiJi.Net.Core.Crawler
 {
     public class Request
     {
+        [JsonProperty("ip")]
         public string Ip { get; set; }
 
+        [JsonProperty("cookie")]
         public string Cookie { get; set; }
 
-        public NameValueCollection Data { get; set; }
+        [JsonProperty("data")]
+        public object Data { get; set; }
 
+        [JsonProperty("charset")]
         public string Charset { get; set; }
 
+        [JsonProperty("method")]
         public string Method { get; set; }
 
+        [JsonProperty("headers")]
         public List<WebHeader> Headers { get; set; }
 
+        [JsonProperty("contentType")]
+        public string ContentType { get; set; }
+
+        [JsonProperty("uri")]
         public Uri Uri { get; set; }
 
+        [JsonProperty("timeout")]
         public int Timeout { get; set; }
 
+        [JsonProperty("elect")]
         public string Elect { get; set; }
 
-        public string PostParam { get; set; }
-
+        [JsonProperty("useCookie")]
         public bool UseCookie { get; set; }
 
+        [JsonProperty("waitDom")]
+        public string WaitDom { get; set; }
+
+        [JsonProperty("proxy")]
         public RequestProxy Proxy { get; set; }
 
+        [JsonProperty("runJs")]
         public bool RunJS { get; set; }
+
+        [JsonProperty("username")]
+        public string Username { get; set; }
+
+        [JsonProperty("password")]
+        public string Password { get; set; }
 
         public Request()
         {

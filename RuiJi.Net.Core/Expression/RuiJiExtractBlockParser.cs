@@ -1,4 +1,5 @@
-﻿using RuiJi.Net.Core.Extracter.Enum;
+﻿using RuiJi.Net.Core.Extracter;
+using RuiJi.Net.Core.Extracter.Enum;
 using RuiJi.Net.Core.Extracter.Selector;
 using System;
 using System.Collections.Generic;
@@ -7,9 +8,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace RuiJi.Net.Core.Extracter
+namespace RuiJi.Net.Core.Expression
 {
-    public class RuiJiExpression
+    public class RuiJiExtractBlockParser
     {
         public static ExtractBlock ParserBlock(string expression)
         {

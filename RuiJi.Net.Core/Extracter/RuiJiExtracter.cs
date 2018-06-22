@@ -1,5 +1,6 @@
 ﻿using CsQuery;
 using Newtonsoft.Json;
+using RuiJi.Net.Core.Expression;
 using RuiJi.Net.Core.Extracter.Enum;
 using RuiJi.Net.Core.Extracter.Processor;
 using RuiJi.Net.Core.Extracter.Selector;
@@ -19,20 +20,13 @@ namespace RuiJi.Net.Core.Extracter
     {
         public static List<ExtractResult> Extract(ExtractRequest request)
         {
-            var blocks = request.Blocks.Where(m => !string.IsNullOrEmpty(m.Feature)).OrderByDescending(m => m.Feature.Length).ToList();
+            var blocks = request.Blocks.Where(m => m.Feature != null && m.Feature.Count > 0).OrderByDescending(m => m.Feature.Count).ToList();
             var results = new List<ExtractResult>();
 
             foreach (var block in blocks)
             {
-                var lines = block.Feature.Split('\n');
                 var b = new ExtractBlock();
-
-                foreach (var line in lines)
-                {
-                    var selector = RuiJiExpression.ParserSelector(line);
-                    if (b != null)
-                        b.Selectors.Add(selector);
-                }
+                b.Selectors = block.Feature;
 
                 var r = Extract(request.Content, b);
                 if (r.Content.ToString().Length > 0)
@@ -46,7 +40,7 @@ namespace RuiJi.Net.Core.Extracter
             if (results.Count > 0)
                 return results;
 
-            blocks = request.Blocks.Where(m => string.IsNullOrEmpty(m.Feature)).ToList();
+            blocks = request.Blocks.Where(m => m.Feature == null || m.Feature.Count == 0).ToList();
 
             foreach (var block in blocks)
             {

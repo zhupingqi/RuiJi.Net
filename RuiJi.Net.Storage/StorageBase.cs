@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Storage
 {
-    public abstract class StorageBase<T> : IStorage<T> where T : IContentModel
+    public abstract class StorageBase<T> : IStorage<T> where T : IStorageModel
     {
         public string ConnectString { get; set; }
 

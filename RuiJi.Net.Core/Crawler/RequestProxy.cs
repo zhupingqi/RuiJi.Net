@@ -23,7 +23,7 @@ namespace RuiJi.Net.Core.Crawler
         {
             get
             {
-                return  Scheme + "://" + Ip;
+                return (string.IsNullOrEmpty(Scheme) ? "http" : Scheme) + "://" + Ip;
             }
         }
 
@@ -38,13 +38,13 @@ namespace RuiJi.Net.Core.Crawler
 
         }
 
-        public RequestProxy(string ip,int port)
+        public RequestProxy(string ip, int port)
         {
             this.Ip = ip;
             this.Port = port;
         }
 
-        public RequestProxy(string host, int port,string username,string password): this(host, port)
+        public RequestProxy(string host, int port, string username, string password) : this(host, port)
         {
             this.Username = username;
             this.Password = password;

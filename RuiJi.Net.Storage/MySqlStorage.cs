@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Storage
 {
-    public class MySqlStorage : StorageBase<IContentModel>
+    public class MySqlStorage : StorageBase<IStorageModel>
     {
         public MySqlStorage(string connectString, string databaseName = "", string collectionName = "") : base(connectString, databaseName, collectionName)
         {
         }
 
-        public override int Insert(IContentModel content)
+        public override int Insert(IStorageModel content)
         {
             throw new NotImplementedException();
         }
 
-        public override int Insert(IContentModel[] contents)
+        public override int Insert(IStorageModel[] contents)
         {
             throw new NotImplementedException();
         }
@@ -33,7 +33,7 @@ namespace RuiJi.Net.Storage
             throw new NotImplementedException();
         }
 
-        public override bool Update(IContentModel content)
+        public override bool Update(IStorageModel content)
         {
             throw new NotImplementedException();
         }

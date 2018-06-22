@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Storage
 {
-    public class MsSqlStorage : StorageBase<IContentModel>
+    public class MsSqlStorage : StorageBase<IStorageModel>
     {
         public MsSqlStorage(string folder, string databaseName, string collectionName) : base(folder, databaseName, collectionName)
         {
 
         }
 
-        public override int Insert(IContentModel content)
+        public override int Insert(IStorageModel content)
         {
             throw new NotImplementedException();
         }
 
-        public override int Insert(IContentModel[] contents)
+        public override int Insert(IStorageModel[] contents)
         {
             throw new NotImplementedException();
         }
@@ -34,7 +34,7 @@ namespace RuiJi.Net.Storage
             throw new NotImplementedException();
         }
 
-        public override bool Update(IContentModel content)
+        public override bool Update(IStorageModel content)
         {
             throw new NotImplementedException();
         }

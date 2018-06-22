@@ -1,31 +1,48 @@
 ##request
 [address]|[feed]|[rule]
-http://www.ruijihg.com/
+http://www.ruijihg.com/ |  | http://www.ruijihg.com/????/??/??/*
 
 [method]
-GET
+
+[proxy]
+192.168.31.2 2250
+
+[ua]
+auto
+
+[cookie]
 
 [headers]
 
+[ip]
+
+[contentType]
+
+[data]
+{}
+
+[timeout]
+15000
+
+[username]
+
+[password]
+
 [settings]
-contentType : ''
-data : {}
-timeout : 15000
-username:""
-password:""
-type:"GET"
-
-##feature
-[expression]
-http://www.ruijihg.com/????/??/??/*
-
-[feature]
+useCookie true
+useProxy false
+download false
 
 ##storage
 file c:\1.txt
-file 
+file c:\
+api http://xxx.xxx.com/api/insert
+mongodb connectString
+mysql 
 
 ##extract
+[feature]
+
 [block]
 #name
 css .entry-content:html

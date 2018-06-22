@@ -10,6 +10,8 @@ using RuiJi.Net.Node.Feed.LTS;
 using RuiJi.Net.NodeVisitor;
 using RuiJi.Net.Owin.Controllers;
 using RuiJi.Net.Node;
+using RuiJi.Net.Core.Expression;
+using System.IO;
 
 namespace RuiJi.Net.Test
 {
@@ -62,7 +64,7 @@ namespace RuiJi.Net.Test
                 jpath dlkejl -r
                 ";
 
-            var m = RuiJiExpression.ParserMeta(metas);
+            var m = RuiJiExtractBlockParser.ParserMeta(metas);
 
             Assert.IsTrue(m.Count > 0);
         }
@@ -111,7 +113,7 @@ css .list1
 css .list2
 ";
 
-            var m = RuiJiExpression.ParserBlock(block);
+            var m = RuiJiExtractBlockParser.ParserBlock(block);
 
             Assert.IsTrue(m.Metas.Count > 0);
         }
@@ -126,7 +128,7 @@ css .list2
             var content = response.Data.ToString();
 
             var block = new ExtractBlock();
-            var s = RuiJiExpression.ParserBlock(@"
+            var s = RuiJiExtractBlockParser.ParserBlock(@"
 [tile]
 	css table.table-bordered tr:gt(0):ohtml
 
@@ -156,7 +158,7 @@ css #listnav a[href]
             var content = response.Data.ToString();
 
             var block = new ExtractBlock();
-            var s = RuiJiExpression.ParserBase("css a[href]").Selectors;
+            var s = RuiJiExtractBlockParser.ParserBase("css a[href]").Selectors;
             block.TileSelector.Selectors.AddRange(s);
             var result = RuiJiExtracter.Extract(content, block);
 
@@ -209,7 +211,7 @@ css #listnav a[href]
 reg /jsonp[\d]+?\((.*)\)/ 1
 jpath $..url
 ";
-            var b = RuiJiExpression.ParserBlock(expression);
+            var b = RuiJiExtractBlockParser.ParserBlock(expression);
             var result = RuiJiExtracter.Extract(response.Data.ToString(), b);
 
             Assert.IsTrue(result.Content.ToString().Length > 0);
@@ -266,9 +268,19 @@ css .list1
 css .list2
 ";
 
-            var m = RuiJiExpression.ParserBlock(block);
+            var m = RuiJiExtractBlockParser.ParserBlock(block);
 
             Assert.IsTrue(m.Metas.Count > 0);
+        }
+
+        [TestMethod]
+        public void TestAdvExpression1()
+        {
+            var parser = new RuiJiParser();
+            parser.ParseFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "expression_address.txt"));
+
+
+            Assert.IsTrue(true);
         }
     }
 }

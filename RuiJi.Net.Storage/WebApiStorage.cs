@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Storage
 {
-    public class WebApiStorage : IStorage<IContentModel>
+    public class WebApiStorage : IStorage<IStorageModel>
     {
         public string ConnectString { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
@@ -16,12 +16,12 @@ namespace RuiJi.Net.Storage
             throw new NotImplementedException();
         }
 
-        public int Insert(IContentModel content)
+        public int Insert(IStorageModel content)
         {
             throw new NotImplementedException();
         }
 
-        public int Insert(IContentModel[] contents)
+        public int Insert(IStorageModel[] contents)
         {
             throw new NotImplementedException();
         }
@@ -31,7 +31,7 @@ namespace RuiJi.Net.Storage
             throw new NotImplementedException();
         }
 
-        public bool Update(IContentModel content)
+        public bool Update(IStorageModel content)
         {
             throw new NotImplementedException();
         }

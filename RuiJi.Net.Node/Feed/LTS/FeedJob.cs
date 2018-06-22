@@ -178,8 +178,8 @@ namespace RuiJi.Net.Node.Feed.LTS
                 }
                 
                 request.Method = feed.Method;
-                if (feed.Method == "POST" && !string.IsNullOrEmpty(feed.PostParam))
-                    request.PostParam = feed.PostParam;
+                if (feed.Method == "POST" && !string.IsNullOrEmpty(feed.Data))
+                    request.Data = feed.Data;
 
                 var response = NodeVisitor.Crawler.Request(request);
 

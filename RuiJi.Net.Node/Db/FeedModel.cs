@@ -51,8 +51,8 @@ namespace RuiJi.Net.Node.Db
         [JsonProperty("genre")]
         public string Genre { get; set; }
 
-        [JsonProperty("postParam")]
-        public string PostParam { get; set; }
+        [JsonProperty("data")]
+        public string Data { get; set; }
 
         [JsonProperty("ua")]
         public string UA { get; set; }

@@ -91,6 +91,10 @@ namespace RuiJi.Net.Core.Crawler
                 args += " crawl.js " + Uri.EscapeUriString(request.Uri.ToString()) + " " + file;
             }
 
+            request.WaitDom = "#J_price";
+            if (!string.IsNullOrEmpty(request.WaitDom))
+                args += " " + Uri.EscapeUriString(request.WaitDom);
+
             var p = new Process();
             p.StartInfo.FileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "phantomjs.exe");
             p.StartInfo.Arguments = args.Trim();

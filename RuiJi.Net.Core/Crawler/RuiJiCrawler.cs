@@ -1,4 +1,6 @@
-﻿using RuiJi.Net.Core.Cookie;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using RuiJi.Net.Core.Cookie;
 using RuiJi.Net.Core.Utils;
 using RuiJi.Net.Core.Utils.Log;
 using System;
@@ -135,12 +137,21 @@ namespace RuiJi.Net.Core.Crawler
             httpRequest.ReadWriteTimeout = request.Timeout > 0 ? request.Timeout : 100000;
             httpRequest.ContinueTimeout = request.Timeout > 0 ? request.Timeout : 100000;
 
-            if (httpRequest.Method == "POST" && !string.IsNullOrEmpty(request.PostParam))
+            if (httpRequest.Method == "POST" && request.Data != null)
             {
-                byte[] bs = Encoding.ASCII.GetBytes(request.PostParam);
+                byte[] bs;
+
+                var jObj = new JObject(request.Data);
+                if (jObj.Type == JTokenType.String)
+                    bs = Encoding.ASCII.GetBytes(request.Data.ToString());
+                else
+                    bs = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(request.Data));
+
                 if (string.IsNullOrEmpty(httpRequest.ContentType))
                     httpRequest.ContentType = "application/x-www-form-urlencoded";
+
                 httpRequest.ContentLength = bs.Length;
+
                 using (Stream requestStream = httpRequest.GetRequestStream())
                 {
                     requestStream.Write(bs, 0, bs.Length);

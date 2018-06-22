@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Storage.Model
 {
-    public class ContentModel : IContentModel
+    public class ContentModel : IStorageModel
     {
         [JsonProperty("id")]
         public int Id { get; set; }
