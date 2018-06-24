@@ -58,7 +58,7 @@ namespace RuiJi.Net.Core.Crawler
             var args = "";
             if (request.Proxy != null)
             {
-                args += "--proxy=" + request.Proxy.Host + ":" + request.Proxy.Port + " --proxy-type=" + request.Proxy.Scheme;
+                args += "--proxy=" + request.Proxy.Ip + ":" + request.Proxy.Port + " --proxy-type=" + request.Proxy.Scheme;
                 if (!string.IsNullOrEmpty(request.Proxy.Username))
                     args += " " + request.Proxy.Username;
                 if (!string.IsNullOrEmpty(request.Proxy.Password))
@@ -91,7 +91,7 @@ namespace RuiJi.Net.Core.Crawler
                 args += " crawl.js " + Uri.EscapeUriString(request.Uri.ToString()) + " " + file;
             }
 
-            request.WaitDom = "#J_price";
+            //request.WaitDom = "#J_price";
             if (!string.IsNullOrEmpty(request.WaitDom))
                 args += " " + Uri.EscapeUriString(request.WaitDom);
 
@@ -180,21 +180,9 @@ namespace RuiJi.Net.Core.Crawler
                 ip = IPHelper.GetDefaultIPAddress().ToString();
             }
 
-            return IpCookieManager.Instance.GetCookie(ip, request.Uri.ToString());
-        }
+            var ua = request.Headers.SingleOrDefault(m => m.Name == "User-Agent").Value;
 
-        private void SetCookie(Request request, string setCookie)
-        {
-            if (string.IsNullOrEmpty(setCookie))
-                return;
-
-            var ip = request.Ip;
-            if (string.IsNullOrEmpty(request.Ip))
-            {
-                ip = IPHelper.GetDefaultIPAddress().ToString();
-            }
-
-            IpCookieManager.Instance.UpdateCookie(ip, request.Uri.ToString(), setCookie);
+            return IpCookieManager.Instance.GetCookie(ip, request.Uri.ToString(), ua);
         }
     }
 }

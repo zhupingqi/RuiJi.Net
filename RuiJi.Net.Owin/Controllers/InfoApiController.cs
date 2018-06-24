@@ -3,6 +3,7 @@ using RestSharp;
 using RuiJi.Net.Core.Extensions;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -28,7 +29,8 @@ namespace RuiJi.Net.Owin.Controllers
 
             sys.ReckonSpeed();
 
-            return new {
+            return new
+            {
                 memoryLoad = 100 - ((double)sys.MemoryAvailable / (double)sys.PhysicalMemory) * 100,
                 cpuLoad = sys.CpuLoad,
                 inSpeed = (double)sys.InSpeed * 100 / Convert.ToDouble(sys.SpeedTotal),
@@ -48,9 +50,10 @@ namespace RuiJi.Net.Owin.Controllers
             var server = ServerManager.Get(baseUrl);
 
             SystemInfo sys = new SystemInfo();
-            var memory = Math.Round((double)sys.PhysicalMemory / 1024 / 1024 / 1024, 1, MidpointRounding.AwayFromZero) + "GB";           
+            var memory = Math.Round((double)sys.PhysicalMemory / 1024 / 1024 / 1024, 1, MidpointRounding.AwayFromZero) + "GB";
 
-            return new {
+            return new
+            {
                 nodeType = server.NodeType.ToString(),
                 startTime = server.StartTime.ToString("yyyy-MM-dd HH:mm:ss"),
                 cpu = sys.ProcessorName,
@@ -71,6 +74,11 @@ namespace RuiJi.Net.Owin.Controllers
             foreach (var dll in dlls)
             {
                 string path = AppDomain.CurrentDomain.BaseDirectory + dll + ".dll";
+                if (!File.Exists(path))
+                    path = AppDomain.CurrentDomain.BaseDirectory + dll + ".exe";
+                if (!File.Exists(path))
+                    continue;
+
                 Assembly assembly = Assembly.LoadFile(path);
                 AssemblyName assemblyName = assembly.GetName();
                 Version version = assemblyName.Version;

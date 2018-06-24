@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,13 @@ namespace RuiJi.Net.Node
 {
     public class AloneNode : INode
     {
+        static AloneNode()
+        {
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LiteDb");
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+        }
+
         public string BaseUrl { get; protected set; }
 
         public NodeTypeEnum NodeType { get; protected set; }

@@ -5,6 +5,7 @@ using RuiJi.Net.Node.Extracter;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -16,6 +17,13 @@ namespace RuiJi.Net.Node.Feed
 {
     public class FeedProxyNode : NodeBase
     {
+        static FeedProxyNode()
+        {
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LiteDb");
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+        }
+
         public FeedProxyNode(string baseUrl, string zkServer) : base(baseUrl, zkServer)
         {
             

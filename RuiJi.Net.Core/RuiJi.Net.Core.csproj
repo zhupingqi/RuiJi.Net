@@ -75,6 +75,7 @@
     <Compile Include="Configuration\NodeConfigurationElement.cs" />
     <Compile Include="Configuration\NodeConfigurationElementCollection.cs" />
     <Compile Include="Configuration\NodeConfigurationSection.cs" />
+    <Compile Include="Cookie\CookieFile.cs" />
     <Compile Include="Cookie\IpCookieManager.cs" />
     <Compile Include="Cookie\ManagedCookie.cs" />
     <Compile Include="Crawler\CrawlerElectRequest.cs" />

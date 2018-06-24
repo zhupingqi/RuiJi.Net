@@ -19,11 +19,11 @@ namespace RuiJi.Net.Core.Crawler
         public string Scheme { get; set; }
 
         [JsonIgnore]
-        public string Host
+        public Uri Uri
         {
             get
             {
-                return (string.IsNullOrEmpty(Scheme) ? "http" : Scheme) + "://" + Ip;
+                return new Uri((string.IsNullOrEmpty(Scheme) ? "http" : Scheme) + "://" + Ip + ":" + Port);
             }
         }
 
@@ -35,10 +35,10 @@ namespace RuiJi.Net.Core.Crawler
 
         public RequestProxy()
         {
-
+            Scheme = "http";
         }
 
-        public RequestProxy(string ip, int port)
+        public RequestProxy(string ip, int port):this()
         {
             this.Ip = ip;
             this.Port = port;

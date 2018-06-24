@@ -5,6 +5,7 @@ using RuiJi.Net.Node.Feed.LTS;
 using RuiJi.Net.Storage.Model;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,13 @@ namespace RuiJi.Net.Node.Db
 {
     public class ContentLiteDb
     {
+        static ContentLiteDb()
+        {
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LiteDb", "Content");
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+        }
+
         public static List<ContentModel> GetModels(Paging page, string shard, int feedID = 0)
         {
             using (var db = new LiteDatabase(@"LiteDb/Content/" + shard + ".db"))

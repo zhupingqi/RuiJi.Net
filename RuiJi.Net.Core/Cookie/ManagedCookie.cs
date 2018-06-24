@@ -9,66 +9,51 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Cookie
 {
-    public class CookieFile
-    {
-        [JsonProperty("ip")]
-        public string Ip { get; set; }
-
-        [JsonProperty("cookie")]
-        public string Cookie
-        {
-            get;
-            set;
-        }
-    }
-
     public class ManagedCookie
     {
         private CookieContainer _container;
 
-        public int Channel { get; set; }
-
-        public ManagedCookie()
+        public string UserAgent
         {
-            _container = new CookieContainer();
+            get;
+            set;
         }
 
-        public string Update(string url,string setCookie)
+        public ManagedCookie(string ua)
+        {
+            _container = new CookieContainer();
+            this.UserAgent = ua;
+        }
+
+        public string Update(string url, string setCookie)
         {
             if (setCookie == null)
                 return null;
-            try
+
+            var uri = new Uri(url);
+            var cookies = Regex.Split(setCookie, @",[^\s]");
+
+            foreach (var cookie in cookies)
             {
-                var uri = new Uri(url);
-                var reg = new Regex(@"Path=(.*?)[;|,]|Path=(.*)");
-                var ms = reg.Matches(setCookie);
-                foreach (Match m in ms)
+                var c = Regex.Replace(cookie, @"expires=(.*?)[\s]GMT", "expires=Tue, 15 Jun 2038 22:57:20 GMT",RegexOptions.IgnoreCase);
+                try
                 {
-                    var p = uri.AbsolutePath;
-                    if (m.Value != "Path=/" && p != m.Value)
-                    {
-                        setCookie = setCookie.Replace(m.Value, "Path=/");
-                    }
+                    _container.SetCookies(uri, c);
                 }
-
-                setCookie = Regex.Replace(setCookie, @"expires=(.*?)[\s]GMT", "expires=Tue, 15 Jun 2038 22:57:20 GMT");
-                _container.SetCookies(uri, setCookie);
-
-                var tmp = new List<string>();
-
-                foreach (System.Net.Cookie cookie in _container.GetCookies(uri))
+                catch
                 {
-                    tmp.Add(cookie.Name + "=" + cookie.Value + ";expires=" + cookie.Expires.ToString("r") + "; domain=" + cookie.Domain + "; path=" + cookie.Path);
+
                 }
-
-                return string.Join(",", tmp.ToArray());
-            }
-            catch (Exception ex)
-            {
-
             }
 
-            return null;
+            var tmp = new List<string>();
+
+            foreach (System.Net.Cookie cookie in _container.GetCookies(uri))
+            {
+                tmp.Add(cookie.Name + "=" + cookie.Value + ";expires=" + cookie.Expires.ToString("r") + "; domain=" + cookie.Domain + "; path=" + cookie.Path);
+            }
+
+            return string.Join(",", tmp.ToArray());            
         }
 
         public string GetCookieHeader(string url)

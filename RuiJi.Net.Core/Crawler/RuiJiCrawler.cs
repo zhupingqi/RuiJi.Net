@@ -31,6 +31,8 @@ namespace RuiJi.Net.Core.Crawler
         {
             Logger.GetLogger(request.Elect).Info("request " + request.Uri.ToString() + " with ip:" + request.Ip + (request.Proxy != null ? (" proxy:" + request.Proxy.Ip + ":" + request.Proxy.Port) : ""));
 
+            SimulateBrowser(request);
+
             try
             {
                 if (request.RunJS)
@@ -159,7 +161,6 @@ namespace RuiJi.Net.Core.Crawler
                 }
             }
 
-            SimulateBrowser(httpRequest);
             PreprocessHeader(httpRequest, request.Headers);
 
             var cookie = GetCookie(request);
@@ -171,8 +172,8 @@ namespace RuiJi.Net.Core.Crawler
 
             if (request.Proxy != null && !String.IsNullOrEmpty(request.Proxy.Ip + request.Proxy.Port))
             {
-                var proxy = new WebProxy();
-                proxy.Address = new Uri(request.Proxy.Host + ":" + request.Proxy.Port);
+                var proxy = new WebProxy(request.Proxy.Ip, request.Proxy.Port);
+                //proxy.Address = new Uri(request.Proxy.Host + ":" + request.Proxy.Port);
 
                 if (!string.IsNullOrEmpty(request.Proxy.Username + request.Proxy.Password))
                 {
@@ -251,7 +252,9 @@ namespace RuiJi.Net.Core.Crawler
                 ip = IPHelper.GetDefaultIPAddress().ToString();
             }
 
-            return IpCookieManager.Instance.GetCookieHeader(ip, request.Uri.ToString());
+            var ua = request.Headers.SingleOrDefault(m => m.Name == "User-Agent").Value;
+
+            return IpCookieManager.Instance.GetCookieHeader(ip, request.Uri.ToString(), ua);
         }
 
         private void SetCookie(Request request, string setCookie)
@@ -265,7 +268,9 @@ namespace RuiJi.Net.Core.Crawler
                 ip = IPHelper.GetDefaultIPAddress().ToString();
             }
 
-            IpCookieManager.Instance.UpdateCookie(ip, request.Uri.ToString(), setCookie);
+            var ua = request.Headers.SingleOrDefault(m => m.Name == "User-Agent").Value;
+
+            IpCookieManager.Instance.UpdateCookie(ip, ua, request.Uri.ToString(), setCookie);
         }
 
         private void PreprocessHeader(HttpWebRequest request, List<WebHeader> headers)
@@ -313,12 +318,22 @@ namespace RuiJi.Net.Core.Crawler
             }
         }
 
-        private void SimulateBrowser(HttpWebRequest request)
+        private void SimulateBrowser(Request request)
         {
-            request.Headers.Add("Accept-Encoding", "gzip, deflate, sdch");
-            request.Headers.Add("Accept-Language", "zh-CN,zh;q=0.8");
-            request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
-            request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36";
+            if (request.Headers.Count > 0)
+                return;
+
+            if (request.Headers.Count(m => m.Name == "Accept-Encoding") == 0)
+                request.Headers.Add(new WebHeader("Accept-Encoding", "gzip, deflate, sdch"));
+
+            if (request.Headers.Count(m => m.Name == "Accept-Language") == 0)
+                request.Headers.Add(new WebHeader("Accept-Language", "zh-CN,zh;q=0.8"));
+
+            if (request.Headers.Count(m => m.Name == "Accept") == 0)
+                request.Headers.Add(new WebHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"));
+
+            if (request.Headers.Count(m => m.Name == "User-Agent") == 0)
+                request.Headers.Add(new WebHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"));
         }
     }
 }

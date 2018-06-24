@@ -54,23 +54,17 @@ namespace RuiJi.Net.Test
 
             Assert.IsTrue(response.Headers.Count(m => m.Name == "Set-Cookie") == 0);
         }
-        
-
-        public void TestPhantomjs()
-        {
-
-        }
 
         [TestMethod]
         public void TestRequestProxy()
         {
             var crawler = new RuiJiCrawler();
-            var request = new Request("http://www.baidu.com");
-            request.Proxy = new RequestProxy("115.223.233.34",9000);
+            var request = new Request("https://www.baidu.com");
+            request.Proxy = new RequestProxy("223.93.172.248", 3128);
 
             var response = crawler.Request(request);
 
-            Assert.AreEqual(response.ResponseUri.ToString(), "http://www.baidu.com");
+            Assert.AreEqual(response.ResponseUri.ToString(), "https://www.baidu.com");
         }
 
         [TestMethod]
