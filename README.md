@@ -1,4 +1,6 @@
-﻿# RuiJi.Net
+﻿[![Nuget](https://img.shields.io/nuget/v/RuiJi.Net.Core.svg)](https://www.nuget.org/packages/RuiJi.Net.Core)
+[![Build status](https://ci.appveyor.com/api/projects/status/6hs9a47tftkv1yeo?svg=true)](https://ci.appveyor.com/project/zhupingqi/ruiji-net)
+# RuiJi.Net
 RuiJi.Net is a distributed crawl framework written in c#.
 
 RuiJi.Net is a self host webapi written using Microsoft.Owin. Major features include distribute crawler, distribute extracter and managed cookie.

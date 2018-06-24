@@ -41,6 +41,7 @@ namespace RuiJi.Net.Core.Utils.Tasks
             get;
             private set;
         }
+
         public IParallelTaskFunc Func { get; internal set; }
 
         public ParallelTask()

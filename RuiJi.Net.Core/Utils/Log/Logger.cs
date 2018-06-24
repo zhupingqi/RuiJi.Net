@@ -31,7 +31,6 @@ namespace RuiJi.Net.Core.Utils.Log
 
                 ILoggerRepository repository;
 
-                //var log = logger.ContainsKey(key);
                 if (!logger.ContainsKey(key))
                 {
                     repository = LogManager.CreateRepository(key);
@@ -49,7 +48,7 @@ namespace RuiJi.Net.Core.Utils.Log
 
                 return true;
             }
-            catch (Exception ex)
+            catch
             {
                 return false;
             }

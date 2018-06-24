@@ -65,31 +65,18 @@ namespace RuiJi.Net.Core.Crawler
                     args += " " + request.Proxy.Password;
             }
 
-            //phantom.addCookie({
-            //  'name'     : 'Valid-Cookie-Name',   /* required property */
-            //  'value'    : 'Valid-Cookie-Value',  /* required property */
-            //  'domain'   : 'localhost',
-            //  'path'     : '/foo',                /* required property */
-            //  'httponly' : true,
-            //  'secure'   : false,
-            //  'expires'  : (new Date()).getTime() + (1000 * 60 * 60)   /* <-- expires in 1 hour */
-            //});
-
             var cookies = GetCookie(request);
-            if (cookies.Count > 0 && request.UseCookie)
-            {
-                var cookie = GetCookieJs(cookies);
 
-                var js = _js.Replace("phantom.addCookie({});", cookie);
-                var jsFile = _tmp_js_path + @"\" + guid + ".js";
-                File.WriteAllText(jsFile, js);
+            var cookie = GetCookieJs(cookies);
 
-                args += @" \ph_download\" + guid + ".js " + Uri.EscapeUriString(request.Uri.ToString()) + " " + file;
-            }
-            else
-            {
-                args += " crawl.js " + Uri.EscapeUriString(request.Uri.ToString()) + " " + file;
-            }
+            var js = _js.Replace("phantom.addCookie({});", cookie);
+            var ua = request.Headers.SingleOrDefault(m => m.Name == "User-Agent").Value;
+            js = js.Replace("page.settings.userAgent = {};", "page.settings.userAgent = \"" + ua + "\";");
+
+            var jsFile = _tmp_js_path + @"\" + guid + ".js";
+            File.WriteAllText(jsFile, js);
+
+            args += @" \ph_download\" + guid + ".js " + Uri.EscapeUriString(request.Uri.ToString()) + " " + file;
 
             //request.WaitDom = "#J_price";
             if (!string.IsNullOrEmpty(request.WaitDom))

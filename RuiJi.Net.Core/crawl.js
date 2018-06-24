@@ -9,7 +9,7 @@ page.settings.javascriptEnabled = true;
 page.settings.loadImages = false;
 page.settings.webSecurityEnabled = true;
 page.settings.XSSAuditingEnabled = true;
-page.settings.userAgent = 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.137 Safari/537.36 LBBROWSER';
+page.settings.userAgent = {};
 
 phantom.addCookie({});
 
@@ -30,7 +30,7 @@ function checkReadyState() {
 function onPageReady() {
     if (waitDom) {
         //phantom.includeJs('https://cdn.jin10.com/assets/js/libs/jquery-1.11.1.min.js', function () {
-            waitDomReady();
+        waitDomReady();
         //});
     }
     else {
