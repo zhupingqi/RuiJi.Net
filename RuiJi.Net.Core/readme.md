@@ -39,7 +39,7 @@ extract url
 
 	var parser = new RuiJiParser();
 	var eb = parser.ParseExtract("css a.blog-title-link[href]\nexp https://my.oschina.net/*/blog/*");
-	var result = RuiJiExtracter.Extract(content, eb.Block);
+	var result = RuiJiExtractor.Extract(content, eb.Block);
 
 extract tile
 
@@ -60,7 +60,7 @@ extract tile
 	css .entry-header + p:text
 	ex /Read more »/ -e");
 
-	var result = RuiJiExtracter.Extract(content, eb.Block);
+	var result = RuiJiExtractor.Extract(content, eb.Block);
 
 
 extract meta
@@ -90,7 +90,7 @@ extract meta
 	#content
 	css #articleContent:html");
 
-	var result = RuiJiExtracter.Extract(content, eb.Block);
+	var result = RuiJiExtractor.Extract(content, eb.Block);
 
 detect mine
 
@@ -130,9 +130,9 @@ http://www.ruijihg.com/archives/ruijinet/getting-started
 
 #### RuiJi.Net Cluster is waitting for you
 
-RuiJi.Net is a dotnet distributed crawler framework written in c#.Major features include distribute crawler, distribute extracter and managed cookie, support ip polling that using the server public network address and proxy server.
+RuiJi.Net is a dotnet distributed crawler framework written in c#.Major features include distribute crawler, distribute Extractor and managed cookie, support ip polling that using the server public network address and proxy server.
 
-RuiJi.Net has extract model called RuiJi Expression,It divides the web page into block,tile and meta. you can extract web page by RuiJi Expression and save the expression with text file or databse.
+RuiJi.Net has extract model called RuiJi Expression,It divides the web page into block,tile and meta. you can extract web page by RuiJi Expression and save the expression with text file or database.
 
 RuiJi.Net have more features including extract rule match by url wildcard and page feature, paging extract, url function, cookie manager and cookie channel,much selecors to clear data, ...
 

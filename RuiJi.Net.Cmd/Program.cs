@@ -10,7 +10,7 @@ using RuiJi.Net.Core;
 using RuiJi.Net.Owin;
 using RuiJi.Net.Node.Crawler;
 using RuiJi.Net.Node;
-using RuiJi.Net.Node.Extracter;
+using RuiJi.Net.Node.Extractor;
 using System.Threading;
 using RuiJi.Net.Core.Utils;
 using log4net;

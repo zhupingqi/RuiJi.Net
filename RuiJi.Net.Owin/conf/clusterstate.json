@@ -11,12 +11,12 @@
       }
     }
   },
-  "extracter": {
-    "extracter_proxy_192.168.31.196:9918": {
+  "Extractor": {
+    "Extractor_proxy_192.168.31.196:9918": {
       "base_url": "http://192.168.31.196:9918",
       "state": "active",
       "shards": {
-        "extracter_shard_192.168.31.196:9919": {
+        "Extractor_shard_192.168.31.196:9919": {
           "base_url": "http://192.168.31.196:9919",
           "state": "active"
         }

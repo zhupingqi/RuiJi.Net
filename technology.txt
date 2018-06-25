@@ -32,7 +32,7 @@ Selector结果处理函数 X
 代理服务器管理 ✓
 Web Ui ✓X
 Seed需要分两种类型：检测更新型/即时抓取型 ✓X
-Cookie信道 X
+Cookie信道 ✓
 Cookie API X
 自动化登陆 X (https://slimerjs.org/  or  https://github.com/ariya/phantomjs/blob/master/examples/phantomwebintro.js )
 动态类生成 X

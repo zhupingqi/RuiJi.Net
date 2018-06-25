@@ -2,7 +2,7 @@
 using RestSharp;
 using RuiJi.Net.Core.Crawler;
 using RuiJi.Net.Core.Expression;
-using RuiJi.Net.Core.Extracter;
+using RuiJi.Net.Core.Extractor;
 using RuiJi.Net.Core.Utils;
 using RuiJi.Net.Core.Utils.Page;
 using RuiJi.Net.Core.Utils.Tasks;
@@ -236,13 +236,13 @@ namespace RuiJi.Net.Owin.Controllers
                     new ExtractFeatureBlock (block,rule.Feature)
                 };
 
-                var results = Extracter.Extract(r);
+                var results = Extractor.Extract(r);
 
                 var result = results.OrderByDescending(m => m.Metas.Count).FirstOrDefault();
 
                 if (debug && result.Paging != null && result.Paging.Count > 0 && result.Metas != null && result.Metas.ContainsKey("content"))
                 {
-                    result = PagingExtracter.MergeContent(new Uri(rule.Url), result, block);
+                    result = PagingExtractor.MergeContent(new Uri(rule.Url), result, block);
                 }
 
                 result.Content = null;
@@ -276,7 +276,7 @@ namespace RuiJi.Net.Owin.Controllers
 
                     var block = RuiJiExtractBlockParser.ParserBlock(feed.RuiJiExpression);
 
-                    var result = RuiJiExtracter.Extract(snap.Content, block);
+                    var result = RuiJiExtractor.Extract(snap.Content, block);
 
                     if (debug)
                         CrawlTaskFunc.ClearContent(result);
@@ -388,7 +388,7 @@ namespace RuiJi.Net.Owin.Controllers
 
                 var block = RuiJiExtractBlockParser.ParserBlock(feed.RuiJiExpression);
 
-                var feedResult = RuiJiExtracter.Extract(snap.Content, block);
+                var feedResult = RuiJiExtractor.Extract(snap.Content, block);
                 results.Add(feedResult);
 
                 reporter.Report("正在提取Feed地址");

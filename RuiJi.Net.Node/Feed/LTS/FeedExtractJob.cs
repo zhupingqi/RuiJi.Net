@@ -2,8 +2,8 @@
 using Newtonsoft.Json;
 using Quartz;
 using RuiJi.Net.Core.Expression;
-using RuiJi.Net.Core.Extracter;
-using RuiJi.Net.Core.Extracter.Selector;
+using RuiJi.Net.Core.Extractor;
+using RuiJi.Net.Core.Extractor.Selector;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -186,7 +186,7 @@ namespace RuiJi.Net.Node.Feed.LTS
                 }
             }
 
-            var result = RuiJiExtracter.Extract(feed.Content, block);
+            var result = RuiJiExtractor.Extract(feed.Content, block);
             var results = new List<string>();
 
             if (result.Tiles != null)

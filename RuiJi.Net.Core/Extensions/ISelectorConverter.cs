@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using RuiJi.Net.Core.Extracter.Enum;
-using RuiJi.Net.Core.Extracter.Selector;
+using RuiJi.Net.Core.Extractor.Enum;
+using RuiJi.Net.Core.Extractor.Selector;
 using System;
 using System.Collections.Generic;
 using System.Linq;

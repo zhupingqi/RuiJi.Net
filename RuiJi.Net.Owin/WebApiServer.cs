@@ -4,7 +4,7 @@ using RuiJi.Net.Core.Utils;
 using RuiJi.Net.Core.Utils.Log;
 using RuiJi.Net.Node;
 using RuiJi.Net.Node.Crawler;
-using RuiJi.Net.Node.Extracter;
+using RuiJi.Net.Node.Extractor;
 using RuiJi.Net.Node.Feed;
 using RuiJi.Net.Node.Feed.LTS;
 using System;
@@ -79,12 +79,12 @@ namespace RuiJi.Net.Owin
                     }
                 case "e":
                     {
-                        Node = new ExtracterNode(baseUrl, zkServer, proxy);
+                        Node = new ExtractorNode(baseUrl, zkServer, proxy);
                         break;
                     }
                 case "ep":
                     {
-                        Node = new ExtracterProxyNode(baseUrl, zkServer);
+                        Node = new ExtractorProxyNode(baseUrl, zkServer);
                         break;
                     }
                 case "f":

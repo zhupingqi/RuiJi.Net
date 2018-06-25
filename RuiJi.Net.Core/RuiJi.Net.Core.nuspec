@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>$id$</id>
-    <version>1.0.1-beta</version>
+    <version>1.0.3-beta</version>
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
@@ -13,6 +13,6 @@
     <description>$description$</description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2018</copyright>
-    <tags>Crawler Extacter Spider Distribute</tags>
+    <tags>Crawler Extractor Spider Distribute</tags>
   </metadata>
 </package>

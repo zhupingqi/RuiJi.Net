@@ -2,7 +2,7 @@
 using RestSharp;
 using RuiJi.Net.Core.Configuration;
 using RuiJi.Net.Core.Extensions;
-using RuiJi.Net.Core.Extracter;
+using RuiJi.Net.Core.Extractor;
 using RuiJi.Net.Core.Utils;
 using System;
 using System.Collections.Generic;
@@ -29,7 +29,7 @@ namespace RuiJi.Net.NodeVisitor
             }
 
             if (string.IsNullOrEmpty(proxyUrl))
-                throw new Exception("no available extracter proxy servers");
+                throw new Exception("no available Extractor proxy servers");
 
             proxyUrl = IPHelper.FixLocalUrl(proxyUrl);
 
@@ -54,7 +54,7 @@ namespace RuiJi.Net.NodeVisitor
             var proxyUrl = ProxyManager.Instance.Elect(NodeProxyTypeEnum.FEEDPROXY);
 
             if (string.IsNullOrEmpty(proxyUrl))
-                throw new Exception("no available extracter proxy servers");
+                throw new Exception("no available Extractor proxy servers");
 
             proxyUrl = IPHelper.FixLocalUrl(proxyUrl);
 

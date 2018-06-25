@@ -4,7 +4,7 @@ using Quartz;
 using RestSharp;
 using RuiJi.Net.Core.Configuration;
 using RuiJi.Net.Core.Crawler;
-using RuiJi.Net.Core.Extracter;
+using RuiJi.Net.Core.Extractor;
 using RuiJi.Net.Core.Utils.Page;
 using RuiJi.Net.Core.Utils.Log;
 using RuiJi.Net.Node.Db;

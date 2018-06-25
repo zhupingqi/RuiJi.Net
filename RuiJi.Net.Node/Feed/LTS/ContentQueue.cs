@@ -1,5 +1,5 @@
 ﻿using Amib.Threading;
-using RuiJi.Net.Core.Extracter;
+using RuiJi.Net.Core.Extractor;
 using RuiJi.Net.Core.Queue;
 using RuiJi.Net;
 using System;

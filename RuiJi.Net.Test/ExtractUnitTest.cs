@@ -7,9 +7,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using RuiJi.Net.Core.Crawler;
 using RuiJi.Net.Core.Expression;
-using RuiJi.Net.Core.Extracter;
-using RuiJi.Net.Core.Extracter.Enum;
-using RuiJi.Net.Core.Extracter.Selector;
+using RuiJi.Net.Core.Extractor;
+using RuiJi.Net.Core.Extractor.Enum;
+using RuiJi.Net.Core.Extractor.Selector;
 using RuiJi.Net.NodeVisitor;
 using RuiJi.Net.Owin;
 using RuiJi.Net.Storage;
@@ -67,7 +67,7 @@ namespace RuiJi.Net.Test
                 new CssSelector(".pt-cv-readmore","href")
             });
 
-            var r = RuiJiExtracter.Extract(content, block);
+            var r = RuiJiExtractor.Extract(content, block);
 
             Assert.IsTrue(r.Content.ToString().Length > 0);
             Assert.IsTrue(r.Tiles.Count > 0);
@@ -107,7 +107,7 @@ namespace RuiJi.Net.Test
                 new CssSelector(".pt-cv-readmore","href")
             });
 
-            var r = Extracter.Extract(new ExtractRequest
+            var r = Extractor.Extract(new ExtractRequest
             {
                 Blocks = new List<ExtractFeatureBlock> {
                     new ExtractFeatureBlock
@@ -136,7 +136,7 @@ namespace RuiJi.Net.Test
 
             var block = Feeder.GetExtractBlock("http://www.ruijihg.com/2018/05/20/ruiji-solr-net/").First();
 
-            var r = Extracter.Extract(new ExtractRequest
+            var r = Extractor.Extract(new ExtractRequest
             {
                 Blocks = new List<ExtractFeatureBlock> {
                     block
@@ -172,13 +172,13 @@ namespace RuiJi.Net.Test
 css #listnav a[href]";
 
             var block = RuiJiExtractBlockParser.ParserBlock(exp);
-            var result = RuiJiExtracter.Extract(content, block);
+            var result = RuiJiExtractor.Extract(content, block);
 
             if (result.Paging != null && result.Paging.Count > 0 && result.Tiles != null)
             {
                 var storage = new FileStorage(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"www","download"));
 
-                PagingExtracter.DownloadPage(request.Uri, result, block,(u,res)=> {
+                PagingExtractor.DownloadPage(request.Uri, result, block,(u,res)=> {
                     var c = new DownloadContentModel();
                     c.Url = u.AbsolutePath.Trim();
                     c.IsRaw = false;
@@ -216,11 +216,11 @@ css .a-page
 css a[href]";
 
             var block = RuiJiExtractBlockParser.ParserBlock(exp);
-            var result = RuiJiExtracter.Extract(content, block);
+            var result = RuiJiExtractor.Extract(content, block);
 
             if (result.Paging != null && result.Paging.Count > 0 && result.Metas != null && result.Metas.ContainsKey("content"))
             {
-                result = PagingExtracter.MergeContent(request.Uri, result, block);
+                result = PagingExtractor.MergeContent(request.Uri, result, block);
             }
 
             Assert.IsTrue(true);

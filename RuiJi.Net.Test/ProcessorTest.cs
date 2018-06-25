@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RuiJi.Net.Core.Crawler;
-using RuiJi.Net.Core.Extracter;
-using RuiJi.Net.Core.Extracter.Processor;
-using RuiJi.Net.Core.Extracter.Selector;
+using RuiJi.Net.Core.Extractor;
+using RuiJi.Net.Core.Extractor.Processor;
+using RuiJi.Net.Core.Extractor.Selector;
 
 namespace RuiJi.Net.Test
 {
@@ -38,7 +38,7 @@ namespace RuiJi.Net.Test
             var p = new CssProcessor();
             var s = new CssSelector();
             s.Value = "div.f12:first";
-            s.Type = Core.Extracter.Enum.CssTypeEnum.Text;
+            s.Type = Core.Extractor.Enum.CssTypeEnum.Text;
 
             var pr = new ProcessResult();
             pr.Matches.Add(content);

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RuiJi.Net.Core.Extensions;
-using RuiJi.Net.Core.Extracter;
+using RuiJi.Net.Core.Extractor;
 using RuiJi.Net.Node.Db;
 using System;
 using System.Collections.Generic;

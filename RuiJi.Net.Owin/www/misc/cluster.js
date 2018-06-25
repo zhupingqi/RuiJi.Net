@@ -27,7 +27,7 @@
                             }
                         },
                         {
-                            name: 'extracter proxy',
+                            name: 'Extractor proxy',
                             children: [],
                             label: {
                                 position: 'right',
@@ -76,7 +76,7 @@
                 });
 
                 data.children[1].children = d.where(function (m) {
-                    return m.path.indexOf("proxy") != -1 && m.data == "extracter proxy";
+                    return m.path.indexOf("proxy") != -1 && m.data == "Extractor proxy";
                 }).select(function (m) {
                     var name = m.path.split("/").last();
 

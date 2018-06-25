@@ -9,10 +9,10 @@ namespace RuiJi.Net.Node
     public enum NodeTypeEnum
     {
         CRAWLERPROXY = 0,
-        EXTRACTERPROXY = 1,
+        ExtractorPROXY = 1,
         FEEDPROXY = 2,
         CRAWLER = 3,
-        EXTRACTER = 4,
+        Extractor = 4,
         FEED = 5,
         ALONE
     }

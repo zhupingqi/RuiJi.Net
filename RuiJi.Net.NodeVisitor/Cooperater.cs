@@ -1,7 +1,7 @@
 ﻿using DiffPlex;
 using DiffPlex.DiffBuilder;
 using RuiJi.Net.Core.Crawler;
-using RuiJi.Net.Core.Extracter;
+using RuiJi.Net.Core.Extractor;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -37,7 +37,7 @@ namespace RuiJi.Net.NodeVisitor
                 Content = content
             };
 
-            var results = Extracter.Extract(er);
+            var results = Extractor.Extract(er);
 
             var result = results.OrderByDescending(m => m.Metas.Count).FirstOrDefault();
 
@@ -104,7 +104,7 @@ namespace RuiJi.Net.NodeVisitor
                     Content = content
                 };
 
-                var results = Extracter.Extract(er);
+                var results = Extractor.Extract(er);
 
                 var r = results.OrderByDescending(m => m.Metas.Count).FirstOrDefault();
                 if (r.Paging == null)

@@ -6,18 +6,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RuiJi.Net.Node.Extracter
+namespace RuiJi.Net.Node.Extractor
 {
-    public class ExtracterManager
+    public class ExtractorManager
     {
-        private static ExtracterManager _elector = null;
+        private static ExtractorManager _elector = null;
         private static object _lck = new object();
 
         private List<string> serverMap = new List<string>();
 
         private ulong count = 0;
 
-        public static ExtracterManager Instance
+        public static ExtractorManager Instance
         {
             get
             {
@@ -25,12 +25,12 @@ namespace RuiJi.Net.Node.Extracter
             }
         }
 
-        static ExtracterManager()
+        static ExtractorManager()
         {
-            _elector = new ExtracterManager();
+            _elector = new ExtractorManager();
         }
 
-        private ExtracterManager()
+        private ExtractorManager()
         {
         }
 

@@ -3,7 +3,7 @@
 # RuiJi.Net
 RuiJi.Net is a distributed crawl framework written in c#.
 
-RuiJi.Net is a self host webapi written using Microsoft.Owin. Major features include distribute crawler, distribute extracter and managed cookie.
+RuiJi.Net is a self host webapi written using Microsoft.Owin. Major features include distribute crawler, distribute Extractor and managed cookie.
 
 RuiJi.Net support ip polling that using the server public network address and proxy server.
 
@@ -36,7 +36,7 @@ The project is under development.
 | response | raw/string |
 | proxy | http |
 
-#### Extracter
+#### Extractor
 
 | Feature | Support |
 | :-: | :-:  |
@@ -81,7 +81,7 @@ The project is under development.
                 new CssSelector(".pt-cv-readmore","href")
             });
 
-            var ext = new RuiJiExtracter();
+            var ext = new RuiJiExtractor();
             var r = ext.Extract(content, block);
 
 
@@ -143,7 +143,7 @@ the service startup is complete!
                 new CssSelector(".pt-cv-readmore","href")
             });
 
-            var r = Extracter.Extract(new ExtractRequest {
+            var r = Extractor.Extract(new ExtractRequest {
                 Block = block,
                 Content = content
             });

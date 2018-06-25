@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RuiJi.Net.Core.Crawler;
-using RuiJi.Net.Core.Extracter;
+using RuiJi.Net.Core.Extractor;
 using System;
 using System.Collections.Generic;
 using System.IO;

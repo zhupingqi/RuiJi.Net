@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using RuiJi.Net.Core.Extensions.System;
-using RuiJi.Net.Core.Extracter;
-using RuiJi.Net.Core.Extracter.Enum;
-using RuiJi.Net.Core.Extracter.Selector;
+using RuiJi.Net.Core.Extractor;
+using RuiJi.Net.Core.Extractor.Enum;
+using RuiJi.Net.Core.Extractor.Selector;
 using RuiJi.Net.Node.Feed;
 using RuiJi.Net.Node.Db;
 

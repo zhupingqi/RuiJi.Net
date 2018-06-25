@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using RuiJi.Net.Core;
 using RuiJi.Net.Core.Utils.Log;
-using RuiJi.Net.Node.Extracter;
+using RuiJi.Net.Node.Extractor;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -12,18 +12,18 @@ using System.Threading;
 using System.Threading.Tasks;
 using ZooKeeperNet;
 
-namespace RuiJi.Net.Node.Extracter
+namespace RuiJi.Net.Node.Extractor
 {
-    public class ExtracterProxyNode : NodeBase
+    public class ExtractorProxyNode : NodeBase
     {
-        public ExtracterProxyNode(string baseUrl, string zkServer) : base(baseUrl, zkServer)
+        public ExtractorProxyNode(string baseUrl, string zkServer) : base(baseUrl, zkServer)
         {
             
         }
 
         protected override void OnStartup()
         {
-            base.CreateLiveNode("/live_nodes/proxy/" + BaseUrl, "extracter proxy".GetBytes());
+            base.CreateLiveNode("/live_nodes/proxy/" + BaseUrl, "Extractor proxy".GetBytes());
 
             //create crawler proxy config in zookeeper
             var stat = zooKeeper.Exists("/config/proxy/" + BaseUrl, false);
@@ -31,16 +31,16 @@ namespace RuiJi.Net.Node.Extracter
             {
                 var d = new 
                 {
-                    type = "extracter"
+                    type = "Extractor"
                 };
 
                 zooKeeper.Create("/config/proxy/" + BaseUrl, JsonConvert.SerializeObject(d).GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
             }
 
-            LoadLiveExtracter();
+            LoadLiveExtractor();
         }
 
-        public NodeConfig GetExtracterConfig(string baseUrl)
+        public NodeConfig GetExtractorConfig(string baseUrl)
         {
             var b = zooKeeper.GetData("/config/crawler/" + baseUrl, false, null);
             var r = System.Text.Encoding.UTF8.GetString(b);
@@ -49,29 +49,29 @@ namespace RuiJi.Net.Node.Extracter
             return d;
         }
 
-        protected void LoadLiveExtracter()
+        protected void LoadLiveExtractor()
         {
             try
             {
-                ExtracterManager.Instance.Clear();
+                ExtractorManager.Instance.Clear();
 
-                var nodes = zooKeeper.GetChildren("/live_nodes/extracter", new LiveExtracterWatcher(this));
+                var nodes = zooKeeper.GetChildren("/live_nodes/Extractor", new LiveExtractorWatcher(this));
 
-                ExtracterManager.Instance.ClearAndAddServer(nodes.ToArray());
+                ExtractorManager.Instance.ClearAndAddServer(nodes.ToArray());
             }
             catch { }
         }
 
         protected override NodeTypeEnum SetNodeType()
         {
-            return NodeTypeEnum.EXTRACTERPROXY;
+            return NodeTypeEnum.ExtractorPROXY;
         }
 
-        class LiveExtracterWatcher : IWatcher
+        class LiveExtractorWatcher : IWatcher
         {
-            ExtracterProxyNode node;
+            ExtractorProxyNode node;
 
-            public LiveExtracterWatcher(ExtracterProxyNode node)
+            public LiveExtractorWatcher(ExtractorProxyNode node)
             {
                 this.node = node;
             }
@@ -82,8 +82,8 @@ namespace RuiJi.Net.Node.Extracter
                 {
                     case EventType.NodeChildrenChanged:
                         {
-                            node.LoadLiveExtracter();
-                            Logger.GetLogger(node.BaseUrl).Info("detected extracter node change");
+                            node.LoadLiveExtractor();
+                            Logger.GetLogger(node.BaseUrl).Info("detected Extractor node change");
                             break;
                         }
                 }

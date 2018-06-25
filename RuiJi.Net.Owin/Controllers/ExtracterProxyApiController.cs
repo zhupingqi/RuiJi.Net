@@ -3,9 +3,9 @@ using RestSharp;
 using RuiJi.Net.Core;
 using RuiJi.Net.Core.Crawler;
 using RuiJi.Net.Core.Extensions;
-using RuiJi.Net.Core.Extracter;
+using RuiJi.Net.Core.Extractor;
 using RuiJi.Net;
-using RuiJi.Net.Node.Extracter;
+using RuiJi.Net.Node.Extractor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +16,7 @@ using RuiJi.Net.NodeVisitor;
 
 namespace RuiJi.Net.Owin.Controllers
 {
-    public class ExtracterProxyApiController : ApiController
+    public class ExtractorProxyApiController : ApiController
     {
         [HttpPost]
         //[WebApiCacheAttribute(Duration = 10)]
@@ -24,10 +24,10 @@ namespace RuiJi.Net.Owin.Controllers
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
 
-            if (node.NodeType == Node.NodeTypeEnum.EXTRACTERPROXY)
+            if (node.NodeType == Node.NodeTypeEnum.ExtractorPROXY)
             {
 
-                var result = ExtracterManager.Instance.Elect();
+                var result = ExtractorManager.Instance.Elect();
                 if (result == null)
                     return new List<ExtractResult>();
 
@@ -47,7 +47,7 @@ namespace RuiJi.Net.Owin.Controllers
             else
             {
                 var request = JsonConvert.DeserializeObject<ExtractRequest>(json);
-                return Extracter.Extract(request);
+                return Extractor.Extract(request);
             }
         }
     }

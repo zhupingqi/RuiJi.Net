@@ -86,11 +86,11 @@ namespace RuiJi.Net.Owin
             );
             #endregion
 
-            #region Extracter Api
+            #region Extractor Api
             config.Routes.MapHttpRoute(
                 name: "Extract",
                 routeTemplate: "api/extract",
-                defaults: new { controller = "ExtracterApi", action = "extract" }
+                defaults: new { controller = "ExtractorApi", action = "extract" }
             );
             #endregion
 
@@ -116,7 +116,7 @@ namespace RuiJi.Net.Owin
             config.Routes.MapHttpRoute(
                 name: "ProxyExtract",
                 routeTemplate: "api/ep/extract",
-                defaults: new { controller = "ExtracterProxyApi", action = "Extract" }
+                defaults: new { controller = "ExtractorProxyApi", action = "Extract" }
             );
 
             config.Routes.MapHttpRoute(

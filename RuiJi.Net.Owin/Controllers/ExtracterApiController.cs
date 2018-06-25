@@ -2,7 +2,7 @@
 using RuiJi.Net.Core;
 using RuiJi.Net.Core.Crawler;
 using RuiJi.Net.Core.Extensions;
-using RuiJi.Net.Core.Extracter;
+using RuiJi.Net.Core.Extractor;
 using RuiJi.Net.Core.Utils;
 using RuiJi.Net;
 using RuiJi.Net.Node.Crawler;
@@ -17,7 +17,7 @@ using RuiJi.Net.NodeVisitor;
 
 namespace RuiJi.Net.Owin.Controllers
 {
-    public class ExtracterApiController : ApiController
+    public class ExtractorApiController : ApiController
     {
         [HttpPost]
         public List<ExtractResult> Extract([FromBody]string json)
@@ -25,14 +25,14 @@ namespace RuiJi.Net.Owin.Controllers
             var node = ServerManager.Get(Request.RequestUri.Authority);
             var request = JsonConvert.DeserializeObject<ExtractRequest>(json);
 
-            if (node.NodeType == Node.NodeTypeEnum.EXTRACTER)
+            if (node.NodeType == Node.NodeTypeEnum.Extractor)
             {
-                var result = RuiJiExtracter.Extract(request);
+                var result = RuiJiExtractor.Extract(request);
                 return result;
             }
             else
             {
-                return Extracter.Extract(request);
+                return Extractor.Extract(request);
             }
         }
     }

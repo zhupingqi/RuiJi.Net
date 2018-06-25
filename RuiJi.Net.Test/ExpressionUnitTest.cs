@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RuiJi.Net.Core.Crawler;
-using RuiJi.Net.Core.Extracter;
+using RuiJi.Net.Core.Extractor;
 using RuiJi.Net.Core.Utils;
 using RuiJi.Net.Core.Utils.Tasks;
 using RuiJi.Net.Node.Feed;
@@ -143,7 +143,7 @@ css .list2
 css #listnav a[href]
 ");
 
-            var result = RuiJiExtracter.Extract(content, s);
+            var result = RuiJiExtractor.Extract(content, s);
 
             Assert.IsTrue(true);
         }
@@ -160,7 +160,7 @@ css #listnav a[href]
             var block = new ExtractBlock();
             var s = RuiJiExtractBlockParser.ParserBase("css a[href]").Selectors;
             block.TileSelector.Selectors.AddRange(s);
-            var result = RuiJiExtracter.Extract(content, block);
+            var result = RuiJiExtractor.Extract(content, block);
 
             Assert.IsTrue(true);
         }
@@ -176,7 +176,7 @@ css #listnav a[href]
 
             var parser = new RuiJiParser();
             var eb = parser.ParseExtract("css a.blog-title-link[href]\nexp https://my.oschina.net/*/blog/*");
-            var result = RuiJiExtracter.Extract(content, eb.Block);
+            var result = RuiJiExtractor.Extract(content, eb.Block);
 
             Assert.IsTrue(true);
         }
@@ -202,7 +202,7 @@ css article:html
 	css .entry-header + p:text
 	ex /Read more »/ -e");
 
-            var result = RuiJiExtracter.Extract(content, eb.Block);
+            var result = RuiJiExtractor.Extract(content, eb.Block);
 
             Assert.IsTrue(true);
         }
@@ -236,7 +236,7 @@ css article:html
 	#content
 	css #articleContent:html");
 
-            var result = RuiJiExtracter.Extract(content, eb.Block);
+            var result = RuiJiExtractor.Extract(content, eb.Block);
 
             Assert.IsTrue(true);
         }
@@ -288,7 +288,7 @@ reg /jsonp[\d]+?\((.*)\)/ 1
 jpath $..url
 ";
             var b = RuiJiExtractBlockParser.ParserBlock(expression);
-            var result = RuiJiExtracter.Extract(response.Data.ToString(), b);
+            var result = RuiJiExtractor.Extract(response.Data.ToString(), b);
 
             Assert.IsTrue(result.Content.ToString().Length > 0);
         }
