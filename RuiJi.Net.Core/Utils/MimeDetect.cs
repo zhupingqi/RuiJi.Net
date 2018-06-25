@@ -14,7 +14,7 @@ namespace RuiJi.Net.Core.Utils
 
         static MimeDetect()
         {
-            mimes = File.ReadAllLines(AppDomain.CurrentDomain.BaseDirectory + @"\text_mime.dat").ToList();
+            mimes = File.ReadAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory , "text_mime.dat")).ToList();
         }
 
         public static bool IsRaw(string contentType)
@@ -44,7 +44,7 @@ namespace RuiJi.Net.Core.Utils
 
         static Mimes()
         {
-            var mimeTypes = Path.Combine("MimeTypes", "mimes.dat");
+            var mimeTypes = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "mimes.dat");
 
             using (StreamReader streamReader = new StreamReader(mimeTypes))
             {
@@ -80,6 +80,8 @@ namespace RuiJi.Net.Core.Utils
 
         public static List<string> Extension(string mimeType)
         {
+            mimeType = mimeType.Split(';')[0];
+
             var extensions = mimes.FirstOrDefault(x => x.Key.Equals(mimeType)).Value;
             if (extensions == null)
                 return new List<string>();

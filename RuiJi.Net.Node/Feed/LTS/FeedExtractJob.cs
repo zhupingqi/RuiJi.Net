@@ -178,6 +178,9 @@ namespace RuiJi.Net.Node.Feed.LTS
                 if (!string.IsNullOrEmpty(feed.RuiJiExpression))
                 {
                     block.TileSelector.Selectors.Clear();
+
+                    var parser = new RuiJiParser();
+
                     var s = RuiJiExtractBlockParser.ParserBase(feed.RuiJiExpression).Selectors;
                     block.TileSelector.Selectors.AddRange(s);
                 }

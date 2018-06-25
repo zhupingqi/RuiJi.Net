@@ -166,6 +166,82 @@ css #listnav a[href]
         }
 
         [TestMethod]
+        public void TestExtract2()
+        {
+            var crawler = new RuiJiCrawler();
+            var request = new Request("https://www.oschina.net/blog");
+
+            var response = crawler.Request(request);
+            var content = response.Data.ToString();
+
+            var parser = new RuiJiParser();
+            var eb = parser.ParseExtract("css a.blog-title-link[href]\nexp https://my.oschina.net/*/blog/*");
+            var result = RuiJiExtracter.Extract(content, eb.Block);
+
+            Assert.IsTrue(true);
+        }
+
+        [TestMethod]
+        public void TestExtractTile()
+        {
+            var crawler = new RuiJiCrawler();
+            var request = new Request("http://www.ruijihg.com/archives/category/tech/bigdata");
+
+            var response = crawler.Request(request);
+            var content = response.Data.ToString();
+
+            var parser = new RuiJiParser();
+            var eb = parser.ParseExtract(@"[tile]
+css article:html
+
+    [meta]
+	#title
+	css .entry-header:text
+
+	#summary
+	css .entry-header + p:text
+	ex /Read more »/ -e");
+
+            var result = RuiJiExtracter.Extract(content, eb.Block);
+
+            Assert.IsTrue(true);
+        }
+
+        [TestMethod]
+        public void TestExtractMeta()
+        {
+            var crawler = new RuiJiCrawler();
+            var request = new Request("https://my.oschina.net/zhupingqi/blog/1826317");
+
+            var response = crawler.Request(request);
+            var content = response.Data.ToString();
+
+            var parser = new RuiJiParser();
+            var eb = parser.ParseExtract(@"
+[meta]
+	#title
+	css h1.header:text
+
+	#author
+	css div.blog-meta .avatar + span:text
+
+	#date
+	css div.blog-meta > div.item:first:text
+	regS /发布于/ 1
+
+	#words_i
+	css div.blog-meta > div.item:eq(1):text
+	regS / / 1
+
+	#content
+	css #articleContent:html");
+
+            var result = RuiJiExtracter.Extract(content, eb.Block);
+
+            Assert.IsTrue(true);
+        }
+
+        [TestMethod]
         public void TestHistoryUpdate()
         {
             var feed = FeedLiteDb.GetFeed(1);

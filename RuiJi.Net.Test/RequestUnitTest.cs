@@ -18,7 +18,7 @@ namespace RuiJi.Net.Test
             var request = new Request("http://www.baidu.com");
             var response = crawler.Request(request);
 
-            Assert.AreEqual(response.ResponseUri.ToString() , "http://www.baidu.com");
+            Assert.AreEqual(response.ResponseUri.ToString(), "http://www.baidu.com");
         }
 
         [TestMethod]
@@ -26,8 +26,8 @@ namespace RuiJi.Net.Test
         {
             //no ip
             var crawler = new RuiJiCrawler();
-            var request = new Request("http://www.baidu.com");
-            request.Ip = "192.168.5.140";
+            var request = new Request("https://www.baidu.com");
+            request.Ip = "192.168.31.196";
             var response = crawler.Request(request);
 
             Assert.AreEqual(response.ResponseUri.ToString(), "http://www.baidu.com");
@@ -73,6 +73,8 @@ namespace RuiJi.Net.Test
             var crawler = new RuiJiCrawler();
             var request = new Request("http://img10.jiuxian.com/2018/0111/cd51bb851410404388155b3ec2c505cf4.jpg");
             var response = crawler.Request(request);
+
+            var ex = response.Extensions;
 
             Assert.IsTrue(response.IsRaw);
 

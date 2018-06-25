@@ -90,7 +90,7 @@ namespace RuiJi.Net.Core.Expression
             }
         }
 
-        private void ParseRequest(string expression)
+        public Request ParseRequest(string expression)
         {
             Request = new Request();
 
@@ -189,13 +189,17 @@ namespace RuiJi.Net.Core.Expression
 
             reader.Close();
             stream.Close();
+
+            return Request;
         }
 
-        private void ParseExtract(string expression)
+        public ExtractFeatureBlock ParseExtract(string expression)
         {
             var block = RuiJiExtractBlockParser.ParserBlock(expression);
 
-            ExtractBlock = new ExtractFeatureBlock(block,"") ; 
+            ExtractBlock = new ExtractFeatureBlock(block,"") ;
+
+            return ExtractBlock;
         }
 
         private void ParseStorage(string expression)
