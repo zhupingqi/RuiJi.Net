@@ -36,8 +36,8 @@ namespace RuiJi.Net.Core.Crawler
         [JsonProperty("responseUri")]
         public Uri ResponseUri { get; set; }
 
-        [JsonProperty("requestUri")]
-        public Uri RequestUri { get; set; }
+        [JsonProperty("request")]
+        public Request Request { get; set; }
 
         [JsonProperty("elect")]
         public string ElectInfo { get; set; }

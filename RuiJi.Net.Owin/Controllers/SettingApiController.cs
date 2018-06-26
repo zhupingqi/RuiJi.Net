@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
+using RuiJi.Net.Core.Compile;
 using RuiJi.Net.Core.Configuration;
 using RuiJi.Net.Core.Crawler;
 using RuiJi.Net.Core.Utils;
@@ -204,7 +205,7 @@ namespace RuiJi.Net.Owin.Controllers
         }
     }
 
-    public class ComplieFuncTest : CompileUrl
+    public class ComplieFuncTest : CompileUrlProviderBase
     {
         private string code;
 
@@ -213,9 +214,9 @@ namespace RuiJi.Net.Owin.Controllers
             this.code = code;
         }
 
-        public override string FormatCode(CompileExtract extract)
+        public override string FormatCode(ExtractFunctionResult result)
         {
-            var formatCode = string.Format(code, extract.Args);
+            var formatCode = string.Format(code, result.Args);
 
             return formatCode;
         }

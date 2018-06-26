@@ -16,7 +16,7 @@ namespace RuiJi.Net.Test
         {
             var url = "http://app.cannews.com.cn/roll.php?do=query&callback=jsonp1475197217819&_={# ticks() #}&date={# now(\"yyyy-MM-dd\") #}&size=20&page={# page(1,10) #}&&start={# limit(1,5,2) #}";
 
-            var f = new CompileFeedAddress();
+            var f = new LiteDbCompileUrlProvider();
             var urls = f.Compile(url);
 
             Assert.IsTrue(true);

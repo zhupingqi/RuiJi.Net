@@ -61,7 +61,7 @@ namespace RuiJi.Net.Node.Feed.LTS
                 var task = Task.Factory.StartNew(() =>
                 {                   
                     var feeds = GetFeedJobs(baseUrl,proxyUrl, feedNode);
-                    var compile = new CompileFeedAddress();
+                    var compile = new LiteDbCompileUrlProvider();
 
                     var stpStartInfo = new STPStartInfo
                     {

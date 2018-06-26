@@ -111,7 +111,7 @@ namespace RuiJi.Net.NodeVisitor
                     refreshUrl = ms[0].Groups[1].Value;
                     if (!Uri.IsWellFormedUriString(refreshUrl, UriKind.Absolute))
                     {
-                        refreshUrl = new Uri(response.RequestUri, refreshUrl).ToString();
+                        refreshUrl = new Uri(response.Request.Uri, refreshUrl).ToString();
                     }
 
                     return true;

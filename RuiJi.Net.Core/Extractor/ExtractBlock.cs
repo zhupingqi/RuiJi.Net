@@ -25,5 +25,10 @@ namespace RuiJi.Net.Core.Extractor
             Metas = new ExtractMetaCollection();
             TileSelector = new ExtractTile();
         }
+
+        public ExtractBlock():this("")
+        {
+
+        }
     }
 }

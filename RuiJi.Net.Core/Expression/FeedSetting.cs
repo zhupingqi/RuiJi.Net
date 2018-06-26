@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Expression
 {
-    public enum ExpressionType
+    public class FeedSetting
     {
-        ADDRESS,
-        FEED,
-        RULE
+        public string CornExpression { get; set; }
+
+        public string Id { get; set; }
+
+        public int Delay { get; set; }
     }
 }

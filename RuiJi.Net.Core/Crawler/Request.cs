@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Crawler
 {
-    public class Request
+    public class Request : ICloneable
     {
         [JsonProperty("ip")]
         public string Ip { get; set; }
@@ -60,6 +60,9 @@ namespace RuiJi.Net.Core.Crawler
         [JsonProperty("password")]
         public string Password { get; set; }
 
+        [JsonProperty("tag")]
+        public string Tag { get; set; }
+
         public Request()
         {
             Method = "GET";
@@ -77,6 +80,11 @@ namespace RuiJi.Net.Core.Crawler
         {
             this.Uri = uri;
             this.Ip = ip;
+        }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
         }
     }
 }

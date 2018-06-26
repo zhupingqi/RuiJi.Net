@@ -240,12 +240,13 @@ namespace RuiJi.Net.Owin.Controllers
 
                 var result = results.OrderByDescending(m => m.Metas.Count).FirstOrDefault();
 
-                if (debug && result.Paging != null && result.Paging.Count > 0 && result.Metas != null && result.Metas.ContainsKey("content"))
+                if (result.Paging != null && result.Paging.Count > 0 && result.Metas != null && result.Metas.ContainsKey("content"))
                 {
                     result = PagingExtractor.MergeContent(new Uri(rule.Url), result, block);
                 }
 
-                result.Content = null;
+                if(!debug)
+                    CrawlTaskFunc.ClearContent(result);
 
                 return result;
             }
@@ -258,7 +259,7 @@ namespace RuiJi.Net.Owin.Controllers
         {
             try
             {
-                var compile = new CompileFeedAddress();
+                var compile = new LiteDbCompileUrlProvider();
                 var addrs = compile.Compile(feed.Address);
                 var results = new List<ExtractResult>();
 
@@ -278,7 +279,7 @@ namespace RuiJi.Net.Owin.Controllers
 
                     var result = RuiJiExtractor.Extract(snap.Content, block);
 
-                    if (debug)
+                    if (!debug)
                         CrawlTaskFunc.ClearContent(result);
 
                     if (down)
@@ -375,7 +376,7 @@ namespace RuiJi.Net.Owin.Controllers
 
             reporter.Report("正在下载 Feed");
 
-            var compile = new CompileFeedAddress();
+            var compile = new LiteDbCompileUrlProvider();
             var addrs = compile.Compile(feed.Address);
 
             foreach (var addr in addrs)

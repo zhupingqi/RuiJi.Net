@@ -51,7 +51,7 @@ namespace RuiJi.Net.Core.Crawler
                     }
 
                     res.ElectInfo = request.Elect;
-                    res.RequestUri = request.Uri;
+                    res.Request = request;
                     res.Method = request.Method;
                     if (res.Proxy != null)
                         res.Proxy = request.Proxy.Ip;
@@ -90,7 +90,7 @@ namespace RuiJi.Net.Core.Crawler
 
                 response.StatusCode = httpResponse.StatusCode;
                 response.Headers = WebHeader.FromWebHeader(httpResponse.Headers);
-                response.RequestUri = request.Uri;
+                response.Request = request;
                 response.ResponseUri = httpResponse.ResponseUri;
                 response.Method = request.Method;
 
@@ -320,9 +320,6 @@ namespace RuiJi.Net.Core.Crawler
 
         private void SimulateBrowser(Request request)
         {
-            if (request.Headers.Count > 0)
-                return;
-
             if (request.Headers.Count(m => m.Name == "Accept-Encoding") == 0)
                 request.Headers.Add(new WebHeader("Accept-Encoding", "gzip, deflate, sdch"));
 

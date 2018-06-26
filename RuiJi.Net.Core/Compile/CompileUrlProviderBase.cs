@@ -6,20 +6,11 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace RuiJi.Net.Core.Utils
+namespace RuiJi.Net.Core.Compile
 {
-    public class CompileExtract
+    public abstract class CompileUrlProviderBase
     {
-        public string Function { get; set; }
-
-        public object[] Args { get; set; }
-
-        public int Index { get; set; }
-    }
-
-    public abstract class CompileUrl
-    {
-        public CompileExtract Extract(string url)
+        public ExtractFunctionResult ExtractFunction(string url)
         {
 
             if (string.IsNullOrEmpty(url))
@@ -31,7 +22,7 @@ namespace RuiJi.Net.Core.Utils
             if (ms.Count == 0)
                 return null;
 
-            var result = new CompileExtract();
+            var result = new ExtractFunctionResult();
             var m = ms[0];
 
             var d = m.Value.Trim();
@@ -55,7 +46,7 @@ namespace RuiJi.Net.Core.Utils
 
         public string[] Compile(string address)
         {
-            var compileExtract = Extract(address);
+            var compileExtract = ExtractFunction(address);
             if (compileExtract == null)
                 return new string[] { address };
 
@@ -77,6 +68,6 @@ namespace RuiJi.Net.Core.Utils
             return addrs.ToArray();
         }
 
-        public abstract string FormatCode(CompileExtract compile);
+        public abstract string FormatCode(ExtractFunctionResult result);
     }
 }

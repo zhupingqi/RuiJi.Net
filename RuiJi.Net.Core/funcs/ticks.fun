@@ -1,0 +1,1 @@
+﻿results.Add(DateTime.Now.Ticks);

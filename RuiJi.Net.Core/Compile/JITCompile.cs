@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RuiJi.Net.Core.Utils
+namespace RuiJi.Net.Core.Compile
 {
     public class JITCompile
     {

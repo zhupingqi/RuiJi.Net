@@ -16,21 +16,6 @@ namespace RuiJi.Net.Node.Feed.LTS
 {
     public class FeedExtractJob : IJob
     {
-        private static string[] _extensions = new string[] {
-            ".txt",
-            ".jpeg",
-            ".jpg",
-            ".pdf",
-            ".zip",
-            ".rar",
-            ".exe",
-            ".xls",
-            ".doc",
-            ".gif",
-            ".bmp",
-            ".png"
-        };
-
         public static bool IsRunning = false;
 
         private static string baseDir;
@@ -205,23 +190,6 @@ namespace RuiJi.Net.Node.Feed.LTS
             }
 
             return results.Distinct().ToList();
-        }
-
-        public static List<string> FilterUrl(List<string> urls)
-        {
-            urls.RemoveAll(m => string.IsNullOrEmpty(m));
-
-            foreach (var extension in _extensions)
-            {
-                urls.RemoveAll(m => (new Uri(m)).AbsolutePath.ToLower().EndsWith(extension));
-            }
-
-            urls.RemoveAll(m => (new Uri(m)).AbsolutePath == "/" || (new Uri(m)).AbsolutePath == "");
-            urls.RemoveAll(m => !Uri.IsWellFormedUriString(m, UriKind.Absolute));
-
-            urls = urls.Where(m => m.StartsWith("http://") || m.StartsWith("https://")).ToList();
-
-            return urls;
         }
     }
 }

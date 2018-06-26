@@ -1,5 +1,5 @@
-﻿##request
-[rule]
+﻿##rule
+[wildcard]
 http://www.ruijihg.com/????/??/??/*
 
 [feature]

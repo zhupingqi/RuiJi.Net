@@ -66,7 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AloneNode.cs" />
-    <Compile Include="CompileFeedAddress.cs" />
+    <Compile Include="LiteDbCompileUrlProvider.cs" />
     <Compile Include="Crawler\CrawlerProxyNodeModeEnum.cs" />
     <Compile Include="Crawler\CrawlerNode.cs" />
     <Compile Include="Crawler\CrawlerProxyNode.cs" />

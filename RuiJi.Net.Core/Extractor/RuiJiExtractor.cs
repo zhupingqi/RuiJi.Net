@@ -20,13 +20,13 @@ namespace RuiJi.Net.Core.Extractor
     {
         public static List<ExtractResult> Extract(ExtractRequest request)
         {
-            var blocks = request.Blocks.Where(m => m.Feature != null && m.Feature.Count > 0).OrderByDescending(m => m.Feature.Count).ToList();
+            var blocks = request.Blocks.Where(m => m.ExtractFeature != null && m.ExtractFeature.Feature != null && m.ExtractFeature.Feature.Count > 0).OrderByDescending(m => m.ExtractFeature.Feature.Count).ToList();
             var results = new List<ExtractResult>();
 
             foreach (var block in blocks)
             {
                 var b = new ExtractBlock();
-                b.Selectors = block.Feature;
+                b.Selectors = block.ExtractFeature.Feature;
 
                 var r = Extract(request.Content, b);
                 if (r.Content.ToString().Length > 0)
@@ -40,7 +40,7 @@ namespace RuiJi.Net.Core.Extractor
             if (results.Count > 0)
                 return results;
 
-            blocks = request.Blocks.Where(m => m.Feature == null || m.Feature.Count == 0).ToList();
+            blocks = request.Blocks.Where(m => m.ExtractFeature == null || m.ExtractFeature.Feature == null || m.ExtractFeature.Feature.Count == 0).ToList();
 
             foreach (var block in blocks)
             {

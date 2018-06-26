@@ -176,7 +176,7 @@ css #listnav a[href]
 
             var parser = new RuiJiParser();
             var eb = parser.ParseExtract("css a.blog-title-link[href]\nexp https://my.oschina.net/*/blog/*");
-            var result = RuiJiExtractor.Extract(content, eb.Block);
+            var result = RuiJiExtractor.Extract(content, eb.Result);
 
             Assert.IsTrue(true);
         }
@@ -202,7 +202,7 @@ css article:html
 	css .entry-header + p:text
 	ex /Read more »/ -e");
 
-            var result = RuiJiExtractor.Extract(content, eb.Block);
+            var result = RuiJiExtractor.Extract(content, eb.Result);
 
             Assert.IsTrue(true);
         }
@@ -236,7 +236,7 @@ css article:html
 	#content
 	css #articleContent:html");
 
-            var result = RuiJiExtractor.Extract(content, eb.Block);
+            var result = RuiJiExtractor.Extract(content, eb.Result);
 
             Assert.IsTrue(true);
         }
@@ -277,7 +277,7 @@ css article:html
         {
             var url = "http://app.cannews.com.cn/roll.php?do=query&callback=jsonp1475197217819&_={# ticks() #}&date={# now(\"yyyy-MM-dd\") #}&size=20&page=1";
 
-            var f = new CompileFeedAddress();
+            var f = new LiteDbCompileUrlProvider();
             //url = f.Compile(url);
 
             var c = new RuiJiCrawler();
