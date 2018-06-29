@@ -437,6 +437,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="conf\config\online_proxy.txt" />
+    <Content Include="www\download\README.txt" />
     <Content Include="www\fonts\fontawesome-webfont.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1350,7 +1351,6 @@
     <Folder Include="conf\config\proxy\" />
     <Folder Include="conf\live_nodes\" />
     <Folder Include="Utils\" />
-    <Folder Include="www\download\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6">
