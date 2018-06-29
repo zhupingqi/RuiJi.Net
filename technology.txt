@@ -50,6 +50,9 @@ RuiJi.Net.Core add to nuget
 Storage
 Spider
 Cookie Chanel ✓
+Post Ajax ✓
 Logger
 RuiJi Expresss advanced parser
 https proxy
+File Func ✓
+RTS X

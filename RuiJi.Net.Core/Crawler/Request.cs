@@ -19,7 +19,7 @@ namespace RuiJi.Net.Core.Crawler
         public string Cookie { get; set; }
 
         [JsonProperty("data")]
-        public object Data { get; set; }
+        public string Data { get; set; }
 
         [JsonProperty("charset")]
         public string Charset { get; set; }

@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{0E98716C-4A38-45D4-8B53-7705A342AA42}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RuiJi.Net.Owin</RootNamespace>
     <AssemblyName>RuiJi.Net.Owin</AssemblyName>
@@ -437,6 +437,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="conf\config\online_proxy.txt" />
+    <Content Include="www\doc\index.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="www\fonts\fontawesome-webfont.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1350,6 +1353,12 @@
     <Folder Include="conf\config\proxy\" />
     <Folder Include="conf\live_nodes\" />
     <Folder Include="Utils\" />
+    <Folder Include="www\doc\cn\api\" />
+    <Folder Include="www\doc\cn\guid\" />
+    <Folder Include="www\doc\cn\sample\" />
+    <Folder Include="www\doc\en\api\" />
+    <Folder Include="www\doc\en\guid\" />
+    <Folder Include="www\doc\en\sample\" />
     <Folder Include="www\download\" />
   </ItemGroup>
   <ItemGroup>

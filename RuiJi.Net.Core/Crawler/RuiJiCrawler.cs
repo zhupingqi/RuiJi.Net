@@ -139,28 +139,6 @@ namespace RuiJi.Net.Core.Crawler
             httpRequest.ReadWriteTimeout = request.Timeout > 0 ? request.Timeout : 100000;
             httpRequest.ContinueTimeout = request.Timeout > 0 ? request.Timeout : 100000;
 
-            if (httpRequest.Method == "POST" && request.Data != null)
-            {
-                byte[] bs;
-
-                var jObj = new JObject(request.Data);
-                if (jObj.Type == JTokenType.String)
-                    bs = Encoding.ASCII.GetBytes(request.Data.ToString());
-                else
-                    bs = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(request.Data));
-
-                if (string.IsNullOrEmpty(httpRequest.ContentType))
-                    httpRequest.ContentType = "application/x-www-form-urlencoded";
-
-                httpRequest.ContentLength = bs.Length;
-
-                using (Stream requestStream = httpRequest.GetRequestStream())
-                {
-                    requestStream.Write(bs, 0, bs.Length);
-                    requestStream.Close();
-                }
-            }
-
             PreprocessHeader(httpRequest, request.Headers);
 
             var cookie = GetCookie(request);
@@ -203,6 +181,22 @@ namespace RuiJi.Net.Core.Crawler
                 };
             }
 
+            if (httpRequest.Method == "POST" && !string.IsNullOrEmpty(request.Data))
+            {
+                byte[] bs = Encoding.ASCII.GetBytes(request.Data);
+
+                if (string.IsNullOrEmpty(httpRequest.ContentType))
+                    httpRequest.ContentType = "application/x-www-form-urlencoded";
+
+                httpRequest.ContentLength = bs.Length;
+
+                using (Stream requestStream = httpRequest.GetRequestStream())
+                {
+                    requestStream.Write(bs, 0, bs.Length);
+                    requestStream.Close();
+                }
+            }
+
             var task = Task.Factory.StartNew<HttpWebResponse>(() =>
             {
                 try
@@ -216,7 +210,7 @@ namespace RuiJi.Net.Core.Crawler
                 }
             });
 
-            task.Wait(request.Timeout > 0 ? request.Timeout : 100000);
+            task.Wait(request.Timeout > 0 ? request.Timeout : 60000);
 
             if (task.IsCompleted)
                 return task.Result;
