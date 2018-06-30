@@ -72,12 +72,12 @@ namespace RuiJi.Net.Node.Feed.LTS
         {
             if (args.Action == QueueChangedActionEnum.Enqueue)
             {
-                pool.QueueWorkItem((Amib.Threading.Action)(() =>
+                pool.QueueWorkItem(() =>
                 {
                     try
                     {
                         QueueModel qm;
-                        if (queue.TryDequeue(out qm))
+                        if (queue.Dequeue(out qm))
                         {
                             var result = NodeVisitor.Cooperater.GetResult(qm.Url);
                             if (result != null)
@@ -95,8 +95,10 @@ namespace RuiJi.Net.Node.Feed.LTS
                             }
                         }
                     }
-                    catch { }
-                }));
+                    catch {
+                        //save failed
+                    }
+                });
             }
         }
 

@@ -10,7 +10,7 @@ namespace RuiJi.Net.Core.Expression
     {
         public string CornExpression { get; set; }
 
-        public string Id { get; set; }
+        public string FeedId { get; set; }
 
         public int Delay { get; set; }
     }

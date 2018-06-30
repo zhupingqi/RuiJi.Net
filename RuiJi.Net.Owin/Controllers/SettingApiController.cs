@@ -70,7 +70,7 @@ namespace RuiJi.Net.Owin.Controllers
         {
             var code = "{# " + func.Sample + " #}";
             var test = new ComplieFuncTest(func.Code);
-            return test.Compile(code);
+            return test.GetResult(code);
         }
 
         [HttpPost]
@@ -205,7 +205,7 @@ namespace RuiJi.Net.Owin.Controllers
         }
     }
 
-    public class ComplieFuncTest : CompileUrlProviderBase
+    public class ComplieFuncTest : Core.Compile.UrlCompile
     {
         private string code;
 

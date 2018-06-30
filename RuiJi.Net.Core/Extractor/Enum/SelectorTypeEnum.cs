@@ -18,6 +18,7 @@ namespace RuiJi.Net.Core.Extractor.Enum
         JSON,
         XPATH,
         CLEAR,
-        EXPRESSION
+        EXPRESSION,
+        FUNCTION
     }
 }

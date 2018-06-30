@@ -2,7 +2,7 @@
 
 namespace RuiJi.Net.Core.Queue
 {
-    public sealed class MessageQueue<T> : ConcurrentQueue<T>
+    public sealed class MessageQueue<T> : ConcurrentQueue<T>, IMessageQueue<T>
     {
         public event QueueChangedEventHandler<T> ContentChanged;
 
@@ -10,48 +10,44 @@ namespace RuiJi.Net.Core.Queue
         {
             base.Enqueue(item);
 
-            this.OnContentChanged(
+            OnContentChanged(
                 new QueueChangedEventArgs<T>(QueueChangedActionEnum.Enqueue, item));
         }
 
-        public new bool TryDequeue(out T result)
+        public bool Dequeue(out T result)
         {
-            if (!base.TryDequeue(out result))
+            if (!TryDequeue(out result))
             {
                 return false;
             }
 
-            this.OnContentChanged(
+            OnContentChanged(
                 new QueueChangedEventArgs<T>(QueueChangedActionEnum.Dequeue, result));
 
-            if (this.IsEmpty)
+            if (IsEmpty)
             {
-                this.OnContentChanged(
+                OnContentChanged(
                     new QueueChangedEventArgs<T>(QueueChangedActionEnum.Empty));
             }
 
             return true;
         }
 
-        public new bool TryPeek(out T result)
+        public bool Peek(out T result)
         {
-            var retValue = base.TryPeek(out result);
+            var retValue = TryPeek(out result);
             if (retValue)
             {
-                this.OnContentChanged(
+                OnContentChanged(
                     new QueueChangedEventArgs<T>(QueueChangedActionEnum.Peek, result));
             }
 
             return retValue;
         }
 
-        private void OnContentChanged(QueueChangedEventArgs<T> args)
+        public void OnContentChanged(QueueChangedEventArgs<T> args)
         {
-            var handler = this.ContentChanged;
-            if (handler != null)
-            {
-                handler(this, args);
-            }
+            this.ContentChanged?.Invoke(this, args);
         }
     }
 }

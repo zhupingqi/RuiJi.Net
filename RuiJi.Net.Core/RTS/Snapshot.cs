@@ -9,6 +9,9 @@ namespace RuiJi.Net.Core.RTS
 {
     public class Snapshot
     {
+        [JsonProperty("id")]
+        public string FeedId { get; set; }
+
         [JsonProperty("requestUrl")]
         public string RequestUrl { get; set; }
 

@@ -61,7 +61,7 @@ namespace RuiJi.Net.Node.Feed.LTS
                 var task = Task.Factory.StartNew(() =>
                 {                   
                     var feeds = GetFeedJobs(baseUrl,proxyUrl, feedNode);
-                    var compile = new LiteDbCompileUrlProvider();
+                    var compile = new UrlCompile();
 
                     var stpStartInfo = new STPStartInfo
                     {
@@ -75,13 +75,13 @@ namespace RuiJi.Net.Node.Feed.LTS
 
                     foreach (var feed in feeds)
                     {
-                        var addrs = compile.Compile(feed.Address);
+                        var addrs = compile.GetResult(feed.Address);
 
                         Logger.GetLogger(baseUrl).Info("compile address " + feed.Address + " result " + string.Join(",", addrs));
 
                         foreach (var addr in addrs)
                         {
-                            feed.Address = addr;
+                            feed.Address = addr.ToString();
 
                             var item = pool.QueueWorkItem((u) =>
                             {

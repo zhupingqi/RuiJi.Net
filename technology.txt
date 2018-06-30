@@ -45,7 +45,6 @@ Java/PHP/C# SDK X
 Download result to be packaged into zip X
 
 --------------------------------------------
-RuiJi.Net.Core add to nuget
 
 Storage
 Spider
@@ -56,3 +55,7 @@ RuiJi Expresss advanced parser
 https proxy
 File Func ✓
 RTS X
+MessageQueue iisue
+
+-------------------------------------------
+Zk cluster/HA
