@@ -111,7 +111,7 @@ namespace RuiJi.Net.Owin
 
             app = WebApp.Start<Startup>("http://" + baseUrl);
 
-            Node = new AloneNode(baseUrl);
+            Node = new StandAloneNode(baseUrl);
 
             Node.Start();
 

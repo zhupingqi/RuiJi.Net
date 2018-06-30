@@ -392,6 +392,14 @@ namespace RuiJi.Net.Core.Expression
 
                         return selector;
                     }
+                case "func":
+                    {
+                        var selector = new FunctionSelector();
+                        selector.Remove = remove;
+                        selector.Value = p;
+
+                        return selector;
+                    }
             }
 
             return null;

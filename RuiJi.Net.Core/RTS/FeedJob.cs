@@ -60,7 +60,7 @@ namespace RuiJi.Net.Core.RTS
             try
             {
                 var requests = new List<FeedRequest>();
-                var compile = new FileCompileUrlProvider();
+                var compile = new UrlCompile();
                 var files = Directory.GetFiles(jobPath);
 
                 foreach (var file in files)
@@ -80,15 +80,15 @@ namespace RuiJi.Net.Core.RTS
                         if (request == null || setting == null)
                             continue;
 
-                        var addrs = compile.Compile(request.Uri.ToString());
+                        var addrs = compile.GetResult(request.Uri.ToString());
 
                         for (int i = 0; i < addrs.Length; i++)
                         {
-                            var addr = addrs[i];
+                            var addr = addrs[i].ToString();
 
                             var r = request.Clone() as Request;
                             r.Uri = new Uri(addr);
-                            setting.Id += "_" + i;
+                            setting.FeedId += "_" + i;
                             r.Tag = JsonConvert.SerializeObject(setting);
 
                             var fr = new FeedRequest();
@@ -146,9 +146,11 @@ namespace RuiJi.Net.Core.RTS
             }
 
             var content = base.ConvertEncoding(response.Data.ToString(), Encoding.GetEncoding(response.Charset), Encoding.UTF8);
+            var setting = JsonConvert.DeserializeObject<FeedSetting>(response.Request.Tag);
 
             var snapshot = new Snapshot
             {
+                FeedId = setting.FeedId,
                 RequestUrl = fr.Request.Uri.ToString(),
                 ResponseUrl = response.ResponseUri.ToString(),
                 Content = content,
@@ -156,13 +158,12 @@ namespace RuiJi.Net.Core.RTS
             };
 
             var json = JsonConvert.SerializeObject(snapshot, Formatting.Indented);
-            var setting = JsonConvert.DeserializeObject<FeedSetting>(response.Request.Tag);
 
-            var fileName = Path.Combine(snapshotPath, setting.Id + "_" + DateTime.Now.Ticks + ".json");
+            var fileName = Path.Combine(snapshotPath, setting.FeedId + "_" + DateTime.Now.Ticks + ".json");
 
             if (setting.Delay > 0)
             {
-                fileName = Path.Combine(delayPath, setting.Id + "_" + DateTime.Now.AddMinutes(setting.Delay).Ticks + ".json");
+                fileName = Path.Combine(delayPath, setting.FeedId + "_" + DateTime.Now.AddMinutes(setting.Delay).Ticks + ".json");
             }
 
             Logger.GetLogger("").Info(snapshot.RequestUrl + " response save to " + fileName);

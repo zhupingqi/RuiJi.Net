@@ -14,6 +14,6 @@ namespace RuiJi.Net.Node
         CRAWLER = 3,
         Extractor = 4,
         FEED = 5,
-        ALONE
+        STANDALONE
     }
 }

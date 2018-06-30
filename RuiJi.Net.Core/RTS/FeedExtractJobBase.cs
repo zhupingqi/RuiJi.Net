@@ -13,32 +13,15 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.RTS
 {
-    public abstract class FeedExtractJobBase : IJob
+    public abstract class FeedExtractJobBase<T> : IJob
     {
         private static bool IsRunning = false;
-
-        private static string snapshotPath;
-
-        private static string basePath;
 
         public static int MaxWorkerThreads { get; set; }
 
         static FeedExtractJobBase()
         {
-            MaxWorkerThreads = 8;
-
-            snapshotPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "snapshot");
-
-            basePath = AppDomain.CurrentDomain.BaseDirectory;
-
-            if (!Directory.Exists(basePath + @"/history"))
-            {
-                Directory.CreateDirectory(basePath + @"/history");
-            }
-            if (!Directory.Exists(basePath + @"/pre"))
-            {
-                Directory.CreateDirectory(basePath + @"/pre");
-            }
+            MaxWorkerThreads = 8;            
         }
 
         public async Task Execute(IJobExecutionContext context)
@@ -51,7 +34,7 @@ namespace RuiJi.Net.Core.RTS
 
                 var task = Task.Factory.StartNew(() =>
                 {
-                    var files = Directory.GetFiles(snapshotPath);
+                    var snapshots = GetSnapshot();
 
                     var stpStartInfo = new STPStartInfo
                     {
@@ -62,13 +45,13 @@ namespace RuiJi.Net.Core.RTS
 
                     var pool = new SmartThreadPool(stpStartInfo);
                     var waits = new List<IWorkItemResult>();
-                    foreach (var file in files)
+                    foreach (var snapshot in snapshots)
                     {
-                        var item = pool.QueueWorkItem((fileName) =>
+                        var item = pool.QueueWorkItem((u) =>
                         {
-                            DoTask(fileName);
+                            DoTask(u);
 
-                        }, file);
+                        }, snapshot);
 
                         waits.Add(item);
                     }
@@ -88,97 +71,12 @@ namespace RuiJi.Net.Core.RTS
 
         protected virtual void OnStart(IJobExecutionContext context)
         {
-            var files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory + @"delay");
-            foreach (var file in files)
-            {
-                var filename = file.Substring(file.LastIndexOf(@"\") + 1);
-                var sp = filename.Split('_');
-                var ticks = sp[1].Substring(0, sp[1].LastIndexOf("."));
-
-                if (long.Parse(ticks) < DateTime.Now.Ticks)
-                {
-                    var desFile = file.Replace("delay", "snapshot");
-                    File.Move(file, desFile);
-                }
-            }
+            
         }
 
-        protected virtual void DoTask(string path)
-        {
-            try
-            {
-                var filename = path.Substring(path.LastIndexOf(@"\") + 1);
-                var sp = filename.Split('_');
-                var id = Convert.ToInt32(sp[0]);
-                var index = Convert.ToInt32(sp[1]);
+        protected abstract List<T> GetSnapshot();
 
-                var content = File.ReadAllText(path);
-
-                var snapshot = JsonConvert.DeserializeObject<Snapshot>(content);
-                var urls = ExtractAddress(snapshot);
-
-                var hisFile = AppDomain.CurrentDomain.BaseDirectory + @"history\" + id + ".txt";
-                var urlsHistory = new string[0];
-                if (File.Exists(hisFile))
-                {
-                    urlsHistory = File.ReadAllLines(hisFile, Encoding.UTF8);
-                }
-
-                File.WriteAllLines(hisFile, urls, Encoding.UTF8);
-
-                urls.RemoveAll(m => urlsHistory.Contains(m));
-                urls.RemoveAll(m => string.IsNullOrEmpty(m));
-                urls.RemoveAll(m => !Uri.IsWellFormedUriString(m, UriKind.Absolute));
-
-                foreach (var u in urls)
-                {
-                    Save(u);
-                }
-
-                var destFile = path.Replace("snapshot", "pre").Replace(filename, id + ".txt");
-                if (File.Exists(destFile))
-                    File.Delete(destFile);
-
-                File.Move(path, destFile);
-            }
-            catch { }
-        }
-
-        protected List<string> ExtractAddress(Snapshot snapshot)
-        {
-            var block = new ExtractBlock();
-            block.TileSelector.Selectors.Add(new CssSelector("a", "href"));
-
-            if (!string.IsNullOrEmpty(snapshot.Expression))
-            {
-                block.TileSelector.Selectors.Clear();
-
-                var parser = new RuiJiParser();
-
-                var s = RuiJiExtractBlockParser.ParserBase(snapshot.Expression).Selectors;
-                block.TileSelector.Selectors.AddRange(s);
-            }
-
-            var result = RuiJiExtractor.Extract(snapshot.Content, block);
-            var results = new List<string>();
-
-            if (result.Tiles != null)
-            {
-                foreach (var item in result.Tiles)
-                {
-                    var href = item.Content.ToString();
-                    if (href.Contains("#"))
-                    {
-                        href = href.Substring(0, href.IndexOf('#'));
-                    }
-                    if (Uri.IsWellFormedUriString(href, UriKind.Relative))
-                        href = new Uri(new Uri(snapshot.RequestUrl), href).AbsoluteUri.ToString();
-                    results.Add(href);
-                }
-            }
-
-            return results.Distinct().ToList();
-        }
+        protected abstract void DoTask(T snapshot);
 
         protected abstract void Save(string url);
     }

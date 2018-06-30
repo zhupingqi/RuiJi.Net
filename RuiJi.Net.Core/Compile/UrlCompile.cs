@@ -8,11 +8,10 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Compile
 {
-    public abstract class CompileUrlProviderBase
+    public class UrlCompile : ComplieBase<FileFuncProvider, JITCompile,string>
     {
         public ExtractFunctionResult ExtractFunction(string url)
         {
-
             if (string.IsNullOrEmpty(url))
                 return null;
 
@@ -44,7 +43,14 @@ namespace RuiJi.Net.Core.Compile
             return result;
         }
 
-        public string[] Compile(string address)
+        public virtual string FormatCode(ExtractFunctionResult result)
+        {
+            var code = GetFunc(result.Function);
+
+            return string.Format(code, result.Args);
+        }
+
+        public override object[] GetResult(string address)
         {
             var compileExtract = ExtractFunction(address);
             if (compileExtract == null)
@@ -54,20 +60,18 @@ namespace RuiJi.Net.Core.Compile
 
             var code = FormatCode(compileExtract);
             var addrs = new List<string>();
+            var results = compile.GetResult(code);
 
-            var results = JITCompile.GetResult(code);
             foreach (var r in results)
             {
-                var addr = reg.Replace(address, r, 1);
+                var addr = reg.Replace(address, r.ToString(), 1);
 
-                var cs = Compile(addr);
+                var cs = GetResult(addr).Select(m=>m.ToString()).ToList();
 
                 addrs.AddRange(cs);
             }
 
             return addrs.ToArray();
         }
-
-        public abstract string FormatCode(ExtractFunctionResult result);
     }
 }

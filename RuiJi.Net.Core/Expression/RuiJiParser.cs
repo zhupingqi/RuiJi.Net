@@ -317,7 +317,7 @@ namespace RuiJi.Net.Core.Expression
                                         result.Messages.Add("id is not set");
                                         continue;
                                     }
-                                    result.Result.Id = line;
+                                    result.Result.FeedId = line;
                                     break;
                                 }
                         }

@@ -288,13 +288,13 @@ namespace RuiJi.Net.Owin.Controllers
         {
             try
             {
-                var compile = new LiteDbCompileUrlProvider();
-                var addrs = compile.Compile(feed.Address);
+                var compile = new UrlCompile();
+                var addrs = compile.GetResult(feed.Address);
                 var results = new List<ExtractResult>();
 
                 foreach (var addr in addrs)
                 {
-                    feed.Address = addr;
+                    feed.Address = addr.ToString();
                     var job = new FeedJob();
                     var snap = job.DoTask(feed, false);
 
@@ -405,12 +405,12 @@ namespace RuiJi.Net.Owin.Controllers
 
             reporter.Report("正在下载 Feed");
 
-            var compile = new LiteDbCompileUrlProvider();
-            var addrs = compile.Compile(feed.Address);
+            var compile = new UrlCompile();
+            var addrs = compile.GetResult(feed.Address);
 
             foreach (var addr in addrs)
             {
-                feed.Address = addr;
+                feed.Address = addr.ToString();
 
                 var job = new FeedJob();
                 var snap = job.DoTask(feed, false);

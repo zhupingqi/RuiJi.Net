@@ -65,9 +65,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AloneNode.cs" />
-    <Compile Include="Db\ExpressionExt.cs" />
-    <Compile Include="LiteDbCompileUrlProvider.cs" />
+    <Compile Include="StandAloneNode.cs" />
+    <Compile Include="UrlCompile.cs" />
     <Compile Include="Crawler\CrawlerProxyNodeModeEnum.cs" />
     <Compile Include="Crawler\CrawlerNode.cs" />
     <Compile Include="Crawler\CrawlerProxyNode.cs" />

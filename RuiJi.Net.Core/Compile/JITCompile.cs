@@ -8,9 +8,12 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Compile
 {
-    public class JITCompile
+    /// <summary>
+    /// C# 即时编译器
+    /// </summary>
+    public class JITCompile : ICompile
     {
-        private static string GenerateCode(string code)
+        private string GenerateCode(string code)
         {
             return @"
             using System;
@@ -37,7 +40,7 @@ namespace RuiJi.Net.Core.Compile
             }";
         }
 
-        private static CompilerResults Compile(string codes)
+        public CompilerResults Compile(string codes)
         {
             var compiler = new CSharpCodeProvider();
             var parameters = new CompilerParameters();
@@ -48,7 +51,7 @@ namespace RuiJi.Net.Core.Compile
             return compiler.CompileAssemblyFromSource(parameters, codes);
         }
 
-        public static List<string> GetResult(string code)
+        public List<object> GetResult(string code)
         {
             code = GenerateCode(code);
             var result = Compile(code);
@@ -61,11 +64,11 @@ namespace RuiJi.Net.Core.Compile
                     es += er.ErrorText;
                 }
 
-                return new List<string> { es };
+                return new List<object> { es };
             }
 
             Type type = result.CompiledAssembly.GetType("RuiJiCompile");
-            return (type.GetMethod("Exec").Invoke(null, new string[] { }) as List<object>).Select(m=>m.ToString()).ToList();
+            return (type.GetMethod("Exec").Invoke(null, new string[] { }) as List<object>).ToList();
         }
     }
 }
