@@ -2,41 +2,44 @@
     <div id="toolbar_rules">
         <div class="btn-group">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                批量操作 <span class="caret"></span>
+                BATCH OP <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-                <li><a href="javascript:;" stop>停用</a></li>
-                <li><a href="javascript:;" remove>删除</a></li>
+                <li><a href="javascript:;" type='disable'>Disable</a></li>
+                <li><a href="javascript:;" type='enable'>Enable</a></li>
+                <li><a href="javascript:;" type='remove'>Delete</a></li>
             </ul>
         </div>
-        <button type="submit" class="btn btn-default">应用</button>
+        <button type="submit" class="btn btn-default" id="add_rule">Add</button>
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <input type="text" class="form-control" style="display: inline-block; width: auto;" placeholder="Search">
-        <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                类型 <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-                <li><a href="javascript:;">全部</a></li>
-                <li><a href="javascript:;">HTML</a></li>
-                <li><a href="javascript:;">XML</a></li>
-                <li><a href="javascript:;">JSON</a></li>
-                <li><a href="javascript:;">JSONP</a></li>
-            </ul>
+        <div id="rules_search_group" class="pull-right">
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle type" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Type <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="javascript:;">ALL</a></li>
+                    <li><a href="javascript:;">HTML</a></li>
+                    <li><a href="javascript:;">XML</a></li>
+                    <li><a href="javascript:;">JSON</a></li>
+                    <li><a href="javascript:;">JSONP</a></li>
+                </ul>
+            </div>
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle status" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Status <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="javascript:;">ALL</a></li>
+                    <li><a href="javascript:;">ON</a></li>
+                    <li><a href="javascript:;">OFF</a></li>
+                </ul>
+            </div>
+            <input type="text" class="form-control key" style="display: inline-block; width: auto;" placeholder="Search key words">
+            <button type="submit" class="btn btn-default rules-search">Search</button>
         </div>
-        <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                状态 <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-                <li><a href="javascript:;">全部</a></li>
-                <li><a href="javascript:;">启用</a></li>
-                <li><a href="javascript:;">停用</a></li>
-            </ul>
-        </div>
-        <button type="submit" class="btn btn-default">筛选</button>
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        <button type="submit" class="btn btn-default" id="add_rule">添加</button>
+
+
     </div>
     <div id="rules_list">
         <table id="tb_rules" data-toggle="table" data-url="">

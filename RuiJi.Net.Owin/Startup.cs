@@ -194,6 +194,12 @@ namespace RuiJi.Net.Owin
                     routeTemplate: "api/rule/remove",
                     defaults: new { controller = "FeedApi", action = "RemoveRule" }
                 );
+
+            config.Routes.MapHttpRoute(
+                    name: "RuleStatusChange",
+                    routeTemplate: "api/rule/status/change",
+                    defaults: new { controller = "FeedApi", action = "RuleStatusChange" }
+                );
             #endregion
 
             #region Feed Api
@@ -244,6 +250,18 @@ namespace RuiJi.Net.Owin
                     routeTemplate: "api/feed/test",
                     defaults: new { controller = "FeedApi", action = "TestFeed" }
                 );
+
+            config.Routes.MapHttpRoute(
+                    name: "RemoveFeeds",
+                    routeTemplate: "api/feed/remove",
+                    defaults: new { controller = "FeedApi", action = "RemoveFeed" }
+                );
+
+            config.Routes.MapHttpRoute(
+                  name: "FeedStatusChange",
+                  routeTemplate: "api/feed/status/change",
+                  defaults: new { controller = "FeedApi", action = "FeedStatusChange" }
+              );
             #endregion
 
             #region Content Api

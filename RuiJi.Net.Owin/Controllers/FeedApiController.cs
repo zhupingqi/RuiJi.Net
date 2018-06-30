@@ -29,7 +29,7 @@ namespace RuiJi.Net.Owin.Controllers
         #region Rule
         [HttpGet]
         [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
-        public object Rules(int offset, int limit)
+        public object Rules(int offset, int limit, string key, string type, string status)
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
 
@@ -39,7 +39,7 @@ namespace RuiJi.Net.Owin.Controllers
 
             return new
             {
-                rows = RuleLiteDb.GetModels(paging),
+                rows = RuleLiteDb.GetModels(paging, key, type, status),
                 total = paging.Count
             };
         }
@@ -74,6 +74,16 @@ namespace RuiJi.Net.Owin.Controllers
 
         [HttpGet]
         [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
+        public bool RuleStatusChange(string ids, string status)
+        {
+            var changeIds = ids.Split(',').Select(i => Convert.ToInt32(i)).ToArray();
+            var statusEnum = (Status)Enum.Parse(typeof(Status), status.ToUpper());
+
+            return RuleLiteDb.StatusChange(changeIds, statusEnum);
+        }
+
+        [HttpGet]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
         public bool RemoveRule(string ids)
         {
             var removes = ids.Split(',').Select(m => Convert.ToInt32(m)).ToArray();
@@ -85,7 +95,7 @@ namespace RuiJi.Net.Owin.Controllers
         #region Feed
         [HttpGet]
         [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
-        public object Feeds(int offset, int limit)
+        public object Feeds(int offset, int limit, string key, string method, string type, string status)
         {
             var paging = new Paging();
             paging.CurrentPage = (offset / limit) + 1;
@@ -93,7 +103,7 @@ namespace RuiJi.Net.Owin.Controllers
 
             return new
             {
-                rows = FeedLiteDb.GetFeedModels(paging),
+                rows = FeedLiteDb.GetFeedModels(paging, key, method, type, status),
                 total = paging.Count
             };
         }
@@ -150,6 +160,25 @@ namespace RuiJi.Net.Owin.Controllers
         public void UpdateFeed([FromBody]FeedModel feed)
         {
             FeedLiteDb.AddOrUpdate(feed);
+        }
+
+        [HttpGet]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
+        public bool FeedStatusChange(string ids, string status)
+        {
+            var changeIds = ids.Split(',').Select(i => Convert.ToInt32(i)).ToArray();
+            var statusEnum = (Status)Enum.Parse(typeof(Status), status.ToUpper());
+
+            return FeedLiteDb.StatusChange(changeIds, statusEnum);
+        }
+
+        [HttpGet]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
+        public bool RemoveFeed(string ids)
+        {
+            var removes = ids.Split(',').Select(m => Convert.ToInt32(m)).ToArray();
+
+            return FeedLiteDb.Remove(removes);
         }
 
         [HttpGet]
@@ -245,7 +274,7 @@ namespace RuiJi.Net.Owin.Controllers
                     result = PagingExtractor.MergeContent(new Uri(rule.Url), result, block);
                 }
 
-                if(!debug)
+                if (!debug)
                     CrawlTaskFunc.ClearContent(result);
 
                 return result;

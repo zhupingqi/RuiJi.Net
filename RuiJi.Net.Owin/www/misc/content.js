@@ -1,4 +1,4 @@
-﻿define(['jquery', 'utils', 'sweetAlert','flatJson', 'bootstrapDialog', 'bootstrapTable'], function ($, utils) {
+﻿define(['jquery', 'utils', 'sweetAlert', 'flatJson', 'bootstrapDialog', 'bootstrapTable'], function ($, utils) {
     var module = {
         init: function () {
             var tmp = utils.loadTemplate("/misc/content.html", false);
@@ -30,7 +30,7 @@
                 flat: true,
                 flatSeparator: '.',
                 onPostBody: function (e) {
-                    
+
                 }
             });
         },
@@ -46,4 +46,5 @@
     };
 
     module.init();
+    return module;
 });

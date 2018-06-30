@@ -4,12 +4,13 @@
             var tmp = utils.loadTemplate("/misc/feed/feeds.html", false);
 
             tmp = $(tmp);
-            tmp.find("#tb_feeds").attr("data-url", "/api/feeds");
+            //tmp.find("#tb_feeds").attr("data-url", "/api/feeds");
 
             $("#tab_panel_feeds").html(tmp.prop("outerHTML"));
 
             var $table = $('#tb_feeds').bootstrapTable({
                 toolbar: '#toolbar_feeds',
+                url: "/api/feeds",
                 pagination: true,
                 queryParams: module.queryParams,
                 sidePagination: "server",
@@ -19,7 +20,7 @@
                 onPostBody: function (e) {
                     if (e.length > 0) {
                         $('#tb_feeds > tbody > tr').map(function (i, m) {
-                            $(m).find("td:last").html("<i class='fa fa-edit'></i><i class='fa fa-eye'></i><i class='fa fa-history'></i><i class='fa fa-random'></i>");
+                            $(m).find("td:last").html("<i title='edit' class='fa fa-edit'></i><i title='grab result' class='fa fa-eye'></i><i title='edit history' class='fa fa-history'></i><i title='grab now' class='fa fa-random'></i>");
                         });
                     }
                 }
@@ -33,7 +34,7 @@
 
             $(document).on("click", "#add_feed", function () {
                 BootstrapDialog.show({
-                    title: '添加Feed',
+                    title: 'Add Feed',
                     message: feed,
                     closable: false,
                     nl2br: false,
@@ -100,7 +101,7 @@
                     }
 
                     BootstrapDialog.show({
-                        title: '修改 Feed',
+                        title: 'Edit Feed',
                         message: f.prop("outerHTML"),
                         closable: false,
                         nl2br: false,
@@ -129,6 +130,14 @@
                 });
             });
 
+            $(document).on("click", "#tb_feeds .fa-eye", function () {
+                swal("Coming soon!", "", "warning");
+            });
+
+            $(document).on("click", "#tb_feeds .fa-history", function () {
+                swal("Coming soon!", "", "warning");
+            });
+
             $(document).on("click", "#tb_feeds .fa-random", function () {
                 var ele = $(this);
                 var id = ele.closest("tr").find("td").eq(1).text();
@@ -136,10 +145,10 @@
                 f.find("input[name='id']").val(id);
 
                 $.getJSON("/api/feed?id=" + id, function (d) {
-                    f.find("#crawl_info").html("正在使用 " + d.address + " <br/>进行即时抓取，点击Start开始");
+                    f.find("#crawl_info").html("Using " + d.address + " to grab immediately,<br/>click Start to start.");
 
                     BootstrapDialog.show({
-                        title: '即时抓取 Feed',
+                        title: 'Grab Feed Now',
                         message: f.prop("outerHTML"),
                         closable: false,
                         nl2br: false,
@@ -158,19 +167,67 @@
                 });
             });
 
+            //batch operate
+            $(document).on("click", "#toolbar_feeds a[type]", function () {
+                switch ($(this).attr("type")) {
+                    case "enable":
+                        module.batchOpConfirm("Do you confirm the enable?", "The feeds will be enable", "warning", module.enable);
+                        break;
+                    case "disable":
+                        module.batchOpConfirm("Do you confirm the disable?", "The feeds will be disabled", "warning", module.disable);
+                        break;
+                    case "remove":
+                        module.batchOpConfirm("Do you confirm the deletion?", "The feeds will not be restored!", "warning", module.remove);
+                        break;
+                }
+            });
+
             $(document).on("click", "#feed_dialog .btn-mjdark2", function () {
                 var ele = $(this);
                 ele.closest(".input-group").find(":hidden").val(ele.find("input").val());
+            });
+
+            $(document).on("click", "#feeds_search_group .dropdown-menu a", function () {
+                $(this).closest("ul").prev("button").html($(this).text() + "<span class=\"caret\"></span>");
+            });
+
+            $(document).on("click", "#feeds_search_group .feed-search", function () {
+                $("#tb_feeds").bootstrapTable('refresh');
             });
         },
         queryParams: function (params) {
             var temp = {
                 limit: params.limit,
                 offset: params.offset,
-                departmentname: $("#txt_search_departmentname").val(),
-                statu: $("#txt_search_statu").val()
+                key: $.trim($("#feeds_search_group .key").val()),
+                method: $.trim($("#feeds_search_group .method").text()),
+                type: $.trim($("#feeds_search_group .type").text()),
+                status: $.trim($("#feeds_search_group .status").text())
             };
             return temp;
+        },
+        batchOpConfirm: function (title, text, type, callback) {
+            var selects = $("#tb_feeds").bootstrapTable('getSelections');
+            if (selects.length <= 0) {
+                swal("Unchecked any feeds!", "", "warning");
+                return;
+            }
+            var ids = selects.map(function (s) { return s.id }).join(",");
+            swal(
+                {
+                    title: title,
+                    text: text,
+                    type: type,
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Confirm",
+                    cancelButtonText: "Cancel",
+                    closeOnConfirm: false
+                },
+                function () {
+                    callback(ids);
+                }
+            );
         },
         update: function (dialog) {
             var d = {};
@@ -259,7 +316,7 @@
 
                     $('#feed_test_result').jsonViewer(res, options);
                     if (down) {
-                        alert("下载完成");
+                        alert("Download completion!");
                         window.open("/download");
                     }
                 }
@@ -283,6 +340,42 @@
                         withQuotes: true
                     };
                     $('#crawl_result').jsonViewer(d.result, options);
+                }
+            });
+        },
+        enable: function (ids) {
+            var url = "/api/feed/status/change?ids=" + ids + "&status=ON";
+
+            $.getJSON(url, function (res) {
+                if (res) {
+                    swal("Enable sucess!", "The feeds have been enable.", "success");
+                    $('#tb_feeds').bootstrapTable("refresh");
+                } else {
+                    swal("Enable failed!", "A mistake in the enable feed.", "error");
+                }
+            });
+        },
+        disable: function (ids) {
+            var url = "/api/feed/status/change?ids=" + ids + "&status=OFF";
+
+            $.getJSON(url, function (res) {
+                if (res) {
+                    swal("Disable sucess!", "The feeds have been disable.", "success");
+                    $('#tb_feeds').bootstrapTable("refresh");
+                } else {
+                    swal("Disable failed!", "A mistake in the disable feed.", "error");
+                }
+            });
+        },
+        remove: function (ids) {
+            var url = "/api/feed/remove?ids=" + ids;
+
+            $.getJSON(url, function (res) {
+                if (res) {
+                    swal("Delete sucess!", "The feeds have been deleted.", "success");
+                    $('#tb_feeds').bootstrapTable("refresh");
+                } else {
+                    swal("Delete failed!", "A mistake in the deletion feed.", "error");
                 }
             });
         }
