@@ -1,7 +1,11 @@
 ﻿define(['jquery', 'utils'], function ($, utils) {
     var module = {
         init: function () {
+            utils.showLoading($("#tab_panel_log"), { type: 1 });
+            module.setLastCheck();
+
             setInterval(function () {
+                module.setLastCheck();
                 module.log();
             }, 5000);
         },
@@ -11,10 +15,13 @@
                     $.map(d, function (v) {
                         var $d = $("<div></div>");
                         $d.text(v);
-                        $("#tab_panel_log").append($d);
+                        $("#tab_panel_log .loading").before($d);
                     });
                 });
             }
+        },
+        setLastCheck: function () {
+            $("#tab_panel_log .loading span").text(" Last Check " + new Date());
         }
     };
 

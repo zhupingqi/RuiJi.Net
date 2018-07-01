@@ -440,6 +440,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="conf\config\online_proxy.txt" />
+    <Content Include="www\content\images\loading.0.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="www\doc\cn\guid\index.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1385,8 +1388,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>xcopy "$(ProjectDir)www" "$(SolutionDir)RuiJi.Net.Cmd\bin\debug\www" /E /Y</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>

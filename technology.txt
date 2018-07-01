@@ -18,10 +18,6 @@ casperjs
 Hadoop
 Spark 
 
-数据分析
-Hive 
-Pig
-
 数据采集
 Sqoop
 Flume
@@ -39,6 +35,7 @@ Cookie信道 ✓
 Cookie API X
 自动化登陆 X (https://slimerjs.org/  or  https://github.com/ariya/phantomjs/blob/master/examples/phantomwebintro.js )
 动态类生成 X
+分离config文件 X
 
 Redis X
 Orc(Tesseract orc) X

@@ -36,13 +36,13 @@ namespace RuiJi.Net.Core.Configuration
             }
         }
 
-        [ConfigurationProperty("zkServer", IsRequired = true)]
-        public string ZkServer
-        {
-            get
-            {
-                return this["zkServer"] as string;
-            }
-        }
+        //[ConfigurationProperty("zkServer", IsRequired = true)]
+        //public string ZkServer
+        //{
+        //    get
+        //    {
+        //        return this["zkServer"] as string;
+        //    }
+        //}
     }
 }

@@ -82,10 +82,17 @@ namespace RuiJi.Net.Owin
             }
             else
             {
-                var zkServer = ConfigurationManager.AppSettings["zkPath"];
-                if (!string.IsNullOrEmpty(zkServer))
+                var zkServer = ConfigurationManager.AppSettings["zkServer"];
+                if(string.IsNullOrEmpty(zkServer))
                 {
-                    var path = AppDomain.CurrentDomain.BaseDirectory + zkServer + @"\bin\zkServer.cmd";
+                    Logger.GetLogger("").Fatal("zkServer not defined");
+                    return;
+                }
+
+                var zkPath = ConfigurationManager.AppSettings["zkPath"];
+                if (!string.IsNullOrEmpty(zkPath))
+                {
+                    var path = AppDomain.CurrentDomain.BaseDirectory + zkPath + @"\bin\zkServer.cmd";
 
                     if (File.Exists(path))
                     {
@@ -110,7 +117,7 @@ namespace RuiJi.Net.Owin
                     {
                         try
                         {
-                            ServerManager.Start(m.BaseUrl, m.Type, m.ZkServer, m.Proxy);
+                            ServerManager.Start(m.BaseUrl, m.Type, zkServer, m.Proxy);
                         }
                         catch (Exception ex)
                         {
