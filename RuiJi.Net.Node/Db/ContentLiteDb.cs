@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,13 +28,27 @@ namespace RuiJi.Net.Node.Db
             {
                 var col = db.GetCollection<ContentModel>("contents");
 
-                page.Count = col.Count();
+                Expression<Func<ContentModel, bool>> expression = x => true;
 
-                if (feedID == 0)
-                    return col.Find(Query.All()).OrderByDescending(m => m.Id).Skip(page.Start).Take(page.PageSize).ToList();
-                else
-                    return col.Find(m=>m.Id == feedID).OrderByDescending(m=>m.Id).Skip(page.Start).Take(page.PageSize).ToList();
+                if (feedID != 0)
+                    expression = expression.And(x => x.FeedId == feedID);
+
+                page.Count = col.Count(expression);
+
+                return col.Find(expression).OrderByDescending(m => m.Id).Skip(page.Start).Take(page.PageSize).ToList();
             }
+        }
+
+        public static bool Remove(int[] ids, string shard)
+        {
+            using (var db = new LiteDatabase(@"LiteDb/Content/" + shard + ".db"))
+            {
+                var col = db.GetCollection<ContentModel>("contents");
+
+                col.Delete(x => ids.Contains(x.Id));
+            }
+
+            return true;
         }
     }
 }

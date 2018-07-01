@@ -7,7 +7,7 @@
             <input type="text" class="node-pages" value="{{pages}}" />
         </div>
         <div class="col-md-2">
-            <input type="button" value="确认" class="save-feed btn btn-default" />
+            <input type="button" value="Ok" class="save-feed btn btn-default" />
         </div>
     </div>
 </script>
@@ -22,7 +22,7 @@
             <div><input class="tab-panel-node" type='checkbox' value='{{re.ip}}' {{if re.checked}} checked="checked" {{/if}} />{{re.ip}} </div>
             {{/each}}
         </div>
-        <div class="col-md-2"><input type="button" value="确认" class="save-ips btn btn-default" /></div>
+        <div class="col-md-2"><input type="button" value="Ok" class="save-ips btn btn-default" /></div>
     </div>
 </script>
 
@@ -32,7 +32,7 @@
     <span>Feed Setting</span>
 
     <div class="panel panel-default">
-        <div>请输入Feed节点抓取页码范围，每页50,以逗号分隔 例如: 1,3 </div>
+        <div>Please input the feed node to grab the page number range,50 per page,split by commas,for example: 1,3 </div>
         <div class="panel-body" id="feed_node_set">
 
         </div>
@@ -41,7 +41,7 @@
 <div class="setting">
     <span>Node Ip Setting</span>
     <div class="panel panel-default">
-        <div>请从下面选择该节点可以使用的IP</div>
+        <div>Please select IP that the node can use</div>
         <div class="panel-body" id="crawler_node_set">
 
         </div>

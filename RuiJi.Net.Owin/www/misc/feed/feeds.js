@@ -45,8 +45,8 @@
                         }
                     }, {
                         label: 'Download Target',
-                            action: function (dialog) {
-                                module.test(true);
+                        action: function (dialog) {
+                            module.test(true);
                         }
                     }, {
                         label: 'Ok',
@@ -131,7 +131,11 @@
             });
 
             $(document).on("click", "#tb_feeds .fa-eye", function () {
-                swal("Coming soon!", "", "warning");
+                var id = $(this).closest("tr").find("td").eq(1).text();
+                require(["content"], function (m) {
+                    m.feedResult(id);
+                    $("#main_menu_tabs [href='#content']").trigger("click");
+                });
             });
 
             $(document).on("click", "#tb_feeds .fa-history", function () {

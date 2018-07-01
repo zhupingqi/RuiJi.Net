@@ -2,17 +2,25 @@
     <div id="toolbar_contents">
         <div class="btn-group">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                批量操作 <span class="caret"></span>
+                Batch OP <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-                <li><a href="javascript:;">停用</a></li>
-                <li><a href="javascript:;">移至回收站</a></li>
+                <li><a href="javascript:;" remove>Remove</a></li>
             </ul>
         </div>
-        <button type="submit" class="btn btn-default">应用</button>
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <input type="text" class="form-control" style="display: inline-block; width: auto;" placeholder="Search FeedId">
-        <button type="submit" class="btn btn-default">筛选</button>
+        <div id="content_search_group" class="pull-right">
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle shard" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Shard <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="javascript:;">No Shard</a></li>
+                </ul>
+            </div>
+            <input type="number" class="form-control feed" style="display: inline-block; width: auto;" placeholder="Search FeedId">
+            <button type="submit" class="btn btn-default content-search">Search</button>
+        </div>
     </div>
     <div id="contents_list">
         <table id="tb_contents" data-toggle="table" data-url="">

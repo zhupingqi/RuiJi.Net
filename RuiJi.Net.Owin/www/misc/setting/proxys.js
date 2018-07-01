@@ -193,7 +193,7 @@
                 type: 'POST',
                 contentType: "application/json",
                 success: function (res) {
-                    swal("完成");
+                    swal("Update success","","success");
                     dialog.close();
                     $('#tb_proxys').bootstrapTable("refresh");
                 }

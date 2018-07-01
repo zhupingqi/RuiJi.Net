@@ -214,7 +214,17 @@ namespace RuiJi.Net.Owin.Controllers
 
         [HttpGet]
         [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
-        public object GetContent(int offset, int limit, string shard = "", int feedId = 0)
+        public object GetShards()
+        {
+            var dbfile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LiteDb", "Content");
+            var fileInfos = Directory.GetFiles(dbfile);
+            var shards = fileInfos.Select(f => f.Substring(f.LastIndexOf("\\") + 1, f.IndexOf(".db") - f.LastIndexOf("\\") - 1)).OrderByDescending(f => f).ToList();
+            return shards;
+        }
+
+        [HttpGet]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
+        public object GetContent(int offset, int limit, string shard = "", string feedId = "")
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
 
@@ -222,12 +232,12 @@ namespace RuiJi.Net.Owin.Controllers
             paging.CurrentPage = (offset / limit) + 1;
             paging.PageSize = limit;
 
-            if (string.IsNullOrEmpty(shard))
+            if (string.IsNullOrEmpty(shard) || shard.ToLower() == "shard")
                 shard = DateTime.Now.ToString("yyyyMM");
-
+            var feedIdInt = string.IsNullOrEmpty(feedId) ? 0 : Convert.ToInt32(feedId);
             return new
             {
-                rows = ContentLiteDb.GetModels(paging, shard, feedId).Select(m => new
+                rows = ContentLiteDb.GetModels(paging, shard, feedIdInt).Select(m => new
                 {
                     id = m.Id,
                     feedId = m.FeedId,
@@ -242,6 +252,16 @@ namespace RuiJi.Net.Owin.Controllers
                 total = paging.Count
             };
         }
+
+        [HttpGet]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
+        public bool RemoveContent(string ids, string shard)
+        {
+            var removes = ids.Split(',').Select(m => Convert.ToInt32(m)).ToArray();
+
+            return ContentLiteDb.Remove(removes, shard);
+        }
+
         #endregion
 
         #region Test

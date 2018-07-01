@@ -36,10 +36,7 @@ namespace RuiJi.Net.Node.Db
                 if (!string.IsNullOrEmpty(status) && status.ToLower() != "all" && status.ToLower() != "status")
                     expression = expression.And(x => x.Status.Equals(Enum.Parse(typeof(Status), status.ToUpper())));
 
-
-
                 page.Count = col.Count(expression);
-
 
                 return col.Find(expression, page.Start, page.PageSize).ToList();
             }
@@ -120,10 +117,8 @@ namespace RuiJi.Net.Node.Db
             using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
             {
                 var col = db.GetCollection<FeedModel>("feeds");
-                ids.ToList().ForEach((m) =>
-                {
-                    col.Delete(m);
-                });
+
+                col.Delete(x => ids.Contains(x.Id));
             }
 
             return true;

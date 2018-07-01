@@ -276,6 +276,20 @@ namespace RuiJi.Net.Owin
                 routeTemplate: "api/fp/content",
                 defaults: new { controller = "FeedApi", action = "GetContent" }
             );
+
+            config.Routes.MapHttpRoute(
+                name: "GetShards",
+                routeTemplate: "api/fp/content/shards",
+                defaults: new { controller = "FeedApi", action = "GetShards" }
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "RemoveContent",
+                routeTemplate: "api/fp/content/remove",
+                defaults: new { controller = "FeedApi", action = "RemoveContent" }
+            );
+
+           
             #endregion
 
             #region Funcs Api
