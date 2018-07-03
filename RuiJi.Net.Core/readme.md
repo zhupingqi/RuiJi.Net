@@ -3,6 +3,10 @@
 
 http://www.ruijihg.com/archives/ruijinet/getting-started
 
+#### Star on github
+
+https://github.com/zhupingqi/RuiJi.Net
+
 #### RuiJi.Net.Core Sample
 
 
