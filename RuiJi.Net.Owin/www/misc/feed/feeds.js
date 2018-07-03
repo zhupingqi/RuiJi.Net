@@ -16,14 +16,7 @@
                 sidePagination: "server",
                 showColumns: true,
                 showRefresh: true,
-                height: 530,
-                onPostBody: function (e) {
-                    if (e.length > 0) {
-                        $('#tb_feeds > tbody > tr').map(function (i, m) {
-                            $(m).find("td:last").html("<i title='edit' class='fa fa-edit'></i><i title='grab result' class='fa fa-eye'></i><i title='edit history' class='fa fa-history'></i><i title='grab now' class='fa fa-random'></i>");
-                        });
-                    }
-                }
+                height: 530
             });
 
             module.initEvent();
@@ -248,7 +241,7 @@
             });
 
             if (!validate) {
-                swal(msg);
+                swal("missing field", msg, "error");
                 return;
             }
 
@@ -269,7 +262,7 @@
                 type: 'POST',
                 contentType: "application/json",
                 success: function (res) {
-                    swal("完成");
+                    swal("success!", "The feed have been update.", "success");
                     dialog.close();
                     $('#tb_feeds').bootstrapTable("refresh");
                 }
@@ -320,7 +313,7 @@
 
                     $('#feed_test_result').jsonViewer(res, options);
                     if (down) {
-                        alert("Download completion!");
+                        swal("Download completion!", "", "success");
                         window.open("/download");
                     }
                 }

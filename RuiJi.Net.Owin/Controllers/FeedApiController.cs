@@ -246,7 +246,7 @@ namespace RuiJi.Net.Owin.Controllers
                     metas = m.Metas.Select(n => new
                     {
                         name = n.Key,
-                        content = n.Value.ToString().Length > 50 ? n.Value.ToString().Substring(0, 50) : n.Value.ToString()
+                        content = n.Value == null ? "" : (n.Value.ToString().Length > 50 ? n.Value.ToString().Substring(0, 50) : n.Value.ToString())
                     })
                 }),
                 total = paging.Count

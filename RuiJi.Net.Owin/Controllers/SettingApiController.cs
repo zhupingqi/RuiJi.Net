@@ -141,6 +141,17 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpGet]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
+        public bool ProxyStatusChange(string ids, string status)
+        {
+            var changeIds = ids.Split(',').Select(i => Convert.ToInt32(i)).ToArray();
+            var statusEnum = (Status)Enum.Parse(typeof(Status), status.ToUpper());
+
+            return ProxyLiteDb.StatusChange(changeIds, statusEnum);
+        }
+
+
+        [HttpGet]
         public object ProxyPing(int id)
         {
             var watch = new Stopwatch();
@@ -198,6 +209,76 @@ namespace RuiJi.Net.Owin.Controllers
         }
         #endregion
 
+        #region uaGroup
+        [HttpGet]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
+        public object UAGroups()
+        {
+            return UAGroupLiteDb.GetModels();
+        }
+
+        [HttpGet]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
+        public object UAGroup(int id)
+        {
+            return UAGroupLiteDb.Get(id);
+        }
+
+        [HttpPost]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
+        public int UpdateUAGroup(UAGroupModel group)
+        {
+            return UAGroupLiteDb.AddOrUpdate(group);
+        }
+
+        [HttpGet]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
+        public bool RemoveUAGroup(int id)
+        {
+            return UALiteDb.RemoveByGorup(id) ? UAGroupLiteDb.Remove(id) : false;
+        }
+        #endregion
+
+        #region ua
+        [HttpGet]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
+        public object UAs(int offset, int limit, int groupId)
+        {
+            var paging = new Paging();
+            paging.CurrentPage = (offset / limit) + 1;
+            paging.PageSize = limit;
+
+            return new
+            {
+                rows = UALiteDb.GetModels(paging, groupId),
+                total = paging.Count
+            };
+        }
+
+        [HttpGet]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
+        public object UA(int id)
+        {
+            return UALiteDb.Get(id);
+        }
+
+        [HttpPost]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
+        public bool UpdateUA(UAModel ua)
+        {
+            UALiteDb.AddOrUpdate(ua);
+            return true;
+        }
+
+        [HttpGet]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
+        public bool RemoveUAs(string ids)
+        {
+            var removes = ids.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Select(m => Convert.ToInt32(m)).ToArray();
+            return UALiteDb.Remove(removes);
+        }
+
+        #endregion
         [HttpGet]
         public bool IsAlone()
         {

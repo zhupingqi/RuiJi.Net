@@ -1,28 +1,21 @@
 ﻿define(['jquery', 'utils', 'sweetAlert', 'bootstrapDialog', 'bootstrapTable'], function ($, utils) {
     var module = {
         init: function () {
-            var tmp = utils.loadTemplate("/misc/setting/proxys.html", false);
+            var tmp = utils.loadTemplate("/misc/setting/proxies.html", false);
 
             tmp = $(tmp);
-            tmp.find("#tb_proxys").attr("data-url", "/api/proxys");
+            tmp.find("#tb_proxies").attr("data-url", "/api/proxies");
 
-            $("#tab_panel_proxys").html(tmp.prop("outerHTML"));
+            $("#tab_panel_proxies").html(tmp.prop("outerHTML"));
 
-            var $table = $('#tb_proxys').bootstrapTable({
+            var $table = $('#tb_proxies').bootstrapTable({
                 toolbar: '#toolbar_proxy',
                 pagination: true,
                 queryParams: module.queryParams,
                 sidePagination: "server",
                 showColumns: true,
                 showRefresh: true,
-                height: 530,
-                onPostBody: function (e) {
-                    if (e.length > 0) {
-                        $('#tb_proxys > tbody > tr').map(function (i, m) {
-                            $(m).find("td:last").html("<i class='fa fa-edit'></i><i class='fa fa-terminal'></i><i class='fa fa-minus-circle'></i><span></span>");
-                        });
-                    }
-                }
+                height: 530
             });
 
             module.initEvent();
@@ -50,29 +43,16 @@
                 });
             });
 
-            $(document).on("click", "#delete_proxys", function () {
-                var select = $("#tb_proxys").bootstrapTable('getSelections'); 
-                if (select.length <= 0) {
-                    swal("请至少选中一行");
-                }
-                else {
-                    if (confirm("确认删除选中代理？")) {
-                        var ids = "";
-                        $.map(select, function (n) {
-                            ids += n.id + ",";
-                        })
-                        
-                        $.getJSON("api/proxy/remove?ids=" + ids, function (d) {
-                            if (d) {
-                                swal("完成");
-                                $('#tb_proxys').bootstrapTable("refresh");
-                            }
-                        });
-                    }
-                }
+            $(document).on("click", "#proxy_dialog ul.dropdown-menu a", function () {
+                var menu = $(this);
+                var h = menu.closest(".input-group").find(":hidden");
+                var v = menu.attr("data-bind") ? menu.attr("data-bind") : menu.text();
+
+                h.val(v);
+                h.next().val(menu.text());
             });
 
-            $(document).on("click", "#tb_proxys .fa-edit", function () {
+            $(document).on("click", "#tb_proxies .fa-edit", function () {
                 var ele = $(this);
                 var id = ele.closest("tr").find("td").eq(1).text();
                 var f = $(tmp);
@@ -97,7 +77,7 @@
                     }
 
                     BootstrapDialog.show({
-                        title: 'Edit Func',
+                        title: 'Edit Proxy',
                         message: f.prop("outerHTML"),
                         closable: false,
                         nl2br: false,
@@ -116,10 +96,10 @@
                 });
             });
 
-            $(document).on("click", "#tb_proxys .fa-terminal", function () {
+            $(document).on("click", "#tb_proxies .fa-terminal", function () {
                 var ele = $(this);
-                var id = ele.closest("tr").find("td").eq(1).text();                
-
+                var id = ele.closest("tr").find("td").eq(1).text();
+                ele.next().html("<img src='/Content/images/loading.0.gif' />");
                 $.getJSON("/api/proxy/ping?id=" + id, function (d) {
                     if (d.code == 200)
                         ele.next().html("&nbsp;&nbsp;" + d.elspsed + " ms");
@@ -129,20 +109,21 @@
                 });
             });
 
-            $(document).on("click", "#tb_proxys .fa-minus-circle", function () {
-                var ele = $(this);
-                var id = ele.closest("tr").find("td").eq(1).text();
-
-                if (confirm("确认删除此条代理？")) {
-                    $.getJSON("api/proxy/remove?ids=" + id, function (d) {
-                        if (d) {
-                            swal("完成");
-                            $('#tb_proxys').bootstrapTable("refresh");
-                        }
-                    });
+            //batch operate
+            $(document).on("click", "#toolbar_proxy a[type]", function () {
+                switch ($(this).attr("type")) {
+                    case "enable":
+                        module.batchOpConfirm("Do you confirm the enable?", "The proxies will be enable", "warning", module.enable);
+                        break;
+                    case "disable":
+                        module.batchOpConfirm("Do you confirm the disable?", "The proxies will be disabled", "warning", module.disable);
+                        break;
+                    case "remove":
+                        module.batchOpConfirm("Do you confirm the deletion?", "The proxies will not be restored!", "warning", module.remove);
+                        break;
                 }
             });
-            
+
             $(document).on("click", "#proxy_dialog .btn-mjdark2", function () {
                 var ele = $(this);
                 ele.closest(".input-group").find("input").val(ele.find("input").val());
@@ -151,9 +132,7 @@
         queryParams: function (params) {
             var temp = {
                 limit: params.limit,
-                offset: params.offset,
-                departmentname: $("#txt_search_departmentname").val(),
-                statu: $("#txt_search_statu").val()
+                offset: params.offset
             };
             return temp;
         },
@@ -172,7 +151,7 @@
             });
 
             if (!validate) {
-                swal(msg);
+                swal("missing field", msg, "error");
                 return;
             }
 
@@ -193,9 +172,68 @@
                 type: 'POST',
                 contentType: "application/json",
                 success: function (res) {
-                    swal("Update success","","success");
+                    swal("success!", "The proxy have been update", "success");
                     dialog.close();
-                    $('#tb_proxys').bootstrapTable("refresh");
+                    $('#tb_proxies').bootstrapTable("refresh");
+                }
+            });
+        },
+        batchOpConfirm: function (title, text, type, callback) {
+            var selects = $("#tb_proxies").bootstrapTable('getSelections');
+            if (selects.length <= 0) {
+                swal("Unchecked any proxies!", "", "warning");
+                return;
+            }
+            var ids = selects.map(function (s) { return s.id }).join(",");
+            swal(
+                {
+                    title: title,
+                    text: text,
+                    type: type,
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Confirm",
+                    cancelButtonText: "Cancel",
+                    closeOnConfirm: false
+                },
+                function () {
+                    callback(ids);
+                }
+            );
+        },
+        enable: function (ids) {
+            var url = "/api/proxy/status/change?ids=" + ids + "&status=ON";
+
+            $.getJSON(url, function (res) {
+                if (res) {
+                    swal("Enable sucess!", "The proxies have been enable.", "success");
+                    $('#tb_proxies').bootstrapTable("refresh");
+                } else {
+                    swal("Enable failed!", "A mistake in the enable proxy.", "error");
+                }
+            });
+        },
+        disable: function (ids) {
+            var url = "/api/proxy/status/change?ids=" + ids + "&status=OFF";
+
+            $.getJSON(url, function (res) {
+                if (res) {
+                    swal("Disable sucess!", "The proxies have been disable.", "success");
+                    $('#tb_proxies').bootstrapTable("refresh");
+                } else {
+                    swal("Disable failed!", "A mistake in the disable proxy.", "error");
+                }
+            });
+        },
+        remove: function (ids) {
+            var url = "/api/proxy/remove?ids=" + ids;
+
+            $.getJSON(url, function (res) {
+                if (res) {
+                    swal("Delete sucess!", "The proxies have been deleted.", "success");
+                    $('#tb_proxies').bootstrapTable("refresh");
+                } else {
+                    swal("Delete failed!", "A mistake in the deletion proxy.", "error");
                 }
             });
         }

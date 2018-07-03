@@ -30,10 +30,7 @@
                 cardView: false,
                 detailView: false,
                 flat: true,
-                flatSeparator: '.',
-                onPostBody: function (e) {
-
-                }
+                flatSeparator: '.'
             });
             module.initEvent();
         },

@@ -16,14 +16,7 @@
                 sidePagination: "server",
                 showColumns: true,
                 showRefresh: true,
-                height: 530,
-                onPostBody: function (e) {
-                    if (e.length > 0) {
-                        $('#tb_rules > tbody > tr').map(function (i, m) {
-                            $(m).find("td:last").html("<i title='edit' class='fa fa-edit'></i><i title='edit history' class='fa fa-history'></i>");
-                        });
-                    }
-                }
+                height: 530
             });
 
             module.initEvent();
@@ -123,7 +116,7 @@
             });
 
             $(document).on("click", "#tb_rules .fa-history", function () {
-                swal("Coming soon!", "", "warning");
+                swal("Coming soon!", "The module is going online!", "warning");
             });
 
             //batch operate
@@ -205,7 +198,7 @@
             });
 
             if (!validate) {
-                swal(msg);
+                swal("missing field", msg, "error");
                 return;
             }
 

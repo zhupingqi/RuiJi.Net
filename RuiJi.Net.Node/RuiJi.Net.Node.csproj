@@ -66,6 +66,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Db\ExpressionExt.cs" />
+    <Compile Include="Db\UAGroupLiteDb.cs" />
+    <Compile Include="Db\UAGroupModel.cs" />
+    <Compile Include="Db\UALiteDb.cs" />
+    <Compile Include="Db\UAModel.cs" />
     <Compile Include="StandAloneNode.cs" />
     <Compile Include="UrlCompile.cs" />
     <Compile Include="Crawler\CrawlerProxyNodeModeEnum.cs" />

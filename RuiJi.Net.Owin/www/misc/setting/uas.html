@@ -1,0 +1,46 @@
+﻿
+<div>
+    <div id="toolbar_ua_group">
+        <h4>Group</h4>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle ua-group" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Please Add Group <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu"></ul>
+        </div>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="submit" class="btn btn-default" id="add_ua_group">Add</button>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="submit" class="btn btn-default" id="update_ua_group">Update</button>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="submit" class="btn btn-default" id="delete_ua_group">Delete</button>
+    </div>
+    <div id="toolbar_ua">
+        <h4 class="pull-left">User-Agent</h4>&nbsp;&nbsp;
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                BATCH OP <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="javascript:;" remove>Remove</a></li>
+            </ul>
+        </div>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="submit" class="btn btn-default" id="add_ua">Add</button>
+    </div>
+    <div id="ua_list">
+        <table id="tb_uas" data-toggle="table" data-url="">
+            <thead>
+                <tr>
+                    <th data-checkbox="true" data-width="30px">&nbsp;</th>
+                    <th data-field="id" data-switchable="false" data-width="40px">Id</th>
+                    <th data-field="name">Name</th>
+                    <th data-field="value">Value</th>
+                    <th data-field="count">Count</th>
+                    <th data-width="110px" data-formatter="<i title='edit' class='fa fa-edit'></i>">Actions</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+

@@ -55,10 +55,10 @@
             <thead>
                 <tr>
                     <th data-checkbox="true" data-width="30px">&nbsp;</th>
-                    <th data-field="id" data-width="40px">Id</th>
+                    <th data-field="id" data-switchable="false" data-width="40px">Id</th>
                     <th data-field="sitename">SiteName</th>
                     <th data-field="remark">Remark</th>
-                    <th data-field="address">Address</th>
+                    <th data-field="address" data-formatter="aFormat">Address</th>
                     <th data-field="ua" data-width="60px">UA</th>
                     <th data-field="type" data-width="60px">Type</th>
                     <th data-field="method" data-width="60px">Method</th>
@@ -66,7 +66,7 @@
                     <th data-field="scheduling" data-width="100px">Scheduling</th>
                     <th data-field="status" data-width="60px">Status</th>
                     <th data-field="runJs" data-width="60px">RunJs</th>
-                    <th data-width="110px">Actions</th>
+                    <th data-width="110px" data-formatter="<i title='edit' class='fa fa-edit'></i><i title='grab result' class='fa fa-eye'></i><i title='edit history' class='fa fa-history'></i><i title='grab now' class='fa fa-random'></i>">Actions</th>
                 </tr>
             </thead>
         </table>

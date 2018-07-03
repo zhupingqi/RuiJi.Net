@@ -27,10 +27,10 @@
                     lib: 'setting/ua'
                 },
                 {
-                    id: 'proxys',
-                    text: 'Proxys',
+                    id: 'proxies',
+                    text: 'Proxies',
                     type: 'lib',
-                    lib: 'setting/proxys'
+                    lib: 'setting/proxies'
                 },
                 {
                     id: 'plugin',

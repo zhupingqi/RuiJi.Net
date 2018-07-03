@@ -96,6 +96,23 @@ namespace RuiJi.Net.Node.Db
             return true;
         }
 
+        public static bool StatusChange(int[] ids, Status status)
+        {
+
+            using (var db = new LiteDatabase(@"LiteDb/Proxys.db"))
+            {
+                var col = db.GetCollection<ProxyModel>("proxys");
+                var list = col.Find(i => ids.Contains(i.Id)).ToList();
+                list.ForEach((r) =>
+                {
+                    r.Status = status;
+                });
+                col.Update(list);
+            }
+
+            return true;
+        }
+
         public static void CreateIndex()
         {
             using (var db = new LiteDatabase(@"LiteDb/Proxys.db"))

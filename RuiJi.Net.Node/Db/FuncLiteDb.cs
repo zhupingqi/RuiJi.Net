@@ -62,9 +62,8 @@ namespace RuiJi.Net.Node.Db
             using (var db = new LiteDatabase(@"LiteDb/Funcs.db"))
             {
                 var col = db.GetCollection<RuleModel>("funcs");
-                ids.ToList().ForEach((m) => {
-                    col.Delete(m);
-                });
+
+                col.Delete(x => ids.Contains(x.Id));
             }
 
             return true;
