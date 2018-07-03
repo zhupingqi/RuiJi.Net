@@ -26,7 +26,7 @@ namespace RuiJi.Net.Core.Extractor.Selector
 
         protected override SelectorTypeEnum SetSelectType()
         {
-            return SelectorTypeEnum.REPLACE;
+            return SelectorTypeEnum.REGEXREPLACE;
         }
     }
 }

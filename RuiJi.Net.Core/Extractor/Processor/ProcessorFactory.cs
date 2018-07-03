@@ -20,10 +20,10 @@ namespace RuiJi.Net.Core.Extractor.Processor
             processors.Add(SelectorTypeEnum.EXCLUDE, new ExcludeProcessor());
             processors.Add(SelectorTypeEnum.REGEXSPLIT, new RegexSplitSelectorProcessor());
             processors.Add(SelectorTypeEnum.TEXTRANGE, new TextRangeProcessor());
-            processors.Add(SelectorTypeEnum.REPLACE, new RegexReplaceProcessor());
+            processors.Add(SelectorTypeEnum.REGEXREPLACE, new RegexReplaceProcessor());
             processors.Add(SelectorTypeEnum.EXPRESSION, new ExpressionProcessor());
             processors.Add(SelectorTypeEnum.XPATH, new XPathProcessor());
-            processors.Add(SelectorTypeEnum.JSON, new JsonPathProcessor());
+            processors.Add(SelectorTypeEnum.JPATH, new JsonPathProcessor());
             processors.Add(SelectorTypeEnum.CLEAR, new ClearTagProcessor());
             processors.Add(SelectorTypeEnum.FUNCTION, new FunctionProcessor());
         }

@@ -22,7 +22,7 @@ namespace RuiJi.Net.Core.Compile
                 var key = file.Substring(file.LastIndexOf(@"\") + 1).Replace(".pro", "");
                 var func = File.ReadAllText(file);
 
-                functions.Add(key, func);
+                functions.Add(key, "var content = \"{0}\";\n" + func);
             }
 
             return functions;
