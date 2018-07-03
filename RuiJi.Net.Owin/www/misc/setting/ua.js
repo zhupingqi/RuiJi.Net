@@ -190,6 +190,7 @@
 
             $(document).on("click", "#toolbar_ua_group .dropdown-menu a", function () {
                 $(this).closest("ul").prev("button").attr("gid", $(this).attr("gid")).html($(this).text() + "<span class=\"caret\"></span>");
+                $('#tb_uas').bootstrapTable("refresh");
             });
             //#endregion
         },
