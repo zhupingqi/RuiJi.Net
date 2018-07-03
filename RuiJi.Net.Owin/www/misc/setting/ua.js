@@ -206,7 +206,7 @@
                     });
                     $("#toolbar_ua_group button.ua-group").attr("gid", res[0].id).html(res[0].name + "<span class='caret'></span>");
                 } else {
-                    $("#toolbar_ua_group button.ua-group").html("Please Add Group <span class='caret'></span>");
+                    $("#toolbar_ua_group button.ua-group").attr("gid", 0).html("Please Add Group <span class='caret'></span>");
                 }
             });
         },
