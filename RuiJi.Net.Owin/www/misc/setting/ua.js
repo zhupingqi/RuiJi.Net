@@ -199,14 +199,11 @@
 
             var groupDropdown = $("#toolbar_ua_group button.ua-group").parent().find("ul.dropdown-menu");
             $.getJSON(url, function (res) {
-                groupDropdown.html("");
+                groupDropdown.html("<li><a href='javascript:;' gid=0>All</a></li>");
                 if (res && res.length > 0) {
                     res.map(function (s) {
                         groupDropdown.append("<li><a href='javascript:;' gid=" + s.id + ">" + s.name + "</a></li>");
                     });
-                    $("#toolbar_ua_group button.ua-group").attr("gid", res[0].id).html(res[0].name + "<span class='caret'></span>");
-                } else {
-                    $("#toolbar_ua_group button.ua-group").attr("gid", 0).html("Please Add Group <span class='caret'></span>");
                 }
             });
         },
@@ -337,6 +334,7 @@
                 if (res) {
                     swal("Delete sucess!", "The ua group have been deleted.", "success");
                     module.fillGroup();
+                    $("#toolbar_ua_group button.ua-group").attr("gid", 0).html("All <span class='caret'></span>");
                     $('#tb_uas').bootstrapTable("refresh");
                 } else {
                     swal("Delete failed!", "A mistake in the deletion ua group.", "error");
