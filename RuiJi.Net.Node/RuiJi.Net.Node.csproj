@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Db\ExpressionExt.cs" />
+    <Compile Include="Db\FuncType.cs" />
     <Compile Include="Db\UAGroupLiteDb.cs" />
     <Compile Include="Db\UAGroupModel.cs" />
     <Compile Include="Db\UALiteDb.cs" />
@@ -76,8 +77,8 @@
     <Compile Include="Crawler\CrawlerNode.cs" />
     <Compile Include="Crawler\CrawlerProxyNode.cs" />
     <Compile Include="Crawler\CrawlerConfig.cs" />
-    <Compile Include="Extracter\ExtracterManager.cs" />
-    <Compile Include="Extracter\ExtracterProxyNode.cs" />
+    <Compile Include="Extractor\ExtracterManager.cs" />
+    <Compile Include="Extractor\ExtracterProxyNode.cs" />
     <Compile Include="Db\ContentLiteDb.cs" />
     <Compile Include="Db\ProxyModel.cs" />
     <Compile Include="Db\Status.cs" />
@@ -94,7 +95,7 @@
     <Compile Include="Db\ProxyLiteDb.cs" />
     <Compile Include="INode.cs" />
     <Compile Include="NodeConfig.cs" />
-    <Compile Include="Extracter\ExtracterNode.cs" />
+    <Compile Include="Extractor\ExtracterNode.cs" />
     <Compile Include="Feed\FeedManager.cs" />
     <Compile Include="Feed\FeedProxyNode.cs" />
     <Compile Include="Feed\FeedNode.cs" />

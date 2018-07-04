@@ -9,12 +9,6 @@
                     lib: 'setting/node'
                 },
                 {
-                    id: 'storage',
-                    text: 'Storage',
-                    type: 'lib',
-                    lib: 'setting/storage'
-                },
-                {
                     id: 'funcs',
                     text: 'Funcs',
                     type: 'lib',
@@ -31,6 +25,12 @@
                     text: 'Proxies',
                     type: 'lib',
                     lib: 'setting/proxies'
+                },
+                {
+                    id: 'storage',
+                    text: 'Storage',
+                    type: 'lib',
+                    lib: 'setting/storage'
                 },
                 {
                     id: 'plugin',

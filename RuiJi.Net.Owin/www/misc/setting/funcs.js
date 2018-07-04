@@ -47,6 +47,15 @@
                 });
             });
 
+            $(document).on("click", "#func_dialog ul.dropdown-menu a", function () {
+                var menu = $(this);
+                var h = menu.closest(".input-group").find(":hidden");
+                var v = menu.attr("data-bind") ? menu.attr("data-bind") : menu.text();
+
+                h.val(v);
+                h.next().val(menu.text());
+            });
+
             $(document).on("click", "#tb_funcs .fa-edit", function () {
                 var ele = $(this);
                 var id = ele.closest("tr").find("td").eq(1).text();

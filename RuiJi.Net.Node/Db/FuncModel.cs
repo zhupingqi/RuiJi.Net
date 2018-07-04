@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RuiJi.Net.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,10 @@ namespace RuiJi.Net.Node.Db
 
         [JsonProperty("code")]
         public string Code { get; set; }
+
+        [JsonProperty("type")]
+        [JsonConverter(typeof(EnumConvert<FuncType>))]
+        public FuncType Type { get; set; }
 
         [JsonProperty("sample")]
         public string Sample { get; set; }
