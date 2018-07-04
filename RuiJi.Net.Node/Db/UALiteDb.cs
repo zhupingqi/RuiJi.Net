@@ -98,9 +98,9 @@ namespace RuiJi.Net.Node.Db
 
                 var count = col.Count();
 
-                r.Next(count);
+                var n = r.Next(count);
 
-                var m = col.FindAll().Skip(count).Take(1).First();
+                var m = col.FindAll().Skip(n).Take(1).First();
 
                 return m.Value + "." + r.Next(m.Count);
             }
