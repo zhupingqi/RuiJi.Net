@@ -3,6 +3,7 @@ using RuiJi.Net.Core.Utils.Page;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,10 +21,13 @@ namespace RuiJi.Net.Node.Db
             using (var db = new LiteDatabase(@"LiteDb/UAs.db"))
             {
                 var col = db.GetCollection<UAModel>("uAs");
+                Expression<Func<UAModel, bool>> expression = x => true;
+                if (groupId != 0)
+                    expression = expression.And(x => x.GroupId == groupId);
 
-                page.Count = col.Count(x => x.GroupId == groupId);
+                page.Count = col.Count(expression);
 
-                return col.Find(x => x.GroupId == groupId, page.Start, page.PageSize).ToList();
+                return col.Find(expression, page.Start, page.PageSize).ToList();
             }
         }
 
