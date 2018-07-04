@@ -131,3 +131,11 @@ table td {
 .setting .ips-set {
     margin-top:5px;
 }
+
+.github-btn {
+    overflow: hidden;
+    border: 0;
+    vertical-align: middle;
+    box-sizing: border-box;
+    display: inline-block;
+}

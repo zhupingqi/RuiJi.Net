@@ -181,6 +181,10 @@ namespace RuiJi.Net.Node.Feed.LTS
                 if (feed.Method == "POST" && !string.IsNullOrEmpty(feed.Data))
                     request.Data = feed.Data;
 
+                var ua = UALiteDb.GetOne();
+                if(!string.IsNullOrEmpty(ua))
+                    request.Headers.Add(new WebHeader("User-Agent", ua));
+
                 var response = NodeVisitor.Crawler.Request(request);
 
                 if(response != null)

@@ -10,6 +10,8 @@ namespace RuiJi.Net.Node.Db
 {
     public class UALiteDb
     {
+        static Random r = new Random();
+
         static UALiteDb()
         {
             CreateIndex();
@@ -78,6 +80,22 @@ namespace RuiJi.Net.Node.Db
                 var col = db.GetCollection<UAModel>("uAs");
 
                 return col.FindOne(m => m.Id == id);
+            }
+        }
+
+        public static string GetOne()
+        {
+            using (var db = new LiteDatabase(@"LiteDb/UAs.db"))
+            {
+                var col = db.GetCollection<UAModel>("uAs");
+
+                var count = col.Count();
+
+                r.Next(count);
+
+                var m = col.FindAll().Skip(count).Take(1).First();
+
+                return m.Value + "." + r.Next(m.Count);
             }
         }
 
