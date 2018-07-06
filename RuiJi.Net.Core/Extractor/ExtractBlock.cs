@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using RuiJi.Net.Core.Expression;
 using RuiJi.Net.Core.Extractor.Selector;
 
 namespace RuiJi.Net.Core.Extractor
 {
-    public class ExtractBlock : ExtractBase
+    public class ExtractBlock : ExtractBase, IRuiJiParseResult
     {
         [JsonProperty("tiles",NullValueHandling = NullValueHandling.Ignore)]
         public ExtractTile TileSelector { get; set; }
@@ -24,6 +25,11 @@ namespace RuiJi.Net.Core.Extractor
             Blocks = new ExtractBlockCollection();
             Metas = new ExtractMetaCollection();
             TileSelector = new ExtractTile();
+        }
+
+        public ExtractBlock():this("")
+        {
+
         }
     }
 }

@@ -4,19 +4,13 @@
             var conf = [
                 {
                     id: 'setting_node',
-                    text: '节点',
+                    text: 'Node',
                     type: 'lib',
                     lib: 'setting/node'
                 },
                 {
-                    id: 'storage',
-                    text: '存储',
-                    type: 'lib',
-                    lib: 'setting/storage'
-                },
-                {
                     id: 'funcs',
-                    text: '函数',
+                    text: 'Funcs',
                     type: 'lib',
                     lib: 'setting/funcs'
                 },
@@ -27,14 +21,20 @@
                     lib: 'setting/ua'
                 },
                 {
-                    id: 'proxys',
-                    text: '代理',
+                    id: 'proxies',
+                    text: 'Proxies',
                     type: 'lib',
-                    lib: 'setting/proxys'
+                    lib: 'setting/proxies'
+                },
+                {
+                    id: 'storage',
+                    text: 'Storage',
+                    type: 'lib',
+                    lib: 'setting/storage'
                 },
                 {
                     id: 'plugin',
-                    text: '插件',
+                    text: 'Plugin',
                     type: 'lib',
                     lib: 'setting/plugin'
                 }

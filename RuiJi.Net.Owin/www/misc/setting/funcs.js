@@ -14,14 +14,7 @@
                 sidePagination: "server",
                 showColumns: true,
                 showRefresh: true,
-                height: 530,
-                onPostBody: function (e) {
-                    if (e.length > 0) {
-                        $('#tb_funcs > tbody > tr').map(function (i, m) {
-                            $(m).find("td:last").html("<i class='fa fa-edit'></i><i class='fa fa-minus-circle'></i>");
-                        });
-                    }
-                }
+                height: 530
             });
 
             module.initEvent();
@@ -54,40 +47,13 @@
                 });
             });
 
-            $(document).on("click", "#delete_funcs", function () {
-                var select = $("#tb_funcs").bootstrapTable('getSelections');
-                if (select.length <= 0) {
-                    swal("请至少选中一行");
-                }
-                else {
-                    if (confirm("确认删除选中函数？")) {
-                        var ids = "";
-                        $.map(select, function (n) {
-                            ids += n.id + ",";
-                        })
+            $(document).on("click", "#func_dialog ul.dropdown-menu a", function () {
+                var menu = $(this);
+                var h = menu.closest(".input-group").find(":hidden");
+                var v = menu.attr("data-bind") ? menu.attr("data-bind") : menu.text();
 
-                        $.getJSON("api/func/remove?ids=" + ids, function (d) {
-                            if (d) {
-                                swal("完成");
-                                $('#tb_funcs').bootstrapTable("refresh");
-                            }
-                        });
-                    }
-                }
-            });
-
-            $(document).on("click", "#tb_funcs .fa-minus-circle", function () {
-                var ele = $(this);
-                var id = ele.closest("tr").find("td").eq(1).text();
-
-                if (confirm("确认删除此条函数？")) {
-                    $.getJSON("api/func/remove?ids=" + id, function (d) {
-                        if (d) {
-                            swal("完成");
-                            $('#tb_funcs').bootstrapTable("refresh");
-                        }
-                    });
-                }
+                h.val(v);
+                h.next().val(menu.text());
             });
 
             $(document).on("click", "#tb_funcs .fa-edit", function () {
@@ -134,6 +100,9 @@
                 });
             });
 
+            $(document).on("click", "#toolbar_funcs a[remove]", function () {
+                module.batchOpConfirm("Do you confirm the deletion?", "The funcs will not be restored!", "warning", module.remove);
+            });
         },
         queryParams: function (params) {
             var temp = {
@@ -175,7 +144,7 @@
             });
 
             if (msg != "") {
-                swal(msg);
+                swal("missing field", msg, "error");
                 return;
             }
 
@@ -187,11 +156,46 @@
                 success: function (res) {
                     $table = $('#tb_funcs').bootstrapTable("refresh");
                     if (res) {
-                        swal("完成");
+                        swal("success!","The func have been update.","success");
                         dialog.close();
                     }
                     else
-                        swal("添加失败");
+                        swal("faild", "A mistake in the disable feed.","error");
+                }
+            });
+        },
+        batchOpConfirm: function (title, text, type, callback) {
+            var selects = $("#tb_funcs").bootstrapTable('getSelections');
+            if (selects.length <= 0) {
+                swal("Unchecked any funcs!", "", "warning");
+                return;
+            }
+            var ids = selects.map(function (s) { return s.id }).join(",");
+            swal(
+                {
+                    title: title,
+                    text: text,
+                    type: type,
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Confirm",
+                    cancelButtonText: "Cancel",
+                    closeOnConfirm: false
+                },
+                function () {
+                    callback(ids);
+                }
+            );
+        },
+        remove: function (ids) {
+            var url = "api/func/remove?ids=" + ids;
+
+            $.getJSON(url, function (res) {
+                if (res) {
+                    swal("Delete sucess!", "The funcs have been deleted.", "success");
+                    $('#tb_funcs').bootstrapTable("refresh");
+                } else {
+                    swal("Delete failed!", "A mistake in the deletion func.", "error");
                 }
             });
         }

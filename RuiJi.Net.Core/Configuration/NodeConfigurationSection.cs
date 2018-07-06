@@ -7,11 +7,17 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Configuration
 {
+    /// <summary>
+    /// node configuration section
+    /// </summary>
     public class NodeConfigurationSection : ConfigurationSection
     {
         private static NodeConfigurationElement[] settings;
 
-        public static bool Alone
+        /// <summary>
+        /// Standalone mode
+        /// </summary>
+        public static bool Standalone
         {
             get
             {
@@ -28,7 +34,7 @@ namespace RuiJi.Net.Core.Configuration
         }
 
         [ConfigurationProperty("", Options = ConfigurationPropertyOptions.IsDefaultCollection)]
-        public  NodeConfigurationElementCollection NodeSettings
+        public NodeConfigurationElementCollection NodeSettings
         {
             get
             {
@@ -36,11 +42,19 @@ namespace RuiJi.Net.Core.Configuration
             }
         }
 
+        /// <summary>
+        /// get node configuration from baseUrl
+        /// </summary>
+        /// <param name="baseUrl">node baseUrl</param>
+        /// <returns>node configuration</returns>
         public static NodeConfigurationElement Get(string baseUrl)
         {
             return settings.SingleOrDefault(m => m.BaseUrl == baseUrl);
         }
 
+        /// <summary>
+        /// all node setting
+        /// </summary>
         public static List<NodeConfigurationElement> Settings
         {
             get

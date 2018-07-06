@@ -7,18 +7,30 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core
 {
+    /// <summary>
+    /// crawler server manager
+    /// </summary>
     public class CrawlerServerManager
     {
+        /// <summary>
+        /// host visit model
+        /// </summary>
         internal class HostVisit
         {
             public string IP { get; set; }
+
             public string Host { get; set; }
+
             public long LastVisitDate { get; set; }
         }
 
+        /// <summary>
+        /// crawler server
+        /// </summary>
         public class Server
         {
             public string BaseUrl { get; set; }
+
             public string ClientIp { get; set; }
         }
 
@@ -29,8 +41,14 @@ namespace RuiJi.Net.Core
         private Dictionary<string, List<string>> ipMap = new Dictionary<string, List<string>>();
         private Dictionary<string, ulong> hostMap = new Dictionary<string, ulong>();
 
-        public List<Server> ServerMap { get; private set; }
+        /// <summary>
+        /// crawler server list
+        /// </summary>
+        public List<Server> Servers { get; private set; }
 
+        /// <summary>
+        /// crawler server manager instance
+        /// </summary>
         public static CrawlerServerManager Instance
         {
             get
@@ -46,14 +64,19 @@ namespace RuiJi.Net.Core
 
         private CrawlerServerManager()
         {
-            ServerMap = new List<Server>();
+            Servers = new List<Server>();
         }
 
+        /// <summary>
+        /// elect crawler
+        /// </summary>
+        /// <param name="uri">uri</param>
+        /// <returns>crawler server elect result</returns>
         public CrawlerElectResult ElectIP(Uri uri)
         {
             lock (_lck)
             {
-                if (ServerMap.Count == 0)
+                if (Servers.Count == 0)
                     return null;
 
                 if (!hostMap.ContainsKey(uri.Host))
@@ -61,7 +84,7 @@ namespace RuiJi.Net.Core
                 else
                     hostMap[uri.Host]++;
 
-                var server = ServerMap[Convert.ToInt32(hostMap[uri.Host] % (ulong)ServerMap.Count)];
+                var server = Servers[Convert.ToInt32(hostMap[uri.Host] % (ulong)Servers.Count)];
 
                 return new CrawlerElectResult()
                 {
@@ -71,22 +94,16 @@ namespace RuiJi.Net.Core
             }
         }
 
-        public void Schedule(string ip, string host)
-        {
-            lock (_lck)
-            {
-                if (hostMap.ContainsKey(host))
-                    hostMap.Add(host, 1);
-                else
-                    hostMap[host] = hostMap[host]++;
-            }
-        }
-
+        /// <summary>
+        /// add a server to servers
+        /// </summary>
+        /// <param name="baseUrl">server base url</param>
+        /// <param name="ips">server available ip addresses</param>
         public void AddServer(string baseUrl, string[] ips)
         {
             lock (_lck)
             {
-                ServerMap.RemoveAll(m => m.BaseUrl == baseUrl);
+                Servers.RemoveAll(m => m.BaseUrl == baseUrl);
 
                 foreach (var ip in ips)
                 {
@@ -94,37 +111,52 @@ namespace RuiJi.Net.Core
                     svr.BaseUrl = baseUrl;
                     svr.ClientIp = ip;
 
-                    ServerMap.Add(svr);
+                    Servers.Add(svr);
                 }
             }
         }
 
+        /// <summary>
+        /// remove server from servers
+        /// </summary>
+        /// <param name="baseUrl">server base url</param>
         public void RemoveServer(string baseUrl)
         {
             lock (_lck)
             {
-                ServerMap.RemoveAll(m => m.BaseUrl == baseUrl);
+                Servers.RemoveAll(m => m.BaseUrl == baseUrl);
             }
         }
 
+        /// <summary>
+        /// get server by server register ip
+        /// </summary>
+        /// <param name="ip">previously registered IP addresses</param>
+        /// <returns>server</returns>
         public CrawlerElectResult GetServer(string ip)
         {
-            var server = ServerMap.FirstOrDefault(m => m.ClientIp == ip);
-            if (server == null)
-                return null;
-
-            return new CrawlerElectResult
+            lock (_lck)
             {
-                BaseUrl = server.BaseUrl,
-                ClientIp = ip
-            };
+                var server = Servers.FirstOrDefault(m => m.ClientIp == ip);
+                if (server == null)
+                    return null;
+
+                return new CrawlerElectResult
+                {
+                    BaseUrl = server.BaseUrl,
+                    ClientIp = ip
+                };
+            }
         }
 
+        /// <summary>
+        /// clear servers
+        /// </summary>
         public void Clear()
         {
             lock (_lck)
             {
-                ServerMap.Clear();
+                Servers.Clear();
             }
         }
     }

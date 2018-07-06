@@ -1,5 +1,8 @@
 ﻿https://www.iana.org/assignments/media-types/media-types.xhtml
 
+xcopy "$(ProjectDir)www" "$(SolutionDir)RuiJi.Net.Cmd\bin\debug\www" /E /Y
+
+
 open source projects that may be possible to use in the future
 
 cassandra
@@ -15,10 +18,6 @@ casperjs
 Hadoop
 Spark 
 
-数据分析
-Hive 
-Pig
-
 数据采集
 Sqoop
 Flume
@@ -27,7 +26,7 @@ Oozie 工作流调度
 
 数据存储 ✓X
 函数添加 ✓
-Selector结果处理函数 X
+Selector结果处理函数 ✓
 日志 ✓X
 代理服务器管理 ✓
 Web Ui ✓X
@@ -36,6 +35,7 @@ Cookie信道 ✓
 Cookie API X
 自动化登陆 X (https://slimerjs.org/  or  https://github.com/ariya/phantomjs/blob/master/examples/phantomwebintro.js )
 动态类生成 X
+分离config文件 X
 
 Redis X
 Orc(Tesseract orc) X
@@ -45,11 +45,17 @@ Java/PHP/C# SDK X
 Download result to be packaged into zip X
 
 --------------------------------------------
-RuiJi.Net.Core add to nuget
 
 Storage
 Spider
 Cookie Chanel ✓
+Post Ajax ✓
 Logger
 RuiJi Expresss advanced parser
 https proxy
+File Func ✓
+RTS X
+MessageQueue iisue
+
+-------------------------------------------
+Zk cluster/HA

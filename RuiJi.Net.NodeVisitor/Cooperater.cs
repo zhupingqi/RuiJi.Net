@@ -25,7 +25,7 @@ namespace RuiJi.Net.NodeVisitor
             return GetResult(request);
         }
 
-        public static ExtractResult GetResult(Request request)
+        private static ExtractResult GetResult(Request request)
         {
             var response = Crawler.Request(request);
             var content = response.Data.ToString();
@@ -49,7 +49,7 @@ namespace RuiJi.Net.NodeVisitor
             return result;
         }
 
-        public static ExtractResult MergeContent(Uri uri, ExtractResult result, string method, string ip, int maxRetry = 10)
+        private static ExtractResult MergeContent(Uri uri, ExtractResult result, string method, string ip, int maxRetry = 10)
         {
             var content = "";
 
@@ -63,7 +63,7 @@ namespace RuiJi.Net.NodeVisitor
             return result;
         }
 
-        public static void DownloadPage(Uri uri, ExtractResult result, string method, string ip, PageDownloadHandler handler, int maxRetry = 10)
+        private static void DownloadPage(Uri uri, ExtractResult result, string method, string ip, PageDownloadHandler handler, int maxRetry = 10)
         {
             handler(uri, result);
 

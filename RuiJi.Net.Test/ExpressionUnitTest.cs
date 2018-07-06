@@ -1,16 +1,14 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RuiJi.Net.Core.Compile;
 using RuiJi.Net.Core.Crawler;
+using RuiJi.Net.Core.Expression;
 using RuiJi.Net.Core.Extractor;
-using RuiJi.Net.Core.Utils;
 using RuiJi.Net.Core.Utils.Tasks;
-using RuiJi.Net.Node.Feed;
-using RuiJi.Net.Node.Db;
+using RuiJi.Net.Node.Feed.Db;
 using RuiJi.Net.Node.Feed.LTS;
 using RuiJi.Net.NodeVisitor;
 using RuiJi.Net.Owin.Controllers;
-using RuiJi.Net.Node;
-using RuiJi.Net.Core.Expression;
+using System;
 using System.IO;
 
 namespace RuiJi.Net.Test
@@ -64,7 +62,7 @@ namespace RuiJi.Net.Test
                 jpath dlkejl -r
                 ";
 
-            var m = RuiJiExtractBlockParser.ParserMeta(metas);
+            var m = RuiJiBlockParser.ParserMeta(metas);
 
             Assert.IsTrue(m.Count > 0);
         }
@@ -113,7 +111,7 @@ css .list1
 css .list2
 ";
 
-            var m = RuiJiExtractBlockParser.ParserBlock(block);
+            var m = RuiJiBlockParser.ParserBlock(block);
 
             Assert.IsTrue(m.Metas.Count > 0);
         }
@@ -128,7 +126,7 @@ css .list2
             var content = response.Data.ToString();
 
             var block = new ExtractBlock();
-            var s = RuiJiExtractBlockParser.ParserBlock(@"
+            var s = RuiJiBlockParser.ParserBlock(@"
 [tile]
 	css table.table-bordered tr:gt(0):ohtml
 
@@ -158,7 +156,7 @@ css #listnav a[href]
             var content = response.Data.ToString();
 
             var block = new ExtractBlock();
-            var s = RuiJiExtractBlockParser.ParserBase("css a[href]").Selectors;
+            var s = RuiJiBlockParser.ParserBase("css a[href]").Selectors;
             block.TileSelector.Selectors.AddRange(s);
             var result = RuiJiExtractor.Extract(content, block);
 
@@ -176,7 +174,7 @@ css #listnav a[href]
 
             var parser = new RuiJiParser();
             var eb = parser.ParseExtract("css a.blog-title-link[href]\nexp https://my.oschina.net/*/blog/*");
-            var result = RuiJiExtractor.Extract(content, eb.Block);
+            var result = RuiJiExtractor.Extract(content, eb.Result);
 
             Assert.IsTrue(true);
         }
@@ -202,7 +200,7 @@ css article:html
 	css .entry-header + p:text
 	ex /Read more »/ -e");
 
-            var result = RuiJiExtractor.Extract(content, eb.Block);
+            var result = RuiJiExtractor.Extract(content, eb.Result);
 
             Assert.IsTrue(true);
         }
@@ -236,7 +234,7 @@ css article:html
 	#content
 	css #articleContent:html");
 
-            var result = RuiJiExtractor.Extract(content, eb.Block);
+            var result = RuiJiExtractor.Extract(content, eb.Result);
 
             Assert.IsTrue(true);
         }
@@ -277,7 +275,7 @@ css article:html
         {
             var url = "http://app.cannews.com.cn/roll.php?do=query&callback=jsonp1475197217819&_={# ticks() #}&date={# now(\"yyyy-MM-dd\") #}&size=20&page=1";
 
-            var f = new CompileFeedAddress();
+            var f = new UrlCompile();
             //url = f.Compile(url);
 
             var c = new RuiJiCrawler();
@@ -287,7 +285,7 @@ css article:html
 reg /jsonp[\d]+?\((.*)\)/ 1
 jpath $..url
 ";
-            var b = RuiJiExtractBlockParser.ParserBlock(expression);
+            var b = RuiJiBlockParser.ParserBlock(expression);
             var result = RuiJiExtractor.Extract(response.Data.ToString(), b);
 
             Assert.IsTrue(result.Content.ToString().Length > 0);
@@ -344,7 +342,7 @@ css .list1
 css .list2
 ";
 
-            var m = RuiJiExtractBlockParser.ParserBlock(block);
+            var m = RuiJiBlockParser.ParserBlock(block);
 
             Assert.IsTrue(m.Metas.Count > 0);
         }

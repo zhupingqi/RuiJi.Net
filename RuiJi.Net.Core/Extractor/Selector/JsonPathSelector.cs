@@ -11,7 +11,7 @@ namespace RuiJi.Net.Core.Extractor.Selector
     {
         protected override SelectorTypeEnum SetSelectType()
         {
-            return SelectorTypeEnum.JSON;
+            return SelectorTypeEnum.JPATH;
         }
 
         public JsonPathSelector()

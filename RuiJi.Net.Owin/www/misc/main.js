@@ -1,4 +1,7 @@
-﻿requirejs.config({
+﻿function aFormat(value, row, index) {
+    return "<a target='_blank' href='" + value + "'>" + value + "</a>";
+};
+requirejs.config({
     urlArgs: 'ver=1.0.0.0',
     baseUrl: "/misc",
     waitSeconds: 0,

@@ -13,13 +13,13 @@
                     //},
                     {
                         id: 'feeds',
-                        text: '新闻源',
+                        text: 'Feed',
                         type: 'lib',
                         lib: 'feed/feeds'
                     },
                     {
                         id: 'rules',
-                        text: '规则',
+                        text: 'Rule',
                         type: 'lib',
                         lib: 'feed/rules'
                     }

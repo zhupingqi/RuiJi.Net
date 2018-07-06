@@ -68,12 +68,12 @@
         showLoading: function ($elem, opt) {
             opt = $.extend({
                 text: true,
-                type: "0"
+                type: 0
             }, opt);
 
             switch (opt.type) {
-                case "0": {
-                    var div = $("<div><div><img src='/Content/images/loading.0.gif'style='margin-right:5px' /></div></div>");
+                case 0: {
+                    var div = $("<div class='loading'><div><img src='/Content/images/loading.0.gif'style='margin-right:5px' /></div></div>");
                     div.find("div").css({
                         position: 'absolute',
                         top: '50%',
@@ -81,7 +81,7 @@
                         transform: 'translateX(-50%) translateY(-50%)'
                     });
                     if (opt.text) {
-                        div.find("div").append("<label i18n class='t-cap'>正在加载</label>...");
+                        div.find("div").append("<label i18n class='t-cap'>loading</label>...");
                     }
                     var css = $.extend({
                         position: 'relative',
@@ -91,13 +91,13 @@
 
                     div.css(css);
 
-                    langs.trans(div);
+                    //langs.trans(div);
 
                     $elem.html(div);
                     break;
                 }
-                case "1": {
-                    var div = $("<div><img src='/Content/images/loading.0.gif' /></div>");
+                case 1: {
+                    var div = $("<div class='loading'><img src='/Content/images/loading.0.gif' /><span></span></div>");
                     var css = $.extend({}, opt.css);
 
                     div.css(css);

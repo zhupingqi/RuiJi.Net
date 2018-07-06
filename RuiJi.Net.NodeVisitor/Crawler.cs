@@ -18,7 +18,7 @@ namespace RuiJi.Net.NodeVisitor
     {
         public static Response Request(Request request, bool usecp = false)
         {
-            if (NodeConfigurationSection.Alone)
+            if (NodeConfigurationSection.Standalone)
             {
                 var crawler = new RuiJiCrawler();
                 var response = crawler.Request(request);
@@ -70,13 +70,16 @@ namespace RuiJi.Net.NodeVisitor
                 {
                     var elect = Elect(new CrawlerElectRequest
                     {
-                        ElectIp = true,
-                        ElectProxy = true,
+                        ElectIp = string.IsNullOrEmpty(request.Ip),
+                        ElectProxy = request.Proxy is null,
                         Uri = request.Uri
                     });
 
-                    request.Proxy = elect.Proxy;
                     request.Elect = elect.BaseUrl;
+
+                    if(elect.Proxy != null)
+                        request.Proxy = elect.Proxy;
+
                     if (string.IsNullOrEmpty(request.Ip))
                         request.Ip = elect.ClientIp;
 
@@ -89,11 +92,6 @@ namespace RuiJi.Net.NodeVisitor
                     var restResponse = client.Execute(restRequest);
 
                     var response = JsonConvert.DeserializeObject<Response>(restResponse.Content);
-
-                    if (elect.Proxy != null)
-                    {
-                        response.Proxy = request.Proxy.Ip;
-                    }
 
                     return response;
                 }
@@ -111,7 +109,7 @@ namespace RuiJi.Net.NodeVisitor
                     refreshUrl = ms[0].Groups[1].Value;
                     if (!Uri.IsWellFormedUriString(refreshUrl, UriKind.Absolute))
                     {
-                        refreshUrl = new Uri(response.RequestUri, refreshUrl).ToString();
+                        refreshUrl = new Uri(response.Request.Uri, refreshUrl).ToString();
                     }
 
                     return true;
@@ -133,7 +131,7 @@ namespace RuiJi.Net.NodeVisitor
         {
             var proxyUrl = "";
 
-            if (NodeConfigurationSection.Alone)
+            if (NodeConfigurationSection.Standalone)
             {
                 proxyUrl = ConfigurationManager.AppSettings["RuiJiServer"];
             }

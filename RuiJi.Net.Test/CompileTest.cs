@@ -1,10 +1,7 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RuiJi.Net.Core.Utils;
-using RuiJi.Net.Node.Feed;
-using RuiJi.Net.Node.Db;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RuiJi.Net.Core.Compile;
+using RuiJi.Net.Node.Feed.Db;
 using RuiJi.Net.Owin.Controllers;
-using RuiJi.Net.Node;
 
 namespace RuiJi.Net.Test
 {
@@ -16,8 +13,8 @@ namespace RuiJi.Net.Test
         {
             var url = "http://app.cannews.com.cn/roll.php?do=query&callback=jsonp1475197217819&_={# ticks() #}&date={# now(\"yyyy-MM-dd\") #}&size=20&page={# page(1,10) #}&&start={# limit(1,5,2) #}";
 
-            var f = new CompileFeedAddress();
-            var urls = f.Compile(url);
+            var f = new UrlCompile();
+            var urls = f.GetResult(url);
 
             Assert.IsTrue(true);
         }
@@ -34,7 +31,7 @@ namespace RuiJi.Net.Test
             m.Sample = "timeOfDay()";
 
             var func = new ComplieFuncTest("result = DateTime.Now.TimeOfDay;");
-            var result = func.Compile("{# " + m.Sample + " #}");
+            var result = func.GetResult("{# " + m.Sample + " #}");
 
             Assert.IsTrue(result.Length > 0);
         }

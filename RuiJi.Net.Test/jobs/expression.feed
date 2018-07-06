@@ -1,0 +1,26 @@
+﻿##setting
+[cron]
+0 0/5 * * * ?
+
+[id]
+1
+
+[delay]
+0
+
+##request
+[address]
+http://www.ruijihg.com/
+
+##storage
+file c:\1.txt
+file c:\
+api http://xxx.xxx.com/api/insert
+mongodb connectString
+mysql connectString
+
+##extract
+[tile]
+css .pt-cv-title a[href]
+
+[pagging]

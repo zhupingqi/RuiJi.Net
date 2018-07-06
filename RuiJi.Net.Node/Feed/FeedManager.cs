@@ -14,8 +14,6 @@ namespace RuiJi.Net.Node.Feed
 
         private List<string> serverMap = new List<string>();
 
-        private ulong count = 0;
-
         public static FeedManager Instance
         {
             get

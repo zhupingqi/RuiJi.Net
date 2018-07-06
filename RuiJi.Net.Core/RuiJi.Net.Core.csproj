@@ -47,8 +47,14 @@
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Quartz, Version=3.0.5.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Quartz.3.0.5\lib\net452\Quartz.dll</HintPath>
+    </Reference>
     <Reference Include="RestSharp, Version=106.2.2.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.106.2.2\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="SmartThreadPool, Version=2.2.4.0, Culture=neutral, PublicKeyToken=1126fe8b671e8a79, processorArchitecture=MSIL">
+      <HintPath>..\packages\SmartThreadPool.dll.2.2.4\lib\net45\SmartThreadPool.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -57,6 +63,7 @@
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
@@ -72,6 +79,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Compile\ComplieBase.cs" />
+    <Compile Include="Compile\UrlFunction.cs" />
+    <Compile Include="Compile\FileFuncProvider.cs" />
+    <Compile Include="Compile\FileProProvider.cs" />
+    <Compile Include="Compile\FileProviderBase.cs" />
+    <Compile Include="Compile\ICompile.cs" />
+    <Compile Include="Compile\IProvider.cs" />
+    <Compile Include="Compile\JSCompile.cs" />
+    <Compile Include="Compile\ProcessorCompile.cs" />
     <Compile Include="Configuration\NodeConfigurationElement.cs" />
     <Compile Include="Configuration\NodeConfigurationElementCollection.cs" />
     <Compile Include="Configuration\NodeConfigurationSection.cs" />
@@ -85,7 +101,10 @@
     <Compile Include="Crawler\RuiJiCrawler.cs" />
     <Compile Include="Crawler\RequestProxy.cs" />
     <Compile Include="Crawler\WebHeader.cs" />
-    <Compile Include="Expression\ExpressionType.cs" />
+    <Compile Include="Expression\FeedSetting.cs" />
+    <Compile Include="Expression\IParseResult.cs" />
+    <Compile Include="Expression\IRuiJiParseResult.cs" />
+    <Compile Include="Expression\ParseResult.cs" />
     <Compile Include="Extensions\EnumConvert.cs" />
     <Compile Include="Extensions\NewtonJsonSerializer.cs" />
     <Compile Include="Extensions\ISelectorConverter.cs" />
@@ -101,10 +120,11 @@
     <Compile Include="Extractor\PagingExtractor.cs" />
     <Compile Include="Extractor\Processor\ClearTagProcessor.cs" />
     <Compile Include="Extractor\Processor\ExpressionProcessor.cs" />
+    <Compile Include="Extractor\Processor\FunctionProcessor.cs" />
     <Compile Include="Extractor\Processor\JsonPathProcessor.cs" />
     <Compile Include="Extractor\Processor\XPathProcessor.cs" />
     <Compile Include="Extractor\ProcessResult.cs" />
-    <Compile Include="Expression\RuiJiExtractBlockParser.cs" />
+    <Compile Include="Expression\RuiJiBlockParser.cs" />
     <Compile Include="Extractor\RuiJiExtractor.cs" />
     <Compile Include="Extractor\ExtractBlock.cs" />
     <Compile Include="Extractor\ExtractBlockCollection.cs" />
@@ -125,6 +145,7 @@
     <Compile Include="Extractor\Enum\SelectorTypeEnum.cs" />
     <Compile Include="Extractor\Selector\ExcludeSelector.cs" />
     <Compile Include="Extractor\Selector\ExpressionSelector.cs" />
+    <Compile Include="Extractor\Selector\FunctionSelector.cs" />
     <Compile Include="Extractor\Selector\ISelector.cs" />
     <Compile Include="Extractor\Selector\JsonPathSelector.cs" />
     <Compile Include="Extractor\Selector\RegexSelector.cs" />
@@ -137,13 +158,22 @@
     <Compile Include="IStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Crawler\Response.cs" />
+    <Compile Include="Queue\IMessageQueue.cs" />
     <Compile Include="Queue\QueueChangedEventHandler.cs" />
     <Compile Include="Queue\QueueChangedAction.cs" />
     <Compile Include="Queue\QueueChangedEventArgs.cs" />
     <Compile Include="Queue\MessageQueue.cs" />
-    <Compile Include="Utils\CompileUrl.cs" />
+    <Compile Include="RTS\FeedExtractJob.cs" />
+    <Compile Include="RTS\FeedExtractJobBase.cs" />
+    <Compile Include="RTS\FeedExtractScheduler.cs" />
+    <Compile Include="RTS\FeedJob.cs" />
+    <Compile Include="RTS\FeedJobBase.cs" />
+    <Compile Include="RTS\FeedRequest.cs" />
+    <Compile Include="RTS\FeedScheduler.cs" />
+    <Compile Include="RTS\Snapshot.cs" />
+    <Compile Include="Compile\UrlCompile.cs" />
     <Compile Include="Utils\EncryptHelper.cs" />
-    <Compile Include="Utils\JITCompile.cs" />
+    <Compile Include="Compile\JITCompile.cs" />
     <Compile Include="Utils\DecodeResult.cs" />
     <Compile Include="Utils\Decoding.cs" />
     <Compile Include="Utils\HtmlHelper.cs" />
@@ -181,6 +211,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="funcs\limit.fun">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="funcs\now.fun">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="funcs\oschina.pro">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="funcs\page.fun">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="funcs\ticks.fun">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="mimes.dat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -201,5 +246,10 @@
     </Content>
     <None Include="readme.md" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
 </Project>

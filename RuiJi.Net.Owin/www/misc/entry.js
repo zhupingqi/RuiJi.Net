@@ -6,43 +6,43 @@ define(['jquery', 'tabs'], function ($, tabs) {
             var conf = [
                 {
                     id: 'status',
-                    text: '状态',
+                    text: 'Status',
                     type: 'lib',
                     lib: 'status'
                 },
                 {
                     id: 'node',
-                    text: '节点',
+                    text: 'Node',
                     type: 'lib',
                     lib: 'node'
                 },
                 {
                     id: 'cluster',
-                    text: '集群',
+                    text: 'Cluster',
                     type: 'lib',
                     lib: 'cluster'
                 },
                 {
                     id: 'log',
-                    text: '日志',
+                    text: 'Log',
                     type: 'lib',
                     lib: 'log'
                 },
                 {
                     id: 'feed',
-                    text: '新闻源',
+                    text: 'Feed&Rule',
                     type: 'lib',
                     lib: 'feed/entry'
                 },
                 {
                     id: 'content',
-                    text: '抓取结果',
+                    text: 'GrabResult',
                     type: 'lib',
                     lib: 'content'
                 },
                 {
                     id: 'setting',
-                    text: '设置',
+                    text: 'Setting',
                     type: 'lib',
                     lib: 'setting/entry'
                 }

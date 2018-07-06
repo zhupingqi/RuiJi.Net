@@ -194,6 +194,12 @@ namespace RuiJi.Net.Owin
                     routeTemplate: "api/rule/remove",
                     defaults: new { controller = "FeedApi", action = "RemoveRule" }
                 );
+
+            config.Routes.MapHttpRoute(
+                    name: "RuleStatusChange",
+                    routeTemplate: "api/rule/status/change",
+                    defaults: new { controller = "FeedApi", action = "RuleStatusChange" }
+                );
             #endregion
 
             #region Feed Api
@@ -244,6 +250,18 @@ namespace RuiJi.Net.Owin
                     routeTemplate: "api/feed/test",
                     defaults: new { controller = "FeedApi", action = "TestFeed" }
                 );
+
+            config.Routes.MapHttpRoute(
+                    name: "RemoveFeeds",
+                    routeTemplate: "api/feed/remove",
+                    defaults: new { controller = "FeedApi", action = "RemoveFeed" }
+                );
+
+            config.Routes.MapHttpRoute(
+                  name: "FeedStatusChange",
+                  routeTemplate: "api/feed/status/change",
+                  defaults: new { controller = "FeedApi", action = "FeedStatusChange" }
+              );
             #endregion
 
             #region Content Api
@@ -258,6 +276,20 @@ namespace RuiJi.Net.Owin
                 routeTemplate: "api/fp/content",
                 defaults: new { controller = "FeedApi", action = "GetContent" }
             );
+
+            config.Routes.MapHttpRoute(
+                name: "GetShards",
+                routeTemplate: "api/fp/content/shards",
+                defaults: new { controller = "FeedApi", action = "GetShards" }
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "RemoveContent",
+                routeTemplate: "api/fp/content/remove",
+                defaults: new { controller = "FeedApi", action = "RemoveContent" }
+            );
+
+
             #endregion
 
             #region Funcs Api
@@ -333,7 +365,7 @@ namespace RuiJi.Net.Owin
             #region Online Proxy
             config.Routes.MapHttpRoute(
                 name: "ProxysList",
-                routeTemplate: "api/proxys",
+                routeTemplate: "api/proxies",
                 defaults: new { controller = "SettingApi", action = "Proxys" }
             );
 
@@ -356,9 +388,67 @@ namespace RuiJi.Net.Owin
                 );
 
             config.Routes.MapHttpRoute(
+                    name: "ProxyStatusChange",
+                    routeTemplate: "api/proxy/status/change",
+                    defaults: new { controller = "SettingApi", action = "ProxyStatusChange" }
+                );
+
+            config.Routes.MapHttpRoute(
                     name: "ProxyPing",
                     routeTemplate: "api/proxy/ping",
                     defaults: new { controller = "SettingApi", action = "ProxyPing" }
+                );
+            #endregion
+
+            #region UAGroup Api
+            config.Routes.MapHttpRoute(
+                   name: "UAGroupList",
+                   routeTemplate: "api/ua/groups",
+                   defaults: new { controller = "SettingApi", action = "UAGroups" }
+               );
+            config.Routes.MapHttpRoute(
+                  name: "UAGroup",
+                  routeTemplate: "api/ua/group",
+                  defaults: new { controller = "SettingApi", action = "UAGroup" }
+              );
+
+            config.Routes.MapHttpRoute(
+                    name: "UpdateUAGroup",
+                    routeTemplate: "api/ua/group/update",
+                    defaults: new { controller = "SettingApi", action = "UpdateUAGroup" }
+                );
+
+            config.Routes.MapHttpRoute(
+                    name: "RemoveUAGroup",
+                    routeTemplate: "api/ua/group/remove",
+                    defaults: new { controller = "SettingApi", action = "RemoveUAGroup" }
+                );
+            #endregion
+
+            #region UA Api
+
+            config.Routes.MapHttpRoute(
+                   name: "UAList",
+                   routeTemplate: "api/uas",
+                   defaults: new { controller = "SettingApi", action = "UAs" }
+               );
+
+            config.Routes.MapHttpRoute(
+                    name: "UA",
+                    routeTemplate: "api/ua",
+                    defaults: new { controller = "SettingApi", action = "UA" }
+                );
+
+            config.Routes.MapHttpRoute(
+                    name: "UpdateUA",
+                    routeTemplate: "api/ua/update",
+                    defaults: new { controller = "SettingApi", action = "UpdateUA" }
+                );
+
+            config.Routes.MapHttpRoute(
+                    name: "RemoveUAs",
+                    routeTemplate: "api/ua/remove",
+                    defaults: new { controller = "SettingApi", action = "RemoveUAs" }
                 );
             #endregion
 

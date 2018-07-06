@@ -2,6 +2,7 @@
 using Org.Apache.Zookeeper.Data;
 using RestSharp;
 using RuiJi.Net.Core.Utils;
+using RuiJi.Net.Core.Utils.Log;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -85,7 +86,7 @@ namespace RuiJi.Net.NodeVisitor
             }
             catch (Exception ex)
             {
-
+                Logger.GetLogger("").Error(ex.Message);
             }
         }
 

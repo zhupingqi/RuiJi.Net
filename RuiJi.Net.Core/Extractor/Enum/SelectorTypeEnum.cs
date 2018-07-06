@@ -14,10 +14,11 @@ namespace RuiJi.Net.Core.Extractor.Enum
         TEXTRANGE,
         EXCLUDE,
         INCLUDE,
-        REPLACE,
-        JSON,
+        REGEXREPLACE,
+        JPATH,
         XPATH,
         CLEAR,
-        EXPRESSION
+        EXPRESSION,
+        FUNCTION
     }
 }

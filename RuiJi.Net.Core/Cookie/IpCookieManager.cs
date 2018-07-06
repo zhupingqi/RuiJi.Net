@@ -10,6 +10,9 @@ using RuiJi.Net.Core.Utils;
 
 namespace RuiJi.Net.Core.Cookie
 {
+    /// <summary>
+    /// cookie manager with ip
+    /// </summary>
     public class IpCookieManager
     {
         private static IpCookieManager _manager;
@@ -32,6 +35,9 @@ namespace RuiJi.Net.Core.Cookie
             Reload();
         }
 
+        /// <summary>
+        /// IpCookieManager Instance
+        /// </summary>
         public static IpCookieManager Instance
         {
             get
@@ -40,6 +46,9 @@ namespace RuiJi.Net.Core.Cookie
             }
         }
 
+        /// <summary>
+        /// reload cookies
+        /// </summary>
         public void Reload()
         {
             cookies.Clear();
@@ -72,6 +81,13 @@ namespace RuiJi.Net.Core.Cookie
             }
         }
 
+        /// <summary>
+        /// save cookie on disk
+        /// </summary>
+        /// <param name="ip">ip address</param>
+        /// <param name="ua">user agent</param>
+        /// <param name="url">url</param>
+        /// <param name="cookie">cookie content</param>
         private void SaveCookieFile(string ip, string ua, string url, string cookie)
         {
             var cookieFile = new CookieFile();
@@ -87,6 +103,13 @@ namespace RuiJi.Net.Core.Cookie
             File.WriteAllText(path + "/" + (new Uri(url)).Host + ".txt", json, Encoding.UTF8);
         }
 
+        /// <summary>
+        /// update cookie
+        /// </summary>
+        /// <param name="ip">ip address</param>
+        /// <param name="ua">user agent</param>
+        /// <param name="url">url</param>
+        /// <param name="setCookie">cookie content</param>
         public void UpdateCookie(string ip, string ua, string url, string setCookie)
         {
             lock (_lck)
@@ -110,6 +133,13 @@ namespace RuiJi.Net.Core.Cookie
             }
         }
 
+        /// <summary>
+        /// get cookie header 
+        /// </summary>
+        /// <param name="ip">ip address</param>
+        /// <param name="ua">user agent</param>
+        /// <param name="url">url</param>
+        /// <returns>cookie content</returns>
         public string GetCookieHeader(string ip, string url, string ua)
         {
             lock (_lck)
@@ -126,6 +156,13 @@ namespace RuiJi.Net.Core.Cookie
             }
         }
 
+        /// <summary>
+        /// get cookie collection
+        /// </summary>
+        /// <param name="ip">ip address</param>
+        /// <param name="ua">user agent</param>
+        /// <param name="url">url</param>
+        /// <returns>cookie collection</returns>
         public CookieCollection GetCookie(string ip, string url, string ua)
         {
             lock (_lck)

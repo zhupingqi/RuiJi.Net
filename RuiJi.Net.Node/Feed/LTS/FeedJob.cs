@@ -4,10 +4,10 @@ using Quartz;
 using RestSharp;
 using RuiJi.Net.Core.Configuration;
 using RuiJi.Net.Core.Crawler;
-using RuiJi.Net.Core.Extractor;
-using RuiJi.Net.Core.Utils.Page;
 using RuiJi.Net.Core.Utils.Log;
-using RuiJi.Net.Node.Db;
+using RuiJi.Net.Core.Utils.Page;
+using RuiJi.Net.Node.Compile;
+using RuiJi.Net.Node.Feed.Db;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -61,7 +61,7 @@ namespace RuiJi.Net.Node.Feed.LTS
                 var task = Task.Factory.StartNew(() =>
                 {                   
                     var feeds = GetFeedJobs(baseUrl,proxyUrl, feedNode);
-                    var compile = new CompileFeedAddress();
+                    var compile = new UrlCompile();
 
                     var stpStartInfo = new STPStartInfo
                     {
@@ -75,13 +75,13 @@ namespace RuiJi.Net.Node.Feed.LTS
 
                     foreach (var feed in feeds)
                     {
-                        var addrs = compile.Compile(feed.Address);
+                        var addrs = compile.GetResult(feed.Address);
 
                         Logger.GetLogger(baseUrl).Info("compile address " + feed.Address + " result " + string.Join(",", addrs));
 
                         foreach (var addr in addrs)
                         {
-                            feed.Address = addr;
+                            feed.Address = addr.ToString();
 
                             var item = pool.QueueWorkItem((u) =>
                             {
@@ -114,7 +114,7 @@ namespace RuiJi.Net.Node.Feed.LTS
 
             try
             {
-                if (NodeConfigurationSection.Alone)
+                if (NodeConfigurationSection.Standalone)
                 {
                     var paging = new Paging();
                     paging.CurrentPage = _page;
@@ -180,6 +180,10 @@ namespace RuiJi.Net.Node.Feed.LTS
                 request.Method = feed.Method;
                 if (feed.Method == "POST" && !string.IsNullOrEmpty(feed.Data))
                     request.Data = feed.Data;
+
+                var ua = UALiteDb.GetOne();
+                if(!string.IsNullOrEmpty(ua))
+                    request.Headers.Add(new WebHeader("User-Agent", ua));
 
                 var response = NodeVisitor.Crawler.Request(request);
 

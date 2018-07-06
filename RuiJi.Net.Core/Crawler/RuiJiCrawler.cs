@@ -16,17 +16,28 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Crawler
 {
+    /// <summary>
+    /// crawler
+    /// </summary>
     public class RuiJiCrawler
     {
         private static List<string> ignoreHeader = new List<string>() {
             "Host", "Connection"
         };
 
+        /// <summary>
+        /// constructor
+        /// </summary>
         public RuiJiCrawler()
         {
 
         }
 
+        /// <summary>
+        /// request
+        /// </summary>
+        /// <param name="request">crawl request</param>
+        /// <returns>crawl response</returns>
         public Response Request(Request request)
         {
             Logger.GetLogger(request.Elect).Info("request " + request.Uri.ToString() + " with ip:" + request.Ip + (request.Proxy != null ? (" proxy:" + request.Proxy.Ip + ":" + request.Proxy.Port) : ""));
@@ -51,10 +62,7 @@ namespace RuiJi.Net.Core.Crawler
                     }
 
                     res.ElectInfo = request.Elect;
-                    res.RequestUri = request.Uri;
-                    res.Method = request.Method;
-                    if (res.Proxy != null)
-                        res.Proxy = request.Proxy.Ip;
+                    res.Request = request;
 
                     Logger.GetLogger(request.Elect).Info(request.Uri.ToString() + " response status is " + res.StatusCode.ToString());
 
@@ -90,9 +98,9 @@ namespace RuiJi.Net.Core.Crawler
 
                 response.StatusCode = httpResponse.StatusCode;
                 response.Headers = WebHeader.FromWebHeader(httpResponse.Headers);
-                response.RequestUri = request.Uri;
+                response.Request = request;
                 response.ResponseUri = httpResponse.ResponseUri;
-                response.Method = request.Method;
+                //response.Method = request.Method;
 
                 if (!string.IsNullOrEmpty(httpResponse.ContentType))
                     response.IsRaw = MimeDetect.IsRaw(httpResponse.ContentType);
@@ -129,6 +137,11 @@ namespace RuiJi.Net.Core.Crawler
             }
         }
 
+        /// <summary>
+        /// get http web response by request
+        /// </summary>
+        /// <param name="request">crawl request</param>
+        /// <returns>http web response</returns>
         private HttpWebResponse GetHttpWebResponse(Request request)
         {
             var httpRequest = (HttpWebRequest)WebRequest.Create(request.Uri);
@@ -138,28 +151,6 @@ namespace RuiJi.Net.Core.Crawler
             httpRequest.Timeout = request.Timeout > 0 ? request.Timeout : 100000;
             httpRequest.ReadWriteTimeout = request.Timeout > 0 ? request.Timeout : 100000;
             httpRequest.ContinueTimeout = request.Timeout > 0 ? request.Timeout : 100000;
-
-            if (httpRequest.Method == "POST" && request.Data != null)
-            {
-                byte[] bs;
-
-                var jObj = new JObject(request.Data);
-                if (jObj.Type == JTokenType.String)
-                    bs = Encoding.ASCII.GetBytes(request.Data.ToString());
-                else
-                    bs = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(request.Data));
-
-                if (string.IsNullOrEmpty(httpRequest.ContentType))
-                    httpRequest.ContentType = "application/x-www-form-urlencoded";
-
-                httpRequest.ContentLength = bs.Length;
-
-                using (Stream requestStream = httpRequest.GetRequestStream())
-                {
-                    requestStream.Write(bs, 0, bs.Length);
-                    requestStream.Close();
-                }
-            }
 
             PreprocessHeader(httpRequest, request.Headers);
 
@@ -203,6 +194,22 @@ namespace RuiJi.Net.Core.Crawler
                 };
             }
 
+            if (httpRequest.Method == "POST" && !string.IsNullOrEmpty(request.Data))
+            {
+                byte[] bs = Encoding.ASCII.GetBytes(request.Data);
+
+                if (string.IsNullOrEmpty(httpRequest.ContentType))
+                    httpRequest.ContentType = "application/x-www-form-urlencoded";
+
+                httpRequest.ContentLength = bs.Length;
+
+                using (Stream requestStream = httpRequest.GetRequestStream())
+                {
+                    requestStream.Write(bs, 0, bs.Length);
+                    requestStream.Close();
+                }
+            }
+
             var task = Task.Factory.StartNew<HttpWebResponse>(() =>
             {
                 try
@@ -216,7 +223,7 @@ namespace RuiJi.Net.Core.Crawler
                 }
             });
 
-            task.Wait(request.Timeout > 0 ? request.Timeout : 100000);
+            task.Wait(request.Timeout > 0 ? request.Timeout : 60000);
 
             if (task.IsCompleted)
                 return task.Result;
@@ -227,6 +234,11 @@ namespace RuiJi.Net.Core.Crawler
             }
         }
 
+        /// <summary>
+        /// get response buff
+        /// </summary>
+        /// <param name="response">http web response</param>
+        /// <returns>byte array</returns>
         private byte[] GetResponseBuff(HttpWebResponse response)
         {
             var responseStream = response.GetResponseStream();
@@ -241,6 +253,11 @@ namespace RuiJi.Net.Core.Crawler
             return buff;
         }
 
+        /// <summary>
+        /// get cookie by crawl request
+        /// </summary>
+        /// <param name="request">crawl request</param>
+        /// <returns>cookie content</returns>
         private string GetCookie(Request request)
         {
             if (!string.IsNullOrEmpty(request.Cookie))
@@ -257,6 +274,11 @@ namespace RuiJi.Net.Core.Crawler
             return IpCookieManager.Instance.GetCookieHeader(ip, request.Uri.ToString(), ua);
         }
 
+        /// <summary>
+        /// set cookie by crawl request
+        /// </summary>
+        /// <param name="request">crawl request</param>
+        /// <param name="setCookie">cookie content</param>
         private void SetCookie(Request request, string setCookie)
         {
             if (string.IsNullOrEmpty(setCookie))
@@ -273,6 +295,11 @@ namespace RuiJi.Net.Core.Crawler
             IpCookieManager.Instance.UpdateCookie(ip, ua, request.Uri.ToString(), setCookie);
         }
 
+        /// <summary>
+        /// pre process header
+        /// </summary>
+        /// <param name="request">http web request</param>
+        /// <param name="headers">web header list</param>
         private void PreprocessHeader(HttpWebRequest request, List<WebHeader> headers)
         {
             if (headers == null || headers.Count == 0)
@@ -318,11 +345,12 @@ namespace RuiJi.Net.Core.Crawler
             }
         }
 
+        /// <summary>
+        /// simulate browser
+        /// </summary>
+        /// <param name="request">crawl request</param>
         private void SimulateBrowser(Request request)
         {
-            if (request.Headers.Count > 0)
-                return;
-
             if (request.Headers.Count(m => m.Name == "Accept-Encoding") == 0)
                 request.Headers.Add(new WebHeader("Accept-Encoding", "gzip, deflate, sdch"));
 

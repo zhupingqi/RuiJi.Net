@@ -68,3 +68,4 @@ text/vnd.wap-wml
 text/vnd.wap.wmlscript
 text/xml
 text/xml-external-parsed-entity
+application/json

@@ -1,0 +1,37 @@
+﻿<div>
+    <div id="toolbar_proxy">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                BATCH OP <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="javascript:;" type='disable'>Disable</a></li>
+                <li><a href="javascript:;" type='enable'>Enable</a></li>
+                <li><a href="javascript:;" type='remove'>Remove</a></li>
+            </ul>
+        </div>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="submit" class="btn btn-default" id="add_proxy">Add</button>
+        <!--&nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="submit" class="btn btn-default" id="proxy_update">Update Proxy</button>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="submit" class="btn btn-default" id="proxy_share">Share Proxy</button>-->
+    </div>
+    <div id="proxy_list">
+        <table id="tb_proxies" data-toggle="table" data-url="">
+            <thead>
+                <tr>
+                    <th data-checkbox="true" data-width="30px">&nbsp;</th>
+                    <th data-field="id" data-switchable="false" data-width="40px">Id</th>
+                    <th data-field="ip">Ip</th>
+                    <th data-field="port">Port</th>
+                    <th data-field="username">UserName</th>
+                    <th data-field="password">Password</th>
+                    <th data-field="type">Type</th>
+                    <th data-field="status">Status</th>
+                    <th data-width="110px" data-formatter="<i title='edit' class='fa fa-edit'></i><i title='ping' class='fa fa-terminal'></i><span></span>">Actions</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>

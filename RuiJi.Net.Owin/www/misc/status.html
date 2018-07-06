@@ -1,20 +1,20 @@
 ﻿<script id="status_system_info" type="text/html">
     <div>
-        <span>内存使用率</span><br /><br />
+        <span>The usage rate of Memory</span><br /><br />
         <div class="progress">
             <div class="progress-bar" role="progressbar" title="{{memoryLoad}}" aria-valuenow="{{memoryLoad}}" aria-valuemin="0" aria-valuemax="100" style="width: {{memoryLoad}}%;">
             </div>
         </div>
     </div>
     <div>
-        <span>CPU使用率</span><br /><br />
+        <span>The usage rate of CPU</span><br /><br />
         <div class="progress">
             <div class="progress-bar" role="progressbar" title="{{cpuLoad}}" aria-valuenow="{{cpuLoad}}" aria-valuemin="0" aria-valuemax="100" style="width:{{cpuLoad}}%;">
             </div>
         </div>
     </div>
     <div>
-        <span>网络使用率</span><br /><br />
+        <span>The usage rate of Network</span><br /><br />
         <div class="progress">
             <span>In</span> <div class="progress-bar" title="{{outSpeed}}" role="progressbar" aria-valuenow="{{outSpeed}}" aria-valuemin="0" aria-valuemax="100" style="width: {{outSpeed}}%;">
             </div>
@@ -28,20 +28,22 @@
 
 <script id="status_server_info" type="text/html">
     <div>
-        <span>节点类型</span>
+        <span>Node Type</span>
         <div>{{nodeType}}</div>
     </div>
     <br />
     <div>
-        <span>启动时间</span>
+        <span>Start Time</span>
         <div>{{startTime}}</div>
     </div>
     <br />
     <div>
-        <span>服务器</span>
-        <div>环境 .Net Framework {{efVersion}} </div>
-        <div>处理器 {{cpu}}</div>
-        <div>内存 {{memory}}</div>
+        <span>Server</span>
+        <div>
+            Environment .Net Framework {{efVersion}}
+        </div>
+        <div>CPU {{cpu}}</div>
+        <div>Memory {{memory}}</div>
     </div>
 </script>
 
@@ -54,12 +56,12 @@
                 </div>
                 <br />
                 <div id="dll_version">
-                    <span>版本</span>
+                    <span>Version</span>
                 </div>
             </div>
             <div class="col-lg-6">
                 <div id="pulse">
-                    <span>作者 (monthly commits)</span>
+                    <span>Authors (monthly commits)</span>
                 </div>
                 <br />
                 <div id="system_info">

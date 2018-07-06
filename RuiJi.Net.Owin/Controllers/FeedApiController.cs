@@ -1,25 +1,20 @@
 ﻿using Newtonsoft.Json;
-using RestSharp;
 using RuiJi.Net.Core.Crawler;
 using RuiJi.Net.Core.Expression;
 using RuiJi.Net.Core.Extractor;
-using RuiJi.Net.Core.Utils;
 using RuiJi.Net.Core.Utils.Page;
 using RuiJi.Net.Core.Utils.Tasks;
 using RuiJi.Net.Node;
-using RuiJi.Net.Node.Db;
+using RuiJi.Net.Node.Compile;
+using RuiJi.Net.Node.Feed.Db;
 using RuiJi.Net.Node.Feed.LTS;
 using RuiJi.Net.NodeVisitor;
 using RuiJi.Net.Storage;
 using RuiJi.Net.Storage.Model;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace RuiJi.Net.Owin.Controllers
@@ -29,7 +24,7 @@ namespace RuiJi.Net.Owin.Controllers
         #region Rule
         [HttpGet]
         [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
-        public object Rules(int offset, int limit)
+        public object Rules(int offset, int limit, string key, string type, string status)
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
 
@@ -39,7 +34,7 @@ namespace RuiJi.Net.Owin.Controllers
 
             return new
             {
-                rows = RuleLiteDb.GetModels(paging),
+                rows = RuleLiteDb.GetModels(paging, key, type, status),
                 total = paging.Count
             };
         }
@@ -52,7 +47,7 @@ namespace RuiJi.Net.Owin.Controllers
                 return RuleLiteDb.Match(url).Select(m => new ExtractFeatureBlock(JsonConvert.DeserializeObject<ExtractBlock>(m.BlockExpression), m.Feature)).ToList();
             else
             {
-                return RuleLiteDb.Match(url).Select(m => new ExtractFeatureBlock(RuiJiExtractBlockParser.ParserBlock(m.RuiJiExpression), m.Feature)).ToList();
+                return RuleLiteDb.Match(url).Select(m => new ExtractFeatureBlock(RuiJiBlockParser.ParserBlock(m.RuiJiExpression), m.Feature)).ToList();
             }
         }
 
@@ -74,6 +69,16 @@ namespace RuiJi.Net.Owin.Controllers
 
         [HttpGet]
         [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
+        public bool RuleStatusChange(string ids, string status)
+        {
+            var changeIds = ids.Split(',').Select(i => Convert.ToInt32(i)).ToArray();
+            var statusEnum = (Status)Enum.Parse(typeof(Status), status.ToUpper());
+
+            return RuleLiteDb.StatusChange(changeIds, statusEnum);
+        }
+
+        [HttpGet]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
         public bool RemoveRule(string ids)
         {
             var removes = ids.Split(',').Select(m => Convert.ToInt32(m)).ToArray();
@@ -85,7 +90,7 @@ namespace RuiJi.Net.Owin.Controllers
         #region Feed
         [HttpGet]
         [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
-        public object Feeds(int offset, int limit)
+        public object Feeds(int offset, int limit, string key, string method, string type, string status)
         {
             var paging = new Paging();
             paging.CurrentPage = (offset / limit) + 1;
@@ -93,7 +98,7 @@ namespace RuiJi.Net.Owin.Controllers
 
             return new
             {
-                rows = FeedLiteDb.GetFeedModels(paging),
+                rows = FeedLiteDb.GetFeedModels(paging, key, method, type, status),
                 total = paging.Count
             };
         }
@@ -153,6 +158,25 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpGet]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
+        public bool FeedStatusChange(string ids, string status)
+        {
+            var changeIds = ids.Split(',').Select(i => Convert.ToInt32(i)).ToArray();
+            var statusEnum = (Status)Enum.Parse(typeof(Status), status.ToUpper());
+
+            return FeedLiteDb.StatusChange(changeIds, statusEnum);
+        }
+
+        [HttpGet]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
+        public bool RemoveFeed(string ids)
+        {
+            var removes = ids.Split(',').Select(m => Convert.ToInt32(m)).ToArray();
+
+            return FeedLiteDb.Remove(removes);
+        }
+
+        [HttpGet]
         public object GetFeed(int id)
         {
             var feed = FeedLiteDb.GetFeed(id);
@@ -185,7 +209,17 @@ namespace RuiJi.Net.Owin.Controllers
 
         [HttpGet]
         [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
-        public object GetContent(int offset, int limit, string shard = "", int feedId = 0)
+        public object GetShards()
+        {
+            var dbfile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LiteDb", "Content");
+            var fileInfos = Directory.GetFiles(dbfile);
+            var shards = fileInfos.Select(f => f.Substring(f.LastIndexOf("\\") + 1, f.IndexOf(".db") - f.LastIndexOf("\\") - 1)).OrderByDescending(f => f).ToList();
+            return shards;
+        }
+
+        [HttpGet]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
+        public object GetContent(int offset, int limit, string shard = "", string feedId = "")
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
 
@@ -193,12 +227,12 @@ namespace RuiJi.Net.Owin.Controllers
             paging.CurrentPage = (offset / limit) + 1;
             paging.PageSize = limit;
 
-            if (string.IsNullOrEmpty(shard))
+            if (string.IsNullOrEmpty(shard) || shard.ToLower() == "shard")
                 shard = DateTime.Now.ToString("yyyyMM");
-
+            var feedIdInt = string.IsNullOrEmpty(feedId) ? 0 : Convert.ToInt32(feedId);
             return new
             {
-                rows = ContentLiteDb.GetModels(paging, shard, feedId).Select(m => new
+                rows = ContentLiteDb.GetModels(paging, shard, feedIdInt).Select(m => new
                 {
                     id = m.Id,
                     feedId = m.FeedId,
@@ -207,12 +241,22 @@ namespace RuiJi.Net.Owin.Controllers
                     metas = m.Metas.Select(n => new
                     {
                         name = n.Key,
-                        content = n.Value.ToString().Length > 50 ? n.Value.ToString().Substring(0, 50) : n.Value.ToString()
+                        content = n.Value == null ? "" : (n.Value.ToString().Length > 50 ? n.Value.ToString().Substring(0, 50) : n.Value.ToString())
                     })
                 }),
                 total = paging.Count
             };
         }
+
+        [HttpGet]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
+        public bool RemoveContent(string ids, string shard)
+        {
+            var removes = ids.Split(',').Select(m => Convert.ToInt32(m)).ToArray();
+
+            return ContentLiteDb.Remove(removes, shard);
+        }
+
         #endregion
 
         #region Test
@@ -228,7 +272,7 @@ namespace RuiJi.Net.Owin.Controllers
             if (response != null && response.Data != null)
             {
                 var content = response.Data.ToString();
-                var block = RuiJiExtractBlockParser.ParserBlock(rule.RuiJiExpression);
+                var block = RuiJiBlockParser.ParserBlock(rule.RuiJiExpression);
                 var r = new ExtractRequest();
                 r.Content = content;
 
@@ -240,12 +284,13 @@ namespace RuiJi.Net.Owin.Controllers
 
                 var result = results.OrderByDescending(m => m.Metas.Count).FirstOrDefault();
 
-                if (debug && result.Paging != null && result.Paging.Count > 0 && result.Metas != null && result.Metas.ContainsKey("content"))
+                if (result.Paging != null && result.Paging.Count > 0 && result.Metas != null && result.Metas.ContainsKey("content"))
                 {
                     result = PagingExtractor.MergeContent(new Uri(rule.Url), result, block);
                 }
 
-                result.Content = null;
+                if (!debug)
+                    CrawlTaskFunc.ClearContent(result);
 
                 return result;
             }
@@ -258,13 +303,13 @@ namespace RuiJi.Net.Owin.Controllers
         {
             try
             {
-                var compile = new CompileFeedAddress();
-                var addrs = compile.Compile(feed.Address);
+                var compile = new UrlCompile();
+                var addrs = compile.GetResult(feed.Address);
                 var results = new List<ExtractResult>();
 
                 foreach (var addr in addrs)
                 {
-                    feed.Address = addr;
+                    feed.Address = addr.ToString();
                     var job = new FeedJob();
                     var snap = job.DoTask(feed, false);
 
@@ -274,11 +319,11 @@ namespace RuiJi.Net.Owin.Controllers
                         continue;
                     }
 
-                    var block = RuiJiExtractBlockParser.ParserBlock(feed.RuiJiExpression);
+                    var block = RuiJiBlockParser.ParserBlock(feed.RuiJiExpression);
 
                     var result = RuiJiExtractor.Extract(snap.Content, block);
 
-                    if (debug)
+                    if (!debug)
                         CrawlTaskFunc.ClearContent(result);
 
                     if (down)
@@ -375,18 +420,18 @@ namespace RuiJi.Net.Owin.Controllers
 
             reporter.Report("正在下载 Feed");
 
-            var compile = new CompileFeedAddress();
-            var addrs = compile.Compile(feed.Address);
+            var compile = new UrlCompile();
+            var addrs = compile.GetResult(feed.Address);
 
             foreach (var addr in addrs)
             {
-                feed.Address = addr;
+                feed.Address = addr.ToString();
 
                 var job = new FeedJob();
                 var snap = job.DoTask(feed, false);
                 reporter.Report("Feed 下载完成");
 
-                var block = RuiJiExtractBlockParser.ParserBlock(feed.RuiJiExpression);
+                var block = RuiJiBlockParser.ParserBlock(feed.RuiJiExpression);
 
                 var feedResult = RuiJiExtractor.Extract(snap.Content, block);
                 results.Add(feedResult);

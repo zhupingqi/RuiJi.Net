@@ -55,7 +55,7 @@ namespace RuiJi.Net.Test
             }
             catch (Exception ex)
             {
-                
+                return ex.Message;
             }
 
             return "";

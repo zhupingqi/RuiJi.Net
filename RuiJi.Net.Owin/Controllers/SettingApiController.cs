@@ -1,21 +1,12 @@
-﻿using Newtonsoft.Json;
-using RestSharp;
+﻿using RuiJi.Net.Core.Compile;
 using RuiJi.Net.Core.Configuration;
 using RuiJi.Net.Core.Crawler;
-using RuiJi.Net.Core.Utils;
 using RuiJi.Net.Core.Utils.Page;
 using RuiJi.Net.Node;
-using RuiJi.Net.Node.Db;
-using RuiJi.Net.NodeVisitor;
+using RuiJi.Net.Node.Feed.Db;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
 
 namespace RuiJi.Net.Owin.Controllers
@@ -69,7 +60,7 @@ namespace RuiJi.Net.Owin.Controllers
         {
             var code = "{# " + func.Sample + " #}";
             var test = new ComplieFuncTest(func.Code);
-            return test.Compile(code);
+            return test.GetResult(code);
         }
 
         [HttpPost]
@@ -140,6 +131,17 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpGet]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
+        public bool ProxyStatusChange(string ids, string status)
+        {
+            var changeIds = ids.Split(',').Select(i => Convert.ToInt32(i)).ToArray();
+            var statusEnum = (Status)Enum.Parse(typeof(Status), status.ToUpper());
+
+            return ProxyLiteDb.StatusChange(changeIds, statusEnum);
+        }
+
+
+        [HttpGet]
         public object ProxyPing(int id)
         {
             var watch = new Stopwatch();
@@ -197,14 +199,84 @@ namespace RuiJi.Net.Owin.Controllers
         }
         #endregion
 
+        #region uaGroup
+        [HttpGet]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
+        public object UAGroups()
+        {
+            return UAGroupLiteDb.GetModels();
+        }
+
+        [HttpGet]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
+        public object UAGroup(int id)
+        {
+            return UAGroupLiteDb.Get(id);
+        }
+
+        [HttpPost]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
+        public int UpdateUAGroup(UAGroupModel group)
+        {
+            return UAGroupLiteDb.AddOrUpdate(group);
+        }
+
+        [HttpGet]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
+        public bool RemoveUAGroup(int id)
+        {
+            return UALiteDb.RemoveByGorup(id) ? UAGroupLiteDb.Remove(id) : false;
+        }
+        #endregion
+
+        #region ua
+        [HttpGet]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
+        public object UAs(int offset, int limit, int groupId)
+        {
+            var paging = new Paging();
+            paging.CurrentPage = (offset / limit) + 1;
+            paging.PageSize = limit;
+
+            return new
+            {
+                rows = UALiteDb.GetModels(paging, groupId),
+                total = paging.Count
+            };
+        }
+
+        [HttpGet]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
+        public object UA(int id)
+        {
+            return UALiteDb.Get(id);
+        }
+
+        [HttpPost]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
+        public bool UpdateUA(UAModel ua)
+        {
+            UALiteDb.AddOrUpdate(ua);
+            return true;
+        }
+
+        [HttpGet]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
+        public bool RemoveUAs(string ids)
+        {
+            var removes = ids.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Select(m => Convert.ToInt32(m)).ToArray();
+            return UALiteDb.Remove(removes);
+        }
+
+        #endregion
         [HttpGet]
         public bool IsAlone()
         {
-            return NodeConfigurationSection.Alone;
+            return NodeConfigurationSection.Standalone;
         }
     }
 
-    public class ComplieFuncTest : CompileUrl
+    public class ComplieFuncTest : Core.Compile.UrlCompile
     {
         private string code;
 
@@ -213,9 +285,9 @@ namespace RuiJi.Net.Owin.Controllers
             this.code = code;
         }
 
-        public override string FormatCode(CompileExtract extract)
+        protected override string FormatCode(UrlFunction result)
         {
-            var formatCode = string.Format(code, extract.Args);
+            var formatCode = string.Format(code, result.Args);
 
             return formatCode;
         }

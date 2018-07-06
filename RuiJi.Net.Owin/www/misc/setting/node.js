@@ -66,7 +66,7 @@
                     type: 'POST',
                     contentType: "application/json",
                     success: function (res) {
-                        alert("完成");
+                        swal("success", "The ips have been set!", "success");
                     }
                 });
             });
@@ -85,7 +85,7 @@
                     type: 'POST',
                     contentType: "application/json",
                     success: function (res) {
-                        alert("完成");
+                        swal("success", "The feed have been set!", "success");
                     }
                 });
             });

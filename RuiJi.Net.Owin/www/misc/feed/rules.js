@@ -4,25 +4,19 @@
             var tmp = utils.loadTemplate("/misc/feed/rules.html", false);
 
             tmp = $(tmp);
-            tmp.find("#tb_rules").attr("data-url", "/api/rules");
+            //tmp.find("#tb_rules").attr("data-url", "/api/rules");
 
             $("#tab_panel_rules").html(tmp.prop("outerHTML"));
 
             var $table = $('#tb_rules').bootstrapTable({
                 toolbar: '#toolbar_rules',
+                url: "/api/rules",
                 pagination: true,
                 queryParams: module.queryParams,
                 sidePagination: "server",
                 showColumns: true,
                 showRefresh: true,
-                height: 530,
-                onPostBody: function (e) {
-                    if (e.length > 0) {
-                        $('#tb_rules > tbody > tr').map(function (i, m) {
-                            $(m).find("td:last").html("<i class='fa fa-edit'></i><i class='fa fa-history'></i><i class='fa fa-minus-circle'></i>");
-                        });
-                    }
-                }
+                height: 530
             });
 
             module.initEvent();
@@ -30,9 +24,10 @@
         initEvent: function () {
             var ruleTmp = utils.loadTemplate("/misc/feed/rule.html", false);
 
+            //add dialog open
             $(document).on("click", "#add_rule", function () {
                 BootstrapDialog.show({
-                    title: '添加 Rule',
+                    title: 'Add Rule',
                     message: ruleTmp,
                     closable: false,
                     nl2br: false,
@@ -55,42 +50,7 @@
                 });
             });
 
-            $(document).on("click", "#delete_rules", function () {
-                var select = $("#tb_rules").bootstrapTable('getSelections');
-                if (select.length <= 0) {
-                    swal("请至少选中一行");
-                }
-                else {
-                    if (confirm("确认删除选中规则？")) {
-                        var ids = "";
-                        $.map(select, function (n) {
-                            ids += n.id + ",";
-                        })
-
-                        $.getJSON("api/rule/remove?ids=" + ids, function (d) {
-                            if (d) {
-                                swal("完成");
-                                $('#tb_rules').bootstrapTable("refresh");
-                            }
-                        });
-                    }
-                }
-            });
-
-            $(document).on("click", "#tb_rules .fa-minus-circle", function () {
-                var ele = $(this);
-                var id = ele.closest("tr").find("td").eq(1).text();
-
-                if (confirm("确认删除此条规则？")) {
-                    $.getJSON("api/rule/remove?ids=" + id, function (d) {
-                        if (d) {
-                            swal("完成");
-                            $('#tb_rules').bootstrapTable("refresh");
-                        }
-                    });
-                }
-            });
-
+            //dialog dropdown-menu item click
             $(document).on("click", "#rule_dialog ul.dropdown-menu a", function () {
                 var menu = $(this);
                 var h = menu.closest(".input-group").find(":hidden");
@@ -100,6 +60,7 @@
                 h.next().val(menu.text());
             });
 
+            //modify dialog 
             $(document).on("click", "#tb_rules .fa-edit", function () {
                 var ele = $(this);
                 var id = ele.closest("tr").find("td").eq(1).text();
@@ -130,7 +91,7 @@
                     }
 
                     BootstrapDialog.show({
-                        title: '修改 Rule',
+                        title: 'Edit Rule',
                         message: f.prop("outerHTML"),
                         closable: false,
                         nl2br: false,
@@ -154,37 +115,71 @@
                 });
             });
 
-            $(document).on("click", "#toolbar_rules a[remove]", function () {
-                swal({
-                    title: "确定删除吗？",
-                    text: "你将无法恢复该规则！",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "确定删除！",
-                    cancelButtonText: "取消删除！",
-                    closeOnConfirm: false
-                },
-                    function () {
-                        var ids = $("#rules_list td :checked").parent().next().map(function () { return $(this).text(); }).get().join(",");
-                        if (ids != "")
-                            module.remove(ids);
-                        else
-                            swal("错误！", "未选择任何规则。", "success");
-                    });
+            $(document).on("click", "#tb_rules .fa-history", function () {
+                swal("Coming soon!", "The module is going online!", "warning");
             });
 
+            //batch operate
+            $(document).on("click", "#toolbar_rules a[type]", function () {
+                switch ($(this).attr("type")) {
+                    case "enable":
+                        module.batchOpConfirm("Do you confirm the enable?", "The rules will be enable", "warning", module.enable);
+                        break;
+                    case "disable":
+                        module.batchOpConfirm("Do you confirm the disable?", "The rules will be disabled", "warning", module.disable);
+                        break;
+                    case "remove":
+                        module.batchOpConfirm("Do you confirm the deletion?", "The rules will not be restored!", "warning", module.remove);
+                        break;
+                }
+            });
+
+            //change type|status
             $(document).on("click", "#rule_dialog .btn-mjdark2", function () {
                 var ele = $(this);
                 ele.closest(".input-group").find(":hidden").val(ele.find("input").val());
             });
+
+            //rules search dropdown-menu change
+            $(document).on("click", "#rules_search_group .dropdown-menu a", function () {
+                $(this).closest("ul").prev("button").html($(this).text() + "<span class=\"caret\"></span>");
+            });
+
+            //rules search
+            $(document).on("click", "#rules_search_group .rules-search", function () {
+                $("#tb_rules").bootstrapTable('refresh');
+            });
+        },
+        batchOpConfirm: function (title, text, type, callback) {
+            var selects = $("#tb_rules").bootstrapTable('getSelections');
+            if (selects.length <= 0) {
+                swal("Unchecked any rules!", "", "warning");
+                return;
+            }
+            var ids = selects.map(function (s) { return s.id }).join(",");
+            swal(
+                {
+                    title: title,
+                    text: text,
+                    type: type,
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Confirm",
+                    cancelButtonText: "Cancel",
+                    closeOnConfirm: false
+                },
+                function () {
+                    callback(ids);
+                }
+            );
         },
         queryParams: function (params) {
             var temp = {
                 limit: params.limit,
                 offset: params.offset,
-                departmentname: $("#txt_search_departmentname").val(),
-                statu: $("#txt_search_statu").val()
+                key: $.trim($("#rules_search_group .key").val()),
+                type: $.trim($("#rules_search_group .type").text()),
+                status: $.trim($("#rules_search_group .status").text())
             };
             return temp;
         },
@@ -203,7 +198,7 @@
             });
 
             if (!validate) {
-                swal(msg);
+                swal("missing field", msg, "error");
                 return;
             }
 
@@ -224,7 +219,7 @@
                 type: 'POST',
                 contentType: "application/json",
                 success: function (res) {
-                    swal("完成");
+                    swal("success!", "", "success");
                     dialog.close();
                     $('#tb_rules').bootstrapTable("refresh");
                 }
@@ -275,15 +270,39 @@
                 }
             });
         },
+        enable: function (ids) {
+            var url = "/api/rule/status/change?ids=" + ids + "&status=ON";
+
+            $.getJSON(url, function (res) {
+                if (res) {
+                    swal("Enable sucess!", "The rules have been enable.", "success");
+                    $('#tb_rules').bootstrapTable("refresh");
+                } else {
+                    swal("Enable failed!", "A mistake in the enable rule.", "error");
+                }
+            });
+        },
+        disable: function (ids) {
+            var url = "/api/rule/status/change?ids=" + ids + "&status=OFF";
+
+            $.getJSON(url, function (res) {
+                if (res) {
+                    swal("Disable sucess!", "The rules have been disable.", "success");
+                    $('#tb_rules').bootstrapTable("refresh");
+                } else {
+                    swal("Disable failed!", "A mistake in the disable rule.", "error");
+                }
+            });
+        },
         remove: function (ids) {
             var url = "/api/rule/remove?ids=" + ids;
 
             $.getJSON(url, function (res) {
                 if (res) {
-                    swal("删除！", "规则已经被删除。", "success");
+                    swal("Delete sucess!", "The rules have been deleted.", "success");
                     $('#tb_rules').bootstrapTable("refresh");
                 } else {
-                    swal("删除失败！", "删除规则发生错误。", "success");
+                    swal("Delete failed!", "A mistake in the deletion rule.", "error");
                 }
             });
         }

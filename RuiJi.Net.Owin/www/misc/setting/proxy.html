@@ -1,5 +1,5 @@
 ﻿<div class="row-fluid" id="proxy_dialog">
-    <form id="func_form">
+    <form>
         <div class="input-group">
             <span class="input-group-addon">Ip</span>
             <input type="hidden" name="id" value="0">
@@ -19,9 +19,16 @@
         </div>
         <div class="input-group">
             <span class="input-group-addon">Type</span>
-            <input type="text" class="form-control" name="type" value="HTTP">
+            <input type="hidden" name="type" required value="HTTP">
+            <input type="text" class="form-control" value="HTTP" disabled="disabled">
+            <div class="input-group-btn">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Please choose<span class="caret"></span></button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <li><a href="javascript:;">HTTP</a></li>
+                    <li><a href="javascript:;">HTTPS</a></li>
+                </ul>
+            </div>
         </div>
-        <div>HTTP/HTTPS</div>
         <div class="input-group">
             <span class="input-group-addon">Status</span>
             <input type="hidden" name="status" value="true">

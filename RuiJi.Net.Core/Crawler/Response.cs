@@ -10,42 +10,69 @@ using RuiJi.Net.Core.Utils;
 
 namespace RuiJi.Net.Core.Crawler
 {
+    /// <summary>
+    /// crawl response
+    /// </summary>
     public class Response
     {
+        /// <summary>
+        /// response charset
+        /// </summary>
         [JsonProperty("charset")]
         public string Charset { get; set; }
 
-        [JsonProperty("method")]
-        public string Method { get; set; }
-
+        /// <summary>
+        /// if true response is raw
+        /// </summary>
         [JsonProperty("raw")]
         public bool IsRaw { get; set; }
 
+        /// <summary>
+        /// response data
+        /// </summary>
         [JsonProperty("data")]
         public object Data { get; set; }
 
+        /// <summary>
+        /// response headers
+        /// </summary>
         [JsonProperty("headers")]
         public List<WebHeader> Headers { get; set; }
 
+        /// <summary>
+        /// response cookie
+        /// </summary>
         [JsonProperty("cookie")]
         public string Cookie { get; set; }
 
+        /// <summary>
+        /// response status
+        /// </summary>
         [JsonProperty("status")]
         public HttpStatusCode StatusCode { get; set; }
 
+        /// <summary>
+        /// response uri
+        /// </summary>
         [JsonProperty("responseUri")]
         public Uri ResponseUri { get; set; }
 
-        [JsonProperty("requestUri")]
-        public Uri RequestUri { get; set; }
+        /// <summary>
+        /// crawl request
+        /// </summary>
+        [JsonProperty("request")]
+        public Request Request { get; set; }
 
+        /// <summary>
+        /// response elect info serverip/clientip
+        /// </summary>
         [JsonProperty("elect")]
         public string ElectInfo { get; set; }
 
-        [JsonProperty("proxy")]
-        public string Proxy { get; set; }
-
-        [JsonIgnore]
+        /// <summary>
+        /// response extensions
+        /// </summary>
+        [JsonProperty("exts")]
         public string[] Extensions
         {
             get
