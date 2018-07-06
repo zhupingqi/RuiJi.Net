@@ -80,10 +80,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compile\ComplieBase.cs" />
-    <Compile Include="Compile\ExtractFunctionResult.cs" />
+    <Compile Include="Compile\UrlFunction.cs" />
     <Compile Include="Compile\FileFuncProvider.cs" />
     <Compile Include="Compile\FileProProvider.cs" />
-    <Compile Include="Compile\FunctionProviderBase.cs" />
+    <Compile Include="Compile\FileProviderBase.cs" />
     <Compile Include="Compile\ICompile.cs" />
     <Compile Include="Compile\IProvider.cs" />
     <Compile Include="Compile\JSCompile.cs" />
@@ -103,6 +103,7 @@
     <Compile Include="Crawler\WebHeader.cs" />
     <Compile Include="Expression\FeedSetting.cs" />
     <Compile Include="Expression\IParseResult.cs" />
+    <Compile Include="Expression\IRuiJiParseResult.cs" />
     <Compile Include="Expression\ParseResult.cs" />
     <Compile Include="Extensions\EnumConvert.cs" />
     <Compile Include="Extensions\NewtonJsonSerializer.cs" />
@@ -123,7 +124,7 @@
     <Compile Include="Extractor\Processor\JsonPathProcessor.cs" />
     <Compile Include="Extractor\Processor\XPathProcessor.cs" />
     <Compile Include="Extractor\ProcessResult.cs" />
-    <Compile Include="Expression\RuiJiExtractBlockParser.cs" />
+    <Compile Include="Expression\RuiJiBlockParser.cs" />
     <Compile Include="Extractor\RuiJiExtractor.cs" />
     <Compile Include="Extractor\ExtractBlock.cs" />
     <Compile Include="Extractor\ExtractBlockCollection.cs" />
@@ -169,7 +170,6 @@
     <Compile Include="RTS\FeedJobBase.cs" />
     <Compile Include="RTS\FeedRequest.cs" />
     <Compile Include="RTS\FeedScheduler.cs" />
-    <Compile Include="Expression\RuiJiExpRequest.cs" />
     <Compile Include="RTS\Snapshot.cs" />
     <Compile Include="Compile\UrlCompile.cs" />
     <Compile Include="Utils\EncryptHelper.cs" />

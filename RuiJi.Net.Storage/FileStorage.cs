@@ -1,4 +1,5 @@
-﻿using RuiJi.Net.Storage.Model;
+﻿using RuiJi.Net.Core.Utils.Log;
+using RuiJi.Net.Storage.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -56,7 +57,7 @@ namespace RuiJi.Net.Storage
                     File.WriteAllText(path, content.Data.ToString());
             }
             catch(Exception ex) {
-
+                Logger.GetLogger("").Error(ex.Message);
             }
 
             return 0;

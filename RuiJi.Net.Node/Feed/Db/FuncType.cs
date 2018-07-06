@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RuiJi.Net.Node.Db
+namespace RuiJi.Net.Node.Feed.Db
 {
     public enum FuncType
     {
-        FUNCTION,
-        PROCESSOR
+        URLFUNCTION,
+        SELECTORPROCESSOR
     }
 }

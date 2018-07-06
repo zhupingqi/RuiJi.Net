@@ -6,8 +6,15 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Expression
 {
-    public class ParseResult<T> : IParseResult where T : new()
+    /// <summary>
+    /// ParseResult
+    /// </summary>
+    /// <typeparam name="T">result type</typeparam>
+    public class ParseResult<T> : IParseResult where T : IRuiJiParseResult, new()
     {
+        /// <summary>
+        /// if true, the parse is successful
+        /// </summary>
         public bool Success
         {
             get
@@ -16,10 +23,19 @@ namespace RuiJi.Net.Core.Expression
             }
         }
 
+        /// <summary>
+        /// result type
+        /// </summary>
         public T Result { get; set; }
 
+        /// <summary>
+        /// error message
+        /// </summary>
         public List<string> Messages { get; set; }
 
+        /// <summary>
+        /// result type
+        /// </summary>
         public Type Type
         {
             get
@@ -28,8 +44,15 @@ namespace RuiJi.Net.Core.Expression
             }
         }
 
+        /// <summary>
+        /// ruiji expression
+        /// </summary>
         public string Expression { get; set; }
 
+        /// <summary>
+        /// constructor
+        /// </summary>
+        /// <param name="expression">ruiji expression</param>
         public ParseResult(string expression)
         {
             Result = new T();

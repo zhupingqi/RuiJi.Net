@@ -10,8 +10,16 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Expression
 {
-    public class RuiJiExtractBlockParser
+    /// <summary>
+    /// ruiji expression parser for block
+    /// </summary>
+    public class RuiJiBlockParser
     {
+        /// <summary>
+        /// parse block
+        /// </summary>
+        /// <param name="expression">block expression</param>
+        /// <returns>extract block</returns>
         public static ExtractBlock ParserBlock(string expression)
         {
             expression = expression.Replace("\r\n", "\n").Trim();
@@ -100,6 +108,11 @@ namespace RuiJi.Net.Core.Expression
             return results.First();
         }
 
+        /// <summary>
+        /// parse tile
+        /// </summary>
+        /// <param name="expression">tile expression</param>
+        /// <returns>extract tile</returns>
         public static ExtractTile ParserTile(string expression)
         {
             expression = expression.Trim();
@@ -115,6 +128,11 @@ namespace RuiJi.Net.Core.Expression
             return tile;
         }
 
+        /// <summary>
+        /// parse meta
+        /// </summary>
+        /// <param name="expression">meta expression</param>
+        /// <returns>extract meta collection</returns>
         public static ExtractMetaCollection ParserMeta(string expression)
         {
             expression = expression.Replace("\r\n", "\n");
@@ -132,6 +150,11 @@ namespace RuiJi.Net.Core.Expression
             return mc;
         }
 
+        /// <summary>
+        /// parse block base
+        /// </summary>
+        /// <param name="expression">ruiji block base expression</param>
+        /// <returns>extract base</returns>
         public static ExtractBase ParserBase(string expression)
         {
             expression = expression.Trim();
@@ -213,6 +236,11 @@ namespace RuiJi.Net.Core.Expression
             return eb;
         }
 
+        /// <summary>
+        /// parse selector
+        /// </summary>
+        /// <param name="expression">selectors expression</param>
+        /// <returns>selector</returns>
         public static ISelector ParserSelector(string expression)
         {
             expression = expression.Trim();
@@ -392,7 +420,7 @@ namespace RuiJi.Net.Core.Expression
 
                         return selector;
                     }
-                case "func":
+                case "proc":
                     {
                         var selector = new FunctionSelector();
                         selector.Remove = remove;
@@ -405,6 +433,11 @@ namespace RuiJi.Net.Core.Expression
             return null;
         }
 
+        /// <summary>
+        /// split block
+        /// </summary>
+        /// <param name="expression">ruiji expression</param>
+        /// <returns>block string array</returns>
         private static List<string> ParserBlocks(string expression)
         {
             expression = "\n" + expression;
@@ -415,6 +448,12 @@ namespace RuiJi.Net.Core.Expression
             return results;
         }
 
+        /// <summary>
+        /// split expression by string array
+        /// </summary>
+        /// <param name="expression">ruiji expression</param>
+        /// <param name="splits">split array</param>
+        /// <returns>split key dictionary</returns>
         private static Dictionary<string, string> Split(string expression, string[] splits)
         {
             var lines = Regex.Split(expression, @"\n");

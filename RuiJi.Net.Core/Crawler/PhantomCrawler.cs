@@ -13,23 +13,47 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Crawler
 {
-    public class Res
-    {
-        public string contentType { get; set; }
-
-        public List<WebHeader> headers { get; set; }
-
-        public string charset { get; set; }
-
-        public string cookie { get; set; }
-
-        public int? status { get; set; }
-
-        public string url { get; set; }
-    }
-
+    /// <summary>
+    /// PhantomJs Crawler
+    /// </summary>
     public class PhantomCrawler
     {
+        /// <summary>
+        /// PhantomJs response
+        /// </summary>
+        class PhantomResponse
+        {
+            /// <summary>
+            /// content type
+            /// </summary>
+            public string contentType { get; set; }
+
+            /// <summary>
+            /// response headers
+            /// </summary>
+            public List<WebHeader> headers { get; set; }
+
+            /// <summary>
+            /// response charset
+            /// </summary>
+            public string charset { get; set; }
+
+            /// <summary>
+            /// response cookie
+            /// </summary>
+            public string cookie { get; set; }
+
+            /// <summary>
+            /// response status
+            /// </summary>
+            public int? status { get; set; }
+
+            /// <summary>
+            /// response url
+            /// </summary>
+            public string url { get; set; }
+        }
+
         private static string _js;
         private static string _tmp_js_path;
 
@@ -42,11 +66,19 @@ namespace RuiJi.Net.Core.Crawler
                 Directory.CreateDirectory(_tmp_js_path);
         }
 
+        /// <summary>
+        /// PhantomCrawler constructor
+        /// </summary>
         public PhantomCrawler()
         {
 
         }
 
+        /// <summary>
+        /// Request 
+        /// </summary>
+        /// <param name="request">Crawl Request</param>
+        /// <returns>Crawl Response</returns>
         public Response Request(Request request)
         {
             var extension = Path.GetExtension(request.Uri.ToString()).ToLower();
@@ -67,7 +99,7 @@ namespace RuiJi.Net.Core.Crawler
 
             var cookies = GetCookie(request);
 
-            var cookie = GetCookieJs(cookies);
+            var cookie = GenerateCookieJs(cookies);
 
             var js = _js.Replace("phantom.addCookie({});", cookie);
             var ua = request.Headers.SingleOrDefault(m => m.Name == "User-Agent").Value;
@@ -108,7 +140,7 @@ namespace RuiJi.Net.Core.Crawler
             if (File.Exists(file + ".json"))
             {
                 var json = File.ReadAllText(file + ".json");
-                var res = JsonConvert.DeserializeObject<Res>(json);
+                var res = JsonConvert.DeserializeObject<PhantomResponse>(json);
                 response.Headers = res.headers;
                 response.Charset = res.charset;
                 response.ResponseUri = new Uri(res.url);
@@ -130,6 +162,10 @@ namespace RuiJi.Net.Core.Crawler
             return response;
         }
 
+        /// <summary>
+        /// guid with 16 length
+        /// </summary>
+        /// <returns></returns>
         private string ShortGUID()
         {
             long i = 1;
@@ -138,7 +174,12 @@ namespace RuiJi.Net.Core.Crawler
             return string.Format("{0:x}", i - DateTime.Now.Ticks);
         }
 
-        public string GetCookieJs(CookieCollection cookie)
+        /// <summary>
+        /// generate cookie use by PhantomJs
+        /// </summary>
+        /// <param name="cookie">cookie collection</param>
+        /// <returns>cookie js string</returns>
+        private string GenerateCookieJs(CookieCollection cookie)
         {
             var c = cookie.Cast<System.Net.Cookie>().Select(m => "phantom.addCookie(" + JsonConvert.SerializeObject(new
             {
@@ -151,6 +192,11 @@ namespace RuiJi.Net.Core.Crawler
             return string.Join("\r\n\r\n", c);
         }
 
+        /// <summary>
+        /// get cookie by crawl request
+        /// </summary>
+        /// <param name="request">crawl request</param>
+        /// <returns>cookie collection</returns>
         private CookieCollection GetCookie(Request request)
         {
             if (!string.IsNullOrEmpty(request.Cookie))

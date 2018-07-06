@@ -8,11 +8,20 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Cookie
 {
+    /// <summary>
+    /// cookie persistence model
+    /// </summary>
     public class CookieFile
     {
+        /// <summary>
+        /// ip address 
+        /// </summary>
         [JsonProperty("ip")]
         public string Ip { get; set; }
 
+        /// <summary>
+        /// cookie content
+        /// </summary>
         [JsonProperty("cookie")]
         public string Cookie
         {
@@ -20,6 +29,9 @@ namespace RuiJi.Net.Core.Cookie
             set;
         }
 
+        /// <summary>
+        /// user agent
+        /// </summary>
         [JsonProperty("ua")]
         public string UserAgent
         {
@@ -27,6 +39,9 @@ namespace RuiJi.Net.Core.Cookie
             set;
         }
 
+        /// <summary>
+        /// cookie unique identifier
+        /// </summary>
         [JsonIgnore]
         public string Key
         {

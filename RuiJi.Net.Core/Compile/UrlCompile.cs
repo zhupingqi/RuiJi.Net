@@ -8,9 +8,17 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Compile
 {
+    /// <summary>
+    /// url compile class,extract url function from url and execute function
+    /// </summary>
     public class UrlCompile : ComplieBase<FileFuncProvider, JITCompile,string>
     {
-        public ExtractFunctionResult ExtractFunction(string url)
+        /// <summary>
+        /// extract url function from url
+        /// </summary>
+        /// <param name="url">url</param>
+        /// <returns>url function</returns>
+        private UrlFunction ExtractFunction(string url)
         {
             if (string.IsNullOrEmpty(url))
                 return null;
@@ -21,7 +29,7 @@ namespace RuiJi.Net.Core.Compile
             if (ms.Count == 0)
                 return null;
 
-            var result = new ExtractFunctionResult();
+            var result = new UrlFunction();
             var m = ms[0];
 
             var d = m.Value.Trim();
@@ -32,7 +40,7 @@ namespace RuiJi.Net.Core.Compile
             var fun = mt.Groups[1].Value.Trim();
             var arg = Regex.Match(d, @"\((.*)\)+");
 
-            result.Function = fun;
+            result.Name = fun;
             result.Index = m.Index;
 
             if (arg.Success && arg.Groups.Count == 2)
@@ -43,28 +51,38 @@ namespace RuiJi.Net.Core.Compile
             return result;
         }
 
-        public virtual string FormatCode(ExtractFunctionResult result)
+        /// <summary>
+        /// get url function code and format code
+        /// </summary>
+        /// <param name="result">url function</param>
+        /// <returns>formated code</returns>
+        protected virtual string FormatCode(UrlFunction result)
         {
-            var code = GetFunc(result.Function);
+            var code = GetFunc(result.Name);
 
             return string.Format(code, result.Args);
         }
 
-        public override object[] GetResult(string address)
+        /// <summary>
+        /// execute function from url
+        /// </summary>
+        /// <param name="url">url</param>
+        /// <returns>execute result</returns>
+        public override object[] GetResult(string url)
         {
-            var compileExtract = ExtractFunction(address);
+            var compileExtract = ExtractFunction(url);
             if (compileExtract == null)
-                return new string[] { address };
+                return new string[] { url };
 
             var reg = new Regex(@"\{#(.*?)#\}");
 
             var code = FormatCode(compileExtract);
             var addrs = new List<string>();
-            var results = compile.GetResult(code);
+            var results = Compile.GetResult(code);
 
             foreach (var r in results)
             {
-                var addr = reg.Replace(address, r.ToString(), 1);
+                var addr = reg.Replace(url, r.ToString(), 1);
 
                 var cs = GetResult(addr).Select(m=>m.ToString()).ToList();
 

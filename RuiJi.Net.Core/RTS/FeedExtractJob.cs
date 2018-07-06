@@ -112,7 +112,7 @@ namespace RuiJi.Net.Core.RTS
 
                 var parser = new RuiJiParser();
 
-                var s = RuiJiExtractBlockParser.ParserBase(snapshot.Expression).Selectors;
+                var s = RuiJiBlockParser.ParserBase(snapshot.Expression).Selectors;
                 block.TileSelector.Selectors.AddRange(s);
             }
 

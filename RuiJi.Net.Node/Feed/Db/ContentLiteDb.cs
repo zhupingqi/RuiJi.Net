@@ -1,17 +1,13 @@
 ﻿using LiteDB;
 using RuiJi.Net.Core.Utils.Page;
-using RuiJi.Net.Node.Feed;
-using RuiJi.Net.Node.Feed.LTS;
 using RuiJi.Net.Storage.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RuiJi.Net.Node.Db
+namespace RuiJi.Net.Node.Feed.Db
 {
     public class ContentLiteDb
     {

@@ -166,7 +166,7 @@ namespace RuiJi.Net.Node.Feed.LTS
 
                     var parser = new RuiJiParser();
 
-                    var s = RuiJiExtractBlockParser.ParserBase(feed.RuiJiExpression).Selectors;
+                    var s = RuiJiBlockParser.ParserBase(feed.RuiJiExpression).Selectors;
                     block.TileSelector.Selectors.AddRange(s);
                 }
             }

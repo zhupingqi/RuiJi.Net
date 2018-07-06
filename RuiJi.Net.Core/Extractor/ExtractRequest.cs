@@ -9,7 +9,7 @@ using RuiJi.Net.Core.Extractor.Selector;
 
 namespace RuiJi.Net.Core.Extractor
 {
-    public class ExtractFeature
+    public class ExtractFeature: IRuiJiParseResult
     {
         [JsonProperty("wildcard")]
         public string Wildcard { get; set; }
@@ -42,7 +42,7 @@ namespace RuiJi.Net.Core.Extractor
 
             foreach (var s in sp)
             {
-                var selector = RuiJiExtractBlockParser.ParserSelector(s);
+                var selector = RuiJiBlockParser.ParserSelector(s);
                 selectors.Add(selector);
             }
 

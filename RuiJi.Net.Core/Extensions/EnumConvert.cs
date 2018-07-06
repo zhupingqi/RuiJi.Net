@@ -31,12 +31,6 @@ namespace RuiJi.Net.Core.Extensions
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             writer.WriteValue(value.ToString());
-
-            //foreach (var suit in Enum.GetValues(typeof(T)))
-            //{
-            //    if (Convert.ToInt32(suit) == Convert.ToInt32(value))
-            //        writer.WriteValue(suit.ToString());
-            //}
         }
     }
 }

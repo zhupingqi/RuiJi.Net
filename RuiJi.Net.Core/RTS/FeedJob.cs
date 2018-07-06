@@ -88,7 +88,7 @@ namespace RuiJi.Net.Core.RTS
 
                             var r = request.Clone() as Request;
                             r.Uri = new Uri(addr);
-                            setting.FeedId += "_" + i;
+                            setting.Id += "_" + i;
                             r.Tag = JsonConvert.SerializeObject(setting);
 
                             var fr = new FeedRequest();
@@ -150,7 +150,7 @@ namespace RuiJi.Net.Core.RTS
 
             var snapshot = new Snapshot
             {
-                FeedId = setting.FeedId,
+                FeedId = setting.Id,
                 RequestUrl = fr.Request.Uri.ToString(),
                 ResponseUrl = response.ResponseUri.ToString(),
                 Content = content,
@@ -159,11 +159,11 @@ namespace RuiJi.Net.Core.RTS
 
             var json = JsonConvert.SerializeObject(snapshot, Formatting.Indented);
 
-            var fileName = Path.Combine(snapshotPath, setting.FeedId + "_" + DateTime.Now.Ticks + ".json");
+            var fileName = Path.Combine(snapshotPath, setting.Id + "_" + DateTime.Now.Ticks + ".json");
 
             if (setting.Delay > 0)
             {
-                fileName = Path.Combine(delayPath, setting.FeedId + "_" + DateTime.Now.AddMinutes(setting.Delay).Ticks + ".json");
+                fileName = Path.Combine(delayPath, setting.Id + "_" + DateTime.Now.AddMinutes(setting.Delay).Ticks + ".json");
             }
 
             Logger.GetLogger("").Info(snapshot.RequestUrl + " response save to " + fileName);

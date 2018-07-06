@@ -7,8 +7,14 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Configuration
 {
+    /// <summary>
+    /// node configuration to parse config
+    /// </summary>
     public class NodeConfigurationElement : ConfigurationElement
     {
+        /// <summary>
+        /// node url
+        /// </summary>
         [ConfigurationProperty("baseUrl", IsRequired = true, IsKey = true)]
         public string BaseUrl
         {
@@ -18,6 +24,9 @@ namespace RuiJi.Net.Core.Configuration
             }
         }
 
+        /// <summary>
+        /// node type
+        /// </summary>
         [ConfigurationProperty("type", IsRequired = true)]
         public string Type
         {
@@ -27,6 +36,9 @@ namespace RuiJi.Net.Core.Configuration
             }
         }
 
+        /// <summary>
+        /// node proxy url
+        /// </summary>
         [ConfigurationProperty("proxy", IsRequired = false)]
         public string Proxy
         {
@@ -35,14 +47,5 @@ namespace RuiJi.Net.Core.Configuration
                 return this["proxy"] as string;
             }
         }
-
-        //[ConfigurationProperty("zkServer", IsRequired = true)]
-        //public string ZkServer
-        //{
-        //    get
-        //    {
-        //        return this["zkServer"] as string;
-        //    }
-        //}
     }
 }

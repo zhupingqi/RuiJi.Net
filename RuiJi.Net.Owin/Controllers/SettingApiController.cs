@@ -1,22 +1,12 @@
-﻿using Newtonsoft.Json;
-using RestSharp;
-using RuiJi.Net.Core.Compile;
+﻿using RuiJi.Net.Core.Compile;
 using RuiJi.Net.Core.Configuration;
 using RuiJi.Net.Core.Crawler;
-using RuiJi.Net.Core.Utils;
 using RuiJi.Net.Core.Utils.Page;
 using RuiJi.Net.Node;
-using RuiJi.Net.Node.Db;
-using RuiJi.Net.NodeVisitor;
+using RuiJi.Net.Node.Feed.Db;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
 
 namespace RuiJi.Net.Owin.Controllers
@@ -282,7 +272,7 @@ namespace RuiJi.Net.Owin.Controllers
         [HttpGet]
         public bool IsAlone()
         {
-            return NodeConfigurationSection.Alone;
+            return NodeConfigurationSection.Standalone;
         }
     }
 
@@ -295,7 +285,7 @@ namespace RuiJi.Net.Owin.Controllers
             this.code = code;
         }
 
-        public override string FormatCode(ExtractFunctionResult result)
+        protected override string FormatCode(UrlFunction result)
         {
             var formatCode = string.Format(code, result.Args);
 

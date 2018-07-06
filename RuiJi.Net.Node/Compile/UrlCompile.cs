@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using RuiJi.Net.Core.Compile;
 using RuiJi.Net.Core.Utils;
-using RuiJi.Net.Node.Db;
+using RuiJi.Net.Node.Feed.Db;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace RuiJi.Net.Node
+namespace RuiJi.Net.Node.Compile
 {
     public class UrlCompile : ComplieBase<FileFuncProvider, JITCompile,string>
     {
@@ -17,9 +17,9 @@ namespace RuiJi.Net.Node
         {
         }
 
-        public string FormatCode(ExtractFunctionResult result)
+        private string FormatCode(UrlFunction result)
         {
-            var code = GetFunc(result.Function);
+            var code = GetFunc(result.Name);
 
             return string.Format(code, result.Args);
         }
@@ -33,9 +33,12 @@ namespace RuiJi.Net.Node
             var reg = new Regex(@"\{#(.*?)#\}");
 
             var code = FormatCode(compileExtract);
+            if (string.IsNullOrEmpty(code))
+                return new string[] { address };
+
             var addrs = new List<string>();
 
-            var results = compile.GetResult(code);
+            var results = Compile.GetResult(code);
             foreach (var r in results)
             {
                 var addr = reg.Replace(address, r.ToString(), 1);
@@ -48,7 +51,7 @@ namespace RuiJi.Net.Node
             return addrs.ToArray();
         }
 
-        private ExtractFunctionResult ExtractFunction(string url)
+        private UrlFunction ExtractFunction(string url)
         {
             if (string.IsNullOrEmpty(url))
                 return null;
@@ -59,7 +62,7 @@ namespace RuiJi.Net.Node
             if (ms.Count == 0)
                 return null;
 
-            var result = new ExtractFunctionResult();
+            var result = new UrlFunction();
             var m = ms[0];
 
             var d = m.Value.Trim();
@@ -70,7 +73,7 @@ namespace RuiJi.Net.Node
             var fun = mt.Groups[1].Value.Trim();
             var arg = Regex.Match(d, @"\((.*)\)+");
 
-            result.Function = fun;
+            result.Name = fun;
             result.Index = m.Index;
 
             if (arg.Success && arg.Groups.Count == 2)
@@ -79,6 +82,20 @@ namespace RuiJi.Net.Node
             }
 
             return result;
+        }
+
+        protected override string GetFunc(string name)
+        {
+            var code = base.GetFunc(name);
+
+            if(string.IsNullOrEmpty(code))
+            {
+                var func = FuncLiteDb.Get(name, FuncType.URLFUNCTION);
+                if (func != null)
+                    return func.Code;
+            }
+
+            return code;
         }
     }
 }

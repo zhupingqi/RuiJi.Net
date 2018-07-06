@@ -7,9 +7,16 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Compile
 {
-    public class FileProProvider : FunctionProviderBase
+    /// <summary>
+    /// file selector processor provider,load selector processor define from disk
+    /// </summary>
+    public class FileProProvider : FileProviderBase
     {
-        public override Dictionary<string, string> LoadFuncs()
+        /// <summary>
+        /// load selector processors
+        /// </summary>
+        /// <returns>selector processor dictionary</returns>
+        public override Dictionary<string, string> Load()
         {
             var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "funcs");
 

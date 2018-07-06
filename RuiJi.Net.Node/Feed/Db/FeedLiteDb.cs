@@ -4,10 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RuiJi.Net.Node.Db
+namespace RuiJi.Net.Node.Feed.Db
 {
     public class FeedLiteDb
     {

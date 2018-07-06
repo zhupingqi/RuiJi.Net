@@ -1,20 +1,11 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
-using RuiJi.Net.Core.Crawler;
-using RuiJi.Net;
-using RuiJi.Net.Node.Crawler;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Http;
-using RuiJi.Net.NodeVisitor;
-using RuiJi.Net.Core.Utils.Page;
-using RuiJi.Net.Node.Db;
-using System.Diagnostics;
-using RuiJi.Net.Node;
 using RuiJi.Net.Core;
+using RuiJi.Net.Core.Crawler;
+using RuiJi.Net.Node;
+using RuiJi.Net.Node.Feed.Db;
+using RuiJi.Net.NodeVisitor;
+using System.Web.Http;
 
 namespace RuiJi.Net.Owin.Controllers
 {
@@ -73,11 +64,6 @@ namespace RuiJi.Net.Owin.Controllers
                 var response = JsonConvert.DeserializeObject<Response>(restResponse.Content);
                 response.ElectInfo = result.BaseUrl + "/" + result.ClientIp;
 
-                if (p != null)
-                {
-                    response.Proxy = request.Proxy.Ip;
-                }
-
                 return response;
             }
             else
@@ -93,7 +79,7 @@ namespace RuiJi.Net.Owin.Controllers
 
             if (node.NodeType == Node.NodeTypeEnum.CRAWLERPROXY)
             {
-                return CrawlerServerManager.Instance.ServerMap;
+                return CrawlerServerManager.Instance.Servers;
             }
             return new { };
         }

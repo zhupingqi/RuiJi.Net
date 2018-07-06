@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using RuiJi.Net.Core.Extensions.System;
 using RuiJi.Net.Core.Extractor;
 using RuiJi.Net.Core.Extractor.Enum;
 using RuiJi.Net.Core.Extractor.Selector;
-using RuiJi.Net.Node.Feed;
-using RuiJi.Net.Node.Db;
+using RuiJi.Net.Node.Feed.Db;
+using System;
+using System.Collections.Generic;
 
 namespace RuiJi.Net.Test
 {

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RuiJi.Net.Node.Db
+namespace RuiJi.Net.Node.Feed.Db
 {
     public class FuncLiteDb
     {
@@ -95,6 +95,16 @@ namespace RuiJi.Net.Node.Db
                 var col = db.GetCollection<FuncModel>("funcs");
 
                 return col.Find(m => m.Name == name).FirstOrDefault();
+            }
+        }
+
+        public static FuncModel Get(string name,FuncType funcType)
+        {
+            using (var db = new LiteDatabase(@"LiteDb/Funcs.db"))
+            {
+                var col = db.GetCollection<FuncModel>("funcs");
+
+                return col.Find(m => m.Name == name && m.Type == funcType).FirstOrDefault();
             }
         }
     }

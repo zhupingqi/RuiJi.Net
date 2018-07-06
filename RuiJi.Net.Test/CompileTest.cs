@@ -1,10 +1,7 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RuiJi.Net.Core.Utils;
-using RuiJi.Net.Node.Feed;
-using RuiJi.Net.Node.Db;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RuiJi.Net.Core.Compile;
+using RuiJi.Net.Node.Feed.Db;
 using RuiJi.Net.Owin.Controllers;
-using RuiJi.Net.Node;
 
 namespace RuiJi.Net.Test
 {

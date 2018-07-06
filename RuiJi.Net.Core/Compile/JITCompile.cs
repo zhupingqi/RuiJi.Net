@@ -9,10 +9,15 @@ using System.Threading.Tasks;
 namespace RuiJi.Net.Core.Compile
 {
     /// <summary>
-    /// C# 即时编译器
+    /// C# compile
     /// </summary>
     public class JITCompile : ICompile
     {
+        /// <summary>
+        /// generate code
+        /// </summary>
+        /// <param name="code">code</param>
+        /// <returns>merged code</returns>
         private string GenerateCode(string code)
         {
             return @"
@@ -40,7 +45,12 @@ namespace RuiJi.Net.Core.Compile
             }";
         }
 
-        public CompilerResults Compile(string codes)
+        /// <summary>
+        /// compile code
+        /// </summary>
+        /// <param name="code">code</param>
+        /// <returns>compile result</returns>
+        public CompilerResults Compile(string code)
         {
             var compiler = new CSharpCodeProvider();
             var parameters = new CompilerParameters();
@@ -48,9 +58,14 @@ namespace RuiJi.Net.Core.Compile
             parameters.GenerateInMemory = true;
             parameters.ReferencedAssemblies.Add("System.dll");
 
-            return compiler.CompileAssemblyFromSource(parameters, codes);
+            return compiler.CompileAssemblyFromSource(parameters, code);
         }
 
+        /// <summary>
+        /// execute code 
+        /// </summary>
+        /// <param name="code">code</param>
+        /// <returns>execute results</returns>
         public List<object> GetResult(string code)
         {
             code = GenerateCode(code);

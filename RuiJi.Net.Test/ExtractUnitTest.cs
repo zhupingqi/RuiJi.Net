@@ -171,7 +171,7 @@ namespace RuiJi.Net.Test
 [paging]
 css #listnav a[href]";
 
-            var block = RuiJiExtractBlockParser.ParserBlock(exp);
+            var block = RuiJiBlockParser.ParserBlock(exp);
             var result = RuiJiExtractor.Extract(content, block);
 
             if (result.Paging != null && result.Paging.Count > 0 && result.Tiles != null)
@@ -215,7 +215,7 @@ css #listnav a[href]";
 css .a-page
 css a[href]";
 
-            var block = RuiJiExtractBlockParser.ParserBlock(exp);
+            var block = RuiJiBlockParser.ParserBlock(exp);
             var result = RuiJiExtractor.Extract(content, block);
 
             if (result.Paging != null && result.Paging.Count > 0 && result.Metas != null && result.Metas.ContainsKey("content"))

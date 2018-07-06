@@ -19,7 +19,7 @@ namespace RuiJi.Net.NodeVisitor
         {
             var proxyUrl = "";
 
-            if (NodeConfigurationSection.Alone)
+            if (NodeConfigurationSection.Standalone)
             {
                 proxyUrl= ConfigurationManager.AppSettings["RuiJiServer"];
             }

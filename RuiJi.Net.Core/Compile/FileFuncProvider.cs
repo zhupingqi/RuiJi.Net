@@ -7,13 +7,20 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Compile
 {
-    public class FileFuncProvider : FunctionProviderBase
+    /// <summary>
+    /// file function provider,load functions define from disk
+    /// </summary>
+    public class FileFuncProvider : FileProviderBase
     {
         public FileFuncProvider()
         {
         }
 
-        public override Dictionary<string, string> LoadFuncs()
+        /// <summary>
+        /// load functions
+        /// </summary>
+        /// <returns>functions dictionary</returns>
+        public override Dictionary<string, string> Load()
         {
             var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "funcs");
 

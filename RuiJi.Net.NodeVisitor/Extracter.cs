@@ -17,7 +17,7 @@ namespace RuiJi.Net.NodeVisitor
     {
         public static List<ExtractResult> Extract(ExtractRequest request)
         {
-            if (NodeConfigurationSection.Alone)
+            if (NodeConfigurationSection.Standalone)
             {
                 var result = RuiJiExtractor.Extract(request);
                 return result;

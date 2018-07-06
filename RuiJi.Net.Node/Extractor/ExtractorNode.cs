@@ -30,10 +30,10 @@ namespace RuiJi.Net.Node.Extractor
 
         protected override void OnStartup()
         {
-            base.CreateLiveNode("/live_nodes/Extractor/" + BaseUrl, null);
+            base.CreateLiveNode("/live_nodes/extractor/" + BaseUrl, null);
 
             //create extreacter config in zookeeper
-            var stat = zooKeeper.Exists("/config/Extractor/" + BaseUrl, false);
+            var stat = zooKeeper.Exists("/config/extractor/" + BaseUrl, false);
             if (stat == null)
             {
                 var d = new NodeConfig()
@@ -43,7 +43,7 @@ namespace RuiJi.Net.Node.Extractor
                     Proxy = ProxyUrl,
                     Pages = new int[0]
                 };
-                zooKeeper.Create("/config/Extractor/" + BaseUrl, JsonConvert.SerializeObject(d).GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+                zooKeeper.Create("/config/extractor/" + BaseUrl, JsonConvert.SerializeObject(d).GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
             }
         }
 

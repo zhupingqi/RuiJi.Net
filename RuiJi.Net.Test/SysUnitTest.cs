@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RuiJi.Net.Owin.Controllers;
 
@@ -10,10 +11,12 @@ namespace RuiJi.Net.Test
         [TestMethod]
         public void TestGetIfTable()
         {
-            while (true)
+            for (int i = 0; i < 10; i++)
             {
                 var c = new InfoApiController();
                 var info = c.System();
+
+                Thread.Sleep(1000);
             }
 
             Assert.IsTrue(true);

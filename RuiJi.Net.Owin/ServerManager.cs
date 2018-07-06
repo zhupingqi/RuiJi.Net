@@ -57,7 +57,7 @@ namespace RuiJi.Net.Owin
 
         public static void StartServers()
         {
-            if (NodeConfigurationSection.Alone)
+            if (NodeConfigurationSection.Standalone)
             {
                 var baseUrl = ConfigurationManager.AppSettings["RuiJiServer"];
                 if(string.IsNullOrEmpty(baseUrl))

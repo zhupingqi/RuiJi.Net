@@ -9,7 +9,7 @@ namespace RuiJi.Net.Core.Compile
 {
     public class JSCompile : ICompile
     {
-        public CompilerResults Compile(string codes)
+        public CompilerResults Compile(string code)
         {
             throw new NotImplementedException();
         }

@@ -6,6 +6,9 @@ using System.Text;
 
 namespace RuiJi.Net.Core.Configuration
 {
+    /// <summary>
+    /// node configuration collection
+    /// </summary>
     public class NodeConfigurationElementCollection : ConfigurationElementCollection 
     {
         public NodeConfigurationElementCollection()

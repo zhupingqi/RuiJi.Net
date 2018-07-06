@@ -55,7 +55,7 @@ namespace RuiJi.Net.Node.Extractor
             {
                 ExtractorManager.Instance.Clear();
 
-                var nodes = zooKeeper.GetChildren("/live_nodes/Extractor", new LiveExtractorWatcher(this));
+                var nodes = zooKeeper.GetChildren("/live_nodes/extractor", new LiveExtractorWatcher(this));
 
                 ExtractorManager.Instance.ClearAndAddServer(nodes.ToArray());
             }

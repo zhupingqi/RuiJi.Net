@@ -189,7 +189,7 @@ namespace RuiJi.Net.Node
             catch (ZooKeeperNet.KeeperException.NodeExistsException ex)
             {
                 IsLeader = false;
-                Logger.GetLogger(BaseUrl).Info(BaseUrl + " run for leader failed!");
+                Logger.GetLogger(BaseUrl).Info(BaseUrl + " run for leader failed!" + ex.Message);
             }
             catch (Exception ex)
             {
@@ -212,7 +212,7 @@ namespace RuiJi.Net.Node
             }
             catch (Exception ex)
             {
-                Logger.GetLogger(BaseUrl).Error(BaseUrl + " read leader failed!");
+                Logger.GetLogger(BaseUrl).Error(BaseUrl + " read leader failed!" + ex.Message);
             }
 
             return null;

@@ -12,19 +12,29 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Expression
 {
+    /// <summary>
+    /// RuiJi Expression Parser
+    /// </summary>
     public class RuiJiParser
     {
-        public Request Request { get; private set; }
-
-        public ExtractFeatureBlock ExtractBlock { get; private set; }
-
+        /// <summary>
+        /// parse result list
+        /// </summary>
         public List<IParseResult> Results { get; private set; }
 
+        /// <summary>
+        /// constructor
+        /// </summary>
         public RuiJiParser()
         {
 
         }
 
+        /// <summary>
+        /// parse from file
+        /// </summary>
+        /// <param name="file">file path</param>
+        /// <returns>parse result</returns>
         public bool ParseFile(string file)
         {
             if (!File.Exists(file))
@@ -33,6 +43,11 @@ namespace RuiJi.Net.Core.Expression
             return Parse(File.ReadAllText(file));
         }
 
+        /// <summary>
+        /// parse expression
+        /// </summary>
+        /// <param name="expression">ruiji expression</param>
+        /// <returns>parse result</returns>
         public bool Parse(string expression)
         {
             if (string.IsNullOrEmpty(expression))
@@ -79,7 +94,7 @@ namespace RuiJi.Net.Core.Expression
                         }
                     case "##storage":
                         {
-                            Results.Add(ParseStorage(exp));
+                            //Results.Add(ParseStorage(exp));
                             break;
                         }
                     case "##setting":
@@ -98,6 +113,11 @@ namespace RuiJi.Net.Core.Expression
             return Results.Sum(m=>m.Messages.Count) == 0;
         }
 
+        /// <summary>
+        /// parse request from ruiji expression
+        /// </summary>
+        /// <param name="expression">ruiji expression</param>
+        /// <returns>parse result with crawl request</returns>
         public ParseResult<Request> ParseRequest(string expression)
         {
             var result = new ParseResult<Request>(expression);            
@@ -215,13 +235,18 @@ namespace RuiJi.Net.Core.Expression
             return result;
         }
 
+        /// <summary>
+        /// parse extract block from ruiji expression
+        /// </summary>
+        /// <param name="expression">ruiji expression</param>
+        /// <returns>parse result with extract block</returns>
         public ParseResult<ExtractBlock> ParseExtract(string expression)
         {
             var result = new ParseResult<ExtractBlock>(expression);
 
             try
             {
-                result.Result = RuiJiExtractBlockParser.ParserBlock(expression);
+                result.Result = RuiJiBlockParser.ParserBlock(expression);
             }
             catch (Exception ex)
             {
@@ -231,11 +256,21 @@ namespace RuiJi.Net.Core.Expression
             return result;
         }
 
-        public ParseResult<object> ParseStorage(string expression)
-        {
-            return new ParseResult<object>(expression);
-        }
+        /// <summary>
+        /// parse storage from ruiji expression
+        /// </summary>
+        /// <param name="expression">ruiji expression</param>
+        /// <returns>parse result with storage</returns>
+        //public ParseResult<object> ParseStorage(string expression)
+        //{
+        //    return new ParseResult<object>(expression);
+        //}
 
+        /// <summary>
+        /// parse extract feature from ruiji expression
+        /// </summary>
+        /// <param name="expression">ruiji expression</param>
+        /// <returns>parse result wieth extract feature</returns>
         public ParseResult<ExtractFeature> ParseFeatureRule(string expression)
         {
             var result = new ParseResult<ExtractFeature>(expression);
@@ -269,7 +304,7 @@ namespace RuiJi.Net.Core.Expression
                                 {
                                     while (!string.IsNullOrEmpty(line) && !reader.EndOfStream)
                                     {
-                                        result.Result.Feature.Add(RuiJiExtractBlockParser.ParserSelector(line));
+                                        result.Result.Feature.Add(RuiJiBlockParser.ParserSelector(line));
                                         line = reader.ReadLine();
                                     }
                                     break;
@@ -282,6 +317,11 @@ namespace RuiJi.Net.Core.Expression
             return result;
         }
 
+        /// <summary>
+        /// parse setting from ruiji expression
+        /// </summary>
+        /// <param name="expression">ruiji expression</param>
+        /// <returns>parse result with feed setting</returns>
         public ParseResult<FeedSetting> ParseSetting(string expression)
         {
             var result = new ParseResult<FeedSetting>(expression);
@@ -317,7 +357,7 @@ namespace RuiJi.Net.Core.Expression
                                         result.Messages.Add("id is not set");
                                         continue;
                                     }
-                                    result.Result.FeedId = line;
+                                    result.Result.Id = line;
                                     break;
                                 }
                         }
@@ -328,7 +368,12 @@ namespace RuiJi.Net.Core.Expression
             return result;
         }
 
-        public ParseResult<T> GetResult<T>() where T : new()
+        /// <summary>
+        /// get parse result by T
+        /// </summary>
+        /// <typeparam name="T">T is IRuiJiParseResult</typeparam>
+        /// <returns></returns>
+        public ParseResult<T> GetResult<T>() where T : IRuiJiParseResult, new()
         {
             var result = Results.SingleOrDefault(m => m.Type == typeof(T));
             if(result != null)

@@ -6,12 +6,24 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Expression
 {
-    public class FeedSetting
+    /// <summary>
+    /// expression feedsetting model
+    /// </summary>
+    public class FeedSetting: IRuiJiParseResult
     {
+        /// <summary>
+        /// corn expression
+        /// </summary>
         public string CornExpression { get; set; }
 
-        public string FeedId { get; set; }
+        /// <summary>
+        /// id
+        /// </summary>
+        public string Id { get; set; }
 
+        /// <summary>
+        /// after a few minutes of delay, start to grab the update link
+        /// </summary>
         public int Delay { get; set; }
     }
 }
