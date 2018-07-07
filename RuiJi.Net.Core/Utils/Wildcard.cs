@@ -6,8 +6,17 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Utils
 {
+    /// <summary>
+    /// wildcard match class
+    /// </summary>
     public class Wildcard
     {
+        /// <summary>
+        /// Maximum forward matching
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="masks"></param>
+        /// <returns></returns>
         public static string MaxMatch(string content,string[] masks)
         {
             masks = masks.Distinct().ToArray();
@@ -36,6 +45,12 @@ namespace RuiJi.Net.Core.Utils
             return result;
         }
 
+        /// <summary>
+        /// match content
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="masks"></param>
+        /// <returns></returns>
         public static bool IsMatch(string content, string[] masks)
         {
             content = content.ToLower();

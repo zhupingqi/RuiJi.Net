@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.RTS
 {
+    /// <summary>
+    /// feed new url extract scheduler
+    /// </summary>
     public class FeedExtractScheduler
     {
         private static IScheduler scheduler;
@@ -18,6 +21,10 @@ namespace RuiJi.Net.Core.RTS
             factory = new StdSchedulerFactory();
         }
 
+        /// <summary>
+        /// start scheduler
+        /// </summary>
+        /// <param name="baseUrl"></param>
         public static async void Start(string baseUrl)
         {
             scheduler = await factory.GetScheduler();
@@ -31,6 +38,9 @@ namespace RuiJi.Net.Core.RTS
             await scheduler.ScheduleJob(job, trigger);
         }
 
+        /// <summary>
+        /// stop scheduler
+        /// </summary>
         public static async void Stop()
         {
             await scheduler.Shutdown(false);

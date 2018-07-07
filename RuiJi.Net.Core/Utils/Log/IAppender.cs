@@ -10,10 +10,21 @@ namespace RuiJi.Net.Core.Utils.Log
 {
     public interface IAppender
     {
+        /// <summary>
+        /// log levels
+        /// </summary>
         List<Level> Levels { get; set; }
 
+        /// <summary>
+        /// log pattern
+        /// </summary>
         string Pattern { get; set; }
 
+        /// <summary>
+        /// configure abstract method
+        /// </summary>
+        /// <param name="key">key</param>
+        /// <param name="repository">repository</param>
         void Configure(string key, ILoggerRepository repository);
     }
 }

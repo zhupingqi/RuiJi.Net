@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Storage
 {
+    /// <summary>
+    /// storage model interface
+    /// </summary>
     public interface IStorageModel
     {
         int Id { get; set; }
@@ -15,6 +18,10 @@ namespace RuiJi.Net.Storage
         string Url { get; set; }
     }
 
+    /// <summary>
+    /// storage interface
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public interface IStorage<T> where T : IStorageModel
     {
         string ConnectString { get; set; }

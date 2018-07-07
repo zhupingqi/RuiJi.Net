@@ -12,6 +12,9 @@ using Ude;
 
 namespace RuiJi.Net.Core.Utils
 {
+    /// <summary>
+    /// decompress stream and detect content charset
+    /// </summary>
     public class Decoding
     {
         private static List<string> encodings;

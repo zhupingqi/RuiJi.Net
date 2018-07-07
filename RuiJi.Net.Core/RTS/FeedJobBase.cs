@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.RTS
 {
+    /// <summary>
+    /// feed job base class
+    /// </summary>
     public abstract class FeedJobBase : IJob
     {
         private static bool IsRunning = false;
@@ -23,6 +26,11 @@ namespace RuiJi.Net.Core.RTS
             MaxWorkerThreads = 8;
         }
 
+        /// <summary>
+        /// execute job
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public async Task Execute(IJobExecutionContext context)
         {
             if (!IsRunning)
@@ -75,6 +83,13 @@ namespace RuiJi.Net.Core.RTS
             }
         }
 
+        /// <summary>
+        /// convert text encoding
+        /// </summary>
+        /// <param name="input">text need to be convert</param>
+        /// <param name="source">source encoding</param>
+        /// <param name="target">target encoding</param>
+        /// <returns>text encoded</returns>
         protected string ConvertEncoding(string input, Encoding source, Encoding target)
         {
             var bytes = source.GetBytes(input);
@@ -82,18 +97,39 @@ namespace RuiJi.Net.Core.RTS
             return target.GetString(dst);
         }
 
+        /// <summary>
+        /// execute on job start
+        /// </summary>
+        /// <param name="context"></param>
         protected virtual void OnJobStart(IJobExecutionContext context)
         {
 
         }
 
+        /// <summary>
+        /// execute on job end
+        /// </summary>
         protected virtual void OnJobEnd()
         { }
 
+        /// <summary>
+        /// get feed request
+        /// </summary>
+        /// <returns>feed request list</returns>
         protected abstract List<FeedRequest> GetRequests();
 
+        /// <summary>
+        /// execute crawl
+        /// </summary>
+        /// <param name="feedRequest"></param>
+        /// <returns>crawl response</returns>
         public abstract Response DoTask(FeedRequest feedRequest);
 
+        /// <summary>
+        /// save feed snapshot
+        /// </summary>
+        /// <param name="feedRequest">feedRequest</param>
+        /// <param name="response">crawl response</param>
         protected abstract void Save(FeedRequest feedRequest, Response response);
     }
 }

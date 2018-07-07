@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Utils
 {
+    /// <summary>
+    /// use to mime detect
+    /// </summary>
     public class MimeDetect
     {
         private static List<string> mimes;
@@ -36,6 +39,9 @@ namespace RuiJi.Net.Core.Utils
         }
     }
 
+    /// <summary>
+    /// mime cache
+    /// </summary>
     public class Mimes
     {
         private static Dictionary<string, List<string>> mimes = new Dictionary<string, List<string>>();

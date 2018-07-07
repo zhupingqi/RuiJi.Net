@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Utils.Log
 {
+    /// <summary>
+    /// logger used by ruiji.net
+    /// </summary>
     public class Logger
     {
         static Dictionary<string, ILoggerRepository> logger = new Dictionary<string, ILoggerRepository>();
@@ -22,6 +25,12 @@ namespace RuiJi.Net.Core.Utils.Log
             
         }
 
+        /// <summary>
+        /// add appender
+        /// </summary>
+        /// <param name="key">key</param>
+        /// <param name="appenders">appenders</param>
+        /// <returns></returns>
         public static bool Add(string key, List<IAppender> appenders)
         {
             try
@@ -54,6 +63,11 @@ namespace RuiJi.Net.Core.Utils.Log
             }
         }
 
+        /// <summary>
+        /// get logger
+        /// </summary>
+        /// <param name="key">key</param>
+        /// <returns>ILog interface</returns>
         public static ILog GetLogger(string key)
         {
             if (string.IsNullOrEmpty(key))

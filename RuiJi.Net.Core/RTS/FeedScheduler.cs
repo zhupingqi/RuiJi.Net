@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.RTS
 {
+    /// <summary>
+    /// feed monitor scheduler
+    /// </summary>
     public class FeedScheduler
     {
         private static IScheduler scheduler;
@@ -18,6 +21,9 @@ namespace RuiJi.Net.Core.RTS
             factory = new StdSchedulerFactory();
         }
 
+        /// <summary>
+        /// start scheduler
+        /// </summary>
         public static async void Start(string cornExpression = "0 0/5 * * * ?", Dictionary<string,object> dic = null)
         {
             scheduler = await factory.GetScheduler();
@@ -38,6 +44,9 @@ namespace RuiJi.Net.Core.RTS
             await scheduler.ScheduleJob(job, trigger);
         }
 
+        /// <summary>
+        /// stop scheduler
+        /// </summary>
         public static async void Stop()
         {
             await scheduler.Shutdown(false);

@@ -17,6 +17,9 @@ namespace RuiJi.Net.Core.RTS
     {
         private static bool IsRunning = false;
 
+        /// <summary>
+        /// job worker number
+        /// </summary>
         public static int MaxWorkerThreads { get; set; }
 
         static FeedExtractJobBase()
@@ -24,6 +27,11 @@ namespace RuiJi.Net.Core.RTS
             MaxWorkerThreads = 8;            
         }
 
+        /// <summary>
+        /// execute job
+        /// </summary>
+        /// <param name="context">job context</param>
+        /// <returns>task</returns>
         public async Task Execute(IJobExecutionContext context)
         {
             if (!IsRunning)
@@ -71,16 +79,31 @@ namespace RuiJi.Net.Core.RTS
             }
         }
 
+        /// <summary>
+        /// execute on job start
+        /// </summary>
+        /// <param name="context">job context</param>
         protected virtual void OnJobStart(IJobExecutionContext context)
         {
             
         }
 
+        /// <summary>
+        /// execute on job end
+        /// </summary>
         protected virtual void OnJobEnd()
         { }
 
+        /// <summary>
+        /// get snapshot 
+        /// </summary>
+        /// <returns>snapshots</returns>
         protected abstract List<T> GetSnapshot();
 
+        /// <summary>
+        /// deal with snapshots
+        /// </summary>
+        /// <param name="snapshot"></param>
         public abstract void DoTask(T snapshot);
     }
 }

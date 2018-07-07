@@ -10,8 +10,16 @@ using log4net.Repository;
 
 namespace RuiJi.Net.Core.Utils.Log
 {
+    /// <summary>
+    /// log4net console appender
+    /// </summary>
     public class ConsoleAppender : AppenderBase
     {
+        /// <summary>
+        /// configure abstract method
+        /// </summary>
+        /// <param name="key">key</param>
+        /// <param name="repository">repository</param>
         public override void Configure(string key, ILoggerRepository repository)
         {
             foreach (var level in Levels)

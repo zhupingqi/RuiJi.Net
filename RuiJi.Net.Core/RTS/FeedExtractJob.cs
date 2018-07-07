@@ -14,10 +14,19 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.RTS
 {
+    /// <summary>
+    /// feed extract job
+    /// </summary>
     public class FeedExtractJob : FeedExtractJobBase<string>
     {
+        /// <summary>
+        /// snapshot path
+        /// </summary>
         private static readonly string snapshotPath;
 
+        /// <summary>
+        /// base path
+        /// </summary>
         private static readonly string basePath;
 
         static FeedExtractJob()
@@ -36,6 +45,10 @@ namespace RuiJi.Net.Core.RTS
             }
         }
 
+        /// <summary>
+        /// execute on job start
+        /// </summary>
+        /// <param name="context">job context</param>
         protected override void OnJobStart(IJobExecutionContext context)
         {
             var files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory + @"delay");
@@ -53,11 +66,19 @@ namespace RuiJi.Net.Core.RTS
             }
         }
 
+        /// <summary>
+        /// get snapshot files
+        /// </summary>
+        /// <returns></returns>
         protected override List<string> GetSnapshot()
         {
             return Directory.GetFiles(snapshotPath).ToList();
         }
 
+        /// <summary>
+        /// read file and check history
+        /// </summary>
+        /// <param name="path">snapshot file path</param>
         public override void DoTask(string path)
         {
             try
@@ -99,6 +120,11 @@ namespace RuiJi.Net.Core.RTS
             catch { }
         }
 
+        /// <summary>
+        /// extract snapshot url
+        /// </summary>
+        /// <param name="snapshot"></param>
+        /// <returns></returns>
         protected List<string> ExtractFeedAddress(Snapshot snapshot)
         {
             var block = new ExtractBlock();
@@ -135,6 +161,10 @@ namespace RuiJi.Net.Core.RTS
             return results.Distinct().ToList();
         }
 
+        /// <summary>
+        /// save new url as you want
+        /// </summary>
+        /// <param name="url"></param>
         protected void Save(string url)
         {
             

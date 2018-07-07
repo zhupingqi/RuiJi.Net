@@ -13,8 +13,14 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Utils.Log
 {
+    /// <summary>
+    /// memory log appender
+    /// </summary>
     public class MemoryAppender : AppenderBase
     {
+        /// <summary>
+        /// max message length
+        /// </summary>
         public int MaxMessage { get; set; }
 
         private Thread watcher;
@@ -32,6 +38,10 @@ namespace RuiJi.Net.Core.Utils.Log
             Messages = new Dictionary<string, List<string>>();
         }
 
+        /// <summary>
+        /// constructor
+        /// </summary>
+        /// <param name="maxMessage">max message length</param>
         public MemoryAppender(int maxMessage = 1000)
         {
             this.MaxMessage = maxMessage;
@@ -42,6 +52,11 @@ namespace RuiJi.Net.Core.Utils.Log
             //};
         }
 
+        /// <summary>
+        /// configure abstract method
+        /// </summary>
+        /// <param name="key">key</param>
+        /// <param name="repository">repository</param>
         public override void Configure(string key, ILoggerRepository repository)
         {
             this.key = key;
@@ -81,6 +96,11 @@ namespace RuiJi.Net.Core.Utils.Log
             Start(key, appenders);
         }
 
+        /// <summary>
+        /// start memory logger
+        /// </summary>
+        /// <param name="key">key</param>
+        /// <param name="appenders">memory appenders</param>
         public void Start(string key, List<log4net.Appender.MemoryAppender> appenders)
         {
             Messages.Add(key, new List<string>());
@@ -94,6 +114,9 @@ namespace RuiJi.Net.Core.Utils.Log
             watcher.Start();
         }
 
+        /// <summary>
+        /// stop memory logger
+        /// </summary>
         public void Stop()
         {
             watchMessage = false;
@@ -107,6 +130,11 @@ namespace RuiJi.Net.Core.Utils.Log
             Messages.Remove(key);
         }
 
+        /// <summary>
+        /// get memory logger message
+        /// </summary>
+        /// <param name="key">key</param>
+        /// <returns>messages</returns>
         public static string[] GetMessage(string key)
         {
             lock (_lck)

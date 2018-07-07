@@ -20,6 +20,9 @@ using RuiJi.Net.Core.Compile;
 
 namespace RuiJi.Net.Core.RTS
 {
+    /// <summary>
+    /// feed monitor job
+    /// </summary>
     public class FeedJob : FeedJobBase
     {
         public static int Delay { get; set; }
@@ -53,6 +56,10 @@ namespace RuiJi.Net.Core.RTS
                 Directory.CreateDirectory(delayPath);
         }
 
+        /// <summary>
+        /// get feed request
+        /// </summary>
+        /// <returns>feed request list</returns>
         protected override List<FeedRequest> GetRequests()
         {
             Logger.GetLogger("").Info("start get feed");
@@ -111,6 +118,11 @@ namespace RuiJi.Net.Core.RTS
             }
         }
 
+        /// <summary>
+        /// execute crawl
+        /// </summary>
+        /// <param name="feedRequest"></param>
+        /// <returns>crawl response</returns>
         public override Response DoTask(FeedRequest feedRequest)
         {
             try
@@ -135,6 +147,11 @@ namespace RuiJi.Net.Core.RTS
             return null;
         }
 
+        /// <summary>
+        /// save feed snapshot
+        /// </summary>
+        /// <param name="feedRequest">feedRequest</param>
+        /// <param name="response">crawl response</param>
         protected override void Save(FeedRequest feedRequest, Response response)
         {
             if (response == null || response.StatusCode != HttpStatusCode.OK)

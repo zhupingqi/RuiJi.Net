@@ -13,20 +13,42 @@ using log4net.Repository;
 
 namespace RuiJi.Net.Core.Utils.Log
 {
+    /// <summary>
+    /// rolling file logger
+    /// </summary>
     public class RollingFileAppender : AppenderBase
     {
+        /// <summary>
+        /// logger sub path
+        /// </summary>
         public string Path { get; set; }
 
+        /// <summary>
+        /// logger folder
+        /// </summary>
         public static string Folder = "logs/";
 
+        /// <summary>
+        /// file size
+        /// </summary>
         public string FileSize { get; set; }
 
+        /// <summary>
+        /// constructor
+        /// </summary>
+        /// <param name="path">logger sub path</param>
+        /// <param name="filesize">filesize</param>
         public RollingFileAppender(string path ,string filesize = "10M")
         {
             this.Path = path;
             this.FileSize = filesize;
         }
 
+        /// <summary>
+        /// configure method
+        /// </summary>
+        /// <param name="key">key</param>
+        /// <param name="repository">repository</param>
         public override void Configure(string key, ILoggerRepository repository)
         {
             var path = Path.Replace(":", "_");
