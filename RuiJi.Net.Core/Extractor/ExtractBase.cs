@@ -23,7 +23,8 @@ namespace RuiJi.Net.Core.Extractor
         /// <summary>
         /// data type
         /// </summary>
-        public Type DataType { get; set; }
+        [JsonProperty("type", NullValueHandling = NullValueHandling.Ignore)]
+        public TypeCode DataType { get; set; }
 
         /// <summary>
         /// extract selectors
@@ -39,7 +40,7 @@ namespace RuiJi.Net.Core.Extractor
         {
             Name = name;
             Selectors = new List<ISelector>();
-            DataType = typeof(string);
+            DataType = TypeCode.String;
         }
     }
 }

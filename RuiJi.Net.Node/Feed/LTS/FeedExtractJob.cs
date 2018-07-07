@@ -4,6 +4,7 @@ using Quartz;
 using RuiJi.Net.Core.Expression;
 using RuiJi.Net.Core.Extractor;
 using RuiJi.Net.Core.Extractor.Selector;
+using RuiJi.Net.Core.RTS;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -14,80 +15,34 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Node.Feed.LTS
 {
-    public class FeedExtractJob : IJob
+    public class FeedExtractJob : FeedExtractJobBase<string>
     {
-        public static bool IsRunning = false;
+        private static readonly string snapshotPath;
 
-        private static string baseDir;
+        private static readonly string basePath;
 
-        private string baseUrl;
+        private static string baseUrl;
 
         static FeedExtractJob()
         {
-            baseDir = AppDomain.CurrentDomain.BaseDirectory;
+            snapshotPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "snapshot");
 
-            if (!Directory.Exists(baseDir + @"/history"))
+            basePath = AppDomain.CurrentDomain.BaseDirectory;
+
+            if (!Directory.Exists(basePath + @"/history"))
             {
-                Directory.CreateDirectory(baseDir + @"/history");
+                Directory.CreateDirectory(basePath + @"/history");
             }
-            if (!Directory.Exists(baseDir + @"/pre"))
+            if (!Directory.Exists(basePath + @"/pre"))
             {
-                Directory.CreateDirectory(baseDir + @"/pre");
-            }
-        }
-
-        public async Task Execute(IJobExecutionContext context)
-        {
-            if (!IsRunning)
-            {
-                IsRunning = true;
-
-                baseUrl = context.JobDetail.JobDataMap.Get("baseUrl").ToString();
-
-                try
-                {
-
-                    MoveDelayFeed();
-
-                    var task = Task.Factory.StartNew(() =>
-                    {
-                        var files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory + @"snapshot");
-
-                        var stpStartInfo = new STPStartInfo
-                        {
-                            IdleTimeout = 3000,
-                            MaxWorkerThreads = 8,
-                            MinWorkerThreads = 0
-                        };
-
-                        var pool = new SmartThreadPool(stpStartInfo);
-                        var waits = new List<IWorkItemResult>();
-                        foreach (var file in files)
-                        {
-                            var item = pool.QueueWorkItem((fileName) =>
-                            {
-                                DoTask(fileName);
-                            }, file);
-                            waits.Add(item);
-                        }
-
-                        SmartThreadPool.WaitAll(waits.ToArray());
-                        pool.Shutdown(true, 1000);
-                        pool.Dispose();
-                        pool = null;
-                        waits.Clear();
-                    });
-
-                    await task;
-                }
-                catch { }
-
-                IsRunning = false;
+                Directory.CreateDirectory(basePath + @"/pre");
             }
         }
 
-        public void MoveDelayFeed()
+        protected override void OnJobStart(IJobExecutionContext context)
         {
+            baseUrl = context.JobDetail.JobDataMap.Get("baseUrl").ToString();
+
             var files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory + @"delay");
             foreach (var file in files)
             {
@@ -101,51 +56,6 @@ namespace RuiJi.Net.Node.Feed.LTS
                     File.Move(file, desFile);
                 }
             }
-        }
-
-        public void DoTask(string path)
-        {
-            try
-            {
-                var filename = path.Substring(path.LastIndexOf(@"\") + 1);
-                var sp = filename.Split('_');
-                var feedId = Convert.ToInt32(sp[0]);
-                var content = File.ReadAllText(path);
-
-                var feed = JsonConvert.DeserializeObject<FeedSnapshot>(content);
-                var url = feed.Url;
-
-                var urls = ExtractAddress(feed);
-
-                var hisFile = AppDomain.CurrentDomain.BaseDirectory + @"history\" + feedId + ".txt";
-                var urlsHistory = new string[0];
-                if (File.Exists(hisFile))
-                {
-                    urlsHistory = File.ReadAllLines(hisFile, Encoding.UTF8);
-                }
-
-                File.WriteAllLines(hisFile, urls, Encoding.UTF8);
-
-                urls.RemoveAll(m => urlsHistory.Contains(m));
-                urls.RemoveAll(m => string.IsNullOrEmpty(m));
-                urls.RemoveAll(m => !Uri.IsWellFormedUriString(m, UriKind.Absolute));
-
-                foreach (var u in urls)
-                {
-                    var qm = new QueueModel();
-                    qm.FeedId = feedId;
-                    qm.Url = u;
-
-                    ContentQueue.Instance.Enqueue(qm);
-                }
-
-                var destFile = path.Replace("snapshot", "pre").Replace(filename, feedId + ".txt");
-                if (File.Exists(destFile))
-                    File.Delete(destFile);
-
-                File.Move(path, destFile);
-            }
-            catch { }
         }
 
         public List<string> ExtractAddress(FeedSnapshot feed)
@@ -190,6 +100,58 @@ namespace RuiJi.Net.Node.Feed.LTS
             }
 
             return results.Distinct().ToList();
+        }
+
+        protected override List<string> GetSnapshot()
+        {
+            return Directory.GetFiles(snapshotPath).ToList();
+        }
+
+        public override void DoTask(string path)
+        {
+            try
+            {
+                var filename = path.Substring(path.LastIndexOf(@"\") + 1);
+                var sp = filename.Split('_');
+                var feedId = Convert.ToInt32(sp[0]);
+                var content = File.ReadAllText(path);
+
+                var feed = JsonConvert.DeserializeObject<FeedSnapshot>(content);
+                var url = feed.Url;
+
+                var urls = ExtractAddress(feed);
+
+                var hisFile = AppDomain.CurrentDomain.BaseDirectory + @"history\" + feedId + ".txt";
+                var urlsHistory = new string[0];
+                if (File.Exists(hisFile))
+                {
+                    urlsHistory = File.ReadAllLines(hisFile, Encoding.UTF8);
+                }
+
+                File.WriteAllLines(hisFile, urls, Encoding.UTF8);
+
+                urls.RemoveAll(m => urlsHistory.Contains(m));
+                urls.RemoveAll(m => string.IsNullOrEmpty(m));
+                urls.RemoveAll(m => !Uri.IsWellFormedUriString(m, UriKind.Absolute));
+
+                foreach (var u in urls)
+                {
+                    var qm = new QueueModel
+                    {
+                        FeedId = feedId,
+                        Url = u
+                    };
+
+                    ContentQueue.Instance.Enqueue(qm);
+                }
+
+                var destFile = path.Replace("snapshot", "pre").Replace(filename, feedId + ".txt");
+                if (File.Exists(destFile))
+                    File.Delete(destFile);
+
+                File.Move(path, destFile);
+            }
+            catch { }
         }
     }
 }

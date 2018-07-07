@@ -30,7 +30,7 @@ namespace RuiJi.Net.Core.RTS
             {
                 IsRunning = true;
 
-                OnStart(context);
+                OnJobStart(context);
 
                 var task = Task.Factory.StartNew(() =>
                 {
@@ -65,19 +65,22 @@ namespace RuiJi.Net.Core.RTS
 
                 await task;
 
+                OnJobEnd();
+
                 IsRunning = false;
             }
         }
 
-        protected virtual void OnStart(IJobExecutionContext context)
+        protected virtual void OnJobStart(IJobExecutionContext context)
         {
             
         }
 
+        protected virtual void OnJobEnd()
+        { }
+
         protected abstract List<T> GetSnapshot();
 
-        protected abstract void DoTask(T snapshot);
-
-        protected abstract void Save(string url);
+        public abstract void DoTask(T snapshot);
     }
 }

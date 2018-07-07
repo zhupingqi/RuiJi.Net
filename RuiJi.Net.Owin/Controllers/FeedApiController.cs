@@ -311,7 +311,7 @@ namespace RuiJi.Net.Owin.Controllers
                 {
                     feed.Address = addr.ToString();
                     var job = new FeedJob();
-                    var snap = job.DoTask(feed, false);
+                    var response = job.DoTask(feed);
 
                     if (string.IsNullOrEmpty(feed.RuiJiExpression))
                     {
@@ -321,7 +321,7 @@ namespace RuiJi.Net.Owin.Controllers
 
                     var block = RuiJiBlockParser.ParserBlock(feed.RuiJiExpression);
 
-                    var result = RuiJiExtractor.Extract(snap.Content, block);
+                    var result = RuiJiExtractor.Extract(response.Data.ToString(), block);
 
                     if (!debug)
                         CrawlTaskFunc.ClearContent(result);
@@ -428,13 +428,21 @@ namespace RuiJi.Net.Owin.Controllers
                 feed.Address = addr.ToString();
 
                 var job = new FeedJob();
-                var snap = job.DoTask(feed, false);
+                var response = job.DoTask(feed);
                 reporter.Report("Feed 下载完成");
 
                 var block = RuiJiBlockParser.ParserBlock(feed.RuiJiExpression);
 
-                var feedResult = RuiJiExtractor.Extract(snap.Content, block);
+                var feedResult = RuiJiExtractor.Extract(response.Data.ToString(), block);
                 results.Add(feedResult);
+
+                var snap = new FeedSnapshot
+                {
+                    Url = feed.Address,
+                    Content = response.Data.ToString(),
+                    Type = feed.Type,
+                    RuiJiExpression = feed.RuiJiExpression
+                };
 
                 reporter.Report("正在提取Feed地址");
                 var j = new FeedExtractJob();

@@ -29,7 +29,7 @@ namespace RuiJi.Net.Core.RTS
             {
                 IsRunning = true;
 
-                OnStart(context);
+                OnJobStart(context);
 
                 var task = Task.Factory.StartNew(() =>
                 {
@@ -52,7 +52,7 @@ namespace RuiJi.Net.Core.RTS
 
                         var item = pool.QueueWorkItem((u) =>
                         {
-                            var response = DoTask((Request)u.Request);
+                            var response = DoTask(u);
                             Save(u, response);
                         }, fr);
 
@@ -69,6 +69,8 @@ namespace RuiJi.Net.Core.RTS
 
                 await task;
 
+                OnJobEnd();
+
                 IsRunning = false;
             }
         }
@@ -80,15 +82,18 @@ namespace RuiJi.Net.Core.RTS
             return target.GetString(dst);
         }
 
-        protected virtual void OnStart(IJobExecutionContext context)
+        protected virtual void OnJobStart(IJobExecutionContext context)
         {
 
         }
 
+        protected virtual void OnJobEnd()
+        { }
+
         protected abstract List<FeedRequest> GetRequests();
 
-        protected abstract Response DoTask(Request request);
+        public abstract Response DoTask(FeedRequest feedRequest);
 
-        protected abstract void Save(FeedRequest request,Response response);
+        protected abstract void Save(FeedRequest feedRequest, Response response);
     }
 }

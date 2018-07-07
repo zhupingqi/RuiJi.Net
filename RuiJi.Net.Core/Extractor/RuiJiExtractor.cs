@@ -28,13 +28,16 @@ namespace RuiJi.Net.Core.Extractor
         /// <returns>ExtractResult list</returns>
         public static List<ExtractResult> Extract(ExtractRequest request)
         {
-            var blocks = request.Blocks.Where(m => m.ExtractFeature != null && m.ExtractFeature.Feature != null && m.ExtractFeature.Feature.Count > 0).OrderByDescending(m => m.ExtractFeature.Feature.Count).ToList();
+            if (request.Blocks == null)
+                return new List<ExtractResult>();
+
+            var blocks = request.Blocks.Where(m => m.ExtractFeature != null && m.ExtractFeature.Features != null && m.ExtractFeature.Features.Count > 0).OrderByDescending(m => m.ExtractFeature.Features.Count).ToList();
             var results = new List<ExtractResult>();
 
             foreach (var block in blocks)
             {
                 var b = new ExtractBlock();
-                b.Selectors = block.ExtractFeature.Feature;
+                b.Selectors = block.ExtractFeature.Features;
 
                 var r = Extract(request.Content, b);
                 if (r.Content.ToString().Length > 0)
@@ -48,7 +51,7 @@ namespace RuiJi.Net.Core.Extractor
             if (results.Count > 0)
                 return results;
 
-            blocks = request.Blocks.Where(m => m.ExtractFeature == null || m.ExtractFeature.Feature == null || m.ExtractFeature.Feature.Count == 0).ToList();
+            blocks = request.Blocks.Where(m => m.ExtractFeature == null || m.ExtractFeature.Features == null || m.ExtractFeature.Features.Count == 0).ToList();
 
             foreach (var block in blocks)
             {
@@ -122,7 +125,6 @@ namespace RuiJi.Net.Core.Extractor
             var pr = ProcessorManager.Process(content, extractBase.Selectors);
 
             var results = new ExtractResultCollection();
-            Type t = extractBase.DataType;
 
             foreach (var m in pr.Matches)
             {

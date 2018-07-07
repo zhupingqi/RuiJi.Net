@@ -111,19 +111,19 @@ namespace RuiJi.Net.Core.RTS
             }
         }
 
-        protected override Response DoTask(Request request)
+        public override Response DoTask(FeedRequest feedRequest)
         {
             try
             {
-                Logger.GetLogger("").Info("do task -> request address " + request.Uri);
+                Logger.GetLogger("").Info("do task -> request address " + feedRequest.Request.Uri);
 
                 var crawler = new RuiJiCrawler();
-                var response = crawler.Request(request);
+                var response = crawler.Request(feedRequest.Request);
 
                 if(response != null)
-                    Logger.GetLogger("").Info("request " + request.Uri + " response code is " + response.StatusCode);
+                    Logger.GetLogger("").Info("request " + feedRequest.Request.Uri + " response code is " + response.StatusCode);
                 if(response == null)
-                    Logger.GetLogger("").Error("request " + request.Uri + " response is null");
+                    Logger.GetLogger("").Error("request " + feedRequest.Request.Uri + " response is null");
 
                 return response;
             }
@@ -135,7 +135,7 @@ namespace RuiJi.Net.Core.RTS
             return null;
         }
 
-        protected override void Save(FeedRequest fr,Response response)
+        protected override void Save(FeedRequest feedRequest, Response response)
         {
             if (response == null || response.StatusCode != HttpStatusCode.OK)
                 return;
@@ -151,10 +151,10 @@ namespace RuiJi.Net.Core.RTS
             var snapshot = new Snapshot
             {
                 FeedId = setting.Id,
-                RequestUrl = fr.Request.Uri.ToString(),
+                RequestUrl = feedRequest.Request.Uri.ToString(),
                 ResponseUrl = response.ResponseUri.ToString(),
                 Content = content,
-                Expression = fr.Expression
+                Expression = feedRequest.Expression
             };
 
             var json = JsonConvert.SerializeObject(snapshot, Formatting.Indented);

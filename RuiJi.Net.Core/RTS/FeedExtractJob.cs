@@ -16,11 +16,9 @@ namespace RuiJi.Net.Core.RTS
 {
     public class FeedExtractJob : FeedExtractJobBase<string>
     {
-        public static bool IsRunning = false;
+        private static readonly string snapshotPath;
 
-        private static string snapshotPath;
-
-        private static string basePath;
+        private static readonly string basePath;
 
         static FeedExtractJob()
         {
@@ -38,7 +36,7 @@ namespace RuiJi.Net.Core.RTS
             }
         }
 
-        protected override void OnStart(IJobExecutionContext context)
+        protected override void OnJobStart(IJobExecutionContext context)
         {
             var files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory + @"delay");
             foreach (var file in files)
@@ -60,7 +58,7 @@ namespace RuiJi.Net.Core.RTS
             return Directory.GetFiles(snapshotPath).ToList();
         }
 
-        protected override void DoTask(string path)
+        public override void DoTask(string path)
         {
             try
             {
@@ -137,7 +135,7 @@ namespace RuiJi.Net.Core.RTS
             return results.Distinct().ToList();
         }
 
-        protected override void Save(string url)
+        protected void Save(string url)
         {
             
         }

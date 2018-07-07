@@ -172,7 +172,7 @@ namespace RuiJi.Net.Core.Expression
                     if (ln.LastIndexOf("_") == -1)
                     {
                         eb.Name = ln;
-                        eb.DataType = typeof(string);
+                        eb.DataType = TypeCode.String;
                     }
                     else
                     {
@@ -183,43 +183,43 @@ namespace RuiJi.Net.Core.Expression
                         {
                             case "i":
                                 {
-                                    eb.DataType = typeof(int);
+                                    eb.DataType = TypeCode.Int32;
                                     break;
                                 }
                             case "s":
                                 {
-                                    eb.DataType = typeof(string);
+                                    eb.DataType = TypeCode.String;
                                     break;
                                 }
                             case "l":
                                 {
-                                    eb.DataType = typeof(long);
+                                    eb.DataType = TypeCode.Int64;
                                     break;
                                 }
                             case "b":
                                 {
-                                    eb.DataType = typeof(bool);
+                                    eb.DataType = TypeCode.Boolean;
                                     break;
                                 }
                             case "f":
                                 {
-                                    eb.DataType = typeof(float);
+                                    eb.DataType = TypeCode.Single;
                                     break;
                                 }
                             case "d":
                                 {
-                                    eb.DataType = typeof(double);
+                                    eb.DataType = TypeCode.Double;
                                     break;
                                 }
                             case "dt":
                                 {
-                                    eb.DataType = typeof(DateTime);
+                                    eb.DataType = TypeCode.DateTime;
                                     break;
                                 }
                             default:
                                 {
                                     eb.Name = ln;
-                                    eb.DataType = typeof(string);
+                                    eb.DataType = TypeCode.String;
                                     break;
                                 }
                         }
@@ -263,17 +263,17 @@ namespace RuiJi.Net.Core.Expression
                         if (p.EndsWith(":ohtml"))
                         {
                             selector.Type = CssTypeEnum.OUTERHTML;
-                            selector.DomSelector = Regex.Replace(p, ":ohtml$", "").Trim();
+                            selector.Selector = Regex.Replace(p, ":ohtml$", "").Trim();
                         }
                         else if (p.EndsWith(":html"))
                         {
                             selector.Type = CssTypeEnum.INNERHTML;
-                            selector.DomSelector = Regex.Replace(p, ":html$", "").Trim();
+                            selector.Selector = Regex.Replace(p, ":html$", "").Trim();
                         }
                         else if (p.EndsWith(":text"))
                         {
                             selector.Type = CssTypeEnum.TEXT;
-                            selector.DomSelector = Regex.Replace(p, ":text$", "").Trim();
+                            selector.Selector = Regex.Replace(p, ":text$", "").Trim();
                         }
                         else
                         {
@@ -281,13 +281,13 @@ namespace RuiJi.Net.Core.Expression
                             var ms = Regex.Match(p, @"(.*)\[(.*?)\]");
                             if (ms.Groups.Count == 3)
                             {
-                                selector.DomSelector = ms.Groups[1].Value.Trim();
+                                selector.Selector = ms.Groups[1].Value.Trim();
                                 selector.AttrName = ms.Groups[2].Value.Trim();
                             }
                             else
                             {
                                 selector.Type = CssTypeEnum.OUTERHTML;
-                                selector.DomSelector = Regex.Replace(p, ":ohtml$", "").Trim();
+                                selector.Selector = Regex.Replace(p, ":ohtml$", "").Trim();
                             }
                         }
 

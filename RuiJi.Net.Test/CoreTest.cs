@@ -11,6 +11,8 @@ namespace RuiJi.Net.Test
         [TestMethod]
         public void TestFeedScheduler()
         {
+            var s = typeof(int).Name;
+
             FeedScheduler.Start("0/5 * * * * ?");
 
             Thread.Sleep(3000000);

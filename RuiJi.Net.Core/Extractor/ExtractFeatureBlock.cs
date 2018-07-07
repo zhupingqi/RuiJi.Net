@@ -56,7 +56,7 @@ namespace RuiJi.Net.Core.Extractor
 
             ExtractFeature = new ExtractFeature();
 
-            ExtractFeature.Feature = selectors;
+            ExtractFeature.Features = selectors;
         }
     }
 }

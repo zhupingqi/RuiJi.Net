@@ -37,7 +37,7 @@ namespace RuiJi.Net.Test
 
             var p = new CssProcessor();
             var s = new CssSelector();
-            s.DomSelector = "div.f12:first";
+            s.Selector = "div.f12:first";
             s.Type = Core.Extractor.Enum.CssTypeEnum.TEXT;
 
             var pr = new ProcessResult();

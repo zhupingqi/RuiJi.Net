@@ -274,7 +274,7 @@ namespace RuiJi.Net.Core.Expression
         public ParseResult<ExtractFeature> ParseFeatureRule(string expression)
         {
             var result = new ParseResult<ExtractFeature>(expression);
-            result.Result.Feature = new List<ISelector>();
+            result.Result.Features = new List<ISelector>();
 
             using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(expression)))
             using (var reader = new StreamReader(stream))
@@ -304,7 +304,7 @@ namespace RuiJi.Net.Core.Expression
                                 {
                                     while (!string.IsNullOrEmpty(line) && !reader.EndOfStream)
                                     {
-                                        result.Result.Feature.Add(RuiJiBlockParser.ParserSelector(line));
+                                        result.Result.Features.Add(RuiJiBlockParser.ParserSelector(line));
                                         line = reader.ReadLine();
                                     }
                                     break;

@@ -21,7 +21,7 @@ namespace RuiJi.Net.Core.Extractor.Processor
         {
             var pr = new ProcessResult();
 
-            if (string.IsNullOrEmpty(selector.DomSelector))
+            if (string.IsNullOrEmpty(selector.Selector))
             {
                 return pr;
             }
@@ -46,7 +46,7 @@ namespace RuiJi.Net.Core.Extractor.Processor
                 content = HtmlHelper.ClearTag(content);
 
             CQ cq = CQ.Create(content, HtmlParsingMode.Auto,HtmlParsingOptions.AllowSelfClosingTags,DocType.XHTML);
-            var elems = cq.Find(selector.DomSelector);
+            var elems = cq.Find(selector.Selector);
 
             pr = ProcessResult(elems, selector);
 
@@ -62,7 +62,7 @@ namespace RuiJi.Net.Core.Extractor.Processor
         public override ProcessResult ProcessRemove(CssSelector selector, ProcessResult result)
         {
             CQ cq = new CQ(result.Content);
-            cq[selector.DomSelector].Remove();
+            cq[selector.Selector].Remove();
             var content = HttpUtility.HtmlDecode(cq.Render());
             content = "<doc>" + content + "</doc>";
             cq = CQ.Create(content, HtmlParsingMode.Auto);

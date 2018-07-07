@@ -13,7 +13,8 @@ namespace RuiJi.Net.Core.Extractor.Selector
     /// </summary>
     public class CssSelector : SelectorBase
     {
-        public string DomSelector { get; set; }
+        [JsonProperty("selector")]
+        public string Selector { get; set; }
 
         /// <summary>
         /// attribute name
@@ -30,12 +31,12 @@ namespace RuiJi.Net.Core.Extractor.Selector
         /// <summary>
         /// constructor
         /// </summary>
-        /// <param name="domSelector">dom selector</param>
+        /// <param name="selector">dom selector</param>
         /// <param name="type">css type enum</param>
         /// <param name="remove">remove flag</param>
-        public CssSelector(string domSelector, CssTypeEnum type = CssTypeEnum.TEXT, bool remove = true)
+        public CssSelector(string selector, CssTypeEnum type = CssTypeEnum.TEXT, bool remove = true)
         {
-            this.DomSelector = domSelector;
+            this.Selector = selector;
             this.Type = type;
             this.Remove = remove;
         }
@@ -43,11 +44,11 @@ namespace RuiJi.Net.Core.Extractor.Selector
         /// <summary>
         /// constructor
         /// </summary>
-        /// <param name="domSelector">dom selector</param>
+        /// <param name="selector">dom selector</param>
         /// <param name="attr">attribute name</param>
-        public CssSelector(string domSelector, string attr)
+        public CssSelector(string selector, string attr)
         {
-            this.DomSelector = domSelector;
+            this.Selector = selector;
             this.AttrName = attr;
             this.Type = CssTypeEnum.OUTERHTML;
         }
