@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Extensions
 {
+    /// <summary>
+    /// json.net serializer
+    /// </summary>
     public class NewtonJsonSerializer : ISerializer, IDeserializer
     {
         public string ContentType

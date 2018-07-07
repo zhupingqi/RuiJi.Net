@@ -8,18 +8,37 @@ using RuiJi.Net.Core.Extractor.Enum;
 
 namespace RuiJi.Net.Core.Extractor.Selector
 {
+    /// <summary>
+    /// function selector
+    /// </summary>
     public class FunctionSelector : SelectorBase
     {
+        /// <summary>
+        /// function name
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// constructor
+        /// </summary>
         public FunctionSelector()
         {
 
         }
 
-        public FunctionSelector(string vale)
+        /// <summary>
+        /// constructor
+        /// </summary>
+        /// <param name="name">function name</param>
+        public FunctionSelector(string name)
         {
-            this.Value = vale;
+            this.Name = name;
         }
 
+        /// <summary>
+        /// set selector type enum
+        /// </summary>
+        /// <returns>selector type</returns>
         protected override SelectorTypeEnum SetSelectType()
         {
             return SelectorTypeEnum.FUNCTION;

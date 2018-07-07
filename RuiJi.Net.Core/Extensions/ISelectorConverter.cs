@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Extensions
 {
+    /// <summary>
+    /// selector interface convert
+    /// </summary>
     [JsonArray]
     public class ISelectorConverter : JsonConverter
     {

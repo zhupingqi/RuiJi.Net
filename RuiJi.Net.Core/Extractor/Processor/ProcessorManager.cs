@@ -8,11 +8,14 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Extractor.Processor
 {
-    public class ProcessorFactory
+    /// <summary>
+    /// processor manager
+    /// </summary>
+    public class ProcessorManager
     {
         private static Dictionary<SelectorTypeEnum, IProcessor> processors;
 
-        static ProcessorFactory()
+        static ProcessorManager()
         {
             processors = new Dictionary<SelectorTypeEnum, IProcessor>();
             processors.Add(SelectorTypeEnum.CSS, new CssProcessor());
@@ -28,11 +31,12 @@ namespace RuiJi.Net.Core.Extractor.Processor
             processors.Add(SelectorTypeEnum.FUNCTION, new FunctionProcessor());
         }
 
-        public static IProcessor GetProcessor(ISelector selector)
-        {
-            return processors[selector.SelectorType];
-        }
-
+        /// <summary>
+        /// process content width selectors
+        /// </summary>
+        /// <param name="content">content</param>
+        /// <param name="selectors">selectors</param>
+        /// <returns></returns>
         public static ProcessResult Process(string content, List<ISelector> selectors)
         {
             var result = new ProcessResult();
@@ -49,7 +53,7 @@ namespace RuiJi.Net.Core.Extractor.Processor
                     if (selector == null)
                         continue;
 
-                    var processer = ProcessorFactory.GetProcessor(selector);
+                    var processer = processors[selector.SelectorType];
                     result = processer.Process(selector, result);
                 }
             }

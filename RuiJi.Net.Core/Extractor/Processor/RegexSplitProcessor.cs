@@ -9,17 +9,25 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Extractor.Processor
 {
-    public class RegexSplitSelectorProcessor : ProcessorBase
+    /// <summary>
+    /// regex split processor
+    /// </summary>
+    public class RegexSplitSelectorProcessor : ProcessorBase<RegexSplitSelector>
     {
-        public override ProcessResult ProcessNeed(ISelector selector, ProcessResult result)
+        /// <summary>
+        /// process need
+        /// </summary>
+        /// <param name="selector">regex split selector</param>
+        /// <param name="result">pre process result</param>
+        /// <returns>new process result</returns>
+        public override ProcessResult ProcessNeed(RegexSplitSelector selector, ProcessResult result)
         {
-            var regSSelector = selector as RegexSplitSelector;
-            var sp = Regex.Split(result.Content, regSSelector.Value).ToList();
+            var sp = Regex.Split(result.Content, selector.Pattern).ToList();
             sp.RemoveAll(m => string.IsNullOrEmpty(m));
 
             var results = new List<string>();
 
-            foreach (var index in regSSelector.Index)
+            foreach (var index in selector.Index)
             {
                 if (index < sp.Count)
                     results.Add(sp[index]);
@@ -31,15 +39,20 @@ namespace RuiJi.Net.Core.Extractor.Processor
             return pr;
         }
 
-        public override ProcessResult ProcessRemove(ISelector selector, ProcessResult result)
+        /// <summary>
+        /// process remove
+        /// </summary>
+        /// <param name="selector">regex split selector</param>
+        /// <param name="result">pre process result</param>
+        /// <returns>new process result</returns>
+        public override ProcessResult ProcessRemove(RegexSplitSelector selector, ProcessResult result)
         {
-            var regSSelector = selector as RegexSplitSelector;
-            var sp = Regex.Split(result.Content, regSSelector.Value, RegexOptions.IgnorePatternWhitespace).ToList();
+            var sp = Regex.Split(result.Content, selector.Pattern, RegexOptions.IgnorePatternWhitespace).ToList();
             sp.RemoveAll(m => string.IsNullOrEmpty(m));
 
             var results = new List<string>();
 
-            foreach (var index in regSSelector.Index.OrderByDescending(m => m))
+            foreach (var index in selector.Index.OrderByDescending(m => m))
             {
                 sp.RemoveAt(index);
             }

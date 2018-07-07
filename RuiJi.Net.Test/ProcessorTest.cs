@@ -15,8 +15,8 @@ namespace RuiJi.Net.Test
         {
             var p = new RegexReplaceProcessor();
             var s = new RegexReplaceSelector();
-            s.NewChar = ">";
-            s.Value = ">>";
+            s.NewString = ">";
+            s.Pattern = ">>";
 
             var pr = new ProcessResult();
             pr.Matches.Add("评论频道>>民声");
@@ -37,8 +37,8 @@ namespace RuiJi.Net.Test
 
             var p = new CssProcessor();
             var s = new CssSelector();
-            s.Value = "div.f12:first";
-            s.Type = Core.Extractor.Enum.CssTypeEnum.Text;
+            s.DomSelector = "div.f12:first";
+            s.Type = Core.Extractor.Enum.CssTypeEnum.TEXT;
 
             var pr = new ProcessResult();
             pr.Matches.Add(content);

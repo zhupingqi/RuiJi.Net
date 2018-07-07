@@ -8,6 +8,10 @@ using Newtonsoft.Json;
 
 namespace RuiJi.Net.Core.Extensions
 {
+    /// <summary>
+    /// enum json converter
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class EnumConvert<T> : JsonConverter
     {
         public override bool CanConvert(Type objectType)

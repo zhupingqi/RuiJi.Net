@@ -11,34 +11,43 @@ using System.Threading.Tasks;
 namespace RuiJi.Net.Core.Extractor.Processor
 {
     /// <summary>
-    /// exclude selector remove selector value
+    /// exclude processor, remove selector value
     /// </summary>
-    public class ExcludeProcessor : ProcessorBase
+    public class ExcludeProcessor : ProcessorBase<ExcludeSelector>
     {
-        public override ProcessResult ProcessNeed(ISelector selector, ProcessResult result)
+        /// <summary>
+        /// process need
+        /// </summary>
+        /// <param name="selector">exclude selector</param>
+        /// <param name="result">pre process result</param>
+        /// <returns>new process result</returns>
+        public override ProcessResult ProcessNeed(ExcludeSelector selector, ProcessResult result)
         {
-            var exSelector = selector as ExcludeSelector;
-            var type = exSelector.Type;
-
             var pr = new ProcessResult();
 
-            switch (type)
+            switch (selector.Type)
             {
                 case ExcludeTypeEnum.ALL:
-                    pr.Matches.Add(Regex.Replace(result.Content, exSelector.Value, ""));
+                    pr.Matches.Add(Regex.Replace(result.Content, selector.Pattern, ""));
                     break;
                 case ExcludeTypeEnum.BEGIN:
-                    pr.Matches.Add(Regex.Replace(result.Content, "^" + exSelector.Value, ""));
+                    pr.Matches.Add(Regex.Replace(result.Content, "^" + selector.Pattern, ""));
                     break;
                 case ExcludeTypeEnum.END:
-                    pr.Matches.Add(Regex.Replace(result.Content, exSelector.Value + "$", ""));
+                    pr.Matches.Add(Regex.Replace(result.Content, selector.Pattern + "$", ""));
                     break;
             }
 
             return pr;
         }
 
-        public override ProcessResult ProcessRemove(ISelector selector, ProcessResult result)
+        /// <summary>
+        /// process remove ,same as process need
+        /// </summary>
+        /// <param name="selector">exclude selector</param>
+        /// <param name="result">pre process result</param>
+        /// <returns>new process result</returns>
+        public override ProcessResult ProcessRemove(ExcludeSelector selector, ProcessResult result)
         {
             return ProcessNeed(selector, result);
         }

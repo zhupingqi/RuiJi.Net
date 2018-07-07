@@ -10,45 +10,56 @@ using RuiJi.Net.Core.Extractor.Selector;
 
 namespace RuiJi.Net.Core.Extractor.Processor
 {
-    public class XPathProcessor : ProcessorBase
+    /// <summary>
+    /// xpath processor
+    /// </summary>
+    public class XPathProcessor : ProcessorBase<XPathSelector>
     {
-        public override ProcessResult ProcessNeed(ISelector selector, ProcessResult result)
+        /// <summary>
+        /// process need
+        /// </summary>
+        /// <param name="selector">xml path selector</param>
+        /// <param name="result">pre process result</param>
+        /// <returns>new process result</returns>
+        public override ProcessResult ProcessNeed(XPathSelector selector, ProcessResult result)
         {
             var pr = new ProcessResult();
-            if (string.IsNullOrEmpty(selector.Value))
+            if (string.IsNullOrEmpty(selector.XPath))
             {
                 return pr;
             }
 
             try
             {
-                var xpathSelector = selector as XPathSelector;
-
                 var doc = new XmlDocument();
                 doc.LoadXml(result.Content);
 
-                var nodes = doc.SelectNodes(xpathSelector.Value);
-                pr = ProcessResult(nodes, xpathSelector);
+                var nodes = doc.SelectNodes(selector.XPath);
+                pr = ProcessResult(nodes, selector);
             }
             catch { }
 
             return pr;
         }
 
-        public override ProcessResult ProcessRemove(ISelector selector, ProcessResult result)
+        /// <summary>
+        /// process remove
+        /// </summary>
+        /// <param name="selector">xml path selector</param>
+        /// <param name="result">pre process result</param>
+        /// <returns>new process result</returns>
+        public override ProcessResult ProcessRemove(XPathSelector selector, ProcessResult result)
         {
             var pr = new ProcessResult();
-            if (string.IsNullOrEmpty(selector.Value))
+            if (string.IsNullOrEmpty(selector.XPath))
             {
                 return pr;
             }
 
-            var xpathSelector = selector as XPathSelector;
-
             var doc = new XmlDocument();
             doc.LoadXml(result.Content);
 
-            var nodes = doc.SelectNodes(xpathSelector.Value);
+            var nodes = doc.SelectNodes(selector.XPath);
             foreach (XmlNode node in nodes)
             {
                 doc.RemoveChild(node);
@@ -59,12 +70,18 @@ namespace RuiJi.Net.Core.Extractor.Processor
             return pr;
         }
 
+        /// <summary>
+        /// prcess xml node
+        /// </summary>
+        /// <param name="nodes">xml nodes</param>
+        /// <param name="selector">xml path selector</param>
+        /// <returns>process result</returns>
         private ProcessResult ProcessResult(XmlNodeList nodes, XPathSelector selector)
         {
             var pr = new ProcessResult();
             switch (selector.Type)
             {
-                case XPathTypeEnum.InnerXml:
+                case XPathTypeEnum.INNERXML:
                     {
                         foreach (XmlNode node in nodes)
                         {
@@ -72,7 +89,7 @@ namespace RuiJi.Net.Core.Extractor.Processor
                         }
                         break;
                     }
-                case XPathTypeEnum.InnerText:
+                case XPathTypeEnum.TEXT:
                     {
                         foreach (XmlNode node in nodes)
                         {
@@ -80,7 +97,7 @@ namespace RuiJi.Net.Core.Extractor.Processor
                         }
                         break;
                     }
-                case XPathTypeEnum.Attr:
+                case XPathTypeEnum.ATTR:
                     {
                         foreach (XmlNode node in nodes)
                         {
@@ -92,7 +109,7 @@ namespace RuiJi.Net.Core.Extractor.Processor
                         }
                         break;
                     }
-                case XPathTypeEnum.OuterXml:
+                case XPathTypeEnum.OUTERXML:
                     {
                         foreach (XmlNode node in nodes)
                         {

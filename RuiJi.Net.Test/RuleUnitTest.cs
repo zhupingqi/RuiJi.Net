@@ -27,21 +27,21 @@ namespace RuiJi.Net.Test
             {
                 Selectors = new List<ISelector>
                     {
-                        new CssSelector("#main",CssTypeEnum.InnerHtml)
+                        new CssSelector("#main",CssTypeEnum.INNERHTML)
                     },
                 Metas = new ExtractMetaCollection()
             };
 
             block.Metas.AddMeta("time", new List<ISelector> {
-                new CssSelector("time",CssTypeEnum.Text)
+                new CssSelector("time",CssTypeEnum.TEXT)
             });
 
             block.Metas.AddMeta("author", new List<ISelector> {
-                new CssSelector(".author",CssTypeEnum.Text)
+                new CssSelector(".author",CssTypeEnum.TEXT)
             });
 
             block.Metas.AddMeta("content", new List<ISelector> {
-                new CssSelector(".entry-content",CssTypeEnum.InnerHtml)
+                new CssSelector(".entry-content",CssTypeEnum.INNERHTML)
             });
 
             rule.BlockExpression = JsonConvert.SerializeObject(block);

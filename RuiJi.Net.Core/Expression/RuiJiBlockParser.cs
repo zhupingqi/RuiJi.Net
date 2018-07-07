@@ -172,7 +172,7 @@ namespace RuiJi.Net.Core.Expression
                     if (ln.LastIndexOf("_") == -1)
                     {
                         eb.Name = ln;
-                        eb.ContentType = typeof(string);
+                        eb.DataType = typeof(string);
                     }
                     else
                     {
@@ -183,43 +183,43 @@ namespace RuiJi.Net.Core.Expression
                         {
                             case "i":
                                 {
-                                    eb.ContentType = typeof(int);
+                                    eb.DataType = typeof(int);
                                     break;
                                 }
                             case "s":
                                 {
-                                    eb.ContentType = typeof(string);
+                                    eb.DataType = typeof(string);
                                     break;
                                 }
                             case "l":
                                 {
-                                    eb.ContentType = typeof(long);
+                                    eb.DataType = typeof(long);
                                     break;
                                 }
                             case "b":
                                 {
-                                    eb.ContentType = typeof(bool);
+                                    eb.DataType = typeof(bool);
                                     break;
                                 }
                             case "f":
                                 {
-                                    eb.ContentType = typeof(float);
+                                    eb.DataType = typeof(float);
                                     break;
                                 }
                             case "d":
                                 {
-                                    eb.ContentType = typeof(double);
+                                    eb.DataType = typeof(double);
                                     break;
                                 }
                             case "dt":
                                 {
-                                    eb.ContentType = typeof(DateTime);
+                                    eb.DataType = typeof(DateTime);
                                     break;
                                 }
                             default:
                                 {
                                     eb.Name = ln;
-                                    eb.ContentType = typeof(string);
+                                    eb.DataType = typeof(string);
                                     break;
                                 }
                         }
@@ -262,32 +262,32 @@ namespace RuiJi.Net.Core.Expression
 
                         if (p.EndsWith(":ohtml"))
                         {
-                            selector.Type = CssTypeEnum.OutHtml;
-                            selector.Value = Regex.Replace(p, ":ohtml$", "").Trim();
+                            selector.Type = CssTypeEnum.OUTERHTML;
+                            selector.DomSelector = Regex.Replace(p, ":ohtml$", "").Trim();
                         }
                         else if (p.EndsWith(":html"))
                         {
-                            selector.Type = CssTypeEnum.InnerHtml;
-                            selector.Value = Regex.Replace(p, ":html$", "").Trim();
+                            selector.Type = CssTypeEnum.INNERHTML;
+                            selector.DomSelector = Regex.Replace(p, ":html$", "").Trim();
                         }
                         else if (p.EndsWith(":text"))
                         {
-                            selector.Type = CssTypeEnum.Text;
-                            selector.Value = Regex.Replace(p, ":text$", "").Trim();
+                            selector.Type = CssTypeEnum.TEXT;
+                            selector.DomSelector = Regex.Replace(p, ":text$", "").Trim();
                         }
                         else
                         {
-                            selector.Type = CssTypeEnum.Attr;
+                            selector.Type = CssTypeEnum.ATTR;
                             var ms = Regex.Match(p, @"(.*)\[(.*?)\]");
                             if (ms.Groups.Count == 3)
                             {
-                                selector.Value = ms.Groups[1].Value.Trim();
+                                selector.DomSelector = ms.Groups[1].Value.Trim();
                                 selector.AttrName = ms.Groups[2].Value.Trim();
                             }
                             else
                             {
-                                selector.Type = CssTypeEnum.OutHtml;
-                                selector.Value = Regex.Replace(p, ":ohtml$", "").Trim();
+                                selector.Type = CssTypeEnum.OUTERHTML;
+                                selector.DomSelector = Regex.Replace(p, ":ohtml$", "").Trim();
                             }
                         }
 
@@ -297,9 +297,9 @@ namespace RuiJi.Net.Core.Expression
                     {
                         var selector = new ExcludeSelector();
                         selector.Remove = remove;
-                        selector.Value = Regex.Replace(p, @"\-[bea]?$", "").Trim();
-                        if (selector.Value.StartsWith("/") && selector.Value.StartsWith("/"))
-                            selector.Value = selector.Value.TrimStart('/').TrimEnd('/');
+                        selector.Pattern = Regex.Replace(p, @"\-[bea]?$", "").Trim();
+                        if (selector.Pattern.StartsWith("/") && selector.Pattern.StartsWith("/"))
+                            selector.Pattern = selector.Pattern.TrimStart('/').TrimEnd('/');
 
                         if (p.EndsWith("-b"))
                         {
@@ -320,11 +320,11 @@ namespace RuiJi.Net.Core.Expression
                     {
                         var selector = new ExpressionSelector();
                         selector.Remove = remove;
-                        selector.Value = p;
+                        selector.Expression = p;
                         var ssp = p.Split(new string[] { " -s " }, StringSplitOptions.RemoveEmptyEntries);
                         if (ssp.Length == 2)
                         {
-                            selector.Value = ssp[0];
+                            selector.Expression = ssp[0];
                             selector.Split = ssp[1];
                         }
 
@@ -338,12 +338,12 @@ namespace RuiJi.Net.Core.Expression
                         var ms = Regex.Match(p, @"/?(.*)/([\d\s]*)");
                         if (ms.Groups.Count == 2)
                         {
-                            selector.Value = ms.Groups[0].Value;
+                            selector.Pattern = ms.Groups[0].Value;
                             return selector;
                         }
                         if (ms.Groups.Count == 3)
                         {
-                            selector.Value = ms.Groups[1].Value;
+                            selector.Pattern = ms.Groups[1].Value;
                             selector.Index = ms.Groups[2].Value.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).Select(m => Convert.ToInt32(m)).ToArray();
 
                             return selector;
@@ -359,14 +359,14 @@ namespace RuiJi.Net.Core.Expression
 
                         if (ms.Groups.Count == 2)
                         {
-                            selector.Value = ms.Groups[1].Value;
-                            selector.NewChar = "";
+                            selector.Pattern = ms.Groups[1].Value;
+                            selector.NewString = "";
                             return selector;
                         }
                         if (ms.Groups.Count == 3)
                         {
-                            selector.Value = ms.Groups[1].Value;
-                            selector.NewChar = ms.Groups[2].Value;
+                            selector.Pattern = ms.Groups[1].Value;
+                            selector.NewString = ms.Groups[2].Value;
 
                             return selector;
                         }
@@ -380,7 +380,7 @@ namespace RuiJi.Net.Core.Expression
                         var ms = Regex.Match(p, @"/?(.*)/([\d\s]*)");
                         if (ms.Groups.Count == 3)
                         {
-                            selector.Value = ms.Groups[1].Value;
+                            selector.Pattern = ms.Groups[1].Value;
                             selector.Index = ms.Groups[2].Value.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).Select(m => Convert.ToInt32(m)).ToArray();
                             return selector;
                         }
@@ -408,7 +408,7 @@ namespace RuiJi.Net.Core.Expression
                     {
                         var selector = new XPathSelector();
                         selector.Remove = remove;
-                        selector.Value = p;
+                        selector.XPath = p;
 
                         return selector;
                     }
@@ -416,7 +416,7 @@ namespace RuiJi.Net.Core.Expression
                     {
                         var selector = new JsonPathSelector();
                         selector.Remove = remove;
-                        selector.Value = p;
+                        selector.JsonPath = p;
 
                         return selector;
                     }
@@ -424,7 +424,7 @@ namespace RuiJi.Net.Core.Expression
                     {
                         var selector = new FunctionSelector();
                         selector.Remove = remove;
-                        selector.Value = p;
+                        selector.Name = p;
 
                         return selector;
                     }

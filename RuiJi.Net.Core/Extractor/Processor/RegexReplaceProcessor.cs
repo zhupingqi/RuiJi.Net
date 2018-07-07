@@ -9,17 +9,31 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Extractor.Processor
 {
-    public class RegexReplaceProcessor : ProcessorBase
+    /// <summary>
+    /// regex replace processor
+    /// </summary>
+    public class RegexReplaceProcessor : ProcessorBase<RegexReplaceSelector>
     {
-        public override ProcessResult ProcessNeed(ISelector selector, ProcessResult result)
+        /// <summary>
+        /// process need
+        /// </summary>
+        /// <param name="selector">regex replace selector</param>
+        /// <param name="result">pre process result</param>
+        /// <returns>new process result</returns>
+        public override ProcessResult ProcessNeed(RegexReplaceSelector selector, ProcessResult result)
         {
             var pr = new ProcessResult();
-            var regRSelector = selector as RegexReplaceSelector;
-            pr.Matches.Add(Regex.Replace(result.Content, regRSelector.Value, regRSelector.NewChar));
+            pr.Matches.Add(Regex.Replace(result.Content, selector.Pattern, selector.NewString));
             return pr;
         }
 
-        public override ProcessResult ProcessRemove(ISelector selector, ProcessResult result)
+        /// <summary>
+        /// process remove
+        /// </summary>
+        /// <param name="selector">regex replace selector</param>
+        /// <param name="result">pre process result</param>
+        /// <returns>new process result</returns>
+        public override ProcessResult ProcessRemove(RegexReplaceSelector selector, ProcessResult result)
         {
             return ProcessNeed(selector, result);
         }

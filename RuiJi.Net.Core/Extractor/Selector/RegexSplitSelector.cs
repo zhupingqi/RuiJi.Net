@@ -8,28 +8,58 @@ using RuiJi.Net.Core.Extractor.Enum;
 
 namespace RuiJi.Net.Core.Extractor.Selector
 {
+    /// <summary>
+    /// regex replace selector
+    /// </summary>
     public class RegexSplitSelector : SelectorBase
     {
+        /// <summary>
+        /// regex pattern
+        /// </summary>
+        public string Pattern { get; set; }
+
+        /// <summary>
+        /// results index after split
+        /// </summary>
         [JsonProperty("index")]
         public int[] Index { get; set; }
 
-        public RegexSplitSelector(string value, int index = 0, bool remove = false)
+        /// <summary>
+        /// constructor
+        /// </summary>
+        /// <param name="pattern">pattern</param>
+        /// <param name="index">result index</param>
+        /// <param name="remove">remove flag</param>
+        public RegexSplitSelector(string pattern, int index = 0, bool remove = false)
         {
             this.Index = new int[] { index };
-            this.Value = value;
+            this.Pattern = pattern;
             this.Remove = remove;
         }
 
-        public RegexSplitSelector(string value, int[] index, bool remove = true)
+        /// <summary>
+        /// constructor
+        /// </summary>
+        /// <param name="pattern">pattern</param>
+        /// <param name="index">results index array</param>
+        /// <param name="remove"></param>
+        public RegexSplitSelector(string pattern, int[] index, bool remove = true)
         {
             this.Index = index;
-            this.Value = value;
+            this.Pattern = pattern;
             this.Remove = remove;
         }
 
+        /// <summary>
+        /// constructor
+        /// </summary>
         public RegexSplitSelector()
         { }
 
+        /// <summary>
+        /// set selector type enum
+        /// </summary>
+        /// <returns>selector type</returns>
         protected override SelectorTypeEnum SetSelectType()
         {
             return SelectorTypeEnum.REGEXSPLIT;

@@ -9,17 +9,25 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Extractor.Processor
 {
-    public class RegexProcessor : ProcessorBase
+    /// <summary>
+    /// regex processor
+    /// </summary>
+    public class RegexProcessor : ProcessorBase<RegexSelector>
     {
-        public override ProcessResult ProcessNeed(ISelector selector, ProcessResult result)
+        /// <summary>
+        /// process need
+        /// </summary>
+        /// <param name="selector">regex selector</param>
+        /// <param name="result">pre process result</param>
+        /// <returns>new process result</returns>
+        public override ProcessResult ProcessNeed(RegexSelector selector, ProcessResult result)
         {
-            var regSelector = selector as RegexSelector;
-            var regex = new Regex(regSelector.Value);
+            var regex = new Regex(selector.Pattern);
             var m = regex.Match(result.Content);
 
             var results = new List<string>();
 
-            foreach (var index in regSelector.Index)
+            foreach (var index in selector.Index)
             {
                 if (index < m.Groups.Count)
                     results.Add(m.Groups[index].Value);
@@ -31,12 +39,16 @@ namespace RuiJi.Net.Core.Extractor.Processor
             return pr;
         }
 
-        public override ProcessResult ProcessRemove(ISelector selector, ProcessResult result)
+        /// <summary>
+        /// process remove
+        /// </summary>
+        /// <param name="selector">regex selector</param>
+        /// <param name="result">pre process result</param>
+        /// <returns>new process result</returns>
+        public override ProcessResult ProcessRemove(RegexSelector selector, ProcessResult result)
         {
-            var regSelector = selector as RegexSelector;
-
             var pr = new ProcessResult();
-            pr.Matches.Add(Regex.Replace(result.Content, regSelector.Value, ""));
+            pr.Matches.Add(Regex.Replace(result.Content, selector.Pattern, ""));
 
             return pr;
         }

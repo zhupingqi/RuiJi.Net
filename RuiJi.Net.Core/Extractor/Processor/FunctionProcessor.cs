@@ -9,16 +9,23 @@ using RuiJi.Net.Core.Extractor.Selector;
 
 namespace RuiJi.Net.Core.Extractor.Processor
 {
-    public class FunctionProcessor : ProcessorBase
+    /// <summary>
+    /// external function processor
+    /// </summary>
+    public class FunctionProcessor : ProcessorBase<FunctionSelector>
     {
-        public override ProcessResult ProcessNeed(ISelector selector, ProcessResult result)
+        /// <summary>
+        /// process need
+        /// </summary>
+        /// <param name="selector">function selector</param>
+        /// <param name="result">pre process result</param>
+        /// <returns>new process result</returns>
+        public override ProcessResult ProcessNeed(FunctionSelector selector, ProcessResult result)
         {
-            var funcSelector = selector as FunctionSelector;
-
             var pr = new ProcessResult();
 
             var compile = new ProcessorCompile();
-            var r = compile.GetResult(new KeyValuePair<string, string>(funcSelector.Value, result.Content));
+            var r = compile.GetResult(new KeyValuePair<string, string>(selector.Name, result.Content));
 
             if (r.Length > 0)
                 pr.Matches.Add(r.First().ToString());
@@ -28,16 +35,14 @@ namespace RuiJi.Net.Core.Extractor.Processor
             return pr;
         }
 
-        public override ProcessResult ProcessRemove(ISelector selector, ProcessResult result)
+        /// <summary>
+        /// process remove,same as process need
+        /// </summary>
+        /// <param name="selector">function selector</param>
+        /// <param name="result">pre process result</param>
+        /// <returns>new process result</returns>
+        public override ProcessResult ProcessRemove(FunctionSelector selector, ProcessResult result)
         {
-            //var content = "{0}";
-
-            //if (content.EndsWith("小时前"))
-            //{
-            //    var hour = Convert.ToInt32(Regex.Match(content, @"[\d]*").Value);
-            //    results.Add(DateTime.Now.AddHours(-hour));
-            //}
-
             return ProcessNeed(selector, result);
         }
     }

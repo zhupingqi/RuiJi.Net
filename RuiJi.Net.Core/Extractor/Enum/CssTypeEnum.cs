@@ -6,11 +6,26 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Extractor.Enum
 {
+    /// <summary>
+    /// css selector enum
+    /// </summary>
     public enum CssTypeEnum
     {
-        InnerHtml,
-        OutHtml,
-        Text,
-        Attr
+        /// <summary>
+        /// inner html
+        /// </summary>
+        INNERHTML,
+        /// <summary>
+        /// outer html
+        /// </summary>
+        OUTERHTML,
+        /// <summary>
+        /// inner text
+        /// </summary>
+        TEXT,
+        /// <summary>
+        /// attribute
+        /// </summary>
+        ATTR
     }
 }

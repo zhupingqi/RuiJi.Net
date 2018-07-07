@@ -8,17 +8,29 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Extractor.Selector
 {
+    /// <summary>
+    /// text range selector
+    /// </summary>
     public class TextRangeSelector : SelectorBase
     {
-        [JsonIgnore]
-        public new string Value { get; set; }
-
+        /// <summary>
+        /// text begin regex pattern
+        /// </summary>
         [JsonProperty("begin")]
         public string Begin { get; set; }
 
+        /// <summary>
+        /// text end regex pattern
+        /// </summary>
         [JsonProperty("end")]
         public string End { get; set; }
 
+        /// <summary>
+        /// constructor
+        /// </summary>
+        /// <param name="begin">text begin pattern</param>
+        /// <param name="end">text end pattern</param>
+        /// <param name="remove"></param>
         public TextRangeSelector(string begin, string end, bool remove = false)
         {
             this.Begin = begin;
@@ -26,9 +38,16 @@ namespace RuiJi.Net.Core.Extractor.Selector
             this.Remove = remove;
         }
 
+        /// <summary>
+        /// constructor
+        /// </summary>
         public TextRangeSelector()
         { }
 
+        /// <summary>
+        /// set selector type enum
+        /// </summary>
+        /// <returns>selector type</returns>
         protected override SelectorTypeEnum SetSelectType()
         {
             return SelectorTypeEnum.TEXTRANGE;

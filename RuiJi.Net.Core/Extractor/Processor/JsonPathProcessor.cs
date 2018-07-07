@@ -9,18 +9,27 @@ using Newtonsoft.Json.Linq;
 
 namespace RuiJi.Net.Core.Extractor.Processor
 {
-    class JsonPathProcessor : ProcessorBase
+    /// <summary>
+    /// json path processor
+    /// </summary>
+    public class JsonPathProcessor : ProcessorBase<JsonPathSelector>
     {
-        public override ProcessResult ProcessNeed(ISelector selector, ProcessResult result)
+        /// <summary>
+        /// process need
+        /// </summary>
+        /// <param name="selector">jpath selector</param>
+        /// <param name="result">pre process result</param>
+        /// <returns>new process result</returns>
+        public override ProcessResult ProcessNeed(JsonPathSelector selector, ProcessResult result)
         {
             var pr = new ProcessResult();
-            if (string.IsNullOrEmpty(selector.Value))
+            if (string.IsNullOrEmpty(selector.JsonPath))
             {
                 return pr;
             }
 
             JObject obj = JObject.Parse(result.Content);
-            IEnumerable<JToken> tokens = obj.SelectTokens(selector.Value);
+            IEnumerable<JToken> tokens = obj.SelectTokens(selector.JsonPath);
 
             if (tokens.Count() > 0)
             {
@@ -33,16 +42,22 @@ namespace RuiJi.Net.Core.Extractor.Processor
             return pr;
         }
 
-        public override ProcessResult ProcessRemove(ISelector selector, ProcessResult result)
+        /// <summary>
+        /// process remove
+        /// </summary>
+        /// <param name="selector">jpath selector</param>
+        /// <param name="result">pre process result</param>
+        /// <returns>new process result</returns>
+        public override ProcessResult ProcessRemove(JsonPathSelector selector, ProcessResult result)
         {
             var pr = new ProcessResult();
-            if (string.IsNullOrEmpty(selector.Value))
+            if (string.IsNullOrEmpty(selector.JsonPath))
             {
                 return pr;
             }
 
             JObject obj = JObject.Parse(result.Content);
-            JToken token = obj.SelectToken(selector.Value);
+            JToken token = obj.SelectToken(selector.JsonPath);
 
             token.Remove();
 

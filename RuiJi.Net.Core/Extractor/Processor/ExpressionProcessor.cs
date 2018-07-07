@@ -8,14 +8,22 @@ using RuiJi.Net.Core.Utils;
 
 namespace RuiJi.Net.Core.Extractor.Processor
 {
-    public class ExpressionProcessor : ProcessorBase
+    /// <summary>
+    /// url expression processor
+    /// </summary>
+    public class ExpressionProcessor : ProcessorBase<ExpressionSelector>
     {
-        public override ProcessResult ProcessNeed(ISelector selector, ProcessResult result)
+        /// <summary>
+        /// process need
+        /// </summary>
+        /// <param name="selector">expression selector</param>
+        /// <param name="result">pre process result</param>
+        /// <returns>new process result</returns>
+        public override ProcessResult ProcessNeed(ExpressionSelector selector, ProcessResult result)
         {
             var pr = new ProcessResult();
-            var expSelector = selector as ExpressionSelector;
 
-            if (string.IsNullOrEmpty(expSelector.Value))
+            if (string.IsNullOrEmpty(selector.Expression))
             {
                 return pr;
             }
@@ -24,16 +32,16 @@ namespace RuiJi.Net.Core.Extractor.Processor
 
             if (result == null)
             {
-                if (!string.IsNullOrEmpty(expSelector.Split))
+                if (!string.IsNullOrEmpty(selector.Split))
                 {
-                    ary = result.Content.Split(new string[] { expSelector.Split }, StringSplitOptions.RemoveEmptyEntries);
+                    ary = result.Content.Split(new string[] { selector.Split }, StringSplitOptions.RemoveEmptyEntries);
                 }
 
                 foreach (var item in ary)
                 {
-                    var m = Wildcard.IsMatch(item, new string[] { expSelector.Value });
+                    var m = Wildcard.IsMatch(item, new string[] { selector.Expression });
                     if (m)
-                        pr.Matches.Add(expSelector.Value);
+                        pr.Matches.Add(selector.Expression);
                 }
             }
             else
@@ -42,14 +50,14 @@ namespace RuiJi.Net.Core.Extractor.Processor
                 {
                     ary = new string[] { item };
 
-                    if (!string.IsNullOrEmpty(expSelector.Split))
+                    if (!string.IsNullOrEmpty(selector.Split))
                     {
-                        ary = item.Split(new string[] { expSelector.Split }, StringSplitOptions.RemoveEmptyEntries);
+                        ary = item.Split(new string[] { selector.Split }, StringSplitOptions.RemoveEmptyEntries);
                     }
 
                     foreach (var it in ary)
                     {
-                        var m = Wildcard.IsMatch(it, new string[] { expSelector.Value });
+                        var m = Wildcard.IsMatch(it, new string[] { selector.Expression });
                         if (m)
                             pr.Matches.Add(it);
                     }
@@ -59,12 +67,17 @@ namespace RuiJi.Net.Core.Extractor.Processor
             return pr;
         }
 
-        public override ProcessResult ProcessRemove(ISelector selector, ProcessResult result)
+        /// <summary>
+        /// process remove
+        /// </summary>
+        /// <param name="selector">css selector</param>
+        /// <param name="result">pre process result</param>
+        /// <returns>new process result</returns>
+        public override ProcessResult ProcessRemove(ExpressionSelector selector, ProcessResult result)
         {
             var pr = new ProcessResult();
-            var expSelector = selector as ExpressionSelector;
 
-            if (string.IsNullOrEmpty(expSelector.Value))
+            if (string.IsNullOrEmpty(selector.Expression))
             {
                 return pr;
             }
@@ -72,16 +85,16 @@ namespace RuiJi.Net.Core.Extractor.Processor
 
             if (result == null)
             {
-                if (!string.IsNullOrEmpty(expSelector.Split))
+                if (!string.IsNullOrEmpty(selector.Split))
                 {
-                    ary = result.Content.Split(new string[] { expSelector.Split }, StringSplitOptions.RemoveEmptyEntries);
+                    ary = result.Content.Split(new string[] { selector.Split }, StringSplitOptions.RemoveEmptyEntries);
                 }
 
                 foreach (var item in ary)
                 {
-                    var m = Wildcard.IsMatch(item, new string[] { expSelector.Value });
+                    var m = Wildcard.IsMatch(item, new string[] { selector.Expression });
                     if (!m)
-                        pr.Matches.Add(expSelector.Value);
+                        pr.Matches.Add(selector.Expression);
                 }
             }
             else
@@ -90,14 +103,14 @@ namespace RuiJi.Net.Core.Extractor.Processor
                 {
                     ary = new string[] { item };
 
-                    if (!string.IsNullOrEmpty(expSelector.Split))
+                    if (!string.IsNullOrEmpty(selector.Split))
                     {
-                        ary = item.Split(new string[] { expSelector.Split }, StringSplitOptions.RemoveEmptyEntries);
+                        ary = item.Split(new string[] { selector.Split }, StringSplitOptions.RemoveEmptyEntries);
                     }
 
                     foreach (var it in ary)
                     {
-                        var m = Wildcard.IsMatch(it, new string[] { expSelector.Value });
+                        var m = Wildcard.IsMatch(it, new string[] { selector.Expression });
                         if (!m)
                             pr.Matches.Add(it);
                     }

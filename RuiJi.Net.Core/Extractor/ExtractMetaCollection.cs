@@ -7,8 +7,15 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Extractor
 {
+    /// <summary>
+    /// extract meta collection
+    /// </summary>
     public class ExtractMetaCollection : Dictionary<string, ExtractBase>
     {
+        /// <summary>
+        /// add meta
+        /// </summary>
+        /// <param name="selectors">meta selectors</param>
         public void AddMeta(ExtractBase selectors)
         {
             if (ContainsKey(selectors.Name))
@@ -17,6 +24,11 @@ namespace RuiJi.Net.Core.Extractor
                 this.Add(selectors.Name, selectors);
         }
 
+        /// <summary>
+        /// add meta
+        /// </summary>
+        /// <param name="name">meta name</param>
+        /// <param name="selectors">selector list</param>
         public void AddMeta(string name, List<ISelector> selectors)
         {
             var ext = new ExtractBase(name);

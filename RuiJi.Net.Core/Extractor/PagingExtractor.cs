@@ -12,24 +12,48 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Extractor
 {
+    /// <summary>
+    /// paging extractor
+    /// </summary>
     public class PagingExtractor
     {
+        /// <summary>
+        /// page download handler
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <param name="result"></param>
         public delegate void PageDownloadHandler(Uri uri, ExtractResult result);
 
+        /// <summary>
+        /// merge paging content result
+        /// </summary>
+        /// <param name="uri">page uri</param>
+        /// <param name="result">pre page extract result</param>
+        /// <param name="block">extract block</param>
+        /// <param name="maxRetry">max retry</param>
+        /// <returns></returns>
         public static ExtractResult MergeContent(Uri uri, ExtractResult result, ExtractBlock block, int maxRetry = 10)
         {
             var content = "";
 
-            DownloadPage(uri, result, block, (u,r) => {
+            CrawlPage(uri, result, block, (u,r) => {
                 content += r.Metas["content"].ToString();
-            });
+            },maxRetry);
 
             result.Metas["content"] = content;
 
             return result;
         }
 
-        public static void DownloadPage(Uri uri, ExtractResult result, ExtractBlock block, PageDownloadHandler handler, int maxRetry = 10)
+        /// <summary>
+        /// crawl page
+        /// </summary>
+        /// <param name="uri">page uri</param>
+        /// <param name="result">pre page extract result</param>
+        /// <param name="block">extract block</param>
+        /// <param name="handler">page crawled handler</param>
+        /// <param name="maxRetry">max retry</param>
+        public static void CrawlPage(Uri uri, ExtractResult result, ExtractBlock block, PageDownloadHandler handler, int maxRetry = 10)
         {
             handler(uri,result);
 

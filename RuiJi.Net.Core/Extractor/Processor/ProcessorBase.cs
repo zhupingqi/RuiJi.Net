@@ -9,18 +9,36 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Extractor.Processor
 {
-    public abstract class ProcessorBase : IProcessor
+    public abstract class ProcessorBase<T> : IProcessor where T : ISelector
     {
+        /// <summary>
+        /// process base method
+        /// </summary>
+        /// <param name="selector">selector interface</param>
+        /// <param name="result">pre process result</param>
+        /// <returns>new process result</returns>
         public ProcessResult Process(ISelector selector, ProcessResult result)
         {
             if (selector.Remove)
-                return ProcessRemove(selector, result);
+                return ProcessRemove((T)selector, result);
             else
-                return ProcessNeed(selector, result);
+                return ProcessNeed((T)selector, result);
         }
 
-        public abstract ProcessResult ProcessNeed(ISelector selector, ProcessResult result);
+        /// <summary>
+        /// process need
+        /// </summary>
+        /// <param name="selector">selector interface</param>
+        /// <param name="result">pre process result</param>
+        /// <returns>new process result</returns>
+        public abstract ProcessResult ProcessNeed(T selector, ProcessResult result);
 
-        public abstract ProcessResult ProcessRemove(ISelector selector, ProcessResult result);
+        /// <summary>
+        /// process need
+        /// </summary>
+        /// <param name="selector">selector interface</param>
+        /// <param name="result">pre process result</param>
+        /// <returns>new process result</returns>
+        public abstract ProcessResult ProcessRemove(T selector, ProcessResult result);
     }
 }

@@ -32,14 +32,14 @@ namespace RuiJi.Net.Test
             var block = new ExtractBlock();
             block.Selectors = new List<ISelector>
             {
-                new CssSelector(".entry-content",CssTypeEnum.InnerHtml)
+                new CssSelector(".entry-content",CssTypeEnum.INNERHTML)
             };
 
             block.TileSelector = new ExtractTile
             {
                 Selectors = new List<ISelector>
                 {
-                    new CssSelector(".pt-cv-content-item",CssTypeEnum.InnerHtml)
+                    new CssSelector(".pt-cv-content-item",CssTypeEnum.INNERHTML)
                 }
             };
 
@@ -88,14 +88,14 @@ namespace RuiJi.Net.Test
             var block = new ExtractBlock();
             block.Selectors = new List<ISelector>
             {
-                new CssSelector(".entry-content",CssTypeEnum.InnerHtml)
+                new CssSelector(".entry-content",CssTypeEnum.INNERHTML)
             };
 
             block.TileSelector = new ExtractTile
             {
                 Selectors = new List<ISelector>
                 {
-                    new CssSelector(".pt-cv-content-item",CssTypeEnum.InnerHtml)
+                    new CssSelector(".pt-cv-content-item",CssTypeEnum.INNERHTML)
                 }
             };
 
@@ -178,7 +178,7 @@ css #listnav a[href]";
             {
                 var storage = new FileStorage(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"www","download"));
 
-                PagingExtractor.DownloadPage(request.Uri, result, block,(u,res)=> {
+                PagingExtractor.CrawlPage(request.Uri, result, block,(u,res)=> {
                     var c = new DownloadContentModel();
                     c.Url = u.AbsolutePath.Trim();
                     c.IsRaw = false;

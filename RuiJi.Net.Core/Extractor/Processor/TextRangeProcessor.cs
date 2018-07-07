@@ -9,16 +9,24 @@ using RuiJi.Net.Core.Extractor;
 
 namespace RuiJi.Net.Core.Extractor.Processor
 {
-    public class TextRangeProcessor : ProcessorBase
+    /// <summary>
+    /// text range processor
+    /// </summary>
+    public class TextRangeProcessor : ProcessorBase<TextRangeSelector>
     {
-        public override ProcessResult ProcessNeed(ISelector selector, ProcessResult result)
+        /// <summary>
+        /// process need
+        /// </summary>
+        /// <param name="selector">text range selector</param>
+        /// <param name="result">pre process result</param>
+        /// <returns>new process result</returns>
+        public override ProcessResult ProcessNeed(TextRangeSelector selector, ProcessResult result)
         {
             var pr = new ProcessResult();
-            var textSelector = selector as TextRangeSelector;
             var content = result.Content;
 
-            var b = Regex.Matches(content, textSelector.Begin);
-            var e = Regex.Matches(content, textSelector.End, RegexOptions.RightToLeft);
+            var b = Regex.Matches(content, selector.Begin);
+            var e = Regex.Matches(content, selector.End, RegexOptions.RightToLeft);
 
             if (b.Count == 0 || e.Count == 0)
             {
@@ -39,14 +47,19 @@ namespace RuiJi.Net.Core.Extractor.Processor
             return pr;
         }
 
-        public override ProcessResult ProcessRemove(ISelector selector, ProcessResult result)
+        /// <summary>
+        /// process remove
+        /// </summary>
+        /// <param name="selector">text range selector</param>
+        /// <param name="result">pre process result</param>
+        /// <returns>new process result</returns>
+        public override ProcessResult ProcessRemove(TextRangeSelector selector, ProcessResult result)
         {
-            var textSelector = selector as TextRangeSelector;
             var content = result.Content;
 
             var pr = new ProcessResult();
-            var b = Regex.Matches(content, textSelector.Begin);
-            var e = Regex.Matches(content, textSelector.End, RegexOptions.RightToLeft);
+            var b = Regex.Matches(content, selector.Begin);
+            var e = Regex.Matches(content, selector.End, RegexOptions.RightToLeft);
 
             if (b.Count == 0 || e.Count == 0)
             {

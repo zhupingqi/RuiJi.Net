@@ -9,11 +9,21 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Extractor
 {
+    /// <summary>
+    /// extract tile
+    /// </summary>
     public class ExtractTile : ExtractBase
     {
+        /// <summary>
+        /// tile metas
+        /// </summary>
         [JsonProperty("metas", NullValueHandling = NullValueHandling.Ignore)]
         public ExtractMetaCollection Metas { get; set; }
 
+        /// <summary>
+        /// constructor
+        /// </summary>
+        /// <param name="name">tile name</param>
         public ExtractTile(string name = "") : base(name)
         {
             Metas = new ExtractMetaCollection();

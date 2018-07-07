@@ -1,26 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RuiJi.Net.Core.Extractor.Selector;
+﻿using RuiJi.Net.Core.Extractor.Selector;
 using RuiJi.Net.Core.Utils;
 
 namespace RuiJi.Net.Core.Extractor.Processor
 {
-    public class ClearTagProcessor : ProcessorBase
+    /// <summary>
+    /// clear tag processor ,auto clear script,style,iframe,textarea,form,select tag
+    /// </summary>
+    public class ClearTagProcessor : ProcessorBase<ClearTagSelector>
     {
-        public override ProcessResult ProcessNeed(ISelector selector, ProcessResult result)
+        /// <summary>
+        /// process need
+        /// </summary>
+        /// <param name="selector"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public override ProcessResult ProcessNeed(ClearTagSelector selector, ProcessResult result)
         {
-            var clearSelector = selector as ClearTagSelector;
-
             var pr = new ProcessResult();
             pr.Matches.Add(HtmlHelper.ClearTag(result.Content));
 
             return pr;
         }
 
-        public override ProcessResult ProcessRemove(ISelector selector, ProcessResult result)
+        /// <summary>
+        /// process remove
+        /// </summary>
+        /// <param name="selector"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public override ProcessResult ProcessRemove(ClearTagSelector selector, ProcessResult result)
         {
             return ProcessNeed(selector, result);
         }

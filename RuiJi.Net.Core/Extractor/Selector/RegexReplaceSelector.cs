@@ -8,22 +8,45 @@ using RuiJi.Net.Core.Extractor.Enum;
 
 namespace RuiJi.Net.Core.Extractor.Selector
 {
+    /// <summary>
+    /// regex replace selector
+    /// </summary>
     public class RegexReplaceSelector : SelectorBase
     {
-        [JsonProperty("newChar")]
-        public string NewChar { get; set; }
+        /// <summary>
+        /// regex pattern
+        /// </summary>
+        public string Pattern { get; set; }
 
+        /// <summary>
+        /// replacement string
+        /// </summary>
+        [JsonProperty("newString")]
+        public string NewString { get; set; }
+
+        /// <summary>
+        /// constructor
+        /// </summary>
         public RegexReplaceSelector()
         {
 
         }
 
-        public RegexReplaceSelector(string value, string newChar)
+        /// <summary>
+        /// constructor
+        /// </summary>
+        /// <param name="pattern">regex replace pattern</param>
+        /// <param name="NewString"></param>
+        public RegexReplaceSelector(string pattern, string NewString)
         {
-            this.NewChar = newChar;
-            this.Value = value;
+            this.NewString = NewString;
+            this.Pattern = pattern;
         }
 
+        /// <summary>
+        /// set selector type enum
+        /// </summary>
+        /// <returns>selector type</returns>
         protected override SelectorTypeEnum SetSelectType()
         {
             return SelectorTypeEnum.REGEXREPLACE;

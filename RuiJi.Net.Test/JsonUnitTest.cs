@@ -20,14 +20,14 @@ namespace RuiJi.Net.Test
             var block = new ExtractBlock();
             block.Selectors = new List<ISelector>
             {
-                new CssSelector(".entry-content",CssTypeEnum.InnerHtml)
+                new CssSelector(".entry-content",CssTypeEnum.INNERHTML)
             };
 
             block.TileSelector = new ExtractTile
             {
                 Selectors = new List<ISelector>
                 {
-                    new CssSelector(".pt-cv-content-item",CssTypeEnum.InnerHtml)
+                    new CssSelector(".pt-cv-content-item",CssTypeEnum.INNERHTML)
                 }
             };
 

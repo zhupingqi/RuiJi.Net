@@ -1,25 +1,27 @@
 ﻿using CsQuery;
-using RuiJi.Net.Core.Extractor;
 using RuiJi.Net.Core.Extractor.Enum;
 using RuiJi.Net.Core.Extractor.Selector;
 using RuiJi.Net.Core.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Web;
 
 namespace RuiJi.Net.Core.Extractor.Processor
 {
-    public class CssProcessor : ProcessorBase
+    /// <summary>
+    /// css processor
+    /// </summary>
+    public class CssProcessor : ProcessorBase<CssSelector>
     {
-        public override ProcessResult ProcessNeed(ISelector selector, ProcessResult result)
+        /// <summary>
+        /// process need
+        /// </summary>
+        /// <param name="selector">css selector</param>
+        /// <param name="result">pre process result</param>
+        /// <returns>new process result</returns>
+        public override ProcessResult ProcessNeed(CssSelector selector, ProcessResult result)
         {
             var pr = new ProcessResult();
 
-            if (string.IsNullOrEmpty(selector.Value))
+            if (string.IsNullOrEmpty(selector.DomSelector))
             {
                 return pr;
             }
@@ -40,33 +42,43 @@ namespace RuiJi.Net.Core.Extractor.Processor
                 content = "<div>" + content + "</div>";
             }
 
-            var cssSelector = selector as CssSelector;
-            if (cssSelector.Type == CssTypeEnum.Text)
+            if (selector.Type == CssTypeEnum.TEXT)
                 content = HtmlHelper.ClearTag(content);
 
             CQ cq = CQ.Create(content, HtmlParsingMode.Auto,HtmlParsingOptions.AllowSelfClosingTags,DocType.XHTML);
-            var elems = cq.Find(cssSelector.Value);
+            var elems = cq.Find(selector.DomSelector);
 
-            pr = ProcessResult(elems, cssSelector);
+            pr = ProcessResult(elems, selector);
 
             return pr;
         }
 
-        public override ProcessResult ProcessRemove(ISelector selector, ProcessResult result)
+        /// <summary>
+        /// process remove
+        /// </summary>
+        /// <param name="selector">css selector</param>
+        /// <param name="result">pre process result</param>
+        /// <returns>new process result</returns>
+        public override ProcessResult ProcessRemove(CssSelector selector, ProcessResult result)
         {
-            var cssSelector = selector as CssSelector;
             CQ cq = new CQ(result.Content);
-            cq[cssSelector.Value].Remove();
+            cq[selector.DomSelector].Remove();
             var content = HttpUtility.HtmlDecode(cq.Render());
             content = "<doc>" + content + "</doc>";
             cq = CQ.Create(content, HtmlParsingMode.Auto);
 
             var pr = new ProcessResult();
-            pr = ProcessResult(cq, cssSelector);
+            pr = ProcessResult(cq, selector);
 
             return pr;
         }
 
+        /// <summary>
+        /// match selector result
+        /// </summary>
+        /// <param name="elems">cq element</param>
+        /// <param name="selector">css selector</param>
+        /// <returns>process result</returns>
         private ProcessResult ProcessResult(CQ elems, CssSelector selector)
         {
             var pr = new ProcessResult();
@@ -74,7 +86,7 @@ namespace RuiJi.Net.Core.Extractor.Processor
             {
                 switch (selector.Type)
                 {
-                    case CssTypeEnum.InnerHtml:
+                    case CssTypeEnum.INNERHTML:
                         {
                             foreach (var ele in elems)
                             {
@@ -82,7 +94,7 @@ namespace RuiJi.Net.Core.Extractor.Processor
                             }
                             break;
                         }
-                    case CssTypeEnum.Text:
+                    case CssTypeEnum.TEXT:
                         {
                             foreach (var ele in elems)
                             {
@@ -90,7 +102,7 @@ namespace RuiJi.Net.Core.Extractor.Processor
                             }
                             break;
                         }
-                    case CssTypeEnum.Attr:
+                    case CssTypeEnum.ATTR:
                         {
                             foreach (var ele in elems)
                             {
@@ -102,7 +114,7 @@ namespace RuiJi.Net.Core.Extractor.Processor
                             }
                             break;
                         }
-                    case CssTypeEnum.OutHtml:
+                    case CssTypeEnum.OUTERHTML:
                         {
                             foreach (var ele in elems)
                             {

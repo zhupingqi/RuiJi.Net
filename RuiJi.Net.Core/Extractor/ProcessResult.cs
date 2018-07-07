@@ -6,10 +6,19 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Extractor
 {
+    /// <summary>
+    /// process result
+    /// </summary>
     public class ProcessResult
     {
+        /// <summary>
+        /// matches content
+        /// </summary>
         public List<string> Matches { get; set; }
 
+        /// <summary>
+        /// merged content
+        /// </summary>
         public string Content
         {
             get
@@ -18,6 +27,9 @@ namespace RuiJi.Net.Core.Extractor
             }
         }
 
+        /// <summary>
+        /// constructor
+        /// </summary>
         public ProcessResult()
         {
             Matches = new List<string>();

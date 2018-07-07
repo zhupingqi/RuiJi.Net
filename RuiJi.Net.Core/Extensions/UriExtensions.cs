@@ -9,13 +9,27 @@ namespace RuiJi.Net.Core.Extensions
 {
     namespace System
     {
+        /// <summary>
+        /// uri extensions
+        /// </summary>
         public static class UriExtensions
         {
+            /// <summary>
+            /// get uri domain
+            /// </summary>
+            /// <param name="uri">this</param>
+            /// <returns>doamin</returns>
             public static string GetDomain(this Uri uri)
             {
                 return DomainParser.Parser.Parse(uri.Host).RegistrableDomain;
             }
 
+            /// <summary>
+            /// Maximum same segments length
+            /// </summary>
+            /// <param name="uri">this</param>
+            /// <param name="target">target uri</param>
+            /// <returns></returns>
             public static int StartSegmentsWith(this Uri uri, Uri target)
             {
                 var sp1 = uri.AbsolutePath.Split('/');
@@ -35,6 +49,12 @@ namespace RuiJi.Net.Core.Extensions
                 return count;
             }
 
+            /// <summary>
+            /// Whether or not it contains the target address path
+            /// </summary>
+            /// <param name="uri">uri</param>
+            /// <param name="target">target uri</param>
+            /// <returns>result</returns>
             public static bool StartPathWith(this Uri uri, Uri target)
             {
                 var sp1 = uri.AbsolutePath.Split('/');
@@ -54,20 +74,23 @@ namespace RuiJi.Net.Core.Extensions
                 return count == sp2.Length;
             }
 
+            /// <summary>
+            /// wildcard compare
+            /// </summary>
+            /// <param name="uri">this</param>
+            /// <param name="mask">mask</param>
+            /// <returns>compare result</returns>
             public static bool WildcardMatch(this Uri uri, string mask)
             {
                 return CompareWildcard((uri.Scheme + "://" + uri.Host + uri.AbsolutePath).AsEnumerable(), mask);
             }
 
             /// <summary>
-            /// Internal matching algorithm.
+            /// wildcard compare
             /// </summary>
-            /// <param name="wildcard">The wildcard.</param>
-            /// <param name="s">The s.</param>
-            /// <param name="wildcardIndex">Index of the wildcard.</param>
-            /// <param name="sIndex">Index of the s.</param>
-            /// <param name="ignoreCase">if set to <c>true</c> [ignore case].</param>
-            /// <returns></returns>
+            /// <param name="input">char enumerable</param>
+            /// <param name="mask">wildcard</param>
+            /// <returns>compare result</returns>
             private static bool CompareWildcard(IEnumerable<char> input, string mask)
             {
                 for (int i = 0; i < mask.Length; i++)

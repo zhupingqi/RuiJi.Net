@@ -16,8 +16,16 @@ using System.Web;
 
 namespace RuiJi.Net.Core.Extractor
 {
+    /// <summary>
+    /// RuiJi Extractor
+    /// </summary>
     public class RuiJiExtractor
     {
+        /// <summary>
+        /// Extract by ExtractRequest
+        /// </summary>
+        /// <param name="request">ExtractRequest</param>
+        /// <returns>ExtractResult list</returns>
         public static List<ExtractResult> Extract(ExtractRequest request)
         {
             var blocks = request.Blocks.Where(m => m.ExtractFeature != null && m.ExtractFeature.Feature != null && m.ExtractFeature.Feature.Count > 0).OrderByDescending(m => m.ExtractFeature.Feature.Count).ToList();
@@ -50,9 +58,15 @@ namespace RuiJi.Net.Core.Extractor
             return results;
         }
 
+        /// <summary>
+        /// extract block from content
+        /// </summary>
+        /// <param name="content">content need to be extract</param>
+        /// <param name="block">extract block</param>
+        /// <returns></returns>
         public static ExtractResult Extract(string content, ExtractBlock block)
         {
-            var pr = ProcessorFactory.Process(content, block.Selectors);
+            var pr = ProcessorManager.Process(content, block.Selectors);
 
             var result = new ExtractResult
             {
@@ -78,6 +92,12 @@ namespace RuiJi.Net.Core.Extractor
             return result;
         }
 
+        /// <summary>
+        /// extract block collection from content
+        /// </summary>
+        /// <param name="content">content need to be extract</param>
+        /// <param name="collection">block collection</param>
+        /// <returns>extract result collection</returns>
         public static ExtractResultCollection Extract(string content, ExtractBlockCollection collection)
         {
             var results = new ExtractResultCollection();
@@ -91,12 +111,18 @@ namespace RuiJi.Net.Core.Extractor
             return results;
         }
 
+        /// <summary>
+        /// extract base from content
+        /// </summary>
+        /// <param name="content">content need to be extract</param>
+        /// <param name="extractBase">extract base</param>
+        /// <returns>extract result collection</returns>
         public static ExtractResultCollection ExtractSelector(string content, ExtractBase extractBase)
         {
-            var pr = ProcessorFactory.Process(content, extractBase.Selectors);
+            var pr = ProcessorManager.Process(content, extractBase.Selectors);
 
             var results = new ExtractResultCollection();
-            Type t = extractBase.ContentType;
+            Type t = extractBase.DataType;
 
             foreach (var m in pr.Matches)
             {
@@ -107,7 +133,7 @@ namespace RuiJi.Net.Core.Extractor
                     result = new ExtractResult
                     {
                         Name = "tile",
-                        Content = Convert.ChangeType(m, extractBase.ContentType)
+                        Content = Convert.ChangeType(m, extractBase.DataType)
                     };
                 }
                 catch
@@ -125,9 +151,15 @@ namespace RuiJi.Net.Core.Extractor
             return results;
         }
 
+        /// <summary>
+        /// extract tile from content
+        /// </summary>
+        /// <param name="content">content need to be extract</param>
+        /// <param name="tile">extract tile</param>
+        /// <returns>extract result collection</returns>
         public static ExtractResultCollection ExtractTile(string content, ExtractTile tile)
         {
-            var pr = ProcessorFactory.Process(content, tile.Selectors);
+            var pr = ProcessorManager.Process(content, tile.Selectors);
 
             var results = new ExtractResultCollection();
 
@@ -150,6 +182,12 @@ namespace RuiJi.Net.Core.Extractor
             return results;
         }
 
+        /// <summary>
+        /// extract meta from content
+        /// </summary>
+        /// <param name="content">content need to be extract</param>
+        /// <param name="metas">meta collection</param>
+        /// <returns>dictionary result</returns>
         public static Dictionary<string, object> ExtractMeta(string content, ExtractMetaCollection metas)
         {
             var results = new Dictionary<string, object>();

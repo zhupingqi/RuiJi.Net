@@ -6,8 +6,14 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Extractor
 {
+    /// <summary>
+    /// extract result collection
+    /// </summary>
     public class ExtractResultCollection : List<ExtractResult>
     {
+        /// <summary>
+        /// extract results
+        /// </summary>
         public List<ExtractResult> Results
         {
             get {
@@ -15,11 +21,17 @@ namespace RuiJi.Net.Core.Extractor
             }
         }
 
+        /// <summary>
+        /// constructor
+        /// </summary>
         public ExtractResultCollection()
         {
             
         }
 
+        /// <summary>
+        /// extract keys
+        /// </summary>
         public string[] AllKeys
         {
             get

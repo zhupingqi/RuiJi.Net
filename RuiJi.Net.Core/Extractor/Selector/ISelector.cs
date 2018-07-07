@@ -7,12 +7,24 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Extractor.Selector
 {
+    /// <summary>
+    /// selector interface
+    /// </summary>
     public interface ISelector
     {
+        /// <summary>
+        /// selector type
+        /// </summary>
         SelectorTypeEnum SelectorType { get; }
 
+        /// <summary>
+        /// remove flag
+        /// </summary>
         bool Remove { get; set; }
 
-        string Value { get; set; }
+        /// <summary>
+        /// selector value
+        /// </summary>
+        //string Value { get; set; }
     }
 }
