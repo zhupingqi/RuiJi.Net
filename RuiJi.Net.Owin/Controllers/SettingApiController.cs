@@ -269,6 +269,7 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         #endregion
+
         [HttpGet]
         public bool IsAlone()
         {

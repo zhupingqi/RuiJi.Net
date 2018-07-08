@@ -118,7 +118,7 @@
             var t = $("#func_form").serializeArray();
 
             $.each(t, function () {
-                d[this.name] = this.value.replace(/"/g, "&quot;");
+                d[this.name] = this.value;
             });
 
             $.ajax({
@@ -137,7 +137,7 @@
             var msg = "";
 
             $.each(t, function () {
-                d[this.name] = this.value.replace(/"/g, "&quot;");
+                d[this.name] = this.value;
                 if ($.trim(d[this.name]) == "") {
                     msg += "\nneed " + this.name;
                 }
