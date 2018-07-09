@@ -444,6 +444,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="conf\config\online_proxy.txt" />
+    <Content Include="www\content\images\loading.0.gif" />
+    <Content Include="www\doc\cn\index.html" />
+    <Content Include="www\doc\index.html" />
     <Content Include="www\fonts\fontawesome-webfont.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1362,6 +1365,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Utils\" />
+    <Folder Include="www\doc\en\" />
     <Folder Include="www\download\" />
   </ItemGroup>
   <ItemGroup>

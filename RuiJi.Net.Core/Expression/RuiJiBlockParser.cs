@@ -255,6 +255,13 @@ namespace RuiJi.Net.Core.Expression
 
             switch (cmd)
             {
+                case "clear":
+                    {
+                        var selector = new ClearTagSelector();
+                        selector.Remove = remove;
+
+                        return selector;
+                    }
                 case "css":
                     {
                         var selector = new CssSelector();

@@ -115,9 +115,9 @@ namespace RuiJi.Net.Node
             if (stat == null)
                 zooKeeper.Create("/live_nodes/crawler", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
 
-            stat = zooKeeper.Exists("/live_nodes/Extractor", false);
+            stat = zooKeeper.Exists("/live_nodes/extractor", false);
             if (stat == null)
-                zooKeeper.Create("/live_nodes/Extractor", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+                zooKeeper.Create("/live_nodes/extractor", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
 
             stat = zooKeeper.Exists("/live_nodes/feed", false);
             if (stat == null)
@@ -136,9 +136,9 @@ namespace RuiJi.Net.Node
             if (stat == null)
                 zooKeeper.Create("/config/crawler", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
 
-            stat = zooKeeper.Exists("/config/Extractor", false);
+            stat = zooKeeper.Exists("/config/extractor", false);
             if (stat == null)
-                zooKeeper.Create("/config/Extractor", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+                zooKeeper.Create("/config/extractor", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
 
             stat = zooKeeper.Exists("/config/proxy", false);
             if (stat == null)
@@ -281,12 +281,12 @@ namespace RuiJi.Net.Node
 
             nodes.AddRange(GetChildren("/config/proxy").AllKeys);
             nodes.AddRange(GetChildren("/config/crawler").AllKeys);
-            nodes.AddRange(GetChildren("/config/Extractor").AllKeys);
+            nodes.AddRange(GetChildren("/config/extractor").AllKeys);
             nodes.AddRange(GetChildren("/config/feed").AllKeys);
 
             nodes.AddRange(GetChildren("/live_nodes/proxy").AllKeys);
             nodes.AddRange(GetChildren("/live_nodes/crawler").AllKeys);
-            nodes.AddRange(GetChildren("/live_nodes/Extractor").AllKeys);
+            nodes.AddRange(GetChildren("/live_nodes/extractor").AllKeys);
             nodes.AddRange(GetChildren("/live_nodes/feed").AllKeys);
 
             foreach (var node in nodes)
