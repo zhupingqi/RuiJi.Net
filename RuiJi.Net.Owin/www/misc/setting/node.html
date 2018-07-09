@@ -18,7 +18,7 @@
             <span class="active-node-crawler">{{crawler}}</span>
         </div>
         <div class="ips-set col-md-2">
-            {{each result as re i}}
+            {{each result re i}}
             <div><input class="tab-panel-node" type='checkbox' value='{{re.ip}}' {{if re.checked}} checked="checked" {{/if}} />{{re.ip}} </div>
             {{/each}}
         </div>
