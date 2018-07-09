@@ -1,4 +1,4 @@
-﻿define(['jquery', 'utils'], function ($, utils) {
+﻿define(['jquery', 'utils', 'sweetAlert'], function ($, utils) {
     var alone = false;
 
     var module = {
@@ -41,8 +41,8 @@
 
                     var feed = n.BaseUrl;
                     var url = "/api/feed/page?baseUrl=" + feed;
-                    
-                    $.getJSON(url, function (pages) {                        
+
+                    $.getJSON(url, function (pages) {
                         tmp = utils.template("setting_feed_node", { feed: feed, pages: pages });
                         $("#feed_node_set").append(tmp);
                     });
@@ -75,6 +75,7 @@
                 var result = $(this).closest(".feed-node");
 
                 var pages = result.find(".node-pages").val();
+
                 var feed = result.find(".active-node-feed").text();
 
                 var url = "/api/feed/page/set?baseUrl=" + feed;
@@ -97,5 +98,5 @@
         alone = d;
 
         module.init();
-    });    
+    });
 });

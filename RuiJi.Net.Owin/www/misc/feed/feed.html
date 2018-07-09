@@ -19,22 +19,31 @@
             <input type="text" class="form-control" value="GET" disabled="disabled">
             <div class="input-group-btn">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Please choose<span class="caret"></span></button>
-                <ul class="dropdown-menu dropdown-menu-right">
+                <ul class="dropdown-menu dropdown-menu-right" method>
                     <li><a href="javascript:;">GET</a></li>
                     <li><a href="javascript:;">POST</a></li>
                 </ul>
             </div>
         </div>
-        <div class="input-group">
-            <span class="input-group-addon">UA</span>
-            <input type="hidden" name="ua" value="">
-            <input type="text" class="form-control">
+        <div class="input-group hide method-group">
+            <span class="input-group-addon">Post Type</span>
+            <input type="hidden" name="postType" value="application/x-www-form-urlencoded">
+            <input type="text" class="form-control" value="application/x-www-form-urlencoded" disabled="disabled">
             <div class="input-group-btn">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Please choose<span class="caret"></span></button>
-                <ul class="dropdown-menu dropdown-menu-right">
-                    <li><a href="javascript:;" data-bind="">Default</a></li>
+                <ul class="dropdown-menu dropdown-menu-right" postType>
+                    <li><a href="javascript:;">application/x-www-form-urlencoded</a></li>
+                    <li><a href="javascript:;">application/json</a></li>
                 </ul>
             </div>
+        </div>
+        <div class="input-group hide method-group">
+            <span class="input-group-addon">Param</span>
+            <textarea type="text" class="required" name="postParam" placeholder="example:a=1&b=2"></textarea>
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">UA</span>
+            <input type="text" class="form-control" name="ua" value="" placeholder="If empty, read the Ua in the settings." title="If empty, read the Ua in the settings. If the UA in the settings is empty, read the system default.">
         </div>
         <div class="input-group">
             <span class="input-group-addon">Headers</span>

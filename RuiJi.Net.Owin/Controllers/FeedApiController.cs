@@ -145,7 +145,7 @@ namespace RuiJi.Net.Owin.Controllers
 
             var data = node.GetData("/config/feed/" + Request.RequestUri.Authority);
             var config = JsonConvert.DeserializeObject<NodeConfig>(data.Data);
-            config.Pages = pages.Split(',').Select(m => Convert.ToInt32(m)).ToArray();
+            config.Pages = string.IsNullOrEmpty(pages) ? new int[] { } : pages.Split(',').Select(m => Convert.ToInt32(m)).ToArray();
 
             node.SetData(path, JsonConvert.SerializeObject(config));
         }
