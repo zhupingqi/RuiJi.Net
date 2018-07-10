@@ -33,6 +33,44 @@ namespace RuiJi.Net.Node.Feed.LTS
             await scheduler.ScheduleJob(job, trigger);
         }
 
+        public static async void AddJob(string jobKey, string[] cornExpressions, Dictionary<string, object> dic = null)
+        {
+            scheduler = await factory.GetScheduler();
+
+            var exists = await scheduler.CheckExists(new JobKey(jobKey));
+
+            if (!exists)
+            {
+                IJobDetail job = JobBuilder.Create<FeedJob>().WithIdentity(jobKey).Build();
+
+                if (dic != null)
+                {
+                    foreach (var key in dic.Keys)
+                    {
+                        job.JobDataMap.Add(key, dic[key]);
+                    }
+                }
+
+                foreach (var cornExpression in cornExpressions)
+                {
+                    ITrigger trigger = TriggerBuilder.Create().WithCronSchedule(cornExpression).WithIdentity(jobKey).Build();
+                    await scheduler.ScheduleJob(job, trigger);
+                }
+            }
+        }
+
+        public static void AddJob(string jobKey, string cornExpression, Dictionary<string, object> dic = null)
+        {
+            AddJob(jobKey, new string[] { cornExpression }, dic);
+        }
+
+        public static async void DeleteJob(string jobKey)
+        {
+            var job = new JobKey(jobKey);
+
+            await scheduler.DeleteJob(job);
+        }
+
         public static async void Stop()
         {
             await scheduler.Shutdown(false);
