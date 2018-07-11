@@ -1,5 +1,7 @@
 ﻿[![Nuget](https://img.shields.io/nuget/v/RuiJi.Net.Core.svg)](https://www.nuget.org/packages/RuiJi.Net.Core)
 [![Build status](https://ci.appveyor.com/api/projects/status/6hs9a47tftkv1yeo?svg=true)](https://ci.appveyor.com/project/zhupingqi/ruiji-net)
+[![Build status](https://opencollective.com/ruijinet/tiers/backer/badge.svg?label=backer&color=brightgreen)]()
+
 # RuiJi.Net
 RuiJi.Net is a distributed crawl framework written in c#.
 

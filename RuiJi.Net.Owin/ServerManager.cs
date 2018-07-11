@@ -1,5 +1,6 @@
 ﻿using Microsoft.Owin.Hosting;
 using RuiJi.Net.Core.Configuration;
+using RuiJi.Net.Core.Utils;
 using RuiJi.Net.Core.Utils.Log;
 using RuiJi.Net.Node;
 using System;
@@ -128,6 +129,16 @@ namespace RuiJi.Net.Owin
                     tasks.Add(t);
                     Thread.Sleep(1000);
                 });
+            }
+        }
+
+        public static void StartDocServer()
+        {
+            var baseUrl = ConfigurationManager.AppSettings["DocServer"];
+            if (!string.IsNullOrEmpty(baseUrl))
+            {
+                baseUrl = IPHelper.FixLocalUrl(baseUrl);
+                var app = WebApp.Start<DStartup>("http://" + baseUrl);
             }
         }
 
