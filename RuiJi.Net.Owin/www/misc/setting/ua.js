@@ -63,16 +63,23 @@
                 var ele = $(this);
                 var id = ele.closest("tr").find("td").eq(1).text();
                 var f = $(tmp);
+
                 f.find("input[name='id']").val(id);
 
                 $.getJSON("/api/ua?id=" + id, function (d) {
                     if (d) {
+                        var groupDropdown = $("#toolbar_ua_group button.ua-group").parent().find("ul.dropdown-menu");
                         for (var p in d) {
                             var v = d[p];
                             var ele = f.find("[name='" + p + "']").eq(0);
 
                             ele.attr("value", v);
                             ele.text(v);
+
+                            if (p == "groupId") {
+                                var groupName = groupDropdown.find("li > a[gid=" + v + "]").text();
+                                f.find("input[name='group']").attr("value", groupName);
+                            }
                         }
 
                         BootstrapDialog.show({
@@ -262,7 +269,7 @@
                 }
             });
         },
-        update: function (dialog, gid) {
+        update: function (dialog) {
             var d = {};
             var validate = true;
             var msg = "need";
@@ -281,7 +288,7 @@
                 return;
             }
 
-            $("input[name]", "#ua_dialog").each(function (index, e) {
+            $("input[name]:not([unsub])", "#ua_dialog").each(function (index, e) {
                 e = $(e);
                 var v = e.val();
                 if (v == "true")
