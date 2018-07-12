@@ -74,13 +74,13 @@
                 }
             });
 
-            $(document).on("click", "#feed_dialog ul.dropdown-menu[postType] a", function () {
+            $(document).on("click", "#feed_dialog ul.dropdown-menu[contentType] a", function () {
                 var menu = $(this);
                 var v = menu.attr("data-bind") ? menu.attr("data-bind") : menu.text();
                 if (v == "application/json") {
-                    $("#feed_dialog textarea[name='postParam']").attr("placeholder", "example:{a:1,b:2}");
+                    $("#feed_dialog textarea[name='data']").attr("placeholder", "example:{a:1,b:2}");
                 } else {
-                    $("#feed_dialog textarea[name='postParam']").attr("placeholder", "example:a=1&b=2");
+                    $("#feed_dialog textarea[name='data']").attr("placeholder", "example:a=1&b=2");
                 }
             });
 
@@ -106,8 +106,8 @@
                             $(".method-group", f ).removeClass("hide");
                         }
 
-                        if (p == "postType" && v == "application/json") {
-                            $("textarea[name='postParam']", f).attr("placeholder", "example:a=1&b=2");
+                        if (p == "contentType" && v == "application/json") {
+                            $("textarea[name='data']", f).attr("placeholder", "example:a=1&b=2");
                         }
 
                         if (p == "status" && v == "OFF") {
