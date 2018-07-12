@@ -212,6 +212,9 @@ namespace RuiJi.Net.Core.Crawler
             {
                 byte[] bs = Encoding.ASCII.GetBytes(request.Data);
 
+                if (!string.IsNullOrEmpty(request.ContentType))
+                    httpRequest.ContentType = request.ContentType;
+
                 if (string.IsNullOrEmpty(httpRequest.ContentType))
                     httpRequest.ContentType = "application/x-www-form-urlencoded";
 
