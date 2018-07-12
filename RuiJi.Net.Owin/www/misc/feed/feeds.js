@@ -80,7 +80,7 @@
                 if (v == "application/json") {
                     $("#feed_dialog textarea[name='data']").attr("placeholder", "example:{a:1,b:2}");
                 } else {
-                    $("#feed_dialog textarea[name='data']").attr("placeholder", "example:a=1&b=2");
+                    $("#feed_dialog textarea[name='data']").attr("placeholder", "example:\"a\"=1&\"b\"=2");
                 }
             });
 
