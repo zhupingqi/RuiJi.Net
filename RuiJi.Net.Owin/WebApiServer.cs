@@ -105,13 +105,13 @@ namespace RuiJi.Net.Owin
             resetEvent.WaitOne();
         }
 
-        public void Start(string baseUrl)
+        public void StartStandalone(string baseUrl)
         {
             baseUrl = IPHelper.FixLocalUrl(baseUrl);
 
             app = WebApp.Start<Startup>("http://" + baseUrl);
 
-            Node = new StandAloneNode(baseUrl);
+            Node = new StandaloneNode(baseUrl);
 
             Node.Start();
 

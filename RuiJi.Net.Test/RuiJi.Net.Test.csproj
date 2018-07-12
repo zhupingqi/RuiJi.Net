@@ -71,7 +71,7 @@
     <Compile Include="LoggerTest.cs" />
     <Compile Include="PhantomCrawlerTest.cs" />
     <Compile Include="ProxyTest.cs" />
-    <Compile Include="CoreTest.cs" />
+    <Compile Include="CoreScheduleTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

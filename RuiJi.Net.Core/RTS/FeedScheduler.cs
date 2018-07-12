@@ -24,24 +24,62 @@ namespace RuiJi.Net.Core.RTS
         /// <summary>
         /// start scheduler
         /// </summary>
-        public static async void Start(string cornExpression = "0 0/5 * * * ?", Dictionary<string,object> dic = null)
+        public static async void Start()
         {
             scheduler = await factory.GetScheduler();
+
+            //IJobDetail job = JobBuilder.Create<FeedJob>().Build();
+
+            //if (dic != null)
+            //{
+            //    foreach (var key in dic.Keys)
+            //    {
+            //        job.JobDataMap.Add(key, dic[key]);
+            //    }
+            //}
+
+            //ITrigger trigger = TriggerBuilder.Create().WithCronSchedule(cornExpression).Build();
+
+            //await scheduler.ScheduleJob(job, trigger);
             await scheduler.Start();
+        }
 
-            IJobDetail job = JobBuilder.Create<FeedJob>().Build();
+        public static async void AddJob(string jobKey, string[] cornExpressions, Dictionary<string, object> dic = null)
+        {
+            scheduler = await factory.GetScheduler();
 
-            if(dic!=null)
+            var exists = await scheduler.CheckExists(new JobKey(jobKey));
+
+            if (!exists)
             {
-                foreach (var key in dic.Keys)
+                IJobDetail job = JobBuilder.Create<FeedJob>().WithIdentity(jobKey).Build();
+
+                if (dic != null)
                 {
-                    job.JobDataMap.Add(key, dic[key]);
+                    foreach (var key in dic.Keys)
+                    {
+                        job.JobDataMap.Add(key, dic[key]);
+                    }
+                }
+
+                foreach (var cornExpression in cornExpressions)
+                {
+                    ITrigger trigger = TriggerBuilder.Create().WithCronSchedule(cornExpression).WithIdentity(jobKey).Build();
+                    await scheduler.ScheduleJob(job, trigger);
                 }
             }
+        }
 
-            ITrigger trigger = TriggerBuilder.Create().WithCronSchedule(cornExpression).Build();
+        public static void AddJob(string jobKey, string cornExpression, Dictionary<string, object> dic = null)
+        {
+            AddJob(jobKey, new string[] { cornExpression }, dic);
+        }
 
-            await scheduler.ScheduleJob(job, trigger);
+        public static async void DeleteJob(string jobKey)
+        {
+            var job = new JobKey(jobKey);
+
+            await scheduler.DeleteJob(job);
         }
 
         /// <summary>

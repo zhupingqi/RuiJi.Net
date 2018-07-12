@@ -1,5 +1,6 @@
 ﻿using Microsoft.Owin.Hosting;
 using RuiJi.Net.Core.Configuration;
+using RuiJi.Net.Core.Utils;
 using RuiJi.Net.Core.Utils.Log;
 using RuiJi.Net.Node;
 using System;
@@ -70,7 +71,7 @@ namespace RuiJi.Net.Owin
                 {
                     try
                     {
-                        ServerManager.Start(baseUrl);
+                        ServerManager.StartStandalone(baseUrl);
                     }
                     catch (Exception ex)
                     {
@@ -131,6 +132,16 @@ namespace RuiJi.Net.Owin
             }
         }
 
+        public static void StartDocServer()
+        {
+            var baseUrl = ConfigurationManager.AppSettings["DocServer"];
+            if (!string.IsNullOrEmpty(baseUrl))
+            {
+                baseUrl = IPHelper.FixLocalUrl(baseUrl);
+                var app = WebApp.Start<DStartup>("http://" + baseUrl);
+            }
+        }
+
         public static void Start(int port)
         {
             var server = servers.SingleOrDefault(m => m.Port == port.ToString());
@@ -165,12 +176,12 @@ namespace RuiJi.Net.Owin
             }
         }
 
-        public static void Start(string baseUrl)
+        public static void StartStandalone(string baseUrl)
         {
             var server = new WebApiServer();
             servers.Add(server);
 
-            server.Start(baseUrl);
+            server.StartStandalone(baseUrl);
         }
 
         public static void StopAll()

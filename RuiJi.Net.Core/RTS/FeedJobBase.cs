@@ -39,43 +39,38 @@ namespace RuiJi.Net.Core.RTS
 
                 OnJobStart(context);
 
-                var task = Task.Factory.StartNew(() =>
+                var requests = GetRequests();
+
+                var stpStartInfo = new STPStartInfo
                 {
-                    var requests = GetRequests();
+                    IdleTimeout = 3000,
+                    MaxWorkerThreads = MaxWorkerThreads,
+                    MinWorkerThreads = 0
+                };
 
-                    var stpStartInfo = new STPStartInfo
+                var pool = new SmartThreadPool(stpStartInfo);
+                var waits = new List<IWorkItemResult>();
+
+                foreach (var fr in requests)
+                {
+                    if (fr.Request.Headers.Count(m => m.Name == "Referer") == 0)
+                        fr.Request.Headers.Add(new WebHeader("Referer", fr.Request.Uri.AbsoluteUri));
+
+                    var item = pool.QueueWorkItem((u) =>
                     {
-                        IdleTimeout = 3000,
-                        MaxWorkerThreads = MaxWorkerThreads,
-                        MinWorkerThreads = 0
-                    };
+                        var response = DoTask(u);
+                        Save(u, response);
+                    }, fr);
 
-                    var pool = new SmartThreadPool(stpStartInfo);
-                    var waits = new List<IWorkItemResult>();
+                    waits.Add(item);
+                }
 
-                    foreach (var fr in requests)
-                    {
-                        if (fr.Request.Headers.Count(m => m.Name == "Referer") == 0)
-                            fr.Request.Headers.Add(new WebHeader("Referer", fr.Request.Uri.AbsoluteUri));
+                SmartThreadPool.WaitAll(waits.ToArray());
 
-                        var item = pool.QueueWorkItem((u) =>
-                        {
-                            var response = DoTask(u);
-                            Save(u, response);
-                        }, fr);
-
-                        waits.Add(item);
-                    }
-
-                    SmartThreadPool.WaitAll(waits.ToArray());
-
-                    pool.Shutdown(true, 1000);
-                    pool.Dispose();
-                    pool = null;
-                    waits.Clear();
-                });
-
-                await task;
+                pool.Shutdown(true, 1000);
+                pool.Dispose();
+                pool = null;
+                waits.Clear();
 
                 OnJobEnd();
 

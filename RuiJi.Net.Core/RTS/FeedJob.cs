@@ -27,13 +27,13 @@ namespace RuiJi.Net.Core.RTS
     {
         public static int Delay { get; set; }
 
-        private static string jobPath;
+        private static readonly string jobPath;
 
-        private static string basePath;
+        private static readonly string basePath;
 
-        private static string snapshotPath;
+        private static readonly string snapshotPath;
 
-        private static string delayPath;
+        private static readonly string delayPath;
 
         static FeedJob()
         {

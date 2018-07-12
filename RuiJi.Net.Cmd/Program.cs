@@ -39,6 +39,8 @@ namespace RuiJi.Net.Cmd
 
             ServerManager.StartServers();
 
+            ServerManager.StartDocServer();
+
             while (true)
             {
                 Console.WriteLine();

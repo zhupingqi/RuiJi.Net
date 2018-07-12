@@ -6,14 +6,16 @@ using RuiJi.Net.Core.RTS;
 namespace RuiJi.Net.Test
 {
     [TestClass]
-    public class CoreTest
+    public class CoreScheduleTest
     {
         [TestMethod]
         public void TestFeedScheduler()
         {
             var s = typeof(int).Name;
 
-            FeedScheduler.Start("0/5 * * * * ?");
+            FeedScheduler.Start();
+            FeedScheduler.AddJob("1", "0/5 * * * * ?");
+            FeedScheduler.AddJob("1", "0/10 * * * ?");
 
             Thread.Sleep(3000000);
             Assert.IsTrue(true);
