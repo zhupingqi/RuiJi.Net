@@ -13,6 +13,10 @@ namespace RuiJi.Net.Node.Feed.LTS
         private static IScheduler scheduler;
         private static StdSchedulerFactory factory;
 
+        private static string baseUrl;
+        private static string proxyUrl;
+        private static FeedNode feedNode;
+
         static FeedScheduler()
         {
             factory = new StdSchedulerFactory();
@@ -20,17 +24,23 @@ namespace RuiJi.Net.Node.Feed.LTS
 
         public static async void Start(string baseUrl,string proxyUrl, FeedNode feedNode)
         {
+            FeedScheduler.baseUrl = baseUrl;
+            FeedScheduler.proxyUrl = proxyUrl;
+            FeedScheduler.feedNode = feedNode;
+
+            //IJobDetail job = JobBuilder.Create<FeedJob>().Build();
+            //job.JobDataMap.Add("proxyUrl", proxyUrl);
+            //job.JobDataMap.Add("baseUrl", baseUrl);
+            //job.JobDataMap.Add("node", feedNode);
+
+            //ITrigger trigger = TriggerBuilder.Create().WithCronSchedule("0 0/5 * * * ?").Build();
+
+            //await scheduler.ScheduleJob(job, trigger);
+
+            SyncFeed();
+
             scheduler = await factory.GetScheduler();
             await scheduler.Start();
-
-            IJobDetail job = JobBuilder.Create<FeedJob>().Build();
-            job.JobDataMap.Add("proxyUrl", proxyUrl);
-            job.JobDataMap.Add("baseUrl", baseUrl);
-            job.JobDataMap.Add("node", feedNode);
-
-            ITrigger trigger = TriggerBuilder.Create().WithCronSchedule("0 0/5 * * * ?").Build();
-
-            await scheduler.ScheduleJob(job, trigger);
         }
 
         public static async void AddJob(string jobKey, string[] cornExpressions, Dictionary<string, object> dic = null)
@@ -42,6 +52,10 @@ namespace RuiJi.Net.Node.Feed.LTS
             if (!exists)
             {
                 IJobDetail job = JobBuilder.Create<FeedJob>().WithIdentity(jobKey).Build();
+
+                job.JobDataMap.Add("proxyUrl", proxyUrl);
+                job.JobDataMap.Add("baseUrl", baseUrl);
+                job.JobDataMap.Add("node", feedNode);
 
                 if (dic != null)
                 {
@@ -61,7 +75,14 @@ namespace RuiJi.Net.Node.Feed.LTS
 
         public static void AddJob(string jobKey, string cornExpression, Dictionary<string, object> dic = null)
         {
-            AddJob(jobKey, new string[] { cornExpression }, dic);
+            if (string.IsNullOrEmpty(cornExpression))
+            {
+                return;
+            }
+
+            cornExpression = cornExpression.Replace("\r\n", "\n");
+
+            AddJob(jobKey, cornExpression.Split('\n'), dic);
         }
 
         public static async void DeleteJob(string jobKey)
@@ -74,6 +95,11 @@ namespace RuiJi.Net.Node.Feed.LTS
         public static async void Stop()
         {
             await scheduler.Shutdown(false);
+        }
+
+        public static async void SyncFeed()
+        {
+
         }
     }
 }

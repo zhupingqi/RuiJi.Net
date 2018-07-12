@@ -71,7 +71,7 @@ namespace RuiJi.Net.Owin
                 {
                     try
                     {
-                        ServerManager.Start(baseUrl);
+                        ServerManager.StartStandalone(baseUrl);
                     }
                     catch (Exception ex)
                     {
@@ -176,12 +176,12 @@ namespace RuiJi.Net.Owin
             }
         }
 
-        public static void Start(string baseUrl)
+        public static void StartStandalone(string baseUrl)
         {
             var server = new WebApiServer();
             servers.Add(server);
 
-            server.Start(baseUrl);
+            server.StartStandalone(baseUrl);
         }
 
         public static void StopAll()

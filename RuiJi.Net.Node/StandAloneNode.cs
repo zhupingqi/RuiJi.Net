@@ -8,9 +8,9 @@ using RuiJi.Net.Core.Utils.Log;
 
 namespace RuiJi.Net.Node
 {
-    public class StandAloneNode : INode
+    public class StandaloneNode : INode
     {
-        static StandAloneNode()
+        static StandaloneNode()
         {
             var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LiteDb");
             if (!Directory.Exists(path))
@@ -25,7 +25,7 @@ namespace RuiJi.Net.Node
 
         public bool IsLeader { get; protected set; }
 
-        public StandAloneNode(string baseUrl)
+        public StandaloneNode(string baseUrl)
         {
             this.BaseUrl = baseUrl;
             this.NodeType = NodeTypeEnum.STANDALONE;
