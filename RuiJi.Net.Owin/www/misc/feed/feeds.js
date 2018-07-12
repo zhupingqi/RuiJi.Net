@@ -78,9 +78,9 @@
                 var menu = $(this);
                 var v = menu.attr("data-bind") ? menu.attr("data-bind") : menu.text();
                 if (v == "application/json") {
-                    $("#feed_dialog textarea[name='data']").attr("placeholder", "example:{a:1,b:2}");
+                    $("#feed_dialog textarea[name='data']").attr("placeholder", "example:{\"name\":\"zhangsan\",\"age\":20}");
                 } else {
-                    $("#feed_dialog textarea[name='data']").attr("placeholder", "example:\"a\"=1&\"b\"=2");
+                    $("#feed_dialog textarea[name='data']").attr("placeholder", "example:name=zhangsan&age=20");
                 }
             });
 
