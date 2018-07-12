@@ -48,11 +48,8 @@ namespace RuiJi.Net.Node.Feed.Db
         [JsonProperty("method")]
         public string Method { get; set; }
 
-        [JsonProperty("postType")]
-        public string PostType { get; set; }
-
-        [JsonProperty("postParam")]
-        public string PostParam { get; set; }
+        [JsonProperty("contentType")]
+        public string ContentType { get; set; }
 
         [JsonProperty("genre")]
         public string Genre { get; set; }
