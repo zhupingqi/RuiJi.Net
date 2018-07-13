@@ -72,6 +72,7 @@
     <Compile Include="Feed\Db\UAGroupModel.cs" />
     <Compile Include="Feed\Db\UALiteDb.cs" />
     <Compile Include="Feed\Db\UAModel.cs" />
+    <Compile Include="Feed\LTS\FeedQueue.cs" />
     <Compile Include="StandaloneNode.cs" />
     <Compile Include="Compile\UrlCompile.cs" />
     <Compile Include="Crawler\CrawlerProxyNodeModeEnum.cs" />

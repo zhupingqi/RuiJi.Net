@@ -379,8 +379,10 @@ namespace RuiJi.Net.Node.Feed.LTS
 
             request.Method = feed.Method;
             if (feed.Method == "POST" && !string.IsNullOrEmpty(feed.Data))
+            {
+                request.ContentType = feed.ContentType;
                 request.Data = feed.Data;
-
+            }
             var ua = UALiteDb.GetOne();
             if (!string.IsNullOrEmpty(ua))
                 request.Headers.Add(new WebHeader("User-Agent", ua));
