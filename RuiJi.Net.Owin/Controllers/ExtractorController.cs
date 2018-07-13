@@ -17,15 +17,17 @@ using RuiJi.Net.NodeVisitor;
 
 namespace RuiJi.Net.Owin.Controllers
 {
-    public class ExtractorApiController : ApiController
+    [RoutePrefix("api/extracor")]
+    public class ExtractorController : ApiController
     {
         [HttpPost]
+        [Route("extract")]
         public List<ExtractResult> Extract([FromBody]string json)
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
             var request = JsonConvert.DeserializeObject<ExtractRequest>(json);
 
-            if (node.NodeType == Node.NodeTypeEnum.Extractor)
+            if (node.NodeType == Node.NodeTypeEnum.EXTRACTOR)
             {
                 var result = RuiJiExtractor.Extract(request);
                 return result;

@@ -13,18 +13,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using RuiJi.Net.NodeVisitor;
+using RuiJi.Net.Node;
 
 namespace RuiJi.Net.Owin.Controllers
 {
-    public class ExtractorProxyApiController : ApiController
+    [RoutePrefix("api/ep")]
+    public class ExtractorProxyController : ApiController
     {
         [HttpPost]
-        //[WebApiCacheAttribute(Duration = 10)]
+        [NodeRoute(Target = NodeTypeEnum.EXTRACTORPROXY)]
+        [Route("extract")]
         public List<ExtractResult> Extract([FromBody]string json)
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
 
-            if (node.NodeType == Node.NodeTypeEnum.ExtractorPROXY)
+            if (node.NodeType == Node.NodeTypeEnum.EXTRACTORPROXY)
             {
 
                 var result = ExtractorManager.Instance.Elect();
@@ -32,7 +35,7 @@ namespace RuiJi.Net.Owin.Controllers
                     return new List<ExtractResult>();
 
                 var client = new RestClient("http://" + result.BaseUrl);
-                var restRequest = new RestRequest("api/extract");
+                var restRequest = new RestRequest("api/extractor/extract");
                 restRequest.Method = Method.POST;
                 restRequest.JsonSerializer = new NewtonJsonSerializer();
                 restRequest.AddJsonBody(json);

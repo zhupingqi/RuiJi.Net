@@ -10,7 +10,7 @@
 
             var $table = $('#tb_feeds').bootstrapTable({
                 toolbar: '#toolbar_feeds',
-                url: "/api/feeds",
+                url: "/api/fp/feed/list",
                 pagination: true,
                 queryParams: module.queryParams,
                 sidePagination: "server",
@@ -90,7 +90,7 @@
                 var f = $(feed);
                 f.find("input[name='id']").val(id);
 
-                $.getJSON("/api/feed?id=" + id, function (d) {
+                $.getJSON("/api/fp/feed?id=" + id, function (d) {
                     for (var p in d) {
                         var v = d[p];
                         var ele = f.find("[name='" + p + "']").eq(0);
@@ -169,7 +169,7 @@
                 var f = $(crawl);
                 f.find("input[name='id']").val(id);
 
-                $.getJSON("/api/feed?id=" + id, function (d) {
+                $.getJSON("/api/fp/feed?id=" + id, function (d) {
                     f.find("#crawl_info").html("Using " + d.address + " to grab immediately,<br/>click Start to start.");
 
                     BootstrapDialog.show({
@@ -285,7 +285,7 @@
             });
 
             $.ajax({
-                url: "/api/feed/update",
+                url: "/api/fp/feed/update",
                 data: JSON.stringify(d),
                 type: 'POST',
                 contentType: "application/json",
@@ -329,7 +329,7 @@
             });
 
             $.ajax({
-                url: "/api/feed/test?down=" + down,
+                url: "/api/test/feed?down=" + down,
                 data: JSON.stringify(d),
                 type: "POST",
                 contentType: "application/json",
@@ -349,7 +349,7 @@
         },
         start: function (feedId, taskId) {
 
-            var url = "/api/feed/crawl?feedId=" + feedId;
+            var url = "/api/test/crawl?feedId=" + feedId;
             if (taskId && taskId > 0) {
                 url += "&taskId=" + taskId;
             }
@@ -369,7 +369,7 @@
             });
         },
         enable: function (ids) {
-            var url = "/api/feed/status/change?ids=" + ids + "&status=ON";
+            var url = "/api/fp/feed/status?ids=" + ids + "&status=ON";
 
             $.getJSON(url, function (res) {
                 if (res) {
@@ -381,7 +381,7 @@
             });
         },
         disable: function (ids) {
-            var url = "/api/feed/status/change?ids=" + ids + "&status=OFF";
+            var url = "/api/fp/feed/status?ids=" + ids + "&status=OFF";
 
             $.getJSON(url, function (res) {
                 if (res) {
@@ -393,7 +393,7 @@
             });
         },
         remove: function (ids) {
-            var url = "/api/feed/remove?ids=" + ids;
+            var url = "/api/fp/feed/remove?ids=" + ids;
 
             $.getJSON(url, function (res) {
                 if (res) {

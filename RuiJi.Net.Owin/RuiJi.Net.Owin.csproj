@@ -128,14 +128,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\ExtracterProxyApiController.cs" />
-    <Compile Include="Controllers\ExtracterApiController.cs" />
-    <Compile Include="Controllers\CrawlerApiController.cs" />
-    <Compile Include="Controllers\FeedApiController.cs" />
-    <Compile Include="Controllers\InfoApiController.cs" />
-    <Compile Include="Controllers\LogApiController.cs" />
+    <Compile Include="Controllers\ExtractorProxyController.cs" />
+    <Compile Include="Controllers\ExtractorController.cs" />
+    <Compile Include="Controllers\CrawlerController.cs" />
+    <Compile Include="Controllers\FeedController.cs" />
+    <Compile Include="Controllers\FeedProxyController.cs" />
+    <Compile Include="Controllers\SysInfoController.cs" />
+    <Compile Include="Controllers\LoggerController.cs" />
     <Compile Include="Controllers\SettingApiController.cs" />
-    <Compile Include="Controllers\ZooApiController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="Controllers\ZooKeeperController.cs" />
     <Compile Include="DStartup.cs" />
     <Compile Include="NodeRouteAttribute.cs" />
     <Compile Include="Program.cs" />
@@ -144,7 +146,7 @@
     <Compile Include="WebApiCacheAttribute.cs" />
     <Compile Include="WebApiServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Controllers\CrawlerProxyApiController.cs" />
+    <Compile Include="Controllers\CrawlerProxyController.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -424,6 +426,7 @@
     <None Include="www\scripts\bootstrap3-dialog\less\bootstrap-dialog.less">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="copy3w.bat" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RuiJi.Net.Core\RuiJi.Net.Core.csproj">

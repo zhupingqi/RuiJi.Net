@@ -278,7 +278,7 @@ namespace RuiJi.Net.Node.Feed.LTS
                     var pages = config.Pages == null ? "" : string.Join(",", config.Pages);
 
                     var client = new RestClient("http://" + proxyUrl);
-                    var restRequest = new RestRequest("api/feed/job?pages=" + pages);
+                    var restRequest = new RestRequest("api/fp/feed/page?pages=" + pages);
                     restRequest.Method = Method.GET;
 
                     var restResponse = client.Execute(restRequest);

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
+using RuiJi.Net.Core.Configuration;
 using RuiJi.Net.Core.Extensions;
 using System;
 using System.Collections.Generic;
@@ -15,17 +16,19 @@ using static Vanara.PInvoke.IpHlpApi;
 
 namespace RuiJi.Net.Owin.Controllers
 {
-    public class InfoApiController : ApiController
+    [RoutePrefix("api/sys")]
+    public class SysInfoController : ApiController
     {
         /// <summary>
         /// 获取系统信息
         /// </summary>
         /// <returns>cpu 内存信息</returns>
         [HttpGet]
-        [WebApiCacheAttribute(Duration = 0)]
+        [WebApiCache(Duration = 0)]
+        [Route("load")]
         public object System()
         {
-            SystemInfo sys = new SystemInfo();
+            var sys = new SystemInfo();
 
             sys.ReckonSpeed();
 
@@ -44,12 +47,13 @@ namespace RuiJi.Net.Owin.Controllers
         /// <param name="baseUrl"></param>
         /// <returns></returns>
         [HttpGet]
+        [Route("info")]
         public object Server()
         {
             var baseUrl = Request.RequestUri.Authority;
             var server = ServerManager.Get(baseUrl);
 
-            SystemInfo sys = new SystemInfo();
+            var sys = new SystemInfo();
             var memory = Math.Round((double)sys.PhysicalMemory / 1024 / 1024 / 1024, 1, MidpointRounding.AwayFromZero) + "GB";
 
             return new
@@ -63,10 +67,11 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         /// <summary>
-        /// 动态加载dll信息
+        /// 加载dll信息
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [Route("dll")]
         public object Dll()
         {
             var dlls = new string[] { "RuiJi.Net.Core", "RuiJi.Net.Node", "RuiJi.Net.NodeVisitor", "RuiJi.Net.Owin" };
@@ -88,6 +93,7 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpGet]
+        [Route("~/api/github")]
         public object Pulse()
         {
             var client = new RestClient("https://github.com");
@@ -97,6 +103,13 @@ namespace RuiJi.Net.Owin.Controllers
             restRequest.AddHeader("Referer", "https://github.com/zhupingqi/RuiJi.Net/pulse");
 
             return JsonConvert.DeserializeObject<object>(client.Execute(restRequest).Content);
+        }
+
+        [HttpGet]
+        [Route("~/api/alone")]
+        public bool IsAlone()
+        {
+            return NodeConfigurationSection.Standalone;
         }
     }
 }

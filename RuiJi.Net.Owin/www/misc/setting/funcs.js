@@ -4,7 +4,7 @@
             var tmp = utils.loadTemplate("/misc/setting/funcs.html", false);
 
             tmp = $(tmp);
-            tmp.find("#tb_funcs").attr("data-url", "/api/funcs");
+            tmp.find("#tb_funcs").attr("data-url", "/api/setting/func/list");
             $("#tab_panel_funcs").html(tmp.prop("outerHTML"));
 
             var $table = $('#tb_funcs').bootstrapTable({
@@ -62,7 +62,7 @@
                 var f = $(func);
                 f.find("input[name='id']").val(id);
 
-                $.getJSON("/api/func?id=" + id, function (d) {
+                $.getJSON("/api/setting/func?id=" + id, function (d) {
                     for (var p in d) {
                         var v = d[p];
                         var ele = f.find("[name='" + p + "']").eq(0);
@@ -122,7 +122,7 @@
             });
 
             $.ajax({
-                url: "/api/func/test",
+                url: "/api/test/func",
                 data: JSON.stringify(d),
                 type: "POST",
                 contentType: "application/json",
@@ -149,7 +149,7 @@
             }
 
             $.ajax({
-                url: "/api/func/update",
+                url: "/api/setting/func/update",
                 data: JSON.stringify(d),
                 type: "POST",
                 contentType: "application/json",
@@ -188,7 +188,7 @@
             );
         },
         remove: function (ids) {
-            var url = "api/func/remove?ids=" + ids;
+            var url = "api/setting/func/remove?ids=" + ids;
 
             $.getJSON(url, function (res) {
                 if (res) {

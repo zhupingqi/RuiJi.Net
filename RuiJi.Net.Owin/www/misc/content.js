@@ -3,7 +3,7 @@
         init: function () {
             var tmp = utils.loadTemplate("/misc/content.html", false);
             tmp = $(tmp);
-            tmp.find("#tb_contents").attr("data-url", "/api/fp/content");
+            tmp.find("#tb_contents").attr("data-url", "/api/fp/content/list");
 
             $("#tab_panel_content").html(tmp.prop("outerHTML"));
 

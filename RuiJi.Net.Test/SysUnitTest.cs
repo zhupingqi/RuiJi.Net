@@ -13,7 +13,7 @@ namespace RuiJi.Net.Test
         {
             for (int i = 0; i < 10; i++)
             {
-                var c = new InfoApiController();
+                var c = new SysInfoController();
                 var info = c.System();
 
                 Thread.Sleep(1000);
@@ -25,7 +25,7 @@ namespace RuiJi.Net.Test
         [TestMethod]
         public void TestGitPulse()
         {
-            var api = new InfoApiController();
+            var api = new SysInfoController();
             var r = api.Pulse();
 
             Assert.IsTrue(r.ToString().Length > 0);

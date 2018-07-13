@@ -11,7 +11,7 @@
         },
         log: function () {
             if ($("#tab_panel_log").is(":visible")) {
-                $.getJSON('/api/log', function (d) {
+                $.getJSON('/api/logger/log', function (d) {
                     $.map(d, function (v) {
                         var $d = $("<div></div>");
                         $d.text(v);

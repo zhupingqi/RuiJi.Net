@@ -10,12 +10,12 @@
                 module.reloadSystem();
             }, 5000);
 
-            $.getJSON('/api/info/server', function (d) {
+            $.getJSON('/api/sys/info', function (d) {
                 var t = utils.template("status_server_info", d);
                 $("#server_info").append(t);
             });
 
-            $.getJSON('/api/info/dll', function (vs) {
+            $.getJSON('/api/sys/dll', function (vs) {
                 $.map(vs.versions, function (v) {
                     var $d = $("<div></div>");
                     $d.text(v);
@@ -23,7 +23,7 @@
                 });
             });
 
-            $.getJSON('/api/git/pulse', function (vs) {
+            $.getJSON('/api/github', function (vs) {
                 var div = $("<div/>");
                 $.map(vs, function (v) {
                     div.append("<img src='" + v.gravatar + "' title='" + (v.name ? v.name: v.login) + "' /><span>" + v.commits + "</span>");
@@ -33,7 +33,7 @@
         },
         reloadSystem: function () {
             if ($("#system_info").is(":visible")) {
-                $.getJSON('/api/info/system', function (d) {
+                $.getJSON('/api/sys/load', function (d) {
                     var t = utils.template("status_system_info", d);
                     $("#system_info").html(t);
                 });

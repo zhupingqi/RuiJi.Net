@@ -1,0 +1,1 @@
+xcopy "www/misc" "../RuiJi.Net.Cmd/bin/debug/www/misc" /s /E /Y

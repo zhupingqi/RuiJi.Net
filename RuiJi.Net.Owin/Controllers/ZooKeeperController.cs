@@ -13,9 +13,11 @@ using System.Web.Http;
 
 namespace RuiJi.Net.Owin.Controllers
 {
-    public class ZooApiController : ApiController
+    [RoutePrefix("api/zk")]
+    public class ZooKeeperController : ApiController
     {
         [HttpGet]
+        [Route("tree")]
         public object Tree(string path)
         {
             if (string.IsNullOrEmpty(path))
@@ -37,7 +39,7 @@ namespace RuiJi.Net.Owin.Controllers
                     return null;
 
                 var client = new RestClient("http://" + leaderBaseUrl);
-                var restRequest = new RestRequest("api/zoo/tree?path=" + path);
+                var restRequest = new RestRequest("api/zk/tree?path=" + path);
                 restRequest.Method = Method.GET;
 
                 var restResponse = client.Execute(restRequest);
@@ -49,6 +51,7 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpGet]
+        [Route("data")]
         public object NodeData(string path)
         {
             var leaderNode = GetLeaderNode();
@@ -62,7 +65,7 @@ namespace RuiJi.Net.Owin.Controllers
                 var leaderBaseUrl = (ServerManager.Get(Request.RequestUri.Authority) as NodeBase).LeaderBaseUrl;
 
                 var client = new RestClient("http://" + leaderBaseUrl);
-                var restRequest = new RestRequest("api/zoo/node?path=" + path);
+                var restRequest = new RestRequest("api/zk/node?path=" + path);
                 restRequest.Method = Method.GET;
 
                 var restResponse = client.Execute(restRequest);
@@ -74,6 +77,7 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpGet]
+        [Route("cluster")]
         public object Cluster()
         {
             var leaderNode = GetLeaderNode();
@@ -87,7 +91,7 @@ namespace RuiJi.Net.Owin.Controllers
                 var leaderBaseUrl = (ServerManager.Get(Request.RequestUri.Authority) as NodeBase).LeaderBaseUrl;
 
                 var client = new RestClient("http://" + leaderBaseUrl);
-                var restRequest = new RestRequest("api/zoo/cluster");
+                var restRequest = new RestRequest("api/zk/cluster");
                 restRequest.Method = Method.GET;
 
                 var restResponse = client.Execute(restRequest);

@@ -9,11 +9,13 @@ using System.Web.Http;
 
 namespace RuiJi.Net.Owin.Controllers
 {
-    public class CrawlerProxyApiController : ApiController
+    [RoutePrefix("api/cp")]
+    public class CrawlerProxyController : ApiController
     {
         [HttpPost]
         [NodeRoute(Target = NodeTypeEnum.CRAWLERPROXY)]
         //[WebApiCacheAttribute(Duration = 10)]
+        [Route("request")]
         public Response Crawl(Request request)
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
@@ -54,7 +56,7 @@ namespace RuiJi.Net.Owin.Controllers
                 }
 
                 var client = new RestClient("http://" + result.BaseUrl);
-                var restRequest = new RestRequest("api/crawl");
+                var restRequest = new RestRequest("api/crawler/crawl");
                 restRequest.Method = Method.POST;
                 restRequest.AddJsonBody(request);
                 restRequest.Timeout = request.Timeout;
@@ -73,6 +75,8 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpGet]
+        [NodeRoute(Target = NodeTypeEnum.CRAWLERPROXY)]
+        [Route("crawlers")]
         public object Crawlers()
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
@@ -87,6 +91,7 @@ namespace RuiJi.Net.Owin.Controllers
         [HttpPost]
         [WebApiCacheAttribute(Duration = 0)]
         [NodeRoute(Target = NodeTypeEnum.CRAWLERPROXY)]
+        [Route("elect")]
         public object Elect(CrawlerElectRequest request)
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);

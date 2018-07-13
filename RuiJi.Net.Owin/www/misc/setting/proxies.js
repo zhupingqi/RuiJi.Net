@@ -4,7 +4,7 @@
             var tmp = utils.loadTemplate("/misc/setting/proxies.html", false);
 
             tmp = $(tmp);
-            tmp.find("#tb_proxies").attr("data-url", "/api/proxies");
+            tmp.find("#tb_proxies").attr("data-url", "/api/setting/proxy/list");
 
             $("#tab_panel_proxies").html(tmp.prop("outerHTML"));
 
@@ -58,7 +58,7 @@
                 var f = $(tmp);
                 f.find("input[name='id']").val(id);
 
-                $.getJSON("/api/proxy?id=" + id, function (d) {
+                $.getJSON("/api/setting/proxy?id=" + id, function (d) {
                     for (var p in d) {
                         var v = d[p];
                         var ele = f.find("[name='" + p + "']").eq(0);
@@ -100,7 +100,7 @@
                 var ele = $(this);
                 var id = ele.closest("tr").find("td").eq(1).text();
                 ele.next().html("<img src='/Content/images/loading.0.gif' />");
-                $.getJSON("/api/proxy/ping?id=" + id, function (d) {
+                $.getJSON("/api/test/proxy?id=" + id, function (d) {
                     if (d.code == 200)
                         ele.next().html("&nbsp;&nbsp;" + d.elspsed + " ms");
                     else {
@@ -167,7 +167,7 @@
             });
 
             $.ajax({
-                url: "/api/proxy/update",
+                url: "/api/setting/proxy/update",
                 data: JSON.stringify(d),
                 type: 'POST',
                 contentType: "application/json",
@@ -202,7 +202,7 @@
             );
         },
         enable: function (ids) {
-            var url = "/api/proxy/status/change?ids=" + ids + "&status=ON";
+            var url = "/api/setting/proxy/status?ids=" + ids + "&status=ON";
 
             $.getJSON(url, function (res) {
                 if (res) {
@@ -214,7 +214,7 @@
             });
         },
         disable: function (ids) {
-            var url = "/api/proxy/status/change?ids=" + ids + "&status=OFF";
+            var url = "/api/setting/proxy/status?ids=" + ids + "&status=OFF";
 
             $.getJSON(url, function (res) {
                 if (res) {
@@ -226,7 +226,7 @@
             });
         },
         remove: function (ids) {
-            var url = "/api/proxy/remove?ids=" + ids;
+            var url = "/api/setting/proxy/remove?ids=" + ids;
 
             $.getJSON(url, function (res) {
                 if (res) {

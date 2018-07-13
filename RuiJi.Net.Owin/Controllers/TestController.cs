@@ -1,10 +1,9 @@
 ﻿using Newtonsoft.Json;
+using RuiJi.Net.Core.Compile;
 using RuiJi.Net.Core.Crawler;
 using RuiJi.Net.Core.Expression;
 using RuiJi.Net.Core.Extractor;
-using RuiJi.Net.Core.Utils.Page;
 using RuiJi.Net.Core.Utils.Tasks;
-using RuiJi.Net.Node;
 using RuiJi.Net.Node.Compile;
 using RuiJi.Net.Node.Feed.Db;
 using RuiJi.Net.Node.Feed.LTS;
@@ -13,255 +12,19 @@ using RuiJi.Net.Storage;
 using RuiJi.Net.Storage.Model;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Web.Http;
 
 namespace RuiJi.Net.Owin.Controllers
 {
-    public class FeedApiController : ApiController
+    [RoutePrefix("api/test")]
+    public class TestController : ApiController
     {
-        #region Rule
-        [HttpGet]
-        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
-        public object Rules(int offset, int limit, string key, string type, string status)
-        {
-            var node = ServerManager.Get(Request.RequestUri.Authority);
-
-            var paging = new Paging();
-            paging.CurrentPage = (offset / limit) + 1;
-            paging.PageSize = limit;
-
-            return new
-            {
-                rows = RuleLiteDb.GetModels(paging, key, type, status),
-                total = paging.Count
-            };
-        }
-
-        [HttpGet]
-        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
-        public object UrlRule(string url, bool useBlock = false)
-        {
-            if (useBlock)
-                return RuleLiteDb.Match(url).Select(m => new ExtractFeatureBlock(JsonConvert.DeserializeObject<ExtractBlock>(m.BlockExpression), m.Feature)).ToList();
-            else
-            {
-                return RuleLiteDb.Match(url).Select(m => new ExtractFeatureBlock(RuiJiBlockParser.ParserBlock(m.RuiJiExpression), m.Feature)).ToList();
-            }
-        }
-
-        [HttpPost]
-        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
-        public void UpdateRule(RuleModel rule)
-        {
-            RuleLiteDb.AddOrUpdate(rule);
-        }
-
-        [HttpGet]
-        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
-        public object GetRule(int id)
-        {
-            var feed = RuleLiteDb.Get(id);
-
-            return feed;
-        }
-
-        [HttpGet]
-        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
-        public bool RuleStatusChange(string ids, string status)
-        {
-            var changeIds = ids.Split(',').Select(i => Convert.ToInt32(i)).ToArray();
-            var statusEnum = (Status)Enum.Parse(typeof(Status), status.ToUpper());
-
-            return RuleLiteDb.StatusChange(changeIds, statusEnum);
-        }
-
-        [HttpGet]
-        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
-        public bool RemoveRule(string ids)
-        {
-            var removes = ids.Split(',').Select(m => Convert.ToInt32(m)).ToArray();
-
-            return RuleLiteDb.Remove(removes);
-        }
-        #endregion
-
-        #region Feed
-        [HttpGet]
-        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
-        public object Feeds(int offset, int limit, string key, string method, string type, string status)
-        {
-            var paging = new Paging();
-            paging.CurrentPage = (offset / limit) + 1;
-            paging.PageSize = limit;
-
-            return new
-            {
-                rows = FeedLiteDb.GetFeedModels(paging, key, method, type, status),
-                total = paging.Count
-            };
-        }
-
-        [HttpGet]
-        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
-        public object FeedJob(string pages)
-        {
-            try
-            {
-                var ps = pages.Split(',').Select(m => Convert.ToInt32(m)).ToArray();
-                var feeds = FeedLiteDb.GetFeedModels(ps, 50);
-                feeds.RemoveAll(m => m.Status == Status.OFF);
-
-                return feeds;
-            }
-            catch { }
-
-            return new { };
-        }
-
-        [HttpGet]
-        [NodeRoute(Target = NodeTypeEnum.FEED, RouteArgumentName = "baseUrl")]
-        public string GetFeedPage(string baseUrl)
-        {
-            var node = ServerManager.Get(Request.RequestUri.Authority);
-
-            var d = node.GetData("/config/feed/" + Request.RequestUri.Authority).Data;
-            var config = JsonConvert.DeserializeObject<NodeConfig>(d);
-
-            if (config.Pages == null)
-                config.Pages = new int[0];
-
-            return string.Join(",", config.Pages);
-        }
-
-        [HttpPost]
-        [NodeRoute(Target = NodeTypeEnum.FEED, RouteArgumentName = "baseUrl")]
-        public void SetFeedPage([FromBody]string pages, [FromUri]string baseUrl)
-        {
-            var node = ServerManager.Get(Request.RequestUri.Authority);
-
-            var path = "/config/feed/" + Request.RequestUri.Authority;
-
-            var data = node.GetData("/config/feed/" + Request.RequestUri.Authority);
-            var config = JsonConvert.DeserializeObject<NodeConfig>(data.Data);
-            config.Pages = string.IsNullOrEmpty(pages) ? new int[] { } : pages.Split(',').Select(m => Convert.ToInt32(m)).ToArray();
-
-            node.SetData(path, JsonConvert.SerializeObject(config));
-        }
-
-        [HttpPost]
-        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
-        public void UpdateFeed([FromBody]FeedModel feed)
-        {
-            FeedLiteDb.AddOrUpdate(feed);
-        }
-
-        [HttpGet]
-        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
-        public bool FeedStatusChange(string ids, string status)
-        {
-            var changeIds = ids.Split(',').Select(i => Convert.ToInt32(i)).ToArray();
-            var statusEnum = (Status)Enum.Parse(typeof(Status), status.ToUpper());
-
-            return FeedLiteDb.StatusChange(changeIds, statusEnum);
-        }
-
-        [HttpGet]
-        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
-        public bool RemoveFeed(string ids)
-        {
-            var removes = ids.Split(',').Select(m => Convert.ToInt32(m)).ToArray();
-
-            return FeedLiteDb.Remove(removes);
-        }
-
-        [HttpGet]
-        public object GetFeed(int id)
-        {
-            var feed = FeedLiteDb.GetFeed(id);
-
-            return feed;
-        }
-        #endregion
-
-        #region 存储抓取结果
-        [HttpPost]
-        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
-        public bool SaveContent(ContentModel content, string shard = "")
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(shard))
-                    shard = DateTime.Now.ToString("yyyyMM");
-
-                var storage = new LiteDbStorage(@"LiteDb/Content/" + shard + ".db", "contents");
-                storage.Insert(content);
-
-            }
-            catch
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        [HttpGet]
-        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
-        public object GetShards()
-        {
-            var dbfile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LiteDb", "Content");
-            var fileInfos = Directory.GetFiles(dbfile);
-            var shards = fileInfos.Select(f => f.Substring(f.LastIndexOf("\\") + 1, f.IndexOf(".db") - f.LastIndexOf("\\") - 1)).OrderByDescending(f => f).ToList();
-            return shards;
-        }
-
-        [HttpGet]
-        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
-        public object GetContent(int offset, int limit, string shard = "", string feedId = "")
-        {
-            var node = ServerManager.Get(Request.RequestUri.Authority);
-
-            var paging = new Paging();
-            paging.CurrentPage = (offset / limit) + 1;
-            paging.PageSize = limit;
-
-            if (string.IsNullOrEmpty(shard) || shard.ToLower() == "shard")
-                shard = DateTime.Now.ToString("yyyyMM");
-            var feedIdInt = string.IsNullOrEmpty(feedId) ? 0 : Convert.ToInt32(feedId);
-            return new
-            {
-                rows = ContentLiteDb.GetModels(paging, shard, feedIdInt).Select(m => new
-                {
-                    id = m.Id,
-                    feedId = m.FeedId,
-                    url = m.Url,
-                    cdate = m.CDate,
-                    metas = m.Metas.Select(n => new
-                    {
-                        name = n.Key,
-                        content = n.Value == null ? "" : (n.Value.ToString().Length > 50 ? n.Value.ToString().Substring(0, 50) : n.Value.ToString())
-                    })
-                }),
-                total = paging.Count
-            };
-        }
-
-        [HttpGet]
-        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
-        public bool RemoveContent(string ids, string shard)
-        {
-            var removes = ids.Split(',').Select(m => Convert.ToInt32(m)).ToArray();
-
-            return ContentLiteDb.Remove(removes, shard);
-        }
-
-        #endregion
-
         #region Test
-
         [HttpPost]
+        [Route("rule")]
         public object TestRule(RuleModel rule, [FromUri]bool debug = false)
         {
             var request = new Request(rule.Url);
@@ -299,11 +62,12 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpPost]
+        [Route("feed")]
         public object TestFeed(FeedModel feed, [FromUri]bool down, [FromUri]bool debug = false)
         {
             try
             {
-                var compile = new UrlCompile();
+                var compile = new Node.Compile.UrlCompile();
                 var addrs = compile.GetResult(feed.Address);
                 var results = new List<ExtractResult>();
 
@@ -358,6 +122,7 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpGet]
+        [Route("crawl")]
         public object RunCrawl([FromUri]CrawlTaskModel crawlTask)
         {
             ParallelTask task;
@@ -391,6 +156,57 @@ namespace RuiJi.Net.Owin.Controllers
                 };
             }
         }
+
+        [HttpPost]
+        [Route("func")]
+        public object FuncTest(FuncModel func)
+        {
+            var code = "{# " + func.Sample + " #}";
+            var test = new ComplieFuncTest(func.Code);
+            return test.GetResult(code);
+        }
+
+        [HttpGet]
+        [Route("proxy")]
+        public object ProxyPing(int id)
+        {
+            var watch = new Stopwatch();
+            watch.Start();
+
+            try
+            {
+
+                var crawler = new RuiJiCrawler();
+                var request = new Request("https://www.baidu.com/");
+                request.Timeout = 15000;
+
+                var proxy = ProxyLiteDb.Get(id);
+                request.Proxy = new RequestProxy(proxy.Ip, proxy.Port, proxy.UserName, proxy.Password);
+                request.Proxy.Scheme = proxy.Type == ProxyTypeEnum.HTTP ? "http" : "https";
+
+                var response = crawler.Request(request);
+
+                watch.Stop();
+
+                return new
+                {
+                    elspsed = watch.Elapsed.Milliseconds,
+                    code = response.StatusCode,
+                    msg = response.StatusCode.ToString()
+                };
+            }
+            catch (Exception ex)
+            {
+                watch.Stop();
+
+                return new
+                {
+                    elspsed = watch.Elapsed.Milliseconds,
+                    code = -1,
+                    msg = ex.Message
+                };
+            }
+        }
         #endregion
     }
 
@@ -420,7 +236,7 @@ namespace RuiJi.Net.Owin.Controllers
 
             reporter.Report("正在下载 Feed");
 
-            var compile = new UrlCompile();
+            var compile = new Node.Compile.UrlCompile();
             var addrs = compile.GetResult(feed.Address);
 
             foreach (var addr in addrs)
@@ -510,6 +326,23 @@ namespace RuiJi.Net.Owin.Controllers
                     ClearContent(m);
                 });
             }
+        }
+    }
+
+    public class ComplieFuncTest : Core.Compile.UrlCompile
+    {
+        private string code;
+
+        public ComplieFuncTest(string code)
+        {
+            this.code = code;
+        }
+
+        protected override string FormatCode(UrlFunction result)
+        {
+            var formatCode = string.Format(code, result.Args);
+
+            return formatCode;
         }
     }
 }

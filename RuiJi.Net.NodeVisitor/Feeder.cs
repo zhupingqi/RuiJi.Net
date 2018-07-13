@@ -36,7 +36,7 @@ namespace RuiJi.Net.NodeVisitor
             proxyUrl = proxyUrl.Replace("118.31.61.230", "172.16.50.52");
 
             var client = new RestClient("http://" + proxyUrl);
-            var restRequest = new RestRequest("api/fp/rule?url=" + url);
+            var restRequest = new RestRequest("api/fp/rule/match?url=" + url);
             restRequest.Method = Method.GET;
             restRequest.JsonSerializer = new NewtonJsonSerializer();
 

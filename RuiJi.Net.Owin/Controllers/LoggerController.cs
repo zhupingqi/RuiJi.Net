@@ -8,9 +8,11 @@ using System.Web.Http;
 
 namespace RuiJi.Net.Owin.Controllers
 {
-    public class LogApiController : ApiController
+    [RoutePrefix("api/logger")]
+    public class LoggerController : ApiController
     {
         [HttpGet]
+        [Route("log")]
         public object Log()
         {
             var baseUrl = Request.RequestUri.Authority;

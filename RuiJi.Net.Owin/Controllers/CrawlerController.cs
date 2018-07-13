@@ -16,10 +16,12 @@ using RuiJi.Net.Node;
 
 namespace RuiJi.Net.Owin.Controllers
 {
-    public class CrawlerApiController : ApiController
+    [RoutePrefix("api/crawler")]
+    public class CrawlerController : ApiController
     {
         [HttpPost]
-        [WebApiCacheAttribute(Duration = 10)]
+        [WebApiCache(Duration = 10)]
+        [Route("request")]
         public Response Crawl(Request request)
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
@@ -71,6 +73,7 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpGet]
+        [Route("info")]
         public object ServerInfo()
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
@@ -85,6 +88,7 @@ namespace RuiJi.Net.Owin.Controllers
 
         [HttpGet]
         [NodeRoute(Target = NodeTypeEnum.CRAWLER, RouteArgumentName = "baseUrl")]
+        [Route("ips")]
         public string[] Ips(string baseUrl)
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);
@@ -94,6 +98,7 @@ namespace RuiJi.Net.Owin.Controllers
 
         [HttpPost]
         [NodeRoute(Target = NodeTypeEnum.CRAWLER, RouteArgumentName = "baseUrl")]
+        [Route("ips")]
         public void SetIps([FromBody]string[] ips,[FromUri]string baseUrl)
         {
             var node = ServerManager.Get(Request.RequestUri.Authority);

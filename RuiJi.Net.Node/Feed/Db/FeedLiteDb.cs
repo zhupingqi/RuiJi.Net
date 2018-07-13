@@ -84,9 +84,8 @@ namespace RuiJi.Net.Node.Feed.Db
             }
         }
 
-        public static bool StatusChange(int[] ids, Status status)
+        public static bool ChangeStatus(int[] ids, Status status)
         {
-
             using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
             {
                 var col = db.GetCollection<FeedModel>("feeds");

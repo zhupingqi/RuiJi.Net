@@ -64,7 +64,7 @@ namespace RuiJi.Net.Node.Extractor
 
         protected override NodeTypeEnum SetNodeType()
         {
-            return NodeTypeEnum.ExtractorPROXY;
+            return NodeTypeEnum.EXTRACTORPROXY;
         }
 
         class LiveExtractorWatcher : IWatcher

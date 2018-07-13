@@ -11,7 +11,7 @@
 
             $('#tb_uas').bootstrapTable({
                 toolbar: '#toolbar_ua',
-                url: "/api/uas",
+                url: "/api/setting/ua/list",
                 pagination: true,
                 queryParams: module.queryParams,
                 sidePagination: "server",
@@ -66,7 +66,7 @@
 
                 f.find("input[name='id']").val(id);
 
-                $.getJSON("/api/ua?id=" + id, function (d) {
+                $.getJSON("/api/setting/ua?id=" + id, function (d) {
                     if (d) {
                         var groupDropdown = $("#toolbar_ua_group button.ua-group").parent().find("ul.dropdown-menu");
                         for (var p in d) {
@@ -140,7 +140,7 @@
                 var f = $(tmpGroup);
                 f.find("input[name='id']").val(id);
 
-                $.getJSON("/api/ua/group?id=" + id, function (d) {
+                $.getJSON("/api/setting/ua/group?id=" + id, function (d) {
                     if (d) {
                         for (var p in d) {
                             var v = d[p];
@@ -202,7 +202,7 @@
             //#endregion
         },
         fillGroup: function () {
-            var url = "/api/ua/groups";
+            var url = "/api/setting/ua/group/list";
 
             var groupDropdown = $("#toolbar_ua_group button.ua-group").parent().find("ul.dropdown-menu");
             $.getJSON(url, function (res) {
@@ -254,7 +254,7 @@
             });
 
             $.ajax({
-                url: "/api/ua/group/update",
+                url: "/api/setting/ua/group/update",
                 data: JSON.stringify(d),
                 type: 'POST',
                 contentType: "application/json",
@@ -300,7 +300,7 @@
             });
 
             $.ajax({
-                url: "/api/ua/update",
+                url: "/api/setting/ua/update",
                 data: JSON.stringify(d),
                 type: 'POST',
                 contentType: "application/json",
@@ -335,7 +335,7 @@
             );
         },
         removeGroup: function (id) {
-            var url = "/api/ua/group/remove?id=" + id;
+            var url = "/api/setting/ua/group/remove?id=" + id;
 
             $.getJSON(url, function (res) {
                 if (res) {
@@ -349,7 +349,7 @@
             });
         },
         remove: function (ids) {
-            var url = "/api/ua/remove?ids=" + ids;
+            var url = "/api/setting/ua/remove?ids=" + ids;
 
             $.getJSON(url, function (res) {
                 if (res) {

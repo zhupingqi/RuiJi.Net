@@ -49,7 +49,7 @@ namespace RuiJi.Net.Node.Extractor
 
         protected override NodeTypeEnum SetNodeType()
         {
-            return NodeTypeEnum.Extractor;
+            return NodeTypeEnum.EXTRACTOR;
         }
     }
 }

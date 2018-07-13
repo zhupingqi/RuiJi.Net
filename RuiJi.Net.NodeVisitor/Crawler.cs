@@ -84,7 +84,7 @@ namespace RuiJi.Net.NodeVisitor
                         request.Ip = elect.ClientIp;
 
                     var client = new RestClient("http://" + elect.BaseUrl);
-                    var restRequest = new RestRequest("api/crawl");
+                    var restRequest = new RestRequest("api/crawler/crawl");
                     restRequest.Method = Method.POST;
                     restRequest.AddJsonBody(request);
                     restRequest.Timeout = request.Timeout;
