@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RuiJi.Net.Node;
+using RuiJi.Net.Node.Feed.LTS;
 using System;
 using System.Linq;
 using System.Web.Http;
@@ -40,6 +41,16 @@ namespace RuiJi.Net.Owin.Controllers
             config.Pages = string.IsNullOrEmpty(pages) ? new int[] { } : pages.Split(',').Select(m => Convert.ToInt32(m)).ToArray();
 
             node.SetData(path, JsonConvert.SerializeObject(config));
+
+            FeedScheduler.SyncFeed();
+        }
+
+        [HttpPost]
+        [NodeRoute(Target = NodeTypeEnum.FEED)]
+        [Route("change")]
+        public void Change([FromBody]BroadcastEvent @event)
+        {
+            FeedScheduler.OnReceive(@event);
         }
         #endregion
     }

@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
+using RestSharp;
 using RuiJi.Net.Core.Configuration;
 using RuiJi.Net.Core.Expression;
+using RuiJi.Net.Core.Extensions;
 using RuiJi.Net.Core.Extractor;
 using RuiJi.Net.Core.Utils.Page;
 using RuiJi.Net.Node;
@@ -117,7 +119,12 @@ namespace RuiJi.Net.Owin.Controllers
         {
             FeedLiteDb.AddOrUpdate(feed);
 
-            Broadcast("update", feed);
+            var @event = new BroadcastEvent() {
+                Event = BroadcastEventEnum.UPDATE,
+                Args = feed
+            };
+
+            Broadcast(@event);
         }
 
         [HttpGet]
@@ -128,7 +135,31 @@ namespace RuiJi.Net.Owin.Controllers
             var changeIds = ids.Split(',').Select(i => Convert.ToInt32(i)).ToArray();
             var statusEnum = (Status)Enum.Parse(typeof(Status), status.ToUpper());
 
-            Broadcast("status", FeedLiteDb.GetFeed(changeIds));
+            if(statusEnum == Status.ON)
+            {
+                var feeds = FeedLiteDb.GetFeed(changeIds);
+
+                foreach (var feed in feeds)
+                {
+                    var @event = new BroadcastEvent()
+                    {
+                        Event = BroadcastEventEnum.UPDATE,
+                        Args = feed
+                    };
+
+                    Broadcast(@event);
+                }
+            }
+            else
+            {
+                var @event = new BroadcastEvent()
+                {
+                    Event = BroadcastEventEnum.REMOVE,
+                    Args = changeIds
+                };
+
+                Broadcast(@event);
+            }            
 
             return FeedLiteDb.ChangeStatus(changeIds, statusEnum);
         }
@@ -140,7 +171,13 @@ namespace RuiJi.Net.Owin.Controllers
         {
             var removes = ids.Split(',').Select(m => Convert.ToInt32(m)).ToArray();
 
-            Broadcast("remove", FeedLiteDb.GetFeed(removes));
+            var @event = new BroadcastEvent()
+            {
+                Event = BroadcastEventEnum.REMOVE,
+                Args = removes
+            };
+
+            Broadcast(@event);
 
             return FeedLiteDb.Remove(removes);
         }
@@ -155,11 +192,11 @@ namespace RuiJi.Net.Owin.Controllers
             return feed;
         }
 
-        private void Broadcast(string action,params object[] args)
+        private void Broadcast(BroadcastEvent @event)
         {
             if(NodeConfigurationSection.Standalone)
             {
-                //FeedScheduler.Receive(action, args);
+                FeedScheduler.OnReceive(@event);
             }
             else
             {
@@ -169,8 +206,15 @@ namespace RuiJi.Net.Owin.Controllers
                 foreach (string path in nv.Keys)
                 {
                     var cfg = JsonConvert.DeserializeObject<NodeConfig>(node.GetData(path).Data);
-                    
 
+                    var client = new RestClient("http://" + cfg.baseUrl);
+                    var restRequest = new RestRequest("api/feed/change");
+                    restRequest.Method = Method.GET;
+                    restRequest.JsonSerializer = new NewtonJsonSerializer();
+
+                    restRequest.Timeout = 15000;
+
+                    client.Execute(restRequest);
                 }
             }
         }
@@ -186,7 +230,6 @@ namespace RuiJi.Net.Owin.Controllers
             {
                 var ps = pages.Split(',').Select(m => Convert.ToInt32(m)).ToArray();
                 var feeds = FeedLiteDb.GetFeedModels(ps, 50);
-                feeds.RemoveAll(m => m.Status == Status.OFF);
 
                 return feeds;
             }

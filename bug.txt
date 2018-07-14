@@ -1,3 +1,6 @@
 1.ProxyManger获取代理地址（全分布失效）
 2.ContentQueue存储时未存储到代理服务器
 3.ServerManager.Get方法在全分布下取不到值（Nodes节点设置）
+4.Feed历史记录需保留在FeedProxy上
+5.去除zk tree的feed crawler设置，这里只能查看
+6.设置里面的feed设置 需要增加重复提示 错误的情况下不能上传至服务器

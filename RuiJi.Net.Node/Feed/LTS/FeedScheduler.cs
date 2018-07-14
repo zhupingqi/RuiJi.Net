@@ -24,6 +24,8 @@ namespace RuiJi.Net.Node.Feed.LTS
         private static string proxyUrl;
         private static FeedNode feedNode;
 
+        private static int[] feedPages;
+
         static FeedScheduler()
         {
             factory = new StdSchedulerFactory();
@@ -90,11 +92,24 @@ namespace RuiJi.Net.Node.Feed.LTS
             AddJob(jobKey, cornExpression.Split('\n'), dic);
         }
 
-        public static async void DeleteJob(string jobKey)
+        public static void AddJob(FeedModel feed)
+        {
+            var feedRequest = FeedModel.ToFeedRequest(feed);
+            var dic = new Dictionary<string, object>();
+            dic.Add("request", feedRequest);
+
+            AddJob(feed.Id.ToString(), feed.Scheduling, dic);
+        }
+
+        public static bool DeleteJob(string jobKey)
         {
             var job = new JobKey(jobKey);
 
-            await scheduler.DeleteJob(job);
+            var t = scheduler.DeleteJob(job);
+
+            t.Wait();
+
+            return t.Result;
         }
 
         public static async void Stop()
@@ -108,6 +123,8 @@ namespace RuiJi.Net.Node.Feed.LTS
             {
                 try
                 {
+                    scheduler.Clear();
+
                     if (NodeConfigurationSection.Standalone)
                     {
                         var page = 1;
@@ -121,11 +138,7 @@ namespace RuiJi.Net.Node.Feed.LTS
                         {
                             foreach (var feed in feeds)
                             {
-                                var feedRequest = FeedModel.ToFeedRequest(feed);
-                                var dic = new Dictionary<string, object>();
-                                dic.Add("request", feedRequest);
-
-                                AddJob(feed.Id.ToString(), feed.Scheduling, dic);
+                                AddJob(feed);
                             }
 
                             Logger.GetLogger(baseUrl).Info("add feed jobs:" + feeds.Count);
@@ -140,6 +153,7 @@ namespace RuiJi.Net.Node.Feed.LTS
                         var config = JsonConvert.DeserializeObject<NodeConfig>(data.Data);
                         if (config.Pages == null || config.Pages.Length == 0)
                             return;
+                        feedPages = config.Pages;
 
                         var feedsResponse = NodeVisitor.Feeder.GetFeedJobs(proxyUrl, string.Join(",", config.Pages));
                         if (string.IsNullOrEmpty(feedsResponse))
@@ -147,18 +161,9 @@ namespace RuiJi.Net.Node.Feed.LTS
 
                         var feeds = JsonConvert.DeserializeObject<List<FeedModel>>(feedsResponse);
 
-                        var startCount = 0;
-                        foreach (var f in feeds)
+                        foreach (var feed in feeds)
                         {
-                            if (f.Status == Status.ON)
-                            {
-                                var feedRequest = FeedModel.ToFeedRequest(f);
-                                var dic = new Dictionary<string, object>();
-                                dic.Add("request", feedRequest);
-
-                                AddJob(f.Id.ToString(), f.Scheduling, dic);
-                                startCount++;
-                            }
+                            AddJob(feed);
                         }
 
                         Logger.GetLogger(baseUrl).Info("add feed jobs:" + feeds.Count);
@@ -171,37 +176,38 @@ namespace RuiJi.Net.Node.Feed.LTS
             });
         }
 
-        public static async void Receive(string action, List<FeedModel> feeds)
+        public static void OnReceive(BroadcastEvent @event)
         {
-            foreach (var feed in feeds)
+            if (@event.Event == BroadcastEventEnum.UPDATE)
             {
-                await Receive(action, feed);
-            }
-        }
-
-        public static async Task Receive(string action, FeedModel feed)
-        {
-            await Task.Run(() =>
-            {
-                switch (action)
+                var feed = @event.Args as FeedModel;
+                if (feed.Status == Status.OFF)
+                    DeleteJob(feed.Id.ToString());
+                else
                 {
-                    case "update":
+                    if (NodeConfigurationSection.Standalone)
+                    {
+                        AddJob(feed);
+                    }
+                    else
+                    {
+                        var p = Convert.ToInt32(Math.Floor((feed.Id - 1) / 50.0)) + 1;
+                        if (feedPages.Contains(p))
                         {
-
-                            break;
+                            AddJob(feed);
                         }
-                    case "remove":
-                        {
-
-                            break;
-                        }
-                    case "status":
-                        {
-
-                            break;
-                        }
+                    }
                 }
-            });
+            }
+            else
+            {
+                var ids = @event.Args as int[];
+
+                foreach (var id in ids)
+                {
+                    DeleteJob(id.ToString());
+                }
+            }
         }
     }
 }

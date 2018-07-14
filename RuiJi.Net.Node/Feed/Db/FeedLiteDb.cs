@@ -127,7 +127,6 @@ namespace RuiJi.Net.Node.Feed.Db
                 var col = db.GetCollection<FeedModel>("feeds");
                 col.Delete(Query.All());
             }
-
         }
 
         public static void CreateIndex()

@@ -9,19 +9,13 @@ namespace RuiJi.Net.Node.Feed.LTS
     public enum BroadcastEventEnum
     {
         UPDATE,
-        REMOVE,
-        STATUSCHANGE
+        REMOVE
     }
 
     public class BroadcastEvent : EventArgs
     {
         public BroadcastEventEnum Event { get; set; }
 
-
-    }
-
-    public interface IReceiver
-    {
-        void OnReceive(string action);
+        public object Args { get; set; }
     }
 }

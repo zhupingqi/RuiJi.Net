@@ -23,6 +23,8 @@ namespace RuiJi.Net.Node.Feed.LTS
 
         private static string baseUrl;
 
+        private static SmartThreadPool smartThreadPool;
+
         static FeedExtractJob()
         {
             snapshotPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "snapshot");
@@ -33,10 +35,20 @@ namespace RuiJi.Net.Node.Feed.LTS
             {
                 Directory.CreateDirectory(basePath + @"/history");
             }
+
             if (!Directory.Exists(basePath + @"/pre"))
             {
                 Directory.CreateDirectory(basePath + @"/pre");
             }
+
+            var stpStartInfo = new STPStartInfo
+            {
+                IdleTimeout = 3000,
+                MaxWorkerThreads = 32,
+                MinWorkerThreads = 0
+            };
+
+            smartThreadPool = new SmartThreadPool(stpStartInfo);
         }
 
         protected override void OnJobStart(IJobExecutionContext context)
