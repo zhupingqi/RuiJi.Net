@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RuiJi.Net.Core;
-using RuiJi.Net.Core.Utils.Log;
+using RuiJi.Net.Core.Utils.Logging;
 using RuiJi.Net.Node.Extractor;
 using System;
 using System.Collections.Generic;

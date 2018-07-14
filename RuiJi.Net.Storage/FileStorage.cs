@@ -1,4 +1,4 @@
-﻿using RuiJi.Net.Core.Utils.Log;
+﻿using RuiJi.Net.Core.Utils.Logging;
 using RuiJi.Net.Storage.Model;
 using System;
 using System.Collections.Generic;

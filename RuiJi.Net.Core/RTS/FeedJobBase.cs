@@ -1,11 +1,7 @@
 ﻿using Amib.Threading;
-using Newtonsoft.Json;
 using Quartz;
 using RuiJi.Net.Core.Crawler;
-using RuiJi.Net.Core.Utils.Log;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;

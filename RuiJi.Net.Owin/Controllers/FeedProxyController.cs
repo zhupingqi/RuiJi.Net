@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json;
+using RuiJi.Net.Core.Configuration;
 using RuiJi.Net.Core.Expression;
 using RuiJi.Net.Core.Extractor;
 using RuiJi.Net.Core.Utils.Page;
 using RuiJi.Net.Node;
 using RuiJi.Net.Node.Feed.Db;
+using RuiJi.Net.Node.Feed.LTS;
 using RuiJi.Net.Storage;
 using RuiJi.Net.Storage.Model;
 using System;
@@ -114,6 +116,8 @@ namespace RuiJi.Net.Owin.Controllers
         public void UpdateFeed([FromBody]FeedModel feed)
         {
             FeedLiteDb.AddOrUpdate(feed);
+
+            Broadcast("update",new List<FeedModel> { feed });
         }
 
         [HttpGet]
@@ -124,6 +128,8 @@ namespace RuiJi.Net.Owin.Controllers
             var changeIds = ids.Split(',').Select(i => Convert.ToInt32(i)).ToArray();
             var statusEnum = (Status)Enum.Parse(typeof(Status), status.ToUpper());
 
+            Broadcast("status", FeedLiteDb.GetFeed(changeIds));
+
             return FeedLiteDb.ChangeStatus(changeIds, statusEnum);
         }
 
@@ -133,6 +139,8 @@ namespace RuiJi.Net.Owin.Controllers
         public bool RemoveFeed(string ids)
         {
             var removes = ids.Split(',').Select(m => Convert.ToInt32(m)).ToArray();
+
+            Broadcast("remove", FeedLiteDb.GetFeed(removes));
 
             return FeedLiteDb.Remove(removes);
         }
@@ -146,6 +154,15 @@ namespace RuiJi.Net.Owin.Controllers
 
             return feed;
         }
+
+        private void Broadcast(string action, List<FeedModel> feeds)
+        {
+            if(NodeConfigurationSection.Standalone)
+            {
+                FeedScheduler.Receive(action, feeds);
+            }
+        }
+
         #endregion
 
         [HttpGet]

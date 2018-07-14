@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace RuiJi.Net.Core.Utils.Log
+namespace RuiJi.Net.Core.Utils.Logging
 {
     /// <summary>
     /// memory log appender

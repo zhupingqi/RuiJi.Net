@@ -1,22 +1,14 @@
-﻿using Amib.Threading;
-using Newtonsoft.Json;
-using Quartz;
-using RestSharp;
-using RuiJi.Net.Core.Configuration;
+﻿using Newtonsoft.Json;
+using RuiJi.Net.Core.Compile;
 using RuiJi.Net.Core.Crawler;
+using RuiJi.Net.Core.Expression;
 using RuiJi.Net.Core.Extractor;
-using RuiJi.Net.Core.Utils.Page;
-using RuiJi.Net.Core.Utils.Log;
+using RuiJi.Net.Core.Utils.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
-using RuiJi.Net.Core.Utils;
-using RuiJi.Net.Core.Expression;
-using RuiJi.Net.Core.Compile;
 
 namespace RuiJi.Net.Core.RTS
 {

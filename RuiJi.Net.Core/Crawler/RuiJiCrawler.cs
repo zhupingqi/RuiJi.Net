@@ -17,7 +17,7 @@
 
 using RuiJi.Net.Core.Cookie;
 using RuiJi.Net.Core.Utils;
-using RuiJi.Net.Core.Utils.Log;
+using RuiJi.Net.Core.Utils.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;

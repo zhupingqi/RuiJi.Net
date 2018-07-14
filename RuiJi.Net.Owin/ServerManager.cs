@@ -1,7 +1,7 @@
 ﻿using Microsoft.Owin.Hosting;
 using RuiJi.Net.Core.Configuration;
 using RuiJi.Net.Core.Utils;
-using RuiJi.Net.Core.Utils.Log;
+using RuiJi.Net.Core.Utils.Logging;
 using RuiJi.Net.Node;
 using System;
 using System.Collections.Generic;

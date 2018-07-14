@@ -142,5 +142,14 @@ namespace RuiJi.Net.Node.Feed.Db
                 return col.Find(m => m.Id == id).FirstOrDefault();
             }
         }
+
+        public static List<FeedModel> GetFeed(int[] ids)
+        {
+            using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
+            {
+                var col = db.GetCollection<FeedModel>("feeds");
+                return col.Find(i => ids.Contains(i.Id)).ToList();
+            }
+        }
     }
 }

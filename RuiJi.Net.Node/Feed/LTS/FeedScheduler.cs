@@ -1,10 +1,16 @@
 ﻿using Quartz;
 using Quartz.Impl;
+using RuiJi.Net.Core.Configuration;
+using RuiJi.Net.Core.Utils.Page;
+using RuiJi.Net.Node.Feed.Db;
 using System;
 using System.Collections.Generic;
+using RuiJi.Net.Core.Utils.Logging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RuiJi.Net.Core.RTS;
+using RuiJi.Net.Core.Crawler;
 
 namespace RuiJi.Net.Node.Feed.LTS
 {
@@ -22,20 +28,11 @@ namespace RuiJi.Net.Node.Feed.LTS
             factory = new StdSchedulerFactory();
         }
 
-        public static async void Start(string baseUrl,string proxyUrl, FeedNode feedNode)
+        public static async void Start(string baseUrl, string proxyUrl, FeedNode feedNode)
         {
             FeedScheduler.baseUrl = baseUrl;
             FeedScheduler.proxyUrl = proxyUrl;
             FeedScheduler.feedNode = feedNode;
-
-            //IJobDetail job = JobBuilder.Create<FeedJob>().Build();
-            //job.JobDataMap.Add("proxyUrl", proxyUrl);
-            //job.JobDataMap.Add("baseUrl", baseUrl);
-            //job.JobDataMap.Add("node", feedNode);
-
-            //ITrigger trigger = TriggerBuilder.Create().WithCronSchedule("0 0/5 * * * ?").Build();
-
-            //await scheduler.ScheduleJob(job, trigger);
 
             SyncFeed();
 
@@ -67,8 +64,15 @@ namespace RuiJi.Net.Node.Feed.LTS
 
                 foreach (var cornExpression in cornExpressions)
                 {
-                    ITrigger trigger = TriggerBuilder.Create().WithCronSchedule(cornExpression).WithIdentity(jobKey).Build();
-                    await scheduler.ScheduleJob(job, trigger);
+                    try
+                    {
+                        ITrigger trigger = TriggerBuilder.Create().WithCronSchedule(cornExpression).WithIdentity(jobKey).Build();
+                        await scheduler.ScheduleJob(job, trigger);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.GetLogger(baseUrl).Error("job[" + jobKey + "] say: " + ex.Message);
+                    }
                 }
             }
         }
@@ -99,7 +103,78 @@ namespace RuiJi.Net.Node.Feed.LTS
 
         public static async void SyncFeed()
         {
+            await Task.Run(() =>
+            {
+                try
+                {
+                    if (NodeConfigurationSection.Standalone)
+                    {
+                        var page = 1;
 
+                        var paging = new Paging();
+                        paging.CurrentPage = page;
+                        paging.PageSize = 5000;
+
+                        var feeds = FeedLiteDb.GetAvailableFeeds(paging);
+                        while (feeds.Count != 0)
+                        {
+                            foreach (var feed in feeds)
+                            {
+                                var feedRequest = FeedModel.ToFeedRequest(feed);
+                                var dic = new Dictionary<string, object>();
+                                dic.Add("request", feedRequest);
+
+                                AddJob(feed.Id.ToString(), feed.Scheduling, dic);
+                            }
+
+                            Logger.GetLogger(baseUrl).Info("add feed jobs:" + feeds.Count);
+
+                            paging.CurrentPage = ++page;
+                            feeds = FeedLiteDb.GetAvailableFeeds(paging);
+                        }
+                    }
+                    else
+                    {
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.GetLogger(baseUrl).Info("get feed error " + ex.Message);
+                }
+            });
+        }
+
+        public static async void Receive(string action, List<FeedModel> feeds)
+        {
+            foreach (var feed in feeds)
+            {
+                await Receive(action, feed);
+            }
+        }
+
+        public static async Task Receive(string action, FeedModel feed)
+        {
+            await Task.Run(()=> {
+                switch (action)
+                {
+                    case "update":
+                        {
+
+                            break;
+                        }
+                    case "remove":
+                        {
+
+                            break;
+                        }
+                    case "status":
+                        {
+
+                            break;
+                        }
+                }
+            });
         }
     }
 }
