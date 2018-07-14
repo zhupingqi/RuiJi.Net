@@ -21,11 +21,11 @@ namespace RuiJi.Net.NodeVisitor
 
             if (NodeConfigurationSection.Standalone)
             {
-                proxyUrl= ConfigurationManager.AppSettings["RuiJiServer"];
+                proxyUrl = ConfigurationManager.AppSettings["RuiJiServer"];
             }
             else
             {
-                proxyUrl = ProxyManager.Instance.Elect(NodeProxyTypeEnum.FEEDPROXY);                
+                proxyUrl = ProxyManager.Instance.Elect(NodeProxyTypeEnum.FEEDPROXY);
             }
 
             if (string.IsNullOrEmpty(proxyUrl))
@@ -47,6 +47,28 @@ namespace RuiJi.Net.NodeVisitor
             var response = JsonConvert.DeserializeObject<List<ExtractFeatureBlock>>(restResponse.Content);
 
             return response;
+        }
+
+        public static string GetFeedJobs(string proxyUrl, string pages)
+        {
+            if (string.IsNullOrEmpty(proxyUrl))
+                throw new Exception("get feedjobs: proxyUrl can't be null");
+
+            if (string.IsNullOrEmpty(pages))
+                throw new Exception("get feedjobs: pages can't be null");
+
+            proxyUrl = IPHelper.FixLocalUrl(proxyUrl);
+
+            var client = new RestClient("http://" + proxyUrl);
+            var restRequest = new RestRequest("api/fp/feed/page");
+            restRequest.Method = Method.GET;
+            restRequest.AddParameter("pages", pages);
+            restRequest.Timeout = 15000;
+
+            var restResponse = client.Execute(restRequest);
+
+            return restResponse.Content;
+
         }
 
         public static bool SaveContent(object content)

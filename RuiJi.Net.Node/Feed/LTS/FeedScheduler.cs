@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RuiJi.Net.Core.RTS;
 using RuiJi.Net.Core.Crawler;
+using Newtonsoft.Json;
 
 namespace RuiJi.Net.Node.Feed.LTS
 {
@@ -34,10 +35,10 @@ namespace RuiJi.Net.Node.Feed.LTS
             FeedScheduler.proxyUrl = proxyUrl;
             FeedScheduler.feedNode = feedNode;
 
-            SyncFeed();
-
             scheduler = await factory.GetScheduler();
             await scheduler.Start();
+
+            SyncFeed();
         }
 
         public static async void AddJob(string jobKey, string[] cornExpressions, Dictionary<string, object> dic = null)
@@ -135,12 +136,39 @@ namespace RuiJi.Net.Node.Feed.LTS
                     }
                     else
                     {
+                        var data = feedNode.GetData("/config/feed/" + baseUrl);
+                        var config = JsonConvert.DeserializeObject<NodeConfig>(data.Data);
+                        if (config.Pages == null || config.Pages.Length == 0)
+                            return;
 
+                        var feedsResponse = NodeVisitor.Feeder.GetFeedJobs(proxyUrl, string.Join(",", config.Pages));
+                        if (string.IsNullOrEmpty(feedsResponse))
+                            throw new Exception("feedproxy can't connect");
+
+                        var feeds = JsonConvert.DeserializeObject<List<FeedModel>>(feedsResponse);
+                        FeedLiteDb.RemoveAll();
+
+                        var startCount = 0;
+                        foreach (var f in feeds)
+                        {
+                            FeedLiteDb.AddOrUpdate(f);
+                            if (f.Status == Status.ON)
+                            {
+                                var feedRequest = FeedModel.ToFeedRequest(f);
+                                var dic = new Dictionary<string, object>();
+                                dic.Add("request", feedRequest);
+
+                                AddJob(f.Id.ToString(), f.Scheduling, dic);
+                                startCount++;
+                            }
+                        }
+
+                        Logger.GetLogger(baseUrl).Info("add feed jobs:" + feeds.Count);
                     }
                 }
                 catch (Exception ex)
                 {
-                    Logger.GetLogger(baseUrl).Info("get feed error " + ex.Message);
+                    Logger.GetLogger(baseUrl).Error("get feed error " + ex.Message);
                 }
             });
         }
@@ -155,7 +183,8 @@ namespace RuiJi.Net.Node.Feed.LTS
 
         public static async Task Receive(string action, FeedModel feed)
         {
-            await Task.Run(()=> {
+            await Task.Run(() =>
+            {
                 switch (action)
                 {
                     case "update":

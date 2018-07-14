@@ -114,11 +114,20 @@ namespace RuiJi.Net.Node.Feed.Db
             using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
             {
                 var col = db.GetCollection<FeedModel>("feeds");
-
                 col.Delete(x => ids.Contains(x.Id));
             }
 
             return true;
+        }
+
+        public static void RemoveAll()
+        {
+            using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
+            {
+                var col = db.GetCollection<FeedModel>("feeds");
+                col.Delete(Query.All());
+            }
+
         }
 
         public static void CreateIndex()
