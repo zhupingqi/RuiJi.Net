@@ -146,12 +146,10 @@ namespace RuiJi.Net.Node.Feed.LTS
                             throw new Exception("feedproxy can't connect");
 
                         var feeds = JsonConvert.DeserializeObject<List<FeedModel>>(feedsResponse);
-                        FeedLiteDb.RemoveAll();
 
                         var startCount = 0;
                         foreach (var f in feeds)
                         {
-                            FeedLiteDb.AddOrUpdate(f);
                             if (f.Status == Status.ON)
                             {
                                 var feedRequest = FeedModel.ToFeedRequest(f);

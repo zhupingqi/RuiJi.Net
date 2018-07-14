@@ -52,57 +52,8 @@ namespace RuiJi.Net.Node.Feed.LTS
 
         public Response DoTask(FeedModel feed)
         {
-            return DoTask(FeedModel.ToFeedRequest(feed));
-        }
-
-        public Response DoTask(FeedRequest feedRequest)
-        {
-            try
-            {
-                var request = feedRequest.Request;
-
-                Logger.GetLogger(baseUrl).Info("do task -> request address " + request.Uri);
-
-                var response = NodeVisitor.Crawler.Request(request);
-
-                if (response != null)
-                    Logger.GetLogger(baseUrl).Info("request " + request.Uri + " response code is " + response.StatusCode);
-
-                if (response == null)
-                    Logger.GetLogger(baseUrl).Error("request " + request.Uri + " response is null");
-
-                return response;
-            }
-            catch (Exception ex)
-            {
-                Logger.GetLogger(baseUrl).Info("do task -> request address failed " + ex.Message);
-            }
-
-            return null;
-        }
-
-        protected void Save(FeedRequest feedRequest, Response response)
-        {
-            var request = feedRequest.Request;
-            var content = Convert(response.Data.ToString(), Encoding.GetEncoding(response.Charset), Encoding.UTF8);
-
-            var snap = new FeedSnapshot
-            {
-                Url = request.Uri.ToString(),
-                Content = content,
-                RuiJiExpression = feedRequest.Expression
-            };
-
-            var json = JsonConvert.SerializeObject(snap, Formatting.Indented);
-
-            var fileName = baseDir + @"snapshot\" + feedRequest.Setting.Id + "_" + DateTime.Now.Ticks + ".json";
-            if (feedRequest.Setting.Delay > 0)
-            {
-                fileName = baseDir + @"delay\" + feedRequest.Setting.Id + "_" + DateTime.Now.AddMinutes(feedRequest.Setting.Delay).Ticks + ".json";
-            }
-
-            Logger.GetLogger(baseUrl).Info(request.Uri + " response save to " + fileName);
-            File.WriteAllText(fileName, json, Encoding.UTF8);
+            //如何Execute没执行过Test时baseUrl会不会为Null？
+            return FeedQueue.Instance.DoTask(FeedModel.ToFeedRequest(feed), baseUrl);
         }
 
         public async Task Execute(IJobExecutionContext context)
@@ -113,9 +64,7 @@ namespace RuiJi.Net.Node.Feed.LTS
             await Task.Run(() =>
             {
                 var feedRequest = context.JobDetail.JobDataMap.Get("request") as FeedRequest;
-                var response = DoTask(feedRequest);
-
-                Save(feedRequest, response);
+                FeedQueue.Instance.Enqueue(new FeedQueueModel { BaseDir = baseDir, BaseUrl = baseUrl, FeedRequest = feedRequest });
             });
         }
     }

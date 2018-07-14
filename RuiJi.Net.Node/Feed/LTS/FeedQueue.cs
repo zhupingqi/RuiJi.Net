@@ -74,59 +74,12 @@ namespace RuiJi.Net.Node.Feed.LTS
                     FeedQueueModel qm;
                     if (queue.Dequeue(out qm))
                     {
-                        Response response = null;
-
                         //crawler the feed
-                        var request = qm.FeedRequest.Request;
-                        try
+                        var response = DoTask(qm.FeedRequest, qm.BaseUrl);
+
+                        if (response != null)
                         {
-                            Logger.GetLogger(qm.BaseUrl).Info("crawler feed -> request address " + request.Uri);
-
-                            response = NodeVisitor.Crawler.Request(request);
-
-                            if (response != null)
-                                Logger.GetLogger(qm.BaseUrl).Info("request " + request.Uri + " response code is " + response.StatusCode);
-
-                            if (response == null)
-                            {
-                                Logger.GetLogger(qm.BaseUrl).Error("request " + request.Uri + " response is null");
-                                return;
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.GetLogger(qm.BaseUrl).Info("crawler feed -> request address failed " + ex.Message);
-                            return;
-                        }
-
-                        //save the feed
-                        var fileName = qm.BaseDir + @"snapshot\" + qm.FeedRequest.Setting.Id + "_" + DateTime.Now.Ticks + ".json";
-                        try
-                        {
-
-                            var content = Convert(response.Data.ToString(), Encoding.GetEncoding(response.Charset), Encoding.UTF8);
-
-                            var snap = new FeedSnapshot
-                            {
-                                Url = request.Uri.ToString(),
-                                Content = content,
-                                RuiJiExpression = qm.FeedRequest.Expression
-                            };
-
-                            var json = JsonConvert.SerializeObject(snap, Formatting.Indented);
-
-                            if (qm.FeedRequest.Setting.Delay > 0)
-                            {
-                                fileName = qm.BaseDir + @"delay\" + qm.FeedRequest.Setting.Id + "_" + DateTime.Now.AddMinutes(qm.FeedRequest.Setting.Delay).Ticks + ".json";
-                            }
-
-                            Logger.GetLogger(qm.BaseUrl).Info(request.Uri + " response save to " + fileName);
-                            File.WriteAllText(fileName, json, Encoding.UTF8);
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.GetLogger(qm.BaseUrl).Info("save feed ->" + request.Uri + " response save to " + fileName + " failed " + ex.Message);
-                            throw;
+                            Save(qm.FeedRequest, response, qm.BaseDir, qm.BaseUrl);
                         }
                     }
 
@@ -140,6 +93,65 @@ namespace RuiJi.Net.Node.Feed.LTS
             {
                 queue.Enqueue(v);
             }
+        }
+
+        public Response DoTask(FeedRequest feedRequest, string baseUrl)
+        {
+            try
+            {
+                var request = feedRequest.Request;
+
+                Logger.GetLogger(baseUrl).Info("do task -> request address " + request.Uri);
+
+                var response = NodeVisitor.Crawler.Request(request);
+
+                if (response != null)
+                    Logger.GetLogger(baseUrl).Info("request " + request.Uri + " response code is " + response.StatusCode);
+
+                if (response == null)
+                    Logger.GetLogger(baseUrl).Error("request " + request.Uri + " response is null");
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Logger.GetLogger(baseUrl).Info("do task -> request address failed " + ex.Message);
+            }
+
+            return null;
+        }
+
+        protected void Save(FeedRequest feedRequest, Response response, string baseDir, string baseUrl)
+        {
+            var fileName = baseDir + @"snapshot\" + feedRequest.Setting.Id + "_" + DateTime.Now.Ticks + ".json";
+            var request = feedRequest.Request;
+            try
+            {
+                var content = Convert(response.Data.ToString(), Encoding.GetEncoding(response.Charset), Encoding.UTF8);
+
+                var snap = new FeedSnapshot
+                {
+                    Url = request.Uri.ToString(),
+                    Content = content,
+                    RuiJiExpression = feedRequest.Expression
+                };
+
+                var json = JsonConvert.SerializeObject(snap, Formatting.Indented);
+
+
+                if (feedRequest.Setting.Delay > 0)
+                {
+                    fileName = baseDir + @"delay\" + feedRequest.Setting.Id + "_" + DateTime.Now.AddMinutes(feedRequest.Setting.Delay).Ticks + ".json";
+                }
+
+                Logger.GetLogger(baseUrl).Info(request.Uri + " response save to " + fileName);
+                File.WriteAllText(fileName, json, Encoding.UTF8);
+            }
+            catch (Exception ex)
+            {
+                Logger.GetLogger(baseUrl).Info("save feed ->" + request.Uri + " response save to " + fileName + " failed " + ex.Message);
+            }
+
         }
 
         private string Convert(string input, Encoding source, Encoding target)
