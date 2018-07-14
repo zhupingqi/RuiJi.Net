@@ -25,6 +25,8 @@ namespace RuiJi.Net.Node.Feed.LTS
 
         private static string baseDir;
 
+        private static SmartThreadPool smartThreadPool;
+
         private string baseUrl;
         private string proxyUrl;
 
@@ -41,6 +43,15 @@ namespace RuiJi.Net.Node.Feed.LTS
             {
                 Directory.CreateDirectory(baseDir + @"delay");
             }
+
+            var stpStartInfo = new STPStartInfo
+            {
+                IdleTimeout = 3000,
+                MaxWorkerThreads = 32,
+                MinWorkerThreads = 0
+            };
+
+            smartThreadPool = new SmartThreadPool(stpStartInfo);
         }
 
         private string Convert(string input, Encoding source, Encoding target)
@@ -52,20 +63,71 @@ namespace RuiJi.Net.Node.Feed.LTS
 
         public Response DoTask(FeedModel feed)
         {
-            //如何Execute没执行过Test时baseUrl会不会为Null？
-            return FeedQueue.Instance.DoTask(FeedModel.ToFeedRequest(feed), baseUrl);
+            return DoTask(FeedModel.ToFeedRequest(feed));
+        }
+
+        public Response DoTask(FeedRequest feedRequest)
+        {
+            try
+            {
+                var request = feedRequest.Request;
+
+                Logger.GetLogger(baseUrl).Info("do task -> request address " + request.Uri);
+
+                var response = NodeVisitor.Crawler.Request(request);
+
+                if (response != null)
+                    Logger.GetLogger(baseUrl).Info("request " + request.Uri + " response code is " + response.StatusCode);
+
+                if (response == null)
+                    Logger.GetLogger(baseUrl).Error("request " + request.Uri + " response is null");
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Logger.GetLogger(baseUrl).Info("do task -> request address failed " + ex.Message);
+            }
+
+            return null;
+        }
+
+        protected void Save(FeedRequest feedRequest, Response response)
+        {
+            var request = feedRequest.Request;
+            var content = Convert(response.Data.ToString(), Encoding.GetEncoding(response.Charset), Encoding.UTF8);
+
+            var snap = new FeedSnapshot
+            {
+                Url = request.Uri.ToString(),
+                Content = content,
+                RuiJiExpression = feedRequest.Expression
+            };
+
+            var json = JsonConvert.SerializeObject(snap, Formatting.Indented);
+
+            var fileName = baseDir + @"snapshot\" + feedRequest.Setting.Id + "_" + DateTime.Now.Ticks + ".json";
+            if (feedRequest.Setting.Delay > 0)
+            {
+                fileName = baseDir + @"delay\" + feedRequest.Setting.Id + "_" + DateTime.Now.AddMinutes(feedRequest.Setting.Delay).Ticks + ".json";
+            }
+
+            Logger.GetLogger(baseUrl).Info(request.Uri + " response save to " + fileName);
+            File.WriteAllText(fileName, json, Encoding.UTF8);
         }
 
         public async Task Execute(IJobExecutionContext context)
         {
             baseUrl = context.JobDetail.JobDataMap.Get("baseUrl").ToString();
             proxyUrl = context.JobDetail.JobDataMap.Get("proxyUrl").ToString();
+            var feedRequest = context.JobDetail.JobDataMap.Get("request") as FeedRequest;
 
-            await Task.Run(() =>
-            {
-                var feedRequest = context.JobDetail.JobDataMap.Get("request") as FeedRequest;
-                FeedQueue.Instance.Enqueue(new FeedQueueModel { BaseDir = baseDir, BaseUrl = baseUrl, FeedRequest = feedRequest });
+            var r = smartThreadPool.QueueWorkItem(() => {
+                var response = DoTask(feedRequest);
+                Save(feedRequest, response);
             });
+
+            SmartThreadPool.WaitAll(new List<IWorkItemResult> { r }.ToArray());
         }
     }
 }

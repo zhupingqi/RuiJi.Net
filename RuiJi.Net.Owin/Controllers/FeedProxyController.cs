@@ -117,7 +117,7 @@ namespace RuiJi.Net.Owin.Controllers
         {
             FeedLiteDb.AddOrUpdate(feed);
 
-            Broadcast("update",new List<FeedModel> { feed });
+            Broadcast("update", feed);
         }
 
         [HttpGet]
@@ -155,11 +155,23 @@ namespace RuiJi.Net.Owin.Controllers
             return feed;
         }
 
-        private void Broadcast(string action, List<FeedModel> feeds)
+        private void Broadcast(string action,params object[] args)
         {
             if(NodeConfigurationSection.Standalone)
             {
-                FeedScheduler.Receive(action, feeds);
+                //FeedScheduler.Receive(action, args);
+            }
+            else
+            {
+                var node = ServerManager.Get(Request.RequestUri.Authority) as NodeBase;
+                var nv = node.GetChildren("/live_nodes/feed");
+
+                foreach (string path in nv.Keys)
+                {
+                    var cfg = JsonConvert.DeserializeObject<NodeConfig>(node.GetData(path).Data);
+                    
+
+                }
             }
         }
 
