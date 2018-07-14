@@ -1,0 +1,3 @@
+1.ProxyManger获取代理地址（全分布失效）
+2.ContentQueue存储时未存储到代理服务器
+3.ServerManager.Get方法在全分布下取不到值（Nodes节点设置）

@@ -80,7 +80,7 @@ namespace RuiJi.Net.Node.Feed.LTS
                         var request = qm.FeedRequest.Request;
                         try
                         {
-                            Logger.GetLogger(qm.BaseUrl).Info("do task -> request address " + request.Uri);
+                            Logger.GetLogger(qm.BaseUrl).Info("crawler feed -> request address " + request.Uri);
 
                             response = NodeVisitor.Crawler.Request(request);
 
