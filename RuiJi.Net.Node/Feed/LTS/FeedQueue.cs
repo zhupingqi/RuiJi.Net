@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using RuiJi.Net.Core.Crawler;
 using RuiJi.Net.Core.Queue;
 using RuiJi.Net.Core.RTS;
-using RuiJi.Net.Core.Utils.Log;
+using RuiJi.Net.Core.Utils.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;

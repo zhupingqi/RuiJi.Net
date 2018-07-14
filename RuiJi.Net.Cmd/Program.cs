@@ -14,7 +14,7 @@ using RuiJi.Net.Node.Extractor;
 using System.Threading;
 using RuiJi.Net.Core.Utils;
 using log4net;
-using RuiJi.Net.Core.Utils.Log;
+using RuiJi.Net.Core.Utils.Logging;
 
 namespace RuiJi.Net.Cmd
 {

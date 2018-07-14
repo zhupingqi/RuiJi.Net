@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RuiJi.Net.Core.Utils.Log;
+using RuiJi.Net.Core.Utils.Logging;
 
 namespace RuiJi.Net.Node
 {

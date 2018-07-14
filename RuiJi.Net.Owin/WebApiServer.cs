@@ -1,7 +1,7 @@
 ﻿using log4net;
 using Microsoft.Owin.Hosting;
 using RuiJi.Net.Core.Utils;
-using RuiJi.Net.Core.Utils.Log;
+using RuiJi.Net.Core.Utils.Logging;
 using RuiJi.Net.Node;
 using RuiJi.Net.Node.Crawler;
 using RuiJi.Net.Node.Extractor;

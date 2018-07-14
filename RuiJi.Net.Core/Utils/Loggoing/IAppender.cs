@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RuiJi.Net.Core.Utils.Log
+namespace RuiJi.Net.Core.Utils.Logging
 {
     public interface IAppender
     {

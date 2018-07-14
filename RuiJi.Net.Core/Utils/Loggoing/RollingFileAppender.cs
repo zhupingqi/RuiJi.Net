@@ -11,7 +11,7 @@ using log4net.Filter;
 using log4net.Layout;
 using log4net.Repository;
 
-namespace RuiJi.Net.Core.Utils.Log
+namespace RuiJi.Net.Core.Utils.Logging
 {
     /// <summary>
     /// rolling file logger

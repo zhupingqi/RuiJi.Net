@@ -2,7 +2,7 @@
 using Org.Apache.Zookeeper.Data;
 using RestSharp;
 using RuiJi.Net.Core.Utils;
-using RuiJi.Net.Core.Utils.Log;
+using RuiJi.Net.Core.Utils.Logging;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
