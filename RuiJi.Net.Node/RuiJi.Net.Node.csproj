@@ -72,7 +72,6 @@
     <Compile Include="Feed\Db\UAGroupModel.cs" />
     <Compile Include="Feed\Db\UALiteDb.cs" />
     <Compile Include="Feed\Db\UAModel.cs" />
-    <Compile Include="Feed\LTS\FeedQueue.cs" />
     <Compile Include="Feed\LTS\BroadcastEvent.cs" />
     <Compile Include="StandaloneNode.cs" />
     <Compile Include="Compile\UrlCompile.cs" />
@@ -86,7 +85,6 @@
     <Compile Include="Feed\Db\ProxyModel.cs" />
     <Compile Include="Feed\Db\Status.cs" />
     <Compile Include="Feed\Db\FuncModel.cs" />
-    <Compile Include="Feed\LTS\ContentQueue.cs" />
     <Compile Include="Feed\LTS\FeedExtractJob.cs" />
     <Compile Include="Feed\LTS\FeedExtractScheduler.cs" />
     <Compile Include="Feed\LTS\FeedJob.cs" />

@@ -18,16 +18,6 @@ namespace RuiJi.Net.Core.RTS
         private static bool IsRunning = false;
 
         /// <summary>
-        /// job worker number
-        /// </summary>
-        public static int MaxWorkerThreads { get; set; }
-
-        static FeedExtractJobBase()
-        {
-            MaxWorkerThreads = 8;            
-        }
-
-        /// <summary>
         /// execute job
         /// </summary>
         /// <param name="context">job context</param>
@@ -40,35 +30,13 @@ namespace RuiJi.Net.Core.RTS
 
                 OnJobStart(context);
 
-                var task = Task.Factory.StartNew(() =>
+                var task = Task.Run(() =>
                 {
                     var snapshots = GetSnapshot();
-
-                    var stpStartInfo = new STPStartInfo
-                    {
-                        IdleTimeout = 3000,
-                        MaxWorkerThreads = MaxWorkerThreads,
-                        MinWorkerThreads = 0
-                    };
-
-                    var pool = new SmartThreadPool(stpStartInfo);
-                    var waits = new List<IWorkItemResult>();
                     foreach (var snapshot in snapshots)
                     {
-                        var item = pool.QueueWorkItem((u) =>
-                        {
-                            DoTask(u);
-
-                        }, snapshot);
-
-                        waits.Add(item);
+                        DoTask(snapshot);
                     }
-
-                    SmartThreadPool.WaitAll(waits.ToArray());
-                    pool.Shutdown(true, 1000);
-                    pool.Dispose();
-                    pool = null;
-                    waits.Clear();
                 });
 
                 await task;

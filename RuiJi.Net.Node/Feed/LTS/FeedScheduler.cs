@@ -33,12 +33,16 @@ namespace RuiJi.Net.Node.Feed.LTS
 
         public static async void Start(string baseUrl, string proxyUrl, FeedNode feedNode)
         {
+            Logger.GetLogger(baseUrl).Info(baseUrl + " feed scheduler starting");
+
             FeedScheduler.baseUrl = baseUrl;
             FeedScheduler.proxyUrl = proxyUrl;
             FeedScheduler.feedNode = feedNode;
 
             scheduler = await factory.GetScheduler();
             await scheduler.Start();
+
+            Logger.GetLogger(baseUrl).Info(baseUrl + " feed scheduler started");
 
             SyncFeed();
         }
@@ -71,10 +75,12 @@ namespace RuiJi.Net.Node.Feed.LTS
                     {
                         ITrigger trigger = TriggerBuilder.Create().WithCronSchedule(cornExpression).WithIdentity(jobKey).Build();
                         await scheduler.ScheduleJob(job, trigger);
+
+                        Logger.GetLogger(baseUrl).Info("add job with feed id " + jobKey);
                     }
                     catch (Exception ex)
                     {
-                        Logger.GetLogger(baseUrl).Error("job[" + jobKey + "] say: " + ex.Message);
+                        Logger.GetLogger(baseUrl).Error("job with feed id " + jobKey + " say: " + ex.Message);
                     }
                 }
             }
@@ -109,12 +115,16 @@ namespace RuiJi.Net.Node.Feed.LTS
 
             t.Wait();
 
+            Logger.GetLogger(baseUrl).Info("delete job with feed id " + jobKey + " " + t.Result);
+
             return t.Result;
         }
 
         public static async void Stop()
         {
             await scheduler.Shutdown(false);
+
+            Logger.GetLogger(baseUrl).Info("feed scheduler stoped");
         }
 
         public static async void SyncFeed()
@@ -141,7 +151,7 @@ namespace RuiJi.Net.Node.Feed.LTS
                                 AddJob(feed);
                             }
 
-                            Logger.GetLogger(baseUrl).Info("add feed jobs:" + feeds.Count);
+                            Logger.GetLogger(baseUrl).Info("sync feed and add feed jobs:" + feeds.Count);
 
                             paging.CurrentPage = ++page;
                             feeds = FeedLiteDb.GetAvailableFeeds(paging);
@@ -166,28 +176,32 @@ namespace RuiJi.Net.Node.Feed.LTS
                             AddJob(feed);
                         }
 
-                        Logger.GetLogger(baseUrl).Info("add feed jobs:" + feeds.Count);
+                        Logger.GetLogger(baseUrl).Info("sync feed and add feed jobs:" + feeds.Count);
                     }
                 }
                 catch (Exception ex)
                 {
-                    Logger.GetLogger(baseUrl).Error("get feed error " + ex.Message);
+                    Logger.GetLogger(baseUrl).Error("sync feed error " + ex.Message);
                 }
             });
         }
 
         public static void OnReceive(BroadcastEvent @event)
         {
+            Logger.GetLogger(baseUrl).Info("receive feed proxy broadcast");
+
             if (@event.Event == BroadcastEventEnum.UPDATE)
             {
                 var feed = @event.Args as FeedModel;
                 if (feed.Status == Status.OFF)
-                    DeleteJob(feed.Id.ToString());
+                {
+                    var result = DeleteJob(feed.Id.ToString());
+                }
                 else
                 {
                     if (NodeConfigurationSection.Standalone)
                     {
-                        AddJob(feed);
+                        AddJob(feed);                        
                     }
                     else
                     {
@@ -205,7 +219,7 @@ namespace RuiJi.Net.Node.Feed.LTS
 
                 foreach (var id in ids)
                 {
-                    DeleteJob(id.ToString());
+                    var result = DeleteJob(id.ToString());                    
                 }
             }
         }

@@ -122,7 +122,11 @@ namespace RuiJi.Net.Node.Feed.LTS
             proxyUrl = context.JobDetail.JobDataMap.Get("proxyUrl").ToString();
             var feedRequest = context.JobDetail.JobDataMap.Get("request") as FeedRequest;
 
+            Logger.GetLogger(baseUrl).Info(" feed job " + context.JobDetail.Key + " add to feed crawl queue");
+
             var r = smartThreadPool.QueueWorkItem(() => {
+                Logger.GetLogger(baseUrl).Info(" feed job " + feedRequest.Request.Uri.ToString() + " starting");
+
                 var response = DoTask(feedRequest);
                 Save(feedRequest, response);
             });

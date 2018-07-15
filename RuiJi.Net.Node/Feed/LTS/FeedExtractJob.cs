@@ -5,13 +5,15 @@ using RuiJi.Net.Core.Expression;
 using RuiJi.Net.Core.Extractor;
 using RuiJi.Net.Core.Extractor.Selector;
 using RuiJi.Net.Core.RTS;
+using RuiJi.Net.Core.Utils;
+using RuiJi.Net.Core.Utils.Logging;
+using RuiJi.Net.Storage;
+using RuiJi.Net.Storage.Model;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace RuiJi.Net.Node.Feed.LTS
 {
@@ -20,6 +22,8 @@ namespace RuiJi.Net.Node.Feed.LTS
         private static readonly string snapshotPath;
 
         private static readonly string basePath;
+
+        private static readonly string failPath;
 
         private static string baseUrl;
 
@@ -40,6 +44,10 @@ namespace RuiJi.Net.Node.Feed.LTS
             {
                 Directory.CreateDirectory(basePath + @"/pre");
             }
+
+            failPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory + "save_failed");
+            if (!Directory.Exists(failPath))
+                Directory.CreateDirectory(failPath);
 
             var stpStartInfo = new STPStartInfo
             {
@@ -66,6 +74,8 @@ namespace RuiJi.Net.Node.Feed.LTS
                 {
                     var desFile = file.Replace("delay", "snapshot");
                     File.Move(file, desFile);
+
+                    Logger.GetLogger(baseUrl).Info("move delay feed " + file);
                 }
             }
         }
@@ -148,13 +158,19 @@ namespace RuiJi.Net.Node.Feed.LTS
 
                 foreach (var u in urls)
                 {
-                    var qm = new QueueModel
-                    {
-                        FeedId = feedId,
-                        Url = u
-                    };
+                    Logger.GetLogger(baseUrl).Info(" extract job " + u + " add to feed extract queue");
 
-                    ContentQueue.Instance.Enqueue(qm);
+                    var r = smartThreadPool.QueueWorkItem(() => {
+                        Logger.GetLogger(baseUrl).Info(" extract job " + u + " starting");
+
+                        var result = NodeVisitor.Cooperater.GetResult(u);
+                        if (result != null)
+                        {
+                            Save(feedId, u, result);
+                        }
+                    });
+
+                    SmartThreadPool.WaitAll(new List<IWorkItemResult> { r }.ToArray());
                 }
 
                 var destFile = path.Replace("snapshot", "pre").Replace(filename, feedId + ".txt");
@@ -164,6 +180,23 @@ namespace RuiJi.Net.Node.Feed.LTS
                 File.Move(path, destFile);
             }
             catch { }
+        }
+
+        protected void Save(int feedId,string url, ExtractResult result)
+        {
+            var cm = new ContentModel();
+            cm.FeedId = feedId;
+            cm.Url = url;
+            cm.Metas = result.Metas;
+            cm.CDate = DateTime.Now;
+
+            var connectString = string.Format(@"LiteDb/Content/{0}.db", DateTime.Now.ToString("yyyyMM"));
+            var storage = new LiteDbStorage(connectString, "contents");
+
+            if (storage.Insert(cm) == -1)
+                File.AppendAllText(failPath + @"\" + EncryptHelper.GetMD5Hash(url) + ".json", JsonConvert.SerializeObject(cm));
+
+            Logger.GetLogger(baseUrl).Info(" extract job " + url + " save result " + (storage.Insert(cm) != -1));
         }
     }
 }
