@@ -162,6 +162,14 @@
     <None Include="www\doc\content\css\semantic\themes\default\assets\fonts\icons.ttf" />
     <None Include="www\doc\content\css\semantic\themes\default\assets\fonts\icons.woff" />
     <None Include="www\doc\content\css\semantic\themes\default\assets\fonts\icons.woff2" />
+    <None Include="www\doc\content\fonts\fontawesome-webfont.eot" />
+    <None Include="www\doc\content\fonts\fontawesome-webfont.ttf" />
+    <None Include="www\doc\content\fonts\fontawesome-webfont.woff" />
+    <None Include="www\doc\content\fonts\fontawesome-webfont.woff2" />
+    <None Include="www\doc\content\fonts\FontAwesome.otf" />
+    <None Include="www\doc\content\fonts\jsglyph.eot" />
+    <None Include="www\doc\content\fonts\jsglyph.ttf" />
+    <None Include="www\doc\content\fonts\jsglyph.woff" />
     <None Include="www\fonts\fontawesome-webfont.eot">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -452,6 +460,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="www\doc\cn\index.html" />
+    <Content Include="www\doc\content\bg.png" />
+    <Content Include="www\doc\content\fonts\font-awesome.min.css" />
+    <Content Include="www\doc\content\fonts\fontawesome-webfont.svg" />
+    <Content Include="www\doc\content\fonts\jsglyph.svg" />
+    <Content Include="www\doc\content\js\jquery.min.js" />
+    <Content Include="www\doc\content\js\jquery.ztree.exhide.min.js" />
+    <Content Include="www\doc\content\js\ztree.all.js" />
+    <Content Include="www\doc\content\logo.jpg" />
+    <Content Include="www\doc\content\site.css" />
     <Content Include="www\doc\index.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
