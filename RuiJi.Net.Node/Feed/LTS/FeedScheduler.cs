@@ -222,7 +222,7 @@ namespace RuiJi.Net.Node.Feed.LTS
 
                 foreach (var id in ids)
                 {
-                    var result = DeleteJob(id.ToString());
+                    DeleteJob(id.ToString());
                 }
             }
         }

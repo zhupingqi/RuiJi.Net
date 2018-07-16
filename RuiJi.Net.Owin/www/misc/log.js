@@ -15,6 +15,9 @@
                     $.map(d, function (v) {
                         var $d = $("<div></div>");
                         $d.text(v);
+                        if (v.indexOf("ERROR") != -1) {
+                            $d.css("color","red");
+                        }
                         $("#tab_panel_log .loading").before($d);
                     });
                 });
