@@ -110,14 +110,18 @@ namespace RuiJi.Net.Node.Feed.LTS
         public static bool DeleteJob(string jobKey)
         {
             var job = new JobKey(jobKey);
+            var exists = scheduler.CheckExists(job);
+            exists.Wait();
 
-            var t = scheduler.DeleteJob(job);
+            if (exists.Result)
+            {
+                var t = scheduler.DeleteJob(job);
 
-            t.Wait();
-
-            Logger.GetLogger(baseUrl).Info("delete job with feed id " + jobKey + " " + t.Result);
-
-            return t.Result;
+                t.Wait();
+                Logger.GetLogger(baseUrl).Info("delete job with feed id " + jobKey + " " + t.Result);
+                return t.Result;
+            }
+            return false;
         }
 
         public static async void Stop()
@@ -193,15 +197,14 @@ namespace RuiJi.Net.Node.Feed.LTS
             if (@event.Event == BroadcastEventEnum.UPDATE)
             {
                 var feed = @event.Args as FeedModel;
-                if (feed.Status == Status.OFF)
-                {
-                    var result = DeleteJob(feed.Id.ToString());
-                }
-                else
+
+                DeleteJob(feed.Id.ToString());
+
+                if (feed.Status == Status.ON)
                 {
                     if (NodeConfigurationSection.Standalone)
                     {
-                        AddJob(feed);                        
+                        AddJob(feed);
                     }
                     else
                     {
@@ -219,7 +222,7 @@ namespace RuiJi.Net.Node.Feed.LTS
 
                 foreach (var id in ids)
                 {
-                    var result = DeleteJob(id.ToString());                    
+                    var result = DeleteJob(id.ToString());
                 }
             }
         }
