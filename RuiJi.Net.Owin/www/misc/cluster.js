@@ -11,7 +11,7 @@
             var myChart = echarts.init(document.getElementById('cluster_cloud'));
             myChart.showLoading();
 
-            $.getJSON('/api/zoo/cluster', function (d) {
+            $.getJSON('/api/zk/cluster', function (d) {
                 myChart.hideLoading();
 
                 var data = {

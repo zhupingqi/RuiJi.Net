@@ -135,25 +135,25 @@ namespace RuiJi.Net.Owin
            // #region Zoo Api
            // config.Routes.MapHttpRoute(
            //         name: "ZooTree",
-           //         routeTemplate: "api/zoo/tree",
+           //         routeTemplate: "api/zk/tree",
            //         defaults: new { controller = "ZooApi", action = "Tree" }
            //     );
 
            // config.Routes.MapHttpRoute(
            //     name: "ZooNodeData",
-           //     routeTemplate: "api/zoo/node",
+           //     routeTemplate: "api/zk/data",
            //     defaults: new { controller = "ZooApi", action = "NodeData" }
            // );
 
            // config.Routes.MapHttpRoute(
            //     name: "NodeCluster",
-           //     routeTemplate: "api/zoo/cluster",
+           //     routeTemplate: "api/zk/cluster",
            //     defaults: new { controller = "ZooApi", action = "Cluster" }
            // );
 
            // config.Routes.MapHttpRoute(
            //     name: "FeedProxyUrl",
-           //     routeTemplate: "api/zoo/proxys",
+           //     routeTemplate: "api/zk/proxys",
            //     defaults: new { controller = "ZooApi", action = "GetProxys" }
            // );
            // #endregion

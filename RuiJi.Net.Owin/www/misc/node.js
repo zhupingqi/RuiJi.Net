@@ -48,7 +48,7 @@
 
                     var path = data.node.id;
 
-                    $.getJSON("/api/zoo/node?path=" + path, function (d) {
+                    $.getJSON("/api/zk/data?path=" + path, function (d) {
                         $('#node_stat').html("<table></table>");
                         for (var m in d.stat) {
                             $('#node_stat table').append("<tr><td width='150px'>" + m + "</td><td>" + d.stat[m] + "</td></tr>");
@@ -96,7 +96,7 @@
                 .jstree({
                     'core': {
                         'data': {
-                            'url': '/api/zoo/tree',
+                            'url': '/api/zk/tree',
                             'data': function (node) {
                                 var path = "/";
                                 if (node.id != "#")
