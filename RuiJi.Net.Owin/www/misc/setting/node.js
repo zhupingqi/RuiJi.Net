@@ -6,13 +6,13 @@
             var tmp = utils.loadTemplate("/misc/setting/node.html", false);
             $("#tab_panel_setting_node").html(tmp);
 
-            $.get("/api/nodes", function (r) {
+            $.get("/api/setting/nodes", function (r) {
 
                 $.map(r.crawlers, function (n) {
 
-                    var crawler = n.BaseUrl;
+                    var crawler = n;
 
-                    $.getJSON("/api/zk/data?path=" + "/config/crawler/" + crawler, function (d) {
+                    $.getJSON("/api/zk/data?path=" + "/config/" + crawler.replace("/live_nodes/", ""), function (d) {
 
                         var url = "/api/crawler/ips?baseUrl=" + crawler;
 
@@ -39,8 +39,8 @@
 
                 $.map(r.feeds, function (n) {
 
-                    var feed = n.BaseUrl;
-                    var url = "/api/feed/page?baseUrl=" + feed;
+                    var feed = n.replace("/live_nodes/feed/", "");
+                    var url = "/api/feed/get?baseUrl=" + feed;
 
                     $.getJSON(url, function (pages) {
                         tmp = utils.template("setting_feed_node", { feed: feed, pages: pages });
@@ -58,7 +58,7 @@
                 }).get();
 
                 var crawler = result.find(".active-node-crawler").text();
-                var url = "/api/crawler/ips/set?baseUrl=" + crawler;
+                var url = "/api/crawler/ips?baseUrl=" + crawler;
 
                 $.ajax({
                     url: url,
@@ -78,7 +78,7 @@
 
                 var feed = result.find(".active-node-feed").text();
 
-                var url = "/api/feed/page/set?baseUrl=" + feed;
+                var url = "/api/feed/set?baseUrl=" + feed;
 
                 $.ajax({
                     url: url,
