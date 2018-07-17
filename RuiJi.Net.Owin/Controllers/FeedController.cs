@@ -12,13 +12,12 @@ namespace RuiJi.Net.Owin.Controllers
     {
         #region Feed
         [HttpGet]
-        [NodeRoute(Target = NodeTypeEnum.FEED, RouteArgumentName = "baseUrl")]
         [Route("get")]
         public string GetFeedPage(string baseUrl)
         {
-            var node = ServerManager.Get(Request.RequestUri.Authority);
+            var node = ServerManager.ZkNode();
 
-            var d = node.GetData("/config/feed/" + Request.RequestUri.Authority).Data;
+            var d = node.GetData("/config/feed/" + baseUrl).Data;
             var config = JsonConvert.DeserializeObject<NodeConfig>(d);
 
             if (config.Pages == null)
@@ -28,15 +27,14 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpPost]
-        [NodeRoute(Target = NodeTypeEnum.FEED, RouteArgumentName = "baseUrl")]
         [Route("set")]
         public void SetFeedPage([FromBody]string pages, [FromUri]string baseUrl)
         {
-            var node = ServerManager.Get(Request.RequestUri.Authority);
+            var node = ServerManager.ZkNode();
 
-            var path = "/config/feed/" + Request.RequestUri.Authority;
+            var path = "/config/feed/" + baseUrl;
 
-            var data = node.GetData("/config/feed/" + Request.RequestUri.Authority);
+            var data = node.GetData(path);
             var config = JsonConvert.DeserializeObject<NodeConfig>(data.Data);
             config.Pages = string.IsNullOrEmpty(pages) ? new int[] { } : pages.Split(',').Select(m => Convert.ToInt32(m)).ToArray();
 

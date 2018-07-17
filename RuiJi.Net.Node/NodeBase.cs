@@ -183,23 +183,25 @@ namespace RuiJi.Net.Node
                 {
                     zooKeeper.Create("/overseer/leader", BaseUrl.GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Ephemeral);
                     IsLeader = true;
+                    LeaderBaseUrl = GetLeader();
+
                     Logger.GetLogger(BaseUrl).Info("current leader is " + BaseUrl);
                 }
             }
             catch (ZooKeeperNet.KeeperException.NodeExistsException ex)
             {
                 IsLeader = false;
+                LeaderBaseUrl = GetLeader();
+
                 Logger.GetLogger(BaseUrl).Info(BaseUrl + " run for leader failed!" + ex.Message);
             }
             catch (Exception ex)
             {
                 Logger.GetLogger(BaseUrl).Error(ex.Message);
             }
-
-            LeaderBaseUrl = GetLeader();
         }
 
-        protected string GetLeader()
+        private string GetLeader()
         {
             try
             {

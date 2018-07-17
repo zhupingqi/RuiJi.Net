@@ -51,14 +51,15 @@ namespace RuiJi.Net.Node.Feed.LTS
             Logger.GetLogger(baseUrl).Info(baseUrl + " add extract job");
 
             var job = JobBuilder.Create<FeedExtractJob>()
-                .WithIdentity("extract", "extract")
+                .WithIdentity("extract_" + baseUrl, "extract")
                 .Build();
 
             job.JobDataMap.Add("baseUrl", baseUrl);
 
             var trigger = TriggerBuilder.Create().WithCronSchedule("0 0/1 * * * ?")
-                .WithIdentity("extract")
+                .WithIdentity("extract_" + baseUrl)
                 .Build();
+
             await scheduler.ScheduleJob(job, trigger);
         }
 
@@ -71,7 +72,7 @@ namespace RuiJi.Net.Node.Feed.LTS
             if (!exists)
             {
                 var job = JobBuilder.Create<FeedJob>()
-                    .WithIdentity(jobKey,"feed")
+                    .WithIdentity(jobKey, "feed")
                     .Build();
 
                 job.JobDataMap.Add("proxyUrl", proxyUrl);

@@ -17,7 +17,7 @@ using RuiJi.Net.NodeVisitor;
 
 namespace RuiJi.Net.Owin.Controllers
 {
-    [RoutePrefix("api/extracor")]
+    [RoutePrefix("api/extractor")]
     public class ExtractorController : ApiController
     {
         [HttpPost]

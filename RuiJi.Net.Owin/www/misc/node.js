@@ -11,7 +11,7 @@
                 }).get();
 
                 var crawler = $("#active_node_crawler").text();
-                var url = "/api/crawler/ips/set?baseUrl=" + crawler;
+                var url = "/api/crawler/ips?baseUrl=" + crawler;
 
                 $.ajax({
                     url: url,
@@ -28,7 +28,7 @@
                 var pages = $("#node_pages").val();
                 var feed = $("#active_node_feed").text();
 
-                var url = "/api/feed/page/set?baseUrl=" + feed;
+                var url = "/api/feed/set?baseUrl=" + feed;
 
                 $.ajax({
                     url: url,
@@ -82,7 +82,7 @@
                         if (path.startWith("/config/feed/")) {
                             $("#feed_node_set").show();
                             var feed = path.replace("/config/feed/", "");
-                            var url = "/api/feed/page?baseUrl=" + feed;
+                            var url = "/api/feed/get?baseUrl=" + feed;
 
                             $("#active_node_feed").text(feed);
 

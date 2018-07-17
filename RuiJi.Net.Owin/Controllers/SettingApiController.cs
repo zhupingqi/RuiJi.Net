@@ -18,7 +18,7 @@ namespace RuiJi.Net.Owin.Controllers
         [Route("nodes")]
         public object Nodes()
         {
-            var leaderNode = ServerManager.GetLeader();
+            var leaderNode = ServerManager.ZkNode();
             if (leaderNode != null)
             {
                 var feeds = leaderNode.GetChildren("/live_nodes/feed");

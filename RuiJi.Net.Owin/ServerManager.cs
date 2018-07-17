@@ -208,13 +208,13 @@ namespace RuiJi.Net.Owin
             Logger.GetLogger("").Info("all server stop!");
         }
 
-        public static NodeBase GetLeader()
+        public static NodeBase ZkNode()
         {
             var server = servers.SingleOrDefault(m => m.Node.IsLeader);
             if (server != null)
                 return (NodeBase)server.Node;
 
-            return null;
+            return (NodeBase)servers.First().Node;
         }
 
         public static INode Get(string baseUrl)

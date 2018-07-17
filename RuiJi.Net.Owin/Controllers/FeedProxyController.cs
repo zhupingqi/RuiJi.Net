@@ -205,9 +205,9 @@ namespace RuiJi.Net.Owin.Controllers
 
                 foreach (string path in nv.Keys)
                 {
-                    var cfg = JsonConvert.DeserializeObject<NodeConfig>(node.GetData(path).Data);
+                    var baseUrl = path.Substring(path.LastIndexOf("/") + 1);
 
-                    var client = new RestClient("http://" + cfg.baseUrl);
+                    var client = new RestClient("http://" + baseUrl);
                     var restRequest = new RestRequest("api/feed/change");
                     restRequest.Method = Method.GET;
                     restRequest.JsonSerializer = new NewtonJsonSerializer();
