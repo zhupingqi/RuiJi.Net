@@ -86,7 +86,6 @@
     <Compile Include="Feed\Db\Status.cs" />
     <Compile Include="Feed\Db\FuncModel.cs" />
     <Compile Include="Feed\LTS\FeedExtractJob.cs" />
-    <Compile Include="Feed\LTS\FeedExtractScheduler.cs" />
     <Compile Include="Feed\LTS\FeedJob.cs" />
     <Compile Include="Feed\Db\FeedLiteDb.cs" />
     <Compile Include="Feed\Db\FeedModel.cs" />

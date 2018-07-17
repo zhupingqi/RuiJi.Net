@@ -24,7 +24,6 @@ namespace RuiJi.Net.Node.Feed
         ~FeedNode()
         {
             FeedScheduler.Stop();
-            FeedExtractScheduler.Stop();
         }
 
         protected override void OnStartup()
@@ -44,7 +43,6 @@ namespace RuiJi.Net.Node.Feed
             }
 
             FeedScheduler.Start(BaseUrl, ProxyUrl, this);
-            FeedExtractScheduler.Start(BaseUrl);
         }
 
         protected override NodeTypeEnum SetNodeType()

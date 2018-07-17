@@ -62,7 +62,8 @@ namespace RuiJi.Net.Owin.Controllers
                 startTime = server.StartTime.ToString("yyyy-MM-dd HH:mm:ss"),
                 cpu = sys.ProcessorName,
                 memory = memory,
-                efVersion = sys.Version
+                efVersion = sys.Version,
+                cores = Environment.ProcessorCount
             };
         }
 

@@ -25,7 +25,7 @@ namespace RuiJi.Net.Node.Feed.LTS
 
         private static string baseDir;
 
-        private static SmartThreadPool smartThreadPool;
+        internal static SmartThreadPool smartThreadPool;
 
         private string baseUrl;
         private string proxyUrl;
@@ -47,11 +47,12 @@ namespace RuiJi.Net.Node.Feed.LTS
             var stpStartInfo = new STPStartInfo
             {
                 IdleTimeout = 3000,
-                MaxWorkerThreads = 8,
+                MaxWorkerThreads = 32,
                 MinWorkerThreads = 0
             };
 
             smartThreadPool = new SmartThreadPool(stpStartInfo);
+            smartThreadPool.Start();
         }
 
         private string Convert(string input, Encoding source, Encoding target)
@@ -124,14 +125,13 @@ namespace RuiJi.Net.Node.Feed.LTS
 
             Logger.GetLogger(baseUrl).Info(" feed job " + context.JobDetail.Key + " add to feed crawl queue");
 
-            var r = smartThreadPool.QueueWorkItem(() => {
+            smartThreadPool.QueueWorkItem(() =>
+            {
                 Logger.GetLogger(baseUrl).Info(" feed job " + feedRequest.Request.Uri.ToString() + " starting");
 
                 var response = DoTask(feedRequest);
                 Save(feedRequest, response);
             });
-
-            SmartThreadPool.WaitAll(new List<IWorkItemResult> { r }.ToArray());
         }
     }
 }

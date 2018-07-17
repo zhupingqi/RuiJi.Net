@@ -51,38 +51,52 @@ namespace RuiJi.Net.Node.Feed.LTS
             if (!Directory.Exists(failPath))
                 Directory.CreateDirectory(failPath);
 
-            var stpStartInfo = new STPStartInfo
+            if (Environment.ProcessorCount == 1)
             {
-                IdleTimeout = 3000,
-                MaxWorkerThreads = 8,
-                MinWorkerThreads = 0
-            };
+                smartThreadPool = FeedJob.smartThreadPool;
+            }
+            else
+            {
+                var stpStartInfo = new STPStartInfo
+                {
+                    IdleTimeout = 3000,
+                    MaxWorkerThreads = 16,
+                    MinWorkerThreads = 0
+                };
 
-            smartThreadPool = new SmartThreadPool(stpStartInfo);
+                smartThreadPool = new SmartThreadPool(stpStartInfo);
+            }
         }
 
         protected void OnJobStart(IJobExecutionContext context)
         {
-            Logger.GetLogger(baseUrl).Info("extract job started ");
-
-            baseUrl = context.JobDetail.JobDataMap.Get("baseUrl").ToString();
-
-            Logger.GetLogger(baseUrl).Info("begin move delay feed ");
-
-            var files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory + @"delay");
-            foreach (var file in files)
+            try
             {
-                var filename = file.Substring(file.LastIndexOf(@"\") + 1);
-                var sp = filename.Split('_');
-                var ticks = sp[1].Substring(0, sp[1].LastIndexOf("."));
+                Logger.GetLogger(baseUrl).Info("extract job started ");
 
-                if (long.Parse(ticks) < DateTime.Now.Ticks)
+                baseUrl = context.JobDetail.JobDataMap.Get("baseUrl").ToString();
+
+                Logger.GetLogger(baseUrl).Info("begin move delay feed ");
+
+                var files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory + @"delay");
+                foreach (var file in files)
                 {
-                    var desFile = file.Replace("delay", "snapshot");
-                    File.Move(file, desFile);
+                    var filename = file.Substring(file.LastIndexOf(@"\") + 1);
+                    var sp = filename.Split('_');
+                    var ticks = sp[1].Substring(0, sp[1].LastIndexOf("."));
 
-                    Logger.GetLogger(baseUrl).Info("move delay feed " + file);
+                    if (long.Parse(ticks) < DateTime.Now.Ticks)
+                    {
+                        var desFile = file.Replace("delay", "snapshot");
+                        File.Move(file, desFile);
+
+                        Logger.GetLogger(baseUrl).Info("move delay feed " + file);
+                    }
                 }
+            }
+            catch(Exception ex)
+            {
+                Logger.GetLogger(baseUrl).Error("extract job error " + ex.Message);
             }
         }
 
@@ -167,7 +181,7 @@ namespace RuiJi.Net.Node.Feed.LTS
                 {
                     Logger.GetLogger(baseUrl).Info(" extract job " + u + " add to feed extract queue");
 
-                    var r = smartThreadPool.QueueWorkItem(() => {
+                    smartThreadPool.QueueWorkItem(() => {
                         Logger.GetLogger(baseUrl).Info(" extract job " + u + " starting");
 
                         var result = NodeVisitor.Cooperater.GetResult(u);
@@ -180,8 +194,6 @@ namespace RuiJi.Net.Node.Feed.LTS
                             Logger.GetLogger(baseUrl).Info(" extract job " + u + " result is null");
                         }
                     });
-
-                    SmartThreadPool.WaitAll(new List<IWorkItemResult> { r }.ToArray());
                 }
 
                 var destFile = path.Replace("snapshot", "pre").Replace(filename, feedId + ".txt");
@@ -190,7 +202,7 @@ namespace RuiJi.Net.Node.Feed.LTS
 
                 File.Move(path, destFile);
 
-                Logger.GetLogger(baseUrl).Info(" move fee snapshot to pre fold " + destFile);
+                Logger.GetLogger(baseUrl).Info(" move feed snapshot to pre fold " + destFile);
             }
             catch { }
         }
@@ -205,28 +217,36 @@ namespace RuiJi.Net.Node.Feed.LTS
 
             var connectString = string.Format(@"LiteDb/Content/{0}.db", DateTime.Now.ToString("yyyyMM"));
             var storage = new LiteDbStorage(connectString, "contents");
+            var code = storage.Insert(cm);
 
-            if (storage.Insert(cm) == -1)
+            if (code == -1)
                 File.AppendAllText(failPath + @"\" + EncryptHelper.GetMD5Hash(url) + ".json", JsonConvert.SerializeObject(cm));
 
-            Logger.GetLogger(baseUrl).Info(" extract job " + url + " save result " + (storage.Insert(cm) != -1));
+            Logger.GetLogger(baseUrl).Info(" extract job " + url + " save result " + (code != -1));
         }
 
         public async Task Execute(IJobExecutionContext context)
         {
+            Logger.GetLogger(baseUrl).Info(" feed extract job execute ");
+
             if (!IsRunning)
             {
                 IsRunning = true;
 
                 OnJobStart(context);
 
-                var snapshots = GetSnapshot();
-                Logger.GetLogger(baseUrl).Info(" get snapshot feed " + snapshots.Count);
-
-                foreach (var snapshot in snapshots)
+                var task = Task.Run(() =>
                 {
-                    DoTask(snapshot);
-                }
+                    var snapshots = GetSnapshot();
+                    Logger.GetLogger(baseUrl).Info(" get snapshot feed " + snapshots.Count);
+
+                    foreach (var snapshot in snapshots)
+                    {
+                        DoTask(snapshot);
+                    }
+                });
+
+                await task;
 
                 IsRunning = false;
             }

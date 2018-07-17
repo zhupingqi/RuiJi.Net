@@ -1,17 +1,14 @@
-﻿using Quartz;
+﻿using Newtonsoft.Json;
+using Quartz;
 using Quartz.Impl;
 using RuiJi.Net.Core.Configuration;
+using RuiJi.Net.Core.Utils.Logging;
 using RuiJi.Net.Core.Utils.Page;
 using RuiJi.Net.Node.Feed.Db;
 using System;
 using System.Collections.Generic;
-using RuiJi.Net.Core.Utils.Logging;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using RuiJi.Net.Core.RTS;
-using RuiJi.Net.Core.Crawler;
-using Newtonsoft.Json;
 
 namespace RuiJi.Net.Node.Feed.LTS
 {
@@ -44,7 +41,25 @@ namespace RuiJi.Net.Node.Feed.LTS
 
             Logger.GetLogger(baseUrl).Info(baseUrl + " feed scheduler started");
 
-            SyncFeed();
+            await SyncFeed();
+
+            AddExtractJob();
+        }
+
+        private static async void AddExtractJob()
+        {
+            Logger.GetLogger(baseUrl).Info(baseUrl + " add extract job");
+
+            var job = JobBuilder.Create<FeedExtractJob>()
+                .WithIdentity("extract", "extract")
+                .Build();
+
+            job.JobDataMap.Add("baseUrl", baseUrl);
+
+            var trigger = TriggerBuilder.Create().WithCronSchedule("0 0/1 * * * ?")
+                .WithIdentity("extract")
+                .Build();
+            await scheduler.ScheduleJob(job, trigger);
         }
 
         public static async void AddJob(string jobKey, string[] cornExpressions, Dictionary<string, object> dic = null)
@@ -55,7 +70,9 @@ namespace RuiJi.Net.Node.Feed.LTS
 
             if (!exists)
             {
-                var job = JobBuilder.Create<FeedJob>().WithIdentity(jobKey).Build();
+                var job = JobBuilder.Create<FeedJob>()
+                    .WithIdentity(jobKey,"feed")
+                    .Build();
 
                 job.JobDataMap.Add("proxyUrl", proxyUrl);
                 job.JobDataMap.Add("baseUrl", baseUrl);
@@ -131,9 +148,9 @@ namespace RuiJi.Net.Node.Feed.LTS
             Logger.GetLogger(baseUrl).Info("feed scheduler stoped");
         }
 
-        public static async void SyncFeed()
+        public static Task SyncFeed()
         {
-            await Task.Run(() =>
+            return Task.Run(() =>
             {
                 try
                 {
