@@ -1,15 +1,9 @@
 ﻿using Newtonsoft.Json;
 using RuiJi.Net.Core.Crawler;
 using RuiJi.Net.Core.Extensions;
-using RuiJi.Net.Core.Extractor;
-using RuiJi.Net.Core.Extractor.Selector;
-using RuiJi.Net.Core.RTS;
-using System;
+using RuiJi.Net.Node.LTS;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RuiJi.Net.Node.Feed.Db
 {
