@@ -47,6 +47,11 @@ namespace RuiJi.Net.Node.Feed.LTS
                 Directory.CreateDirectory(basePath + @"/pre");
             }
 
+            if (!Directory.Exists(basePath + @"/delay"))
+            {
+                Directory.CreateDirectory(basePath + @"/delay");
+            }
+
             failPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory + "save_failed");
             if (!Directory.Exists(failPath))
                 Directory.CreateDirectory(failPath);
