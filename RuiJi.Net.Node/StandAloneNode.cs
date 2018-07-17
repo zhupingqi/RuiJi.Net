@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RuiJi.Net.Core.Utils.Logging;
+using RuiJi.Net.Node.Feed.LTS;
 
 namespace RuiJi.Net.Node
 {
@@ -50,6 +51,8 @@ namespace RuiJi.Net.Node
                 new MemoryAppender(),
                 new ConsoleAppender()
             });
+
+            FeedScheduler.Start(BaseUrl, "", null);
 
             Logger.GetLogger(BaseUrl).Info("Start WebApiServer At http://" + BaseUrl + " with " + NodeType.ToString() + " node");
         }

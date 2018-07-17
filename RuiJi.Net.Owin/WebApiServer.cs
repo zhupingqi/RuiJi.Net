@@ -113,9 +113,7 @@ namespace RuiJi.Net.Owin
 
             Node = new StandaloneNode(baseUrl);
 
-            Node.Start();
-
-            FeedScheduler.Start(baseUrl, "", null);
+            Node.Start();            
         }
 
         public void Restart()

@@ -20,10 +20,10 @@ namespace RuiJi.Net.Node.Feed.LTS
     public class FeedExtractJob : IJob
     {
         private static readonly string snapshotPath;
-
         private static readonly string basePath;
-
         private static readonly string failPath;
+        private static readonly string historyPath;
+        private static readonly string delayPath;
 
         private static string baseUrl;
 
@@ -33,28 +33,17 @@ namespace RuiJi.Net.Node.Feed.LTS
 
         static FeedExtractJob()
         {
-            snapshotPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "snapshot");
-
             basePath = AppDomain.CurrentDomain.BaseDirectory;
+            snapshotPath = Path.Combine(basePath, "snapshot");
+            failPath = Path.Combine(basePath, "save_failed");
+            historyPath = Path.Combine(basePath + "history");
+            delayPath = Path.Combine(basePath + "delay");
 
-            if (!Directory.Exists(basePath + @"/history"))
-            {
-                Directory.CreateDirectory(basePath + @"/history");
-            }
-
-            if (!Directory.Exists(basePath + @"/pre"))
-            {
-                Directory.CreateDirectory(basePath + @"/pre");
-            }
-
-            if (!Directory.Exists(basePath + @"/delay"))
-            {
-                Directory.CreateDirectory(basePath + @"/delay");
-            }
-
-            failPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory + "save_failed");
-            if (!Directory.Exists(failPath))
-                Directory.CreateDirectory(failPath);
+            Directory.CreateDirectory(snapshotPath);
+            Directory.CreateDirectory(failPath);
+            Directory.CreateDirectory(historyPath);
+            Directory.CreateDirectory(delayPath);
+            Directory.CreateDirectory(Path.Combine(basePath + "pre"));
 
             if (Environment.ProcessorCount == 1)
             {
@@ -73,6 +62,15 @@ namespace RuiJi.Net.Node.Feed.LTS
             }
         }
 
+        private void CreateDirectory(string path)
+        {
+            path = Path.Combine(basePath, path);
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+        }
+
         protected void OnJobStart(IJobExecutionContext context)
         {
             try
@@ -83,7 +81,7 @@ namespace RuiJi.Net.Node.Feed.LTS
 
                 Logger.GetLogger(baseUrl).Info("begin move delay feed ");
 
-                var files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory + @"delay");
+                var files = Directory.GetFiles(delayPath);
                 foreach (var file in files)
                 {
                     var filename = file.Substring(file.LastIndexOf(@"\") + 1);
@@ -165,7 +163,7 @@ namespace RuiJi.Net.Node.Feed.LTS
 
                 Logger.GetLogger(baseUrl).Info(" extract feed " + feed.Url + " address count :" + urls.Count);
 
-                var hisFile = AppDomain.CurrentDomain.BaseDirectory + @"history\" + feedId + ".txt";
+                var hisFile = Path.Combine(historyPath, feedId + ".txt");
                 var urlsHistory = new string[0];
                 if (File.Exists(hisFile))
                 {
@@ -225,7 +223,7 @@ namespace RuiJi.Net.Node.Feed.LTS
             var code = storage.Insert(cm);
 
             if (code == -1)
-                File.AppendAllText(failPath + @"\" + EncryptHelper.GetMD5Hash(url) + ".json", JsonConvert.SerializeObject(cm));
+                File.AppendAllText(Path.Combine( failPath , EncryptHelper.GetMD5Hash(url) + ".json"), JsonConvert.SerializeObject(cm));
 
             Logger.GetLogger(baseUrl).Info(" extract job " + url + " save result " + (code != -1));
         }

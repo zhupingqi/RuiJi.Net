@@ -163,14 +163,6 @@
     <Compile Include="Queue\QueueChangedAction.cs" />
     <Compile Include="Queue\QueueChangedEventArgs.cs" />
     <Compile Include="Queue\MessageQueue.cs" />
-    <Compile Include="RTS\FeedExtractJob.cs" />
-    <Compile Include="RTS\FeedExtractJobBase.cs" />
-    <Compile Include="RTS\FeedExtractScheduler.cs" />
-    <Compile Include="RTS\FeedJob.cs" />
-    <Compile Include="RTS\FeedJobBase.cs" />
-    <Compile Include="RTS\FeedRequest.cs" />
-    <Compile Include="RTS\FeedScheduler.cs" />
-    <Compile Include="RTS\Snapshot.cs" />
     <Compile Include="Compile\UrlCompile.cs" />
     <Compile Include="Utils\EncryptHelper.cs" />
     <Compile Include="Compile\JITCompile.cs" />

@@ -1,19 +1,12 @@
 ﻿using Amib.Threading;
 using Newtonsoft.Json;
 using Quartz;
-using RestSharp;
-using RuiJi.Net.Core.Configuration;
 using RuiJi.Net.Core.Crawler;
-using RuiJi.Net.Core.RTS;
 using RuiJi.Net.Core.Utils.Logging;
-using RuiJi.Net.Core.Utils.Page;
-using RuiJi.Net.Node.Compile;
 using RuiJi.Net.Node.Feed.Db;
+using RuiJi.Net.Node.LTS;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,7 +16,9 @@ namespace RuiJi.Net.Node.Feed.LTS
     {
         public static bool IsRunning = false;
 
-        private static string baseDir;
+        private static string basePath;
+        private static readonly string delayPath;
+        private static readonly string snapshotPath;
 
         internal static SmartThreadPool smartThreadPool;
 
@@ -32,17 +27,9 @@ namespace RuiJi.Net.Node.Feed.LTS
 
         static FeedJob()
         {
-            baseDir = AppDomain.CurrentDomain.BaseDirectory;
-
-            if (!Directory.Exists(baseDir + @"snapshot"))
-            {
-                Directory.CreateDirectory(baseDir + @"snapshot");
-            }
-
-            if (!Directory.Exists(baseDir + @"delay"))
-            {
-                Directory.CreateDirectory(baseDir + @"delay");
-            }
+            basePath = AppDomain.CurrentDomain.BaseDirectory;
+            snapshotPath = Path.Combine(basePath, "snapshot");
+            delayPath = Path.Combine(basePath + "delay");
 
             var stpStartInfo = new STPStartInfo
             {
@@ -107,10 +94,10 @@ namespace RuiJi.Net.Node.Feed.LTS
 
             var json = JsonConvert.SerializeObject(snap, Formatting.Indented);
 
-            var fileName = baseDir + @"snapshot\" + feedRequest.Setting.Id + "_" + DateTime.Now.Ticks + ".json";
+            var fileName = Path.Combine(basePath, feedRequest.Setting.Id + "_" + DateTime.Now.Ticks + ".json");
             if (feedRequest.Setting.Delay > 0)
             {
-                fileName = baseDir + @"delay\" + feedRequest.Setting.Id + "_" + DateTime.Now.AddMinutes(feedRequest.Setting.Delay).Ticks + ".json";
+                fileName = Path.Combine(basePath, feedRequest.Setting.Id + "_" + DateTime.Now.AddMinutes(feedRequest.Setting.Delay).Ticks + ".json");
             }
 
             Logger.GetLogger(baseUrl).Info(request.Uri + " response save to " + fileName);
