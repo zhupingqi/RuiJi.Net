@@ -4,7 +4,6 @@ using Quartz;
 using RuiJi.Net.Core.Expression;
 using RuiJi.Net.Core.Extractor;
 using RuiJi.Net.Core.Extractor.Selector;
-using RuiJi.Net.Core.RTS;
 using RuiJi.Net.Core.Utils;
 using RuiJi.Net.Core.Utils.Logging;
 using RuiJi.Net.Storage;
@@ -14,10 +13,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace RuiJi.Net.Node.Feed.LTS
 {
-    public class FeedExtractJob : FeedExtractJobBase<string>
+    public class FeedExtractJob : IJob
     {
         private static readonly string snapshotPath;
 
@@ -28,6 +28,8 @@ namespace RuiJi.Net.Node.Feed.LTS
         private static string baseUrl;
 
         private static SmartThreadPool smartThreadPool;
+
+        private static bool IsRunning = false;
 
         static FeedExtractJob()
         {
@@ -52,16 +54,20 @@ namespace RuiJi.Net.Node.Feed.LTS
             var stpStartInfo = new STPStartInfo
             {
                 IdleTimeout = 3000,
-                MaxWorkerThreads = 32,
+                MaxWorkerThreads = 8,
                 MinWorkerThreads = 0
             };
 
             smartThreadPool = new SmartThreadPool(stpStartInfo);
         }
 
-        protected override void OnJobStart(IJobExecutionContext context)
+        protected void OnJobStart(IJobExecutionContext context)
         {
+            Logger.GetLogger(baseUrl).Info("extract job started ");
+
             baseUrl = context.JobDetail.JobDataMap.Get("baseUrl").ToString();
+
+            Logger.GetLogger(baseUrl).Info("begin move delay feed ");
 
             var files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory + @"delay");
             foreach (var file in files)
@@ -85,22 +91,14 @@ namespace RuiJi.Net.Node.Feed.LTS
             var block = new ExtractBlock();
             block.TileSelector.Selectors.Add(new CssSelector("a", "href"));
 
-            if (feed.UseBlock)
+            if (!string.IsNullOrEmpty(feed.RuiJiExpression))
             {
-                if (!string.IsNullOrEmpty(feed.BlockExpression))
-                    block = JsonConvert.DeserializeObject<ExtractBlock>(feed.BlockExpression);
-            }
-            else
-            {
-                if (!string.IsNullOrEmpty(feed.RuiJiExpression))
-                {
-                    block.TileSelector.Selectors.Clear();
+                block.TileSelector.Selectors.Clear();
 
-                    var parser = new RuiJiParser();
+                var parser = new RuiJiParser();
 
-                    var s = RuiJiBlockParser.ParserBase(feed.RuiJiExpression).Selectors;
-                    block.TileSelector.Selectors.AddRange(s);
-                }
+                var s = RuiJiBlockParser.ParserBase(feed.RuiJiExpression).Selectors;
+                block.TileSelector.Selectors.AddRange(s);
             }
 
             var result = RuiJiExtractor.Extract(feed.Content, block);
@@ -117,6 +115,7 @@ namespace RuiJi.Net.Node.Feed.LTS
                     }
                     if (Uri.IsWellFormedUriString(href, UriKind.Relative))
                         href = new Uri(new Uri(feed.Url), href).AbsoluteUri.ToString();
+
                     results.Add(href);
                 }
             }
@@ -124,12 +123,12 @@ namespace RuiJi.Net.Node.Feed.LTS
             return results.Distinct().ToList();
         }
 
-        protected override List<string> GetSnapshot()
+        protected List<string> GetSnapshot()
         {
             return Directory.GetFiles(snapshotPath).ToList();
         }
 
-        public override void DoTask(string path)
+        public void DoTask(string path)
         {
             try
             {
@@ -141,13 +140,19 @@ namespace RuiJi.Net.Node.Feed.LTS
                 var feed = JsonConvert.DeserializeObject<FeedSnapshot>(content);
                 var url = feed.Url;
 
+                Logger.GetLogger(baseUrl).Info(" extract feed " + feed.Url + " address ");
+
                 var urls = ExtractAddress(feed);
+
+                Logger.GetLogger(baseUrl).Info(" extract feed " + feed.Url + " address count :" + urls.Count);
 
                 var hisFile = AppDomain.CurrentDomain.BaseDirectory + @"history\" + feedId + ".txt";
                 var urlsHistory = new string[0];
                 if (File.Exists(hisFile))
                 {
                     urlsHistory = File.ReadAllLines(hisFile, Encoding.UTF8);
+
+                    Logger.GetLogger(baseUrl).Info(" read feed history : " + urlsHistory.Length);
                 }
 
                 File.WriteAllLines(hisFile, urls, Encoding.UTF8);
@@ -155,6 +160,8 @@ namespace RuiJi.Net.Node.Feed.LTS
                 urls.RemoveAll(m => urlsHistory.Contains(m));
                 urls.RemoveAll(m => string.IsNullOrEmpty(m));
                 urls.RemoveAll(m => !Uri.IsWellFormedUriString(m, UriKind.Absolute));
+
+                Logger.GetLogger(baseUrl).Info("feed " + feed.Url + " new url count : " + urls.Count);
 
                 foreach (var u in urls)
                 {
@@ -168,6 +175,10 @@ namespace RuiJi.Net.Node.Feed.LTS
                         {
                             Save(feedId, u, result);
                         }
+                        else
+                        {
+                            Logger.GetLogger(baseUrl).Info(" extract job " + u + " result is null");
+                        }
                     });
 
                     SmartThreadPool.WaitAll(new List<IWorkItemResult> { r }.ToArray());
@@ -178,6 +189,8 @@ namespace RuiJi.Net.Node.Feed.LTS
                     File.Delete(destFile);
 
                 File.Move(path, destFile);
+
+                Logger.GetLogger(baseUrl).Info(" move fee snapshot to pre fold " + destFile);
             }
             catch { }
         }
@@ -197,6 +210,26 @@ namespace RuiJi.Net.Node.Feed.LTS
                 File.AppendAllText(failPath + @"\" + EncryptHelper.GetMD5Hash(url) + ".json", JsonConvert.SerializeObject(cm));
 
             Logger.GetLogger(baseUrl).Info(" extract job " + url + " save result " + (storage.Insert(cm) != -1));
+        }
+
+        public async Task Execute(IJobExecutionContext context)
+        {
+            if (!IsRunning)
+            {
+                IsRunning = true;
+
+                OnJobStart(context);
+
+                var snapshots = GetSnapshot();
+                Logger.GetLogger(baseUrl).Info(" get snapshot feed " + snapshots.Count);
+
+                foreach (var snapshot in snapshots)
+                {
+                    DoTask(snapshot);
+                }
+
+                IsRunning = false;
+            }
         }
     }
 }

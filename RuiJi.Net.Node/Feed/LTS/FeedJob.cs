@@ -47,7 +47,7 @@ namespace RuiJi.Net.Node.Feed.LTS
             var stpStartInfo = new STPStartInfo
             {
                 IdleTimeout = 3000,
-                MaxWorkerThreads = 32,
+                MaxWorkerThreads = 8,
                 MinWorkerThreads = 0
             };
 

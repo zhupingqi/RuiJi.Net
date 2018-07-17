@@ -41,7 +41,7 @@ namespace RuiJi.Net.NodeVisitor
 
             var result = results.OrderByDescending(m => m.Metas.Count).FirstOrDefault();
 
-            if (result.Paging != null && result.Paging.Count > 0 && result.Metas != null && result.Metas.ContainsKey("content"))
+            if (result!= null && result.Paging != null && result.Paging.Count > 0 && result.Metas != null && result.Metas.ContainsKey("content"))
             {
                 result = MergeContent(request.Uri, result, request.Method, request.Ip);
             }

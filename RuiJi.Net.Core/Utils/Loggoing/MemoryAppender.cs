@@ -45,11 +45,6 @@ namespace RuiJi.Net.Core.Utils.Logging
         public MemoryAppender(int maxMessage = 1000)
         {
             this.MaxMessage = maxMessage;
-
-            //Levels = new List<log4net.Core.Level>
-            //{
-            //    Level.Fatal
-            //};
         }
 
         /// <summary>
@@ -78,20 +73,6 @@ namespace RuiJi.Net.Core.Utils.Logging
 
                 appenders.Add(appender);
             }
-
-            //var appender = new log4net.Appender.MemoryAppender();
-            //appender.Name = "MemoryAppender";
-            //appender.Threshold = Levels[0];
-
-            //var layout = new PatternLayout(Pattern);
-            //layout.ActivateOptions();
-            //appender.Layout = layout;
-
-            //appender.ActivateOptions();
-
-            //BasicConfigurator.Configure(repository, appender);
-
-            // memoryAppender = appender;
 
             Start(key, appenders);
         }
@@ -170,8 +151,6 @@ namespace RuiJi.Net.Core.Utils.Logging
                         }
                     }
 
-                    events = events.OrderByDescending(m => m.TimeStamp).ToList();
-
                     if (events.Count > 0)
                     {
                         foreach (var ev in events)
@@ -182,11 +161,11 @@ namespace RuiJi.Net.Core.Utils.Logging
                             layout.Format(w, ev);
 
                             var msg = w.GetStringBuilder().ToString();
-                            Messages[key].Insert(0, msg);
+                            Messages[key].Add(msg);
 
                             while (Messages[key].Count > MaxMessage)
                             {
-                                Messages[key].RemoveAt(Messages.Count - 1);
+                                Messages[key].RemoveAt(0);
                             }
                         }
                     }

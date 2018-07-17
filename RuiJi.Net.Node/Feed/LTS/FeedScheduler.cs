@@ -55,7 +55,7 @@ namespace RuiJi.Net.Node.Feed.LTS
 
             if (!exists)
             {
-                IJobDetail job = JobBuilder.Create<FeedJob>().WithIdentity(jobKey).Build();
+                var job = JobBuilder.Create<FeedJob>().WithIdentity(jobKey).Build();
 
                 job.JobDataMap.Add("proxyUrl", proxyUrl);
                 job.JobDataMap.Add("baseUrl", baseUrl);
@@ -73,7 +73,7 @@ namespace RuiJi.Net.Node.Feed.LTS
                 {
                     try
                     {
-                        ITrigger trigger = TriggerBuilder.Create().WithCronSchedule(cornExpression).WithIdentity(jobKey).Build();
+                        var trigger = TriggerBuilder.Create().WithCronSchedule(cornExpression).WithIdentity(jobKey).Build();
                         await scheduler.ScheduleJob(job, trigger);
 
                         Logger.GetLogger(baseUrl).Info("add job with feed id " + jobKey);
