@@ -67,7 +67,7 @@ namespace RuiJi.Net.Node.Feed.LTS
         {
             scheduler = await factory.GetScheduler();
 
-            var exists = await scheduler.CheckExists(new JobKey(jobKey));
+            var exists = await scheduler.CheckExists(new JobKey(jobKey, "feed"));
 
             if (!exists)
             {
@@ -127,7 +127,7 @@ namespace RuiJi.Net.Node.Feed.LTS
 
         public static bool DeleteJob(string jobKey)
         {
-            var job = new JobKey(jobKey);
+            var job = new JobKey(jobKey, "feed");
             var exists = scheduler.CheckExists(job);
             exists.Wait();
 

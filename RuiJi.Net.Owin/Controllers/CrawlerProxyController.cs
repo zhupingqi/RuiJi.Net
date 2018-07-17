@@ -14,7 +14,6 @@ namespace RuiJi.Net.Owin.Controllers
     {
         [HttpPost]
         [NodeRoute(Target = NodeTypeEnum.CRAWLERPROXY)]
-        //[WebApiCacheAttribute(Duration = 10)]
         [Route("request")]
         public Response Crawl(Request request)
         {
@@ -89,7 +88,6 @@ namespace RuiJi.Net.Owin.Controllers
         }
 
         [HttpPost]
-        [WebApiCacheAttribute(Duration = 0)]
         [NodeRoute(Target = NodeTypeEnum.CRAWLERPROXY)]
         [Route("elect")]
         public object Elect(CrawlerElectRequest request)
