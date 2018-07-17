@@ -65,7 +65,7 @@ namespace RuiJi.Net.Owin.Controllers
                 var leaderBaseUrl = (ServerManager.Get(Request.RequestUri.Authority) as NodeBase).LeaderBaseUrl;
 
                 var client = new RestClient("http://" + leaderBaseUrl);
-                var restRequest = new RestRequest("api/zk/node?path=" + path);
+                var restRequest = new RestRequest("api/zk/data?path=" + path);
                 restRequest.Method = Method.GET;
 
                 var restResponse = client.Execute(restRequest);

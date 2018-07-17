@@ -12,7 +12,7 @@
 
                     var crawler = n.BaseUrl;
 
-                    $.getJSON("/api/zoo/node?path=" + "/config/crawler/" + crawler, function (d) {
+                    $.getJSON("/api/zk/data?path=" + "/config/crawler/" + crawler, function (d) {
 
                         var url = "/api/crawler/ips?baseUrl=" + crawler;
 
