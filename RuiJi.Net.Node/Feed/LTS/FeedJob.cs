@@ -94,10 +94,10 @@ namespace RuiJi.Net.Node.Feed.LTS
 
             var json = JsonConvert.SerializeObject(snap, Formatting.Indented);
 
-            var fileName = Path.Combine(basePath, feedRequest.Setting.Id + "_" + DateTime.Now.Ticks + ".json");
+            var fileName = Path.Combine(snapshotPath, feedRequest.Setting.Id + "_" + DateTime.Now.Ticks + ".json");
             if (feedRequest.Setting.Delay > 0)
             {
-                fileName = Path.Combine(basePath, feedRequest.Setting.Id + "_" + DateTime.Now.AddMinutes(feedRequest.Setting.Delay).Ticks + ".json");
+                fileName = Path.Combine(delayPath, feedRequest.Setting.Id + "_" + DateTime.Now.AddMinutes(feedRequest.Setting.Delay).Ticks + ".json");
             }
 
             Logger.GetLogger(baseUrl).Info(request.Uri + " response save to " + fileName);

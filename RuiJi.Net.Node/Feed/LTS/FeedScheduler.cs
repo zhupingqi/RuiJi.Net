@@ -187,7 +187,7 @@ namespace RuiJi.Net.Node.Feed.LTS
                             return;
                         feedPages = config.Pages;
 
-                        var feedsResponse = NodeVisitor.Feeder.GetFeedJobs(proxyUrl, string.Join(",", config.Pages));
+                        var feedsResponse = NodeVisitor.Feeder.GetFeedJobs(string.Join(",", config.Pages));
                         if (string.IsNullOrEmpty(feedsResponse))
                             throw new Exception("feedproxy can't connect");
 

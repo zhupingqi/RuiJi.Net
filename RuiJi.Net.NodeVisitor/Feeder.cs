@@ -49,8 +49,19 @@ namespace RuiJi.Net.NodeVisitor
             return response;
         }
 
-        public static string GetFeedJobs(string proxyUrl, string pages)
+        public static string GetFeedJobs(string pages)
         {
+            var proxyUrl = "";
+
+            if (NodeConfigurationSection.Standalone)
+            {
+                proxyUrl = ConfigurationManager.AppSettings["RuiJiServer"];
+            }
+            else
+            {
+                proxyUrl = ProxyManager.Instance.Elect(NodeProxyTypeEnum.FEEDPROXY);
+            }
+
             if (string.IsNullOrEmpty(proxyUrl))
                 throw new Exception("get feedjobs: proxyUrl can't be null");
 
@@ -73,7 +84,16 @@ namespace RuiJi.Net.NodeVisitor
 
         public static bool SaveContent(object content)
         {
-            var proxyUrl = ProxyManager.Instance.Elect(NodeProxyTypeEnum.FEEDPROXY);
+            var proxyUrl = "";
+
+            if (NodeConfigurationSection.Standalone)
+            {
+                proxyUrl = ConfigurationManager.AppSettings["RuiJiServer"];
+            }
+            else
+            {
+                proxyUrl = ProxyManager.Instance.Elect(NodeProxyTypeEnum.FEEDPROXY);
+            }
 
             if (string.IsNullOrEmpty(proxyUrl))
                 throw new Exception("no available Extractor proxy servers");

@@ -96,7 +96,8 @@ namespace RuiJi.Net.Node.Feed.Db
                 request.ContentType = feed.ContentType;
                 request.Data = feed.Data;
             }
-            var ua = UALiteDb.GetOne();
+
+            var ua = string.IsNullOrEmpty(feed.UA) ? NodeVisitor.Setter.GetRandomSettingUA() : feed.UA;
             if (!string.IsNullOrEmpty(ua))
                 request.Headers.Add(new WebHeader("User-Agent", ua));
 

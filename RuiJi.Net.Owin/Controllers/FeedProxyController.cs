@@ -119,7 +119,8 @@ namespace RuiJi.Net.Owin.Controllers
         {
             FeedLiteDb.AddOrUpdate(feed);
 
-            var @event = new BroadcastEvent() {
+            var @event = new BroadcastEvent()
+            {
                 Event = BroadcastEventEnum.UPDATE,
                 Args = feed
             };
@@ -135,7 +136,7 @@ namespace RuiJi.Net.Owin.Controllers
             var changeIds = ids.Split(',').Select(i => Convert.ToInt32(i)).ToArray();
             var statusEnum = (Status)Enum.Parse(typeof(Status), status.ToUpper());
 
-            if(statusEnum == Status.ON)
+            if (statusEnum == Status.ON)
             {
                 var feeds = FeedLiteDb.GetFeed(changeIds);
 
@@ -159,7 +160,7 @@ namespace RuiJi.Net.Owin.Controllers
                 };
 
                 Broadcast(@event);
-            }            
+            }
 
             return FeedLiteDb.ChangeStatus(changeIds, statusEnum);
         }
@@ -194,7 +195,7 @@ namespace RuiJi.Net.Owin.Controllers
 
         private void Broadcast(BroadcastEvent @event)
         {
-            if(NodeConfigurationSection.Standalone)
+            if (NodeConfigurationSection.Standalone)
             {
                 FeedScheduler.OnReceive(@event);
             }
@@ -250,15 +251,13 @@ namespace RuiJi.Net.Owin.Controllers
                     shard = DateTime.Now.ToString("yyyyMM");
 
                 var storage = new LiteDbStorage(@"LiteDb/Content/" + shard + ".db", "contents");
-                storage.Insert(content);
-
+                return storage.Insert(content) != -1;
             }
             catch
             {
                 return false;
             }
 
-            return true;
         }
 
         [HttpGet]

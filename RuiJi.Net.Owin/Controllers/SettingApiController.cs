@@ -209,6 +209,14 @@ namespace RuiJi.Net.Owin.Controllers
             return UALiteDb.Get(id);
         }
 
+        [HttpGet]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
+        [Route("ua/random")]
+        public object RandomUA()
+        {
+            return UALiteDb.GetOne();
+        }
+
         [HttpPost]
         [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
         [Route("ua/update")]

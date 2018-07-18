@@ -97,7 +97,7 @@ namespace RuiJi.Net.Node.Feed.LTS
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Logger.GetLogger(baseUrl).Error("extract job error " + ex.Message);
             }
@@ -184,7 +184,8 @@ namespace RuiJi.Net.Node.Feed.LTS
                 {
                     Logger.GetLogger(baseUrl).Info(" extract job " + u + " add to feed extract queue");
 
-                    smartThreadPool.QueueWorkItem(() => {
+                    smartThreadPool.QueueWorkItem(() =>
+                    {
                         Logger.GetLogger(baseUrl).Info(" extract job " + u + " starting");
 
                         var result = NodeVisitor.Cooperater.GetResult(u);
@@ -210,7 +211,7 @@ namespace RuiJi.Net.Node.Feed.LTS
             catch { }
         }
 
-        protected void Save(int feedId,string url, ExtractResult result)
+        protected void Save(int feedId, string url, ExtractResult result)
         {
             var cm = new ContentModel();
             cm.FeedId = feedId;
@@ -218,14 +219,11 @@ namespace RuiJi.Net.Node.Feed.LTS
             cm.Metas = result.Metas;
             cm.CDate = DateTime.Now;
 
-            var connectString = string.Format(@"LiteDb/Content/{0}.db", DateTime.Now.ToString("yyyyMM"));
-            var storage = new LiteDbStorage(connectString, "contents");
-            var code = storage.Insert(cm);
+            var saveFlag = NodeVisitor.Feeder.SaveContent(cm);
+            if (!saveFlag)
+                File.AppendAllText(Path.Combine(failPath, EncryptHelper.GetMD5Hash(url) + ".json"), JsonConvert.SerializeObject(cm));
 
-            if (code == -1)
-                File.AppendAllText(Path.Combine( failPath , EncryptHelper.GetMD5Hash(url) + ".json"), JsonConvert.SerializeObject(cm));
-
-            Logger.GetLogger(baseUrl).Info(" extract job " + url + " save result " + (code != -1));
+            Logger.GetLogger(baseUrl).Info(" extract job " + url + " save result " + saveFlag);
         }
 
         public async Task Execute(IJobExecutionContext context)
