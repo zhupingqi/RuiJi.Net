@@ -1,9 +1,9 @@
-﻿using Amib.Threading;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Quartz;
 using RuiJi.Net.Core.Expression;
 using RuiJi.Net.Core.Extractor;
 using RuiJi.Net.Core.Extractor.Selector;
+using RuiJi.Net.Core.Queue;
 using RuiJi.Net.Core.Utils;
 using RuiJi.Net.Core.Utils.Logging;
 using RuiJi.Net.Storage;
@@ -27,7 +27,7 @@ namespace RuiJi.Net.Node.Feed.LTS
 
         private static string baseUrl;
 
-        private static SmartThreadPool smartThreadPool;
+        private static TaskQueuePool queuePool;
 
         private static bool IsRunning = false;
 
@@ -47,18 +47,12 @@ namespace RuiJi.Net.Node.Feed.LTS
 
             if (Environment.ProcessorCount == 1)
             {
-                smartThreadPool = FeedJob.smartThreadPool;
+                queuePool = FeedJob.queuePool;
             }
             else
             {
-                var stpStartInfo = new STPStartInfo
-                {
-                    IdleTimeout = 3000,
-                    MaxWorkerThreads = 16,
-                    MinWorkerThreads = 0
-                };
-
-                smartThreadPool = new SmartThreadPool(stpStartInfo);
+                queuePool = new TaskQueuePool(32);
+                queuePool.Start();
             }
         }
 
@@ -184,8 +178,7 @@ namespace RuiJi.Net.Node.Feed.LTS
                 {
                     Logger.GetLogger(baseUrl).Info(" extract job " + u + " add to feed extract queue");
 
-                    smartThreadPool.QueueWorkItem(() =>
-                    {
+                    smartThreadPool.QueueWorkItem(() => {
                         Logger.GetLogger(baseUrl).Info(" extract job " + u + " starting");
 
                         var result = NodeVisitor.Cooperater.GetResult(u);
