@@ -1,4 +1,4 @@
-﻿define(['jquery', 'tree', 'utils'], function ($, tree, utils) {
+﻿define(['jquery', 'tree', 'utils', 'sweetAlert'], function ($, tree, utils) {
     var module = {
         init: function () {
             var tmp = utils.loadTemplate("/misc/node.html", false);
@@ -19,7 +19,7 @@
                     type: 'POST',
                     contentType: "application/json",
                     success: function (res) {
-                        alert("完成");
+                        swal("success", "The ips have been set!", "success");
                     }
                 });
             });
@@ -36,7 +36,7 @@
                     type: 'POST',
                     contentType: "application/json",
                     success: function (res) {
-                        alert("完成");
+                        swal("success", "The feed have been set!", "success");
                     }
                 });
             });
