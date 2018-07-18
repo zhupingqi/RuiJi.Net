@@ -1,7 +1,7 @@
-﻿using Amib.Threading;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Quartz;
 using RuiJi.Net.Core.Crawler;
+using RuiJi.Net.Core.Queue;
 using RuiJi.Net.Core.Utils.Logging;
 using RuiJi.Net.Node.Feed.Db;
 using RuiJi.Net.Node.LTS;
@@ -20,7 +20,7 @@ namespace RuiJi.Net.Node.Feed.LTS
         private static readonly string delayPath;
         private static readonly string snapshotPath;
 
-        internal static SmartThreadPool smartThreadPool;
+        internal static TaskQueuePool queuePool;
 
         private string baseUrl;
         private string proxyUrl;
@@ -31,15 +31,8 @@ namespace RuiJi.Net.Node.Feed.LTS
             snapshotPath = Path.Combine(basePath, "snapshot");
             delayPath = Path.Combine(basePath + "delay");
 
-            var stpStartInfo = new STPStartInfo
-            {
-                IdleTimeout = 3000,
-                MaxWorkerThreads = 32,
-                MinWorkerThreads = 0
-            };
-
-            smartThreadPool = new SmartThreadPool(stpStartInfo);
-            smartThreadPool.Start();
+            queuePool = new TaskQueuePool(32);
+            queuePool.Start();
         }
 
         private string Convert(string input, Encoding source, Encoding target)
@@ -94,10 +87,10 @@ namespace RuiJi.Net.Node.Feed.LTS
 
             var json = JsonConvert.SerializeObject(snap, Formatting.Indented);
 
-            var fileName = Path.Combine(basePath, feedRequest.Setting.Id + "_" + DateTime.Now.Ticks + ".json");
+            var fileName = Path.Combine(snapshotPath, feedRequest.Setting.Id + "_" + DateTime.Now.Ticks + ".json");
             if (feedRequest.Setting.Delay > 0)
             {
-                fileName = Path.Combine(basePath, feedRequest.Setting.Id + "_" + DateTime.Now.AddMinutes(feedRequest.Setting.Delay).Ticks + ".json");
+                fileName = Path.Combine(delayPath, feedRequest.Setting.Id + "_" + DateTime.Now.AddMinutes(feedRequest.Setting.Delay).Ticks + ".json");
             }
 
             Logger.GetLogger(baseUrl).Info(request.Uri + " response save to " + fileName);
@@ -112,7 +105,7 @@ namespace RuiJi.Net.Node.Feed.LTS
 
             Logger.GetLogger(baseUrl).Info(" feed job " + context.JobDetail.Key + " add to feed crawl queue");
 
-            smartThreadPool.QueueWorkItem(() =>
+            queuePool.QueueAction(() =>
             {
                 Logger.GetLogger(baseUrl).Info(" feed job " + feedRequest.Request.Uri.ToString() + " starting");
 
