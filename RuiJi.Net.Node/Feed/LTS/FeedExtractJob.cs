@@ -178,7 +178,7 @@ namespace RuiJi.Net.Node.Feed.LTS
                 {
                     Logger.GetLogger(baseUrl).Info(" extract job " + u + " add to feed extract queue");
 
-                    smartThreadPool.QueueWorkItem(() => {
+                    queuePool.QueueAction(() => {
                         Logger.GetLogger(baseUrl).Info(" extract job " + u + " starting");
 
                         var result = NodeVisitor.Cooperater.GetResult(u);
