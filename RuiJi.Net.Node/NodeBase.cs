@@ -157,7 +157,7 @@ namespace RuiJi.Net.Node
                 zooKeeper.Create("/overseer/election", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
         }
 
-        protected void CreateLiveNode(string path,byte[] data)
+        protected void CreateLiveNode(string path, byte[] data)
         {
             var stat = zooKeeper.Exists(path, false);
             if (stat != null)
@@ -320,6 +320,8 @@ namespace RuiJi.Net.Node
                         case KeeperState.Disconnected:
                             {
                                 Logger.GetLogger(service.BaseUrl).Error("disconnected with zookeeper server");
+                                //wait 5 second.
+                                Thread.Sleep(5000);
                                 if (!service.force)
                                     service.Start();
                                 service.force = false;
