@@ -23,7 +23,7 @@ namespace RuiJi.Net.NodeVisitor
                 var crawler = new RuiJiCrawler();
                 var response = crawler.Request(request);
 
-                if(string.IsNullOrEmpty(request.Ip))
+                if (string.IsNullOrEmpty(request.Ip))
                 {
                     var e = CrawlerServerManager.Instance.ElectIP(request.Uri);
                     if (e != null)
@@ -68,6 +68,9 @@ namespace RuiJi.Net.NodeVisitor
                 }
                 else
                 {
+                    if (!request.Session)
+                        request = (Request)request.Clone();
+
                     var elect = Elect(new CrawlerElectRequest
                     {
                         ElectIp = string.IsNullOrEmpty(request.Ip),
@@ -75,15 +78,16 @@ namespace RuiJi.Net.NodeVisitor
                         Uri = request.Uri
                     });
 
-                    request.Elect = elect.BaseUrl;
-
-                    if(elect.Proxy != null)
+                    if (request.Proxy is null)
                         request.Proxy = elect.Proxy;
 
                     if (string.IsNullOrEmpty(request.Ip))
                         request.Ip = elect.ClientIp;
 
-                    var client = new RestClient("http://" + elect.BaseUrl);
+                    if (string.IsNullOrEmpty(request.Elect))
+                        request.Elect = elect.BaseUrl;
+
+                    var client = new RestClient("http://" + request.Elect);
                     var restRequest = new RestRequest("api/crawler/request");
                     restRequest.Method = Method.POST;
                     restRequest.AddJsonBody(request);
@@ -95,7 +99,7 @@ namespace RuiJi.Net.NodeVisitor
 
                     return response;
                 }
-            }            
+            }
         }
 
         private static bool HasRefreshMeta(Response response, out string refreshUrl)
@@ -137,7 +141,7 @@ namespace RuiJi.Net.NodeVisitor
             }
             else
             {
-                proxyUrl = ProxyManager.Instance.Elect(NodeProxyTypeEnum.FEEDPROXY);
+                proxyUrl = ProxyManager.Instance.Elect(NodeProxyTypeEnum.CRAWLERPROXY);
             }
 
             if (string.IsNullOrEmpty(proxyUrl))

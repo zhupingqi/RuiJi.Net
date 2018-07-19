@@ -197,7 +197,7 @@ namespace RuiJi.Net.Owin.Controllers
         {
             if (NodeConfigurationSection.Standalone)
             {
-                FeedScheduler.OnReceive(@event);
+                FeedScheduler.Schedulers.First().Value.OnReceive(@event);
             }
             else
             {
@@ -210,8 +210,9 @@ namespace RuiJi.Net.Owin.Controllers
 
                     var client = new RestClient("http://" + baseUrl);
                     var restRequest = new RestRequest("api/feed/change");
-                    restRequest.Method = Method.GET;
+                    restRequest.Method = Method.POST;
                     restRequest.JsonSerializer = new NewtonJsonSerializer();
+                    restRequest.AddJsonBody(@event);
 
                     restRequest.Timeout = 15000;
 

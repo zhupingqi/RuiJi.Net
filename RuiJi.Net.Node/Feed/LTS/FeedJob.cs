@@ -75,6 +75,11 @@ namespace RuiJi.Net.Node.Feed.LTS
 
         protected void Save(FeedRequest feedRequest, Response response)
         {
+            if (response == null)
+            {
+                Logger.GetLogger(baseUrl).Error(feedRequest.Request.Uri + " response save response is null.");
+                return;
+            }
             var request = feedRequest.Request;
             var content = Convert(response.Data.ToString(), Encoding.GetEncoding(response.Charset), Encoding.UTF8);
 
@@ -100,7 +105,6 @@ namespace RuiJi.Net.Node.Feed.LTS
         public async Task Execute(IJobExecutionContext context)
         {
             baseUrl = context.JobDetail.JobDataMap.Get("baseUrl").ToString();
-            proxyUrl = context.JobDetail.JobDataMap.Get("proxyUrl").ToString();
             var feedRequest = context.JobDetail.JobDataMap.Get("request") as FeedRequest;
 
             Logger.GetLogger(baseUrl).Info(" feed job " + context.JobDetail.Key + " add to feed crawl queue");

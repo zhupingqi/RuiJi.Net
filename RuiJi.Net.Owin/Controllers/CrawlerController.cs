@@ -91,8 +91,6 @@ namespace RuiJi.Net.Owin.Controllers
         [Route("ips")]
         public string[] Ips(string baseUrl)
         {
-            var node = ServerManager.Get(Request.RequestUri.Authority);
-
             return IPHelper.GetHostIPAddress().Select(m => m.ToString()).ToArray();
         }
 

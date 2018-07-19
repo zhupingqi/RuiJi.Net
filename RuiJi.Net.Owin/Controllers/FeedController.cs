@@ -40,7 +40,8 @@ namespace RuiJi.Net.Owin.Controllers
 
             node.SetData(path, JsonConvert.SerializeObject(config));
 
-            FeedScheduler.SyncFeed();
+            var scheduler = FeedScheduler.GetSecheduler(baseUrl);
+            scheduler.SyncFeed();
         }
 
         [HttpPost]
@@ -48,7 +49,8 @@ namespace RuiJi.Net.Owin.Controllers
         [Route("change")]
         public void Change([FromBody]BroadcastEvent @event)
         {
-            FeedScheduler.OnReceive(@event);
+            var secheduler = FeedScheduler.GetSecheduler(Request.RequestUri.Authority);
+            secheduler.OnReceive(@event);
         }
         #endregion
     }

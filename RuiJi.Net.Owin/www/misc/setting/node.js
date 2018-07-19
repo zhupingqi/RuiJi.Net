@@ -11,10 +11,10 @@
                 $.map(r.crawlers, function (n) {
 
                     var crawler = n;
+                    var baseUrl = crawler.replace("/live_nodes/crawler/", "");
+                    $.getJSON("/api/zk/data?path=" + "/config/crawler/" + baseUrl, function (d) {
 
-                    $.getJSON("/api/zk/data?path=" + "/config/" + crawler.replace("/live_nodes/", ""), function (d) {
-
-                        var url = "/api/crawler/ips?baseUrl=" + crawler;
+                        var url = "/api/crawler/ips?baseUrl=" + baseUrl;
 
                         $.getJSON(url, function (cips) {
 
@@ -31,7 +31,7 @@
                                 result.push(re);
                             })
 
-                            tmp = utils.template("setting_crawler_node", { crawler: crawler, result: result });
+                            tmp = utils.template("setting_crawler_node", { crawler: baseUrl, result: result });
                             $("#crawler_node_set").append(tmp);
                         });
                     });

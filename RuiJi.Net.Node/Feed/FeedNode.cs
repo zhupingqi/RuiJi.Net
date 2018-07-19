@@ -23,7 +23,7 @@ namespace RuiJi.Net.Node.Feed
 
         ~FeedNode()
         {
-            FeedScheduler.Stop();
+            FeedScheduler.GetSecheduler(BaseUrl).Stop();
         }
 
         protected override void OnStartup()
@@ -42,7 +42,7 @@ namespace RuiJi.Net.Node.Feed
                 zooKeeper.Create("/config/feed/" + BaseUrl, JsonConvert.SerializeObject(d).GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
             }
 
-            FeedScheduler.Start(BaseUrl, ProxyUrl, this);
+            new FeedScheduler().Start(BaseUrl, this);
         }
 
         protected override NodeTypeEnum SetNodeType()

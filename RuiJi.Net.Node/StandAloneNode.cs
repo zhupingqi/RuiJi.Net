@@ -41,7 +41,7 @@ namespace RuiJi.Net.Node
 
         public void SetData(string path, string data, int version = -1)
         {
-            
+
         }
 
         public void Start()
@@ -52,14 +52,14 @@ namespace RuiJi.Net.Node
                 new ConsoleAppender()
             });
 
-            FeedScheduler.Start(BaseUrl, "", null);
+            new FeedScheduler().Start(BaseUrl, null);
 
             Logger.GetLogger(BaseUrl).Info("Start WebApiServer At http://" + BaseUrl + " with " + NodeType.ToString() + " node");
         }
 
         public void Stop()
         {
-           
+
         }
     }
 }

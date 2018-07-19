@@ -44,7 +44,7 @@ namespace RuiJi.Net.Owin.Controllers
                 request.Elect = result.BaseUrl;
 
                 var p = ProxyLiteDb.Get(request.Uri.Scheme);
-                if(p != null)
+                if (p != null)
                 {
                     request.Proxy = new RequestProxy();
                     request.Proxy.Ip = p.Ip;
@@ -92,8 +92,6 @@ namespace RuiJi.Net.Owin.Controllers
         [Route("elect")]
         public object Elect(CrawlerElectRequest request)
         {
-            var node = ServerManager.Get(Request.RequestUri.Authority);
-
             var result = new CrawlerElectResult();
 
             if (request.ElectIp)
@@ -109,6 +107,7 @@ namespace RuiJi.Net.Owin.Controllers
 
             if (request.ElectProxy)
             {
+                //去fp拿
                 var p = ProxyLiteDb.Get(request.Uri.Scheme);
                 if (p != null)
                 {

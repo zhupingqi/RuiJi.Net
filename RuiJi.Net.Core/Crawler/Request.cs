@@ -119,6 +119,11 @@ namespace RuiJi.Net.Core.Crawler
         public string Tag { get; set; }
 
         /// <summary>
+        /// session request
+        /// </summary>
+        [JsonProperty("session")]
+        public bool Session { get; set; }
+        /// <summary>
         /// constructor
         /// </summary>
         public Request()
@@ -133,7 +138,7 @@ namespace RuiJi.Net.Core.Crawler
         /// </summary>
         /// <param name="url">url</param>
         /// <param name="ip">use ip address</param>
-        public Request(string url,string ip = "") : this()
+        public Request(string url, string ip = "") : this()
         {
             this.Uri = new Uri(url);
             this.Ip = ip;
