@@ -51,7 +51,7 @@ namespace RuiJi.Net.Node.Feed.LTS
             }
             else
             {
-                queuePool = new TaskQueuePool(32);
+                queuePool = new TaskQueuePool(8);
                 queuePool.Start();
             }
         }

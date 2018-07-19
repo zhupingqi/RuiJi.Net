@@ -31,7 +31,7 @@ namespace RuiJi.Net.Node.Feed.LTS
             snapshotPath = Path.Combine(basePath, "snapshot");
             delayPath = Path.Combine(basePath + "delay");
 
-            queuePool = new TaskQueuePool(32);
+            queuePool = new TaskQueuePool(8);
             queuePool.Start();
         }
 

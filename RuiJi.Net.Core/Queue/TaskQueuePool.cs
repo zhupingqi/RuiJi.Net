@@ -15,7 +15,6 @@ namespace RuiJi.Net.Core.Queue
 
     public sealed class TaskQueuePool : ConcurrentQueue<ActionDelegate>
     {
-        private Semaphore semaphore;
         private AutoResetEvent resetEvent = new AutoResetEvent(false);
 
         private bool shutdown = false;
@@ -32,11 +31,9 @@ namespace RuiJi.Net.Core.Queue
             }
         }
 
-        public TaskQueuePool(int maxWorkerThreads)
+        public TaskQueuePool(int maxWorkerThreads = 32)
         {
             this.MaxTasks = maxWorkerThreads;
-
-            semaphore = new Semaphore(0, MaxTasks);
         }
 
         public void Start()
