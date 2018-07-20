@@ -57,13 +57,12 @@ namespace RuiJi.Net.Test
         [TestMethod]
         public void TestPost()
         {
-            var url = "http://s.miaojian.net/api/client/stats/industry?type=0&top=5";
+            var url = "http://s.miaojian.net/api/client/clipping";
 
             var request = new Request(url);
             request.Method = "POST";
-            request.Headers.Add(new WebHeader("Content-Type", "application/json"));
-            //request.Cookie = "ASP.NET_SessionId=y4stpykzzg42fjqwhksho2a4; instanceId=f2f88812a95945508afe7e56e80726f0; captchaCode=CBPT; .ASPXAUTH=4D137F3E165271DA5DDF953A55B1518BDCFDDDAD0D41DF927B008859D9B0F58985D5728996734519B19EF10FB08C021A6F877F8C6B78CD6B430880133FFDFD3BFD4E26201714A6DE1C89C18E9361412C8CB9D7864745BDF95FE184E8A223AF1A43D7BC1166E45EFE27E6ACACCB64576B2A957CCB097C4FD4BF5FC2DDEA0643CEC6D88D5A3E2473366F900A92C3322058306CD797243988E54258DCE5C026EF14DF14E29078F99B9F885C00D6828375D9E99F41E8AB0C63388D471ED9B25EDBEC1655F332138ECBBA00F006AD6F0DABC3207A1758947FE55D32A5F208530E7F76DA38AD814B49B5FB4844E27230AB7A23544F92B480CBA2DF0112AF269B1B252F";
-            request.Data = "{\"filter\":{\"dateRange\":{\"type\":\"month\",\"value\":[]},\"toneIds\":[25]},\"classifyId\":\"100\"}";
+            request.ContentType = "application/json";
+            request.Data = "{\"page\":1,\"rows\":15,\"orderby\":\"newsDate\",\"sort\":\"desc\",\"meger\":true,\"filter\":{\"mediaTypeIds\":[1983],\"dateRange\":{\"type\":\"month\",\"value\":[]}},\"classifyId\":\"100\"}";
 
             var crawler = new RuiJiCrawler();
             var response = crawler.Request(request);

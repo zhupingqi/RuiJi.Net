@@ -72,6 +72,12 @@
             });
 
             $(document).on("click", ".save-feed", function () {
+                var allPages = $.map($(".feed-node .node-pages"), function (n) { return $(n).val(); }).join(",");;
+                var reg = new RegExp(/([^,]+)[\s\S]*\1/).exec(allPages);
+                if (reg) {
+                    swal("repeat page", "the page " + reg[1] + " repeat,the feed node can't have a repeat page", "warning");
+                    return;
+                }
                 var result = $(this).closest(".feed-node");
 
                 var pages = result.find(".node-pages").val();
