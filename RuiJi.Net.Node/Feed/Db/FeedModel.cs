@@ -3,7 +3,9 @@ using RuiJi.Net.Core.Crawler;
 using RuiJi.Net.Core.Extensions;
 using RuiJi.Net.Node.LTS;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace RuiJi.Net.Node.Feed.Db
 {
@@ -56,7 +58,7 @@ namespace RuiJi.Net.Node.Feed.Db
         public string UA { get; set; }
 
         [JsonProperty("headers")]
-        public List<WebHeader> Headers { get; set; }
+        public string Headers { get; set; }
 
         [JsonProperty("scheduling")]
         public string Scheduling { get; set; }
@@ -84,7 +86,7 @@ namespace RuiJi.Net.Node.Feed.Db
             request.RunJS = (feed.RunJS == Status.ON);
             if (feed.Headers != null)
             {
-                request.Headers = feed.Headers;
+                request.Headers = GetHeaders(feed.Headers);
 
                 if (request.Headers.Count(m => m.Name == "Referer") == 0)
                     request.Headers.Add(new WebHeader("Referer", request.Uri.AbsoluteUri));
@@ -111,6 +113,35 @@ namespace RuiJi.Net.Node.Feed.Db
                 },
                 Expression = feed.RuiJiExpression
             };
+        }
+
+        private static List<WebHeader> GetHeaders(string headers)
+        {
+            var result = new List<WebHeader>();
+            if (string.IsNullOrEmpty(headers))
+                return result;
+
+            using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(headers)))
+            using (var reader = new StreamReader(stream))
+            {
+                var line = reader.ReadLine();
+                while (!string.IsNullOrEmpty(line))
+                {
+                    var sp = line.Split(':');
+                    if (sp.Length < 2)
+                    {
+                        continue;
+                    }
+
+                    result.Add(new WebHeader(line.Substring(0, line.IndexOf(':')), line.Substring(line.IndexOf(':') + 1)));
+
+                    if (reader.EndOfStream)
+                        break;
+                    line = reader.ReadLine();
+                }
+
+            }
+            return result;
         }
     }
 }

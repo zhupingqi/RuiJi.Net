@@ -61,7 +61,7 @@
                 var v = menu.attr("data-bind") ? menu.attr("data-bind") : menu.text();
 
                 h.val(v);
-                h.next().val(menu.text());
+                h.next().val(v);
             });
 
             $(document).on("click", "#feed_dialog ul.dropdown-menu[method] a", function () {

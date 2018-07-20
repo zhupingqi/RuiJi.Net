@@ -22,19 +22,20 @@ namespace RuiJi.Net.Node.Feed.LTS
 
         private string baseUrl;
         private FeedNode feedNode;
+        private string jobGroup { get { return "feed" + baseUrl; } }
 
         private int[] feedPages;
 
         static FeedScheduler()
         {
             Schedulers = new Dictionary<string, FeedScheduler>();
+
             factory = new StdSchedulerFactory();
             var factoryResult = factory.GetScheduler();
             factoryResult.Wait();
 
             scheduler = factoryResult.Result;
             scheduler.Start();
-
         }
 
         public async void Start(string baseUrl, FeedNode feedNode)
@@ -76,12 +77,12 @@ namespace RuiJi.Net.Node.Feed.LTS
         {
             scheduler = await factory.GetScheduler();
 
-            var exists = await scheduler.CheckExists(new JobKey(jobKey, "feed"));
+            var exists = await scheduler.CheckExists(new JobKey(jobKey, jobGroup));
 
             if (!exists)
             {
                 var job = JobBuilder.Create<FeedJob>()
-                    .WithIdentity(jobKey, "feed")
+                    .WithIdentity(jobKey, jobGroup)
                     .Build();
 
                 job.JobDataMap.Add("baseUrl", baseUrl);
@@ -135,7 +136,7 @@ namespace RuiJi.Net.Node.Feed.LTS
 
         public bool DeleteJob(string jobKey)
         {
-            var job = new JobKey(jobKey, "feed");
+            var job = new JobKey(jobKey, jobGroup);
             var exists = scheduler.CheckExists(job);
             exists.Wait();
 
