@@ -22,9 +22,15 @@
         font-size: 14px;
     }
 
-    #nav > span:first-child {
-        margin-right:20px;
-    }
+        #nav > span:first-child {
+            margin-right: 20px;
+            height: 20px;
+            line-height: 20px;
+        }
+
+        #nav > span:first-child a{
+            margin-right: 10px;
+        }
 
     #nav a {
         color: white;
@@ -141,3 +147,11 @@
         display: table-cell;
         float: left;
     }
+
+.github-btn {
+    overflow: hidden;
+    border: 0;
+    vertical-align: middle;
+    box-sizing: border-box;
+    display: inline-block;
+}
