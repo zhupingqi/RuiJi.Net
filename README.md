@@ -1,7 +1,6 @@
-﻿[![Nuget](https://img.shields.io/nuget/v/RuiJi.Net.Core.svg)](https://www.nuget.org/packages/RuiJi.Net.Core)
+[![Nuget](https://img.shields.io/nuget/v/RuiJi.Net.Core.svg)](https://www.nuget.org/packages/RuiJi.Net.Core)
 [![Build status](https://ci.appveyor.com/api/projects/status/6hs9a47tftkv1yeo?svg=true)](https://ci.appveyor.com/project/zhupingqi/ruiji-net)
-[![Build status](https://opencollective.com/ruijinet/tiers/backer/badge.svg?label=backer&color=brightgreen)](https://opencollective.com/ruijinet)
-[![Build status](https://opencollective.com/ruijinet/tiers/sponsor/badge.svg?label=sponsor&color=brightgreen)](https://opencollective.com/ruijinet)
+[![Backers on Open Collective](https://opencollective.com/ruijinet/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/ruijinet/sponsors/badge.svg)](#sponsors) 
 
 # RuiJi.Net
 RuiJi.Net is a distributed crawl framework written in c#.
@@ -238,3 +237,33 @@ QQ交流群: 545931923
 https://gitee.com/zhupingqi/RuiJi.Net
 
 https://github.com/zhupingqi/RuiJi.Net
+
+## Contributors
+
+This project exists thanks to all the people who contribute. 
+<a href="graphs/contributors"><img src="https://opencollective.com/ruijinet/contributors.svg?width=890&button=false" /></a>
+
+
+## Backers
+
+Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/ruijinet#backer)]
+
+<a href="https://opencollective.com/ruijinet#backers" target="_blank"><img src="https://opencollective.com/ruijinet/backers.svg?width=890"></a>
+
+
+## Sponsors
+
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/ruijinet#sponsor)]
+
+<a href="https://opencollective.com/ruijinet/sponsor/0/website" target="_blank"><img src="https://opencollective.com/ruijinet/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/ruijinet/sponsor/1/website" target="_blank"><img src="https://opencollective.com/ruijinet/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/ruijinet/sponsor/2/website" target="_blank"><img src="https://opencollective.com/ruijinet/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/ruijinet/sponsor/3/website" target="_blank"><img src="https://opencollective.com/ruijinet/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/ruijinet/sponsor/4/website" target="_blank"><img src="https://opencollective.com/ruijinet/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/ruijinet/sponsor/5/website" target="_blank"><img src="https://opencollective.com/ruijinet/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/ruijinet/sponsor/6/website" target="_blank"><img src="https://opencollective.com/ruijinet/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/ruijinet/sponsor/7/website" target="_blank"><img src="https://opencollective.com/ruijinet/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/ruijinet/sponsor/8/website" target="_blank"><img src="https://opencollective.com/ruijinet/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/ruijinet/sponsor/9/website" target="_blank"><img src="https://opencollective.com/ruijinet/sponsor/9/avatar.svg"></a>
+
+
