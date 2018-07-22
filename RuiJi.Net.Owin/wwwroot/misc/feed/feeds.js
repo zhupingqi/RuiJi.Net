@@ -10,7 +10,7 @@
 
             var $table = $('#tb_feeds').bootstrapTable({
                 toolbar: '#toolbar_feeds',
-                url: "/api/feeds",
+                url: "/api/fp/feed/list",
                 pagination: true,
                 queryParams: module.queryParams,
                 sidePagination: "server",
@@ -61,7 +61,27 @@
                 var v = menu.attr("data-bind") ? menu.attr("data-bind") : menu.text();
 
                 h.val(v);
-                h.next().val(menu.text());
+                h.next().val(v);
+            });
+
+            $(document).on("click", "#feed_dialog ul.dropdown-menu[method] a", function () {
+                var menu = $(this);
+                var v = menu.attr("data-bind") ? menu.attr("data-bind") : menu.text();
+                if (v == "POST") {
+                    $("#feed_dialog .method-group").removeClass("hide");
+                } else {
+                    $("#feed_dialog .method-group").addClass("hide");
+                }
+            });
+
+            $(document).on("click", "#feed_dialog ul.dropdown-menu[contentType] a", function () {
+                var menu = $(this);
+                var v = menu.attr("data-bind") ? menu.attr("data-bind") : menu.text();
+                if (v == "application/json") {
+                    $("#feed_dialog textarea[name='data']").attr("placeholder", "example:{\"name\":\"zhangsan\",\"age\":20}");
+                } else {
+                    $("#feed_dialog textarea[name='data']").attr("placeholder", "example:name=zhangsan&age=20");
+                }
             });
 
             $(document).on("click", "#tb_feeds .fa-edit", function () {
@@ -70,7 +90,7 @@
                 var f = $(feed);
                 f.find("input[name='id']").val(id);
 
-                $.getJSON("/api/feed?id=" + id, function (d) {
+                $.getJSON("/api/fp/feed?id=" + id, function (d) {
                     for (var p in d) {
                         var v = d[p];
                         var ele = f.find("[name='" + p + "']").eq(0);
@@ -80,6 +100,14 @@
 
                         if (ele.is(":hidden")) {
                             ele.next().attr("value", v);
+                        }
+
+                        if (p == "method" && v == "POST") {
+                            $(".method-group", f ).removeClass("hide");
+                        }
+
+                        if (p == "contentType" && v == "application/json") {
+                            $("textarea[name='data']", f).attr("placeholder", "example:a=1&b=2");
                         }
 
                         if (p == "status" && v == "OFF") {
@@ -141,7 +169,7 @@
                 var f = $(crawl);
                 f.find("input[name='id']").val(id);
 
-                $.getJSON("/api/feed?id=" + id, function (d) {
+                $.getJSON("/api/fp/feed?id=" + id, function (d) {
                     f.find("#crawl_info").html("Using " + d.address + " to grab immediately,<br/>click Start to start.");
 
                     BootstrapDialog.show({
@@ -231,7 +259,7 @@
             var validate = true;
             var msg = "need";
 
-            $("input.required", "#feed_dialog").each(function (index, e) {
+            $(".required:visible", "#feed_dialog").each(function (index, e) {
                 e = $(e);
                 var v = e.val();
                 if ($.trim(e.val()) == "") {
@@ -257,7 +285,7 @@
             });
 
             $.ajax({
-                url: "/api/feed/update",
+                url: "/api/fp/feed/update",
                 data: JSON.stringify(d),
                 type: 'POST',
                 contentType: "application/json",
@@ -301,7 +329,7 @@
             });
 
             $.ajax({
-                url: "/api/feed/test?down=" + down,
+                url: "/api/test/feed?down=" + down,
                 data: JSON.stringify(d),
                 type: "POST",
                 contentType: "application/json",
@@ -321,7 +349,7 @@
         },
         start: function (feedId, taskId) {
 
-            var url = "/api/feed/crawl?feedId=" + feedId;
+            var url = "/api/test/crawl?feedId=" + feedId;
             if (taskId && taskId > 0) {
                 url += "&taskId=" + taskId;
             }
@@ -341,7 +369,7 @@
             });
         },
         enable: function (ids) {
-            var url = "/api/feed/status/change?ids=" + ids + "&status=ON";
+            var url = "/api/fp/feed/status?ids=" + ids + "&status=ON";
 
             $.getJSON(url, function (res) {
                 if (res) {
@@ -353,7 +381,7 @@
             });
         },
         disable: function (ids) {
-            var url = "/api/feed/status/change?ids=" + ids + "&status=OFF";
+            var url = "/api/fp/feed/status?ids=" + ids + "&status=OFF";
 
             $.getJSON(url, function (res) {
                 if (res) {
@@ -365,7 +393,7 @@
             });
         },
         remove: function (ids) {
-            var url = "/api/feed/remove?ids=" + ids;
+            var url = "/api/fp/feed/remove?ids=" + ids;
 
             $.getJSON(url, function (res) {
                 if (res) {

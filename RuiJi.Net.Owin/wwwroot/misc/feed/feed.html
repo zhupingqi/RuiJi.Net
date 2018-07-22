@@ -19,22 +19,31 @@
             <input type="text" class="form-control" value="GET" disabled="disabled">
             <div class="input-group-btn">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Please choose<span class="caret"></span></button>
-                <ul class="dropdown-menu dropdown-menu-right">
+                <ul class="dropdown-menu dropdown-menu-right" method>
                     <li><a href="javascript:;">GET</a></li>
                     <li><a href="javascript:;">POST</a></li>
                 </ul>
             </div>
         </div>
-        <div class="input-group">
-            <span class="input-group-addon">UA</span>
-            <input type="hidden" name="ua" value="">
-            <input type="text" class="form-control">
+        <div class="input-group hide method-group">
+            <span class="input-group-addon">Content Type</span>
+            <input type="hidden" name="contentType" value="application/x-www-form-urlencoded">
+            <input type="text" class="form-control" value="application/x-www-form-urlencoded" disabled="disabled">
             <div class="input-group-btn">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Please choose<span class="caret"></span></button>
-                <ul class="dropdown-menu dropdown-menu-right">
-                    <li><a href="javascript:;" data-bind="">Default</a></li>
+                <ul class="dropdown-menu dropdown-menu-right" contentType>
+                    <li><a href="javascript:;">application/x-www-form-urlencoded</a></li>
+                    <li><a href="javascript:;">application/json</a></li>
                 </ul>
             </div>
+        </div>
+        <div class="input-group hide method-group">
+            <span class="input-group-addon">Data</span>
+            <textarea type="text" class="required" name="data" placeholder="example:name=zhangsan&age=20"></textarea>
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">UA</span>
+            <input type="text" class="form-control" name="ua" value="" placeholder="If empty, read the Ua in the settings." title="If empty, read the Ua in the settings. If the UA in the settings is empty, read the system default.">
         </div>
         <div class="input-group">
             <span class="input-group-addon">Headers</span>
@@ -85,7 +94,22 @@
         </div>
         <div class="input-group">
             <span class="input-group-addon">Scheduling</span>
-            <input type="text" class="form-control required" name="scheduling">
+            <input type="hidden" required value="">
+            <input type="text" class="form-control required"  name="scheduling" value="">
+            <div class="input-group-btn">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Please choose<span class="caret"></span></button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <li><a href="javascript:;" data-bind="0 0/1 * * * ? *">每1分钟</a></li>
+                    <li><a href="javascript:;" data-bind="0 0/5 * * * ? *">每5分钟</a></li>
+                    <li><a href="javascript:;" data-bind="0 0/10 * * * ? *">每10分钟</a></li>
+                    <li><a href="javascript:;" data-bind="0 0/30 * * * ? *">每30分钟</a></li>
+                    <li><a href="javascript:;" data-bind="0 0 0/1 * * ? *">每1小时</a></li>
+                    <li><a href="javascript:;" data-bind="0 0 0/2 * * ? *">每2小时</a></li>
+                    <li><a href="javascript:;" data-bind="0 0 0/6 * * ? *">每6小时</a></li>
+                    <li><a href="javascript:;" data-bind="0 0 0/12 * * ? *">每12小时</a></li>
+                    <li><a href="javascript:;" data-bind="0 0 0 1/1 * ? *">每1天</a></li>
+                </ul>
+            </div>
         </div>
         <div class="input-group status">
             <span class="input-group-addon">Status</span>

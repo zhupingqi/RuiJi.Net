@@ -10,7 +10,7 @@
 
             var $table = $('#tb_rules').bootstrapTable({
                 toolbar: '#toolbar_rules',
-                url: "/api/rules",
+                url: "/api/fp/rule/list",
                 pagination: true,
                 queryParams: module.queryParams,
                 sidePagination: "server",
@@ -67,7 +67,7 @@
                 var f = $(ruleTmp);
                 f.find("input[name='id']").val(id);
 
-                $.getJSON("/api/rule?id=" + id, function (d) {
+                $.getJSON("/api/fp/rule?id=" + id, function (d) {
                     for (var p in d) {
                         var v = d[p];
                         var ele = f.find("[name='" + p + "']").eq(0);
@@ -214,7 +214,7 @@
             });
 
             $.ajax({
-                url: "/api/rule/update",
+                url: "/api/fp/rule/update",
                 data: JSON.stringify(d),
                 type: 'POST',
                 contentType: "application/json",
@@ -256,7 +256,7 @@
             });
 
             $.ajax({
-                url: "/api/rule/test",
+                url: "/api/test/rule",
                 data: JSON.stringify(d),
                 type: "POST",
                 contentType: "application/json",
@@ -271,7 +271,7 @@
             });
         },
         enable: function (ids) {
-            var url = "/api/rule/status/change?ids=" + ids + "&status=ON";
+            var url = "/api/fp/rule/status?ids=" + ids + "&status=ON";
 
             $.getJSON(url, function (res) {
                 if (res) {
@@ -283,7 +283,7 @@
             });
         },
         disable: function (ids) {
-            var url = "/api/rule/status/change?ids=" + ids + "&status=OFF";
+            var url = "/api/fp/rule/status?ids=" + ids + "&status=OFF";
 
             $.getJSON(url, function (res) {
                 if (res) {
@@ -295,7 +295,7 @@
             });
         },
         remove: function (ids) {
-            var url = "/api/rule/remove?ids=" + ids;
+            var url = "/api/fp/rule/remove?ids=" + ids;
 
             $.getJSON(url, function (res) {
                 if (res) {

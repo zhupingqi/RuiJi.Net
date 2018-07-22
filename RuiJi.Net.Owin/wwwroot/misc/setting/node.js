@@ -1,4 +1,4 @@
-﻿define(['jquery', 'utils'], function ($, utils) {
+﻿define(['jquery', 'utils', 'sweetAlert'], function ($, utils) {
     var alone = false;
 
     var module = {
@@ -6,15 +6,15 @@
             var tmp = utils.loadTemplate("/misc/setting/node.html", false);
             $("#tab_panel_setting_node").html(tmp);
 
-            $.get("/api/nodes", function (r) {
+            $.get("/api/setting/nodes", function (r) {
 
                 $.map(r.crawlers, function (n) {
 
-                    var crawler = n.BaseUrl;
+                    var crawler = n;
+                    var baseUrl = crawler.replace("/live_nodes/crawler/", "");
+                    $.getJSON("/api/zk/data?path=" + "/config/crawler/" + baseUrl, function (d) {
 
-                    $.getJSON("/api/zoo/node?path=" + "/config/crawler/" + crawler, function (d) {
-
-                        var url = "/api/crawler/ips?baseUrl=" + crawler;
+                        var url = "/api/crawler/ips?baseUrl=" + baseUrl;
 
                         $.getJSON(url, function (cips) {
 
@@ -31,7 +31,7 @@
                                 result.push(re);
                             })
 
-                            tmp = utils.template("setting_crawler_node", { crawler: crawler, result: result });
+                            tmp = utils.template("setting_crawler_node", { crawler: baseUrl, result: result });
                             $("#crawler_node_set").append(tmp);
                         });
                     });
@@ -39,10 +39,10 @@
 
                 $.map(r.feeds, function (n) {
 
-                    var feed = n.BaseUrl;
-                    var url = "/api/feed/page?baseUrl=" + feed;
-                    
-                    $.getJSON(url, function (pages) {                        
+                    var feed = n.replace("/live_nodes/feed/", "");
+                    var url = "/api/feed/get?baseUrl=" + feed;
+
+                    $.getJSON(url, function (pages) {
                         tmp = utils.template("setting_feed_node", { feed: feed, pages: pages });
                         $("#feed_node_set").append(tmp);
                     });
@@ -58,7 +58,7 @@
                 }).get();
 
                 var crawler = result.find(".active-node-crawler").text();
-                var url = "/api/crawler/ips/set?baseUrl=" + crawler;
+                var url = "/api/crawler/ips?baseUrl=" + crawler;
 
                 $.ajax({
                     url: url,
@@ -72,12 +72,19 @@
             });
 
             $(document).on("click", ".save-feed", function () {
+                var allPages = $.map($(".feed-node .node-pages"), function (n) { return $(n).val(); }).join(",");;
+                var reg = new RegExp(/([^,]+)[\s\S]*\1/).exec(allPages);
+                if (reg) {
+                    swal("repeat page", "the page " + reg[1] + " repeat,the feed node can't have a repeat page", "warning");
+                    return;
+                }
                 var result = $(this).closest(".feed-node");
 
                 var pages = result.find(".node-pages").val();
+
                 var feed = result.find(".active-node-feed").text();
 
-                var url = "/api/feed/page/set?baseUrl=" + feed;
+                var url = "/api/feed/set?baseUrl=" + feed;
 
                 $.ajax({
                     url: url,
@@ -97,5 +104,5 @@
         alone = d;
 
         module.init();
-    });    
+    });
 });

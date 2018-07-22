@@ -1,102 +1,55 @@
-﻿define(['jquery', 'tree', 'utils'], function ($, tree, utils) {
+﻿define(['jquery', 'tree', 'utils', 'sweetAlert'], function ($, tree, utils) {
     var module = {
         init: function () {
             var tmp = utils.loadTemplate("/misc/node.html", false);
             $("#tab_panel_node").html(tmp);
-            $(".setting").hide();
+            $(".setting", "#tab_panel_node").hide();
 
-            $(document).on("click", "#save_ips", function () {
-                var ips = $("#tab_panel_node :checked").map(function () {
-                    return $(this).val()
-                }).get();
+            $('#tree').on('changed.jstree', function (e, data) {
+                $(".setting", "#tab_panel_node").hide();
+                $("#ips_set").html("");
 
-                var crawler = $("#active_node_crawler").text();
-                var url = "/api/crawler/ips/set?baseUrl=" + crawler;
+                var path = data.node.id;
 
-                $.ajax({
-                    url: url,
-                    data: JSON.stringify(ips),
-                    type: 'POST',
-                    contentType: "application/json",
-                    success: function (res) {
-                        alert("完成");
+                $.getJSON("/api/zk/data?path=" + path, function (d) {
+                    $('#node_stat').html("<table></table>");
+                    for (var m in d.stat) {
+                        $('#node_stat table').append("<tr><td width='150px'>" + m + "</td><td>" + d.stat[m] + "</td></tr>");
                     }
-                });
-            });
+                    if (d.data == "")
+                        d.data = "no data";
 
-            $(document).on("click", "#save_feed", function () {
-                var pages = $("#node_pages").val();
-                var feed = $("#active_node_feed").text();
+                    $('#node_data').html(d.data);
 
-                var url = "/api/feed/page/set?baseUrl=" + feed;
+                    if (path.startWith("/config/crawler/")) {
+                        $("#crawler_node").show();
+                        var crawler = path.replace("/config/crawler/", "");
 
-                $.ajax({
-                    url: url,
-                    data: JSON.stringify(pages),
-                    type: 'POST',
-                    contentType: "application/json",
-                    success: function (res) {
-                        alert("完成");
+                        $("#active_node_crawler").text(crawler);
+                        var ips = $.parseJSON(d.data).ips;
+                        if (ips && ips.length > 0) {
+                            $("#ips_set").append("<div>the IPs that current node can use:</div>");
+                        }
+                        $.map(ips, function (ip) {
+                            $("#ips_set").append("<div>" + ip + "</div>");
+                        });
                     }
-                });
-            });
 
-            $('#tree')
-                .on('changed.jstree', function (e, data) {
-                    $(".setting").hide();
-                    $("#ips_set").html("");
+                    if (path.startWith("/config/feed/")) {
+                        $("#feed_node").show();
+                        var feed = path.replace("/config/feed/", "");
+                        $("#active_node_feed").text(feed);
 
-                    var path = data.node.id;
+                        $("#node_pages").text($.parseJSON(d.data).pages.join(","));
 
-                    $.getJSON("/api/zoo/node?path=" + path, function (d) {
-                        $('#node_stat').html("<table></table>");
-                        for (var m in d.stat) {
-                            $('#node_stat table').append("<tr><td width='150px'>" + m + "</td><td>" + d.stat[m] + "</td></tr>");
-                        }
-                        if (d.data == "")
-                            d.data = "no data";
-
-                        $('#node_data').html(d.data);
-
-                        if (path.startWith("/config/crawler/")) {
-                            $("#crawler_node_set").show();
-                            var crawler = path.replace("/config/crawler/", "");
-                            var url = "/api/crawler/ips?baseUrl=" + crawler;
-
-                            $("#active_node_crawler").text(crawler);
-
-                            $.getJSON(url, function (cips) {
-                                var ips = $.parseJSON(d.data).ips;
-
-                                $.map(cips, function (ip) {
-                                    var input = $("<div><input type='checkbox' value='" + ip + "' />" + ip + "</div>");
-                                    if ($.inArray(ip, ips) != -1) {
-                                        input.find("input").attr("checked", "checked");
-                                    }
-
-                                    $("#ips_set").append(input);
-                                })
-                            });
-                        }
-
-                        if (path.startWith("/config/feed/")) {
-                            $("#feed_node_set").show();
-                            var feed = path.replace("/config/feed/", "");
-                            var url = "/api/feed/page?baseUrl=" + feed;
-
-                            $("#active_node_feed").text(feed);
-
-                            $.getJSON(url, function (pages) {
-                                $("#node_pages").val(pages);
-                            });
-                        }
-                    })
-
+                    }
                 })
+
+            })
                 .jstree({
                     'core': {
                         'data': {
-                            'url': '/api/zoo/tree',
+                            'url': '/api/zk/tree',
                             'data': function (node) {
                                 var path = "/";
                                 if (node.id != "#")
