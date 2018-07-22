@@ -10,6 +10,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace RuiJi.Net.NodeVisitor
@@ -18,7 +19,7 @@ namespace RuiJi.Net.NodeVisitor
     {
         public static Response Request(Request request, bool usecp = false)
         {
-            if (NodeConfigurationSection.Standalone)
+            if (RuiJiConfiguration.Standalone)
             {
                 var crawler = new RuiJiCrawler();
                 var response = crawler.Request(request);
@@ -46,7 +47,7 @@ namespace RuiJi.Net.NodeVisitor
             }
             else
             {
-                var proxyUrl = ProxyManager.Instance.Elect(NodeProxyTypeEnum.FEEDPROXY);
+                var proxyUrl = ProxyManager.Instance.Elect(NodeProxyTypeEnum.CRAWLERPROXY);
                 if (string.IsNullOrEmpty(proxyUrl))
                     throw new Exception("no available crawler proxy servers");
 
@@ -60,9 +61,15 @@ namespace RuiJi.Net.NodeVisitor
                     restRequest.AddJsonBody(request);
                     restRequest.Timeout = request.Timeout;
 
-                    var restResponse = client.Execute(restRequest);
+                    Response response = null;
+                    var resetEvent = new ManualResetEvent(false);
 
-                    var response = JsonConvert.DeserializeObject<Response>(restResponse.Content);
+                    var handle = client.ExecuteAsync(restRequest,(restResponse) => {
+                        response = JsonConvert.DeserializeObject<Response>(restResponse.Content);
+                        resetEvent.Set();
+                    });
+
+                    resetEvent.WaitOne();
 
                     return response;
                 }
@@ -93,9 +100,15 @@ namespace RuiJi.Net.NodeVisitor
                     restRequest.AddJsonBody(request);
                     restRequest.Timeout = request.Timeout;
 
-                    var restResponse = client.Execute(restRequest);
+                    Response response = null;
+                    var resetEvent = new ManualResetEvent(false);
 
-                    var response = JsonConvert.DeserializeObject<Response>(restResponse.Content);
+                    var handle = client.ExecuteAsync(restRequest, (restResponse) => {
+                        response = JsonConvert.DeserializeObject<Response>(restResponse.Content);
+                        resetEvent.Set();
+                    });
+
+                    resetEvent.WaitOne();
 
                     return response;
                 }
@@ -135,9 +148,9 @@ namespace RuiJi.Net.NodeVisitor
         {
             var proxyUrl = "";
 
-            if (NodeConfigurationSection.Standalone)
+            if (RuiJiConfiguration.Standalone)
             {
-                proxyUrl = ConfigurationManager.AppSettings["RuiJiServer"];
+                proxyUrl = RuiJiConfiguration.RuiJiServer;
             }
             else
             {
@@ -155,9 +168,15 @@ namespace RuiJi.Net.NodeVisitor
             restRequest.AddJsonBody(request);
             restRequest.Timeout = 15000;
 
-            var restResponse = client.Execute(restRequest);
+            CrawlerElectResult response = null;
+            var resetEvent = new ManualResetEvent(false);
 
-            var response = JsonConvert.DeserializeObject<CrawlerElectResult>(restResponse.Content);
+            var handle = client.ExecuteAsync(restRequest, (restResponse) => {
+                response = JsonConvert.DeserializeObject<CrawlerElectResult>(restResponse.Content);
+                resetEvent.Set();
+            });
+
+            resetEvent.WaitOne();
 
             return response;
         }

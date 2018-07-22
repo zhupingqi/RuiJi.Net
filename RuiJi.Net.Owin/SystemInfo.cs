@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Threading;
-using System.IO;
-using System.Text;
+using System.Linq;
 using System.Management;
 using System.Runtime.InteropServices;
-using System.Linq;
-using Vanara.PInvoke;
+using System.Text;
+using System.Threading;
 using static Vanara.PInvoke.IpHlpApi;
 
 namespace RuiJi.Net.Owin
@@ -16,7 +14,7 @@ namespace RuiJi.Net.Owin
     {
         private string m_ProcessorName = "";    //CPU名称
         private int m_ProcessorCount = 0;   //CPU个数
-        private PerformanceCounter pcCpuLoad;   //CPU计数器
+        private PerformanceCounterPermission pcCpuLoad;   //CPU计数器
         private long m_PhysicalMemory = 0;   //物理内存
         private string m_Version = "";
 
@@ -52,9 +50,8 @@ namespace RuiJi.Net.Owin
         public SystemInfo()
         {
             //初始化CPU计数器
-            pcCpuLoad = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+            var pcCpuLoad = new PerformanceCounterPermissionAttribute(System.Security.Permissions.SecurityAction.PermitOnly);
             pcCpuLoad.MachineName = ".";
-            pcCpuLoad.NextValue();
 
             //CPU个数
             m_ProcessorCount = Environment.ProcessorCount;
@@ -126,7 +123,7 @@ namespace RuiJi.Net.Owin
         {
             get
             {
-                return pcCpuLoad.NextValue();
+                return 0;
             }
         }
         #endregion

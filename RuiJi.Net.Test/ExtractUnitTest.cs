@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using RuiJi.Net.Core.Crawler;
 using RuiJi.Net.Core.Expression;
 using RuiJi.Net.Core.Extractor;
@@ -14,13 +8,17 @@ using RuiJi.Net.NodeVisitor;
 using RuiJi.Net.Owin;
 using RuiJi.Net.Storage;
 using RuiJi.Net.Storage.Model;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Xunit;
 
 namespace RuiJi.Net.Test
 {
-    [TestClass]
     public class ExtractUnitTest
     {
-        [TestMethod]
+        [Fact]
         public void TestLocalExtract()
         {
             var crawler = new RuiJiCrawler();
@@ -69,11 +67,11 @@ namespace RuiJi.Net.Test
 
             var r = RuiJiExtractor.Extract(content, block);
 
-            Assert.IsTrue(r.Content.ToString().Length > 0);
-            Assert.IsTrue(r.Tiles.Count > 0);
+            Assert.True(r.Content.ToString().Length > 0);
+            Assert.True(r.Tiles.Count > 0);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestNodeExtract()
         {
             ServerManager.StartServers();
@@ -118,11 +116,11 @@ namespace RuiJi.Net.Test
                 Content = content
             });
 
-            Assert.IsTrue(r[0].Content.ToString().Length > 0);
-            Assert.IsTrue(r[0].Tiles.Count > 0);
+            Assert.True(r[0].Content.ToString().Length > 0);
+            Assert.True(r[0].Tiles.Count > 0);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestGetRule()
         {
             ServerManager.StartServers();
@@ -144,11 +142,11 @@ namespace RuiJi.Net.Test
                 Content = content
             });
 
-            Assert.IsTrue(r[0].Content.ToString().Length > 0);
-            Assert.IsTrue(r[0].Tiles.Count > 0);
+            Assert.True(r[0].Content.ToString().Length > 0);
+            Assert.True(r[0].Tiles.Count > 0);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestPaging()
         {
             var crawler = new RuiJiCrawler();
@@ -188,10 +186,10 @@ css #listnav a[href]";
                 },int.MaxValue);
             }
 
-            Assert.IsTrue(true);
+            Assert.True(true);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestPaging2()
         {
             var crawler = new RuiJiCrawler();
@@ -223,7 +221,7 @@ css a[href]";
                 result = PagingExtractor.MergeContent(request.Uri, result, block);
             }
 
-            Assert.IsTrue(true);
+            Assert.True(true);
         }
     }
 }

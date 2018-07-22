@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using RuiJi.Net.Core.Extensions.System;
 using RuiJi.Net.Core.Extractor;
 using RuiJi.Net.Core.Extractor.Enum;
@@ -7,13 +6,14 @@ using RuiJi.Net.Core.Extractor.Selector;
 using RuiJi.Net.Node.Feed.Db;
 using System;
 using System.Collections.Generic;
+using Xunit;
 
 namespace RuiJi.Net.Test
 {
-    [TestClass]
+
     public class RuleUnitTest
     {
-        [TestMethod]
+        [Fact]
         public void TestCreateRule()
         {
             //RuleLiteDB.Remove(1);
@@ -49,20 +49,19 @@ namespace RuiJi.Net.Test
             //rule.Id = 1;
             RuleLiteDb.AddOrUpdate(rule);
 
-            Assert.IsTrue(rule.Id > 0);
+            Assert.True(rule.Id > 0);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestMatchRule()
         {
             TestLock(20);
 
             var rules = RuleLiteDb.Match("http://www.ruijihg.com/2018/05/24/json-net-%e5%8f%8d%e5%ba%8f%e5%88%97%e5%8c%96%e6%8e%a5%e5%8f%a3%e9%9b%86%e5%90%88/");
 
-            Assert.IsTrue(rules.Count > 0);
+            Assert.True(rules.Count > 0);
         }
 
-        [TestMethod]
         public void TestLock(int i)
         {
             lock (this)
@@ -75,7 +74,7 @@ namespace RuiJi.Net.Test
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void TestRuleConvert()
         {
             var rule = new RuleModel();
@@ -84,7 +83,7 @@ namespace RuiJi.Net.Test
 
             var o = JsonConvert.DeserializeObject<RuleModel>(j);
 
-            Assert.IsTrue(o.Type == RuleTypeEnum.JSONP);
+            Assert.True(o.Type == RuleTypeEnum.JSONP);
         }
     }
 }

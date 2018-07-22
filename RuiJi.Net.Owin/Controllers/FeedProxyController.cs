@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using RestSharp;
 using RuiJi.Net.Core.Configuration;
 using RuiJi.Net.Core.Expression;
@@ -11,17 +12,13 @@ using RuiJi.Net.Node.Feed.LTS;
 using RuiJi.Net.Storage;
 using RuiJi.Net.Storage.Model;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Http;
 
 namespace RuiJi.Net.Owin.Controllers
 {
-    [RoutePrefix("api/fp")]
-    public class FeedProxyController : ApiController
+    [Route("api/fp")]
+    public class FeedProxyController : ControllerBase
     {
         #region Rule
         [HttpGet]
@@ -29,7 +26,7 @@ namespace RuiJi.Net.Owin.Controllers
         [Route("rule/list")]
         public object Rules(int offset, int limit, string key, string type, string status)
         {
-            var node = ServerManager.Get(Request.RequestUri.Authority);
+            var node = ServerManager.Get(Request.Host.Value);
 
             var paging = new Paging();
             paging.CurrentPage = (offset / limit) + 1;
@@ -45,7 +42,7 @@ namespace RuiJi.Net.Owin.Controllers
         [HttpPost]
         [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
         [Route("rule/update")]
-        public void UpdateRule(RuleModel rule)
+        public void UpdateRule([FromBody]RuleModel rule)
         {
             RuleLiteDb.AddOrUpdate(rule);
         }
@@ -195,13 +192,13 @@ namespace RuiJi.Net.Owin.Controllers
 
         private void Broadcast(BroadcastEvent @event)
         {
-            if (NodeConfigurationSection.Standalone)
+            if (RuiJiConfiguration.Standalone)
             {
                 FeedScheduler.Schedulers.First().Value.OnReceive(@event);
             }
             else
             {
-                var node = ServerManager.Get(Request.RequestUri.Authority) as NodeBase;
+                var node = ServerManager.Get(Request.Host.Value) as NodeBase;
                 var nv = node.GetChildren("/live_nodes/feed");
 
                 foreach (string path in nv.Keys)
@@ -216,7 +213,7 @@ namespace RuiJi.Net.Owin.Controllers
 
                     restRequest.Timeout = 15000;
 
-                    client.Execute(restRequest);
+                    client.ExecuteAsync(restRequest,(restResponse)=> { });
                 }
             }
         }
@@ -244,7 +241,7 @@ namespace RuiJi.Net.Owin.Controllers
         [HttpPost]
         [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
         [Route("content/save")]
-        public bool SaveContent(ContentModel content, string shard = "")
+        public bool SaveContent([FromBody]ContentModel content, string shard = "")
         {
             try
             {
@@ -277,7 +274,7 @@ namespace RuiJi.Net.Owin.Controllers
         [Route("content/list")]
         public object GetContent(int offset, int limit, string shard = "", string feedId = "")
         {
-            var node = ServerManager.Get(Request.RequestUri.Authority);
+            var node = ServerManager.Get(Request.Host.Value);
 
             var paging = new Paging();
             paging.CurrentPage = (offset / limit) + 1;

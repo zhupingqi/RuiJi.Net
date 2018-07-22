@@ -1,38 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Configuration;
-using RuiJi.Net.Core.Crawler;
-using RuiJi.Net.Core;
+﻿using RuiJi.Net.Core.Utils.Logging;
 using RuiJi.Net.Owin;
-using RuiJi.Net.Node.Crawler;
-using RuiJi.Net.Node;
-using RuiJi.Net.Node.Extractor;
-using System.Threading;
-using RuiJi.Net.Core.Utils;
-using log4net;
-using RuiJi.Net.Core.Utils.Logging;
+using System;
 
 namespace RuiJi.Net.Cmd
 {
-    public class Program
+    class Program
     {
-        static Program()
-        {
-            Logger.Add("", new List<IAppender> {
-                new RollingFileAppender(""),
-                new ConsoleAppender()
-            });
-        }
-
-        ~Program()
-        {
-
-        }
-
         static void Main(string[] args)
         {
             Logger.GetLogger("").Info("Program started!");

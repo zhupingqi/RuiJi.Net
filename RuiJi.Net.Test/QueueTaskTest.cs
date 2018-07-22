@@ -1,15 +1,14 @@
-﻿using System;
+﻿using RuiJi.Net.Core.Queue;
 using System.Diagnostics;
 using System.Threading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RuiJi.Net.Core.Queue;
+using Xunit;
 
 namespace RuiJi.Net.Test
 {
-    [TestClass]
+
     public class QueueTaskTest
     {
-        [TestMethod]
+        [Fact]
         public void TestMethod1()
         {
             var pool = new TaskQueuePool(4);
@@ -55,7 +54,7 @@ namespace RuiJi.Net.Test
             }
 
             Thread.Sleep(1000000);
-            Assert.IsTrue(true);
+            Assert.True(true);
         }
     }
 }

@@ -1,16 +1,14 @@
-﻿using RuiJi.Net.Core.Compile;
-using RuiJi.Net.Core.Configuration;
+﻿using Microsoft.AspNetCore.Mvc;
 using RuiJi.Net.Core.Utils.Page;
 using RuiJi.Net.Node;
 using RuiJi.Net.Node.Feed.Db;
 using System;
 using System.Linq;
-using System.Web.Http;
 
 namespace RuiJi.Net.Owin.Controllers
 {
-    [RoutePrefix("api/setting")]
-    public class SettingApiController : ApiController
+    [Route("api/setting")]
+    public class SettingApiController : ControllerBase
     {
         #region 节点设置
         [HttpGet]
@@ -41,7 +39,7 @@ namespace RuiJi.Net.Owin.Controllers
         [Route("func/list")]
         public object Funcs(int offset, int limit)
         {
-            var node = ServerManager.Get(Request.RequestUri.Authority);
+            var node = ServerManager.Get(Request.Host.Value);
 
             var paging = new Paging();
             paging.CurrentPage = (offset / limit) + 1;
@@ -67,7 +65,7 @@ namespace RuiJi.Net.Owin.Controllers
         [HttpPost]
         [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
         [Route("func/update")]
-        public object UpdateFunc(FuncModel func)
+        public object UpdateFunc([FromBody]FuncModel func)
         {
             if (func.Name == "now" || func.Name == "ticks")
                 return false;
@@ -111,7 +109,7 @@ namespace RuiJi.Net.Owin.Controllers
         [HttpPost]
         [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
         [Route("proxy/update")]
-        public object UpdateProxy(ProxyModel proxy)
+        public object UpdateProxy([FromBody]ProxyModel proxy)
         {
             ProxyLiteDb.AddOrUpdate(proxy);
 
@@ -170,7 +168,7 @@ namespace RuiJi.Net.Owin.Controllers
         [HttpPost]
         [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
         [Route("ua/group/update")]
-        public int UpdateUAGroup(UAGroupModel group)
+        public int UpdateUAGroup([FromBody]UAGroupModel group)
         {
             return UAGroupLiteDb.AddOrUpdate(group);
         }
@@ -220,7 +218,7 @@ namespace RuiJi.Net.Owin.Controllers
         [HttpPost]
         [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
         [Route("ua/update")]
-        public bool UpdateUA(UAModel ua)
+        public bool UpdateUA([FromBody]UAModel ua)
         {
             UALiteDb.AddOrUpdate(ua);
             return true;

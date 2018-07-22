@@ -1,14 +1,13 @@
-﻿using System;
+﻿using RuiJi.Net.Owin.Controllers;
 using System.Threading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RuiJi.Net.Owin.Controllers;
+using Xunit;
 
 namespace RuiJi.Net.Test
 {
-    [TestClass]
+
     public class SysUnitTest
     {
-        [TestMethod]
+        [Fact]
         public void TestGetIfTable()
         {
             for (int i = 0; i < 10; i++)
@@ -19,16 +18,16 @@ namespace RuiJi.Net.Test
                 Thread.Sleep(1000);
             }
 
-            Assert.IsTrue(true);
+            Assert.True(true);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestGitPulse()
         {
             var api = new SysInfoController();
             var r = api.Pulse();
 
-            Assert.IsTrue(r.ToString().Length > 0);
+            Assert.True(r.ToString().Length > 0);
         }
     }
 }

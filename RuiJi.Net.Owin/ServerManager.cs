@@ -1,4 +1,4 @@
-﻿using Microsoft.Owin.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using RuiJi.Net.Core.Configuration;
 using RuiJi.Net.Core.Utils;
 using RuiJi.Net.Core.Utils.Logging;
@@ -9,7 +9,6 @@ using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -30,7 +29,7 @@ namespace RuiJi.Net.Owin
         ~ServerManager()
         {
             StopAll();
-            if(zkProcess!= null)
+            if (zkProcess != null)
                 zkProcess.Kill();
         }
 
@@ -48,20 +47,19 @@ namespace RuiJi.Net.Owin
             if (server != null)
             {
                 server.Stop();
-                //servers.Remove(server);
 
                 Logger.GetLogger("").Info("server port with " + port + " stop!");
             }
 
-            tasks.RemoveAll(m=>m.Status != TaskStatus.Running);
+            tasks.RemoveAll(m => m.Status != TaskStatus.Running);
         }
 
         public static void StartServers()
         {
-            if (NodeConfigurationSection.Standalone)
+            if (RuiJiConfiguration.Standalone)
             {
-                var baseUrl = ConfigurationManager.AppSettings["RuiJiServer"];
-                if(string.IsNullOrEmpty(baseUrl))
+                var baseUrl = RuiJiConfiguration.RuiJiServer;
+                if (string.IsNullOrEmpty(baseUrl))
                 {
                     Logger.GetLogger("").Info("RuiJiServer not exsit in AppSettings");
                     return;
@@ -83,14 +81,14 @@ namespace RuiJi.Net.Owin
             }
             else
             {
-                var zkServer = ConfigurationManager.AppSettings["zkServer"];
-                if(string.IsNullOrEmpty(zkServer))
+                var zkServer = RuiJiConfiguration.ZkServer;
+                if (string.IsNullOrEmpty(zkServer))
                 {
                     Logger.GetLogger("").Fatal("zkServer not defined");
                     return;
                 }
 
-                var zkPath = ConfigurationManager.AppSettings["zkPath"];
+                var zkPath = RuiJiConfiguration.ZkPath;
                 if (!string.IsNullOrEmpty(zkPath))
                 {
                     var path = AppDomain.CurrentDomain.BaseDirectory + zkPath + @"\bin\zkServer.cmd";
@@ -112,13 +110,13 @@ namespace RuiJi.Net.Owin
 
                 Thread.Sleep(3000);
 
-                NodeConfigurationSection.Settings.ForEach(m =>
+                RuiJiConfiguration.Nodes.ForEach(m =>
                 {
                     var t = Task.Factory.StartNew(() =>
                     {
                         try
                         {
-                            ServerManager.Start(m.BaseUrl, m.Type, zkServer, m.Proxy);
+                            Start(m.BaseUrl, m.Type, zkServer, m.Proxy);
                         }
                         catch (Exception ex)
                         {
@@ -134,11 +132,20 @@ namespace RuiJi.Net.Owin
 
         public static void StartDocServer()
         {
-            var baseUrl = ConfigurationManager.AppSettings["DocServer"];
+            var baseUrl = RuiJiConfiguration.DocServer;
             if (!string.IsNullOrEmpty(baseUrl))
             {
                 baseUrl = IPHelper.FixLocalUrl(baseUrl);
-                var app = WebApp.Start<DStartup>("http://" + baseUrl);
+
+                var webHost = new WebHostBuilder()
+                    .UseKestrel()
+                    .UseWebRoot(AppDomain.CurrentDomain.BaseDirectory + @"wwwroot\doc")
+                    .UseUrls("http://" + baseUrl)
+                    .UseIISIntegration()
+                    .UseStartup<DocStartup>()
+                    .Build();
+
+                webHost.Run();
             }
         }
 
@@ -201,7 +208,8 @@ namespace RuiJi.Net.Owin
                 });
                 servers.Clear();
             }
-            catch(Exception ex) {
+            catch (Exception ex)
+            {
                 Logger.GetLogger("").Info(ex.Message);
             }
 
@@ -223,7 +231,7 @@ namespace RuiJi.Net.Owin
             baseUrl = baseUrl.Replace("118.31.61.230", "172.16.50.52");
 
             var temp = servers.SingleOrDefault(m => m.Node.BaseUrl.ToLower() == baseUrl.ToLower());
-            return servers.SingleOrDefault(m=>m.Node.BaseUrl.ToLower() == baseUrl.ToLower()).Node;            
+            return servers.SingleOrDefault(m => m.Node.BaseUrl.ToLower() == baseUrl.ToLower()).Node;
         }
 
         public static List<INode> Get(NodeTypeEnum @enum)

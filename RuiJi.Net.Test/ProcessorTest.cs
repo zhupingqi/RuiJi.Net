@@ -1,16 +1,15 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RuiJi.Net.Core.Crawler;
+﻿using RuiJi.Net.Core.Crawler;
 using RuiJi.Net.Core.Extractor;
 using RuiJi.Net.Core.Extractor.Processor;
 using RuiJi.Net.Core.Extractor.Selector;
+using Xunit;
 
 namespace RuiJi.Net.Test
 {
-    [TestClass]
+
     public class ProcessorTest
     {
-        [TestMethod]
+        [Fact]
         public void TestRegexReplace()
         {
             var p = new RegexReplaceProcessor();
@@ -23,10 +22,10 @@ namespace RuiJi.Net.Test
 
             pr = p.ProcessNeed(s,pr);
 
-            Assert.IsTrue(pr.Content.IndexOf(">>") == -1);
+            Assert.True(pr.Content.IndexOf(">>") == -1);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestCss()
         {
             var crawler = new RuiJiCrawler();
@@ -45,7 +44,7 @@ namespace RuiJi.Net.Test
 
             pr = p.ProcessNeed(s, pr);
 
-            Assert.IsTrue(pr.Content.IndexOf(">>") == -1);
+            Assert.True(pr.Content.IndexOf(">>") == -1);
         }
     }
 }

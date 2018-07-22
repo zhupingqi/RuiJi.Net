@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using RuiJi.Net.Core.Compile;
 using RuiJi.Net.Core.Crawler;
 using RuiJi.Net.Core.Expression;
 using RuiJi.Net.Core.Extractor;
 using RuiJi.Net.Core.Utils.Tasks;
-using RuiJi.Net.Node.Compile;
 using RuiJi.Net.Node.Feed.Db;
 using RuiJi.Net.Node.Feed.LTS;
 using RuiJi.Net.NodeVisitor;
@@ -15,17 +15,16 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Web.Http;
 
 namespace RuiJi.Net.Owin.Controllers
 {
-    [RoutePrefix("api/test")]
-    public class TestController : ApiController
+    [Route("api/test")]
+    public class TestController : ControllerBase
     {
         #region Test
         [HttpPost]
         [Route("rule")]
-        public object TestRule(RuleModel rule, [FromUri]bool debug = false)
+        public object TestRule([FromBody]RuleModel rule, bool debug = false)
         {
             var request = new Request(rule.Url);
             request.Method = rule.Method;
@@ -63,7 +62,7 @@ namespace RuiJi.Net.Owin.Controllers
 
         [HttpPost]
         [Route("feed")]
-        public object TestFeed(FeedModel feed, [FromUri]bool down, [FromUri]bool debug = false)
+        public object TestFeed([FromBody]FeedModel feed, bool down, bool debug = false)
         {
             try
             {
@@ -123,7 +122,7 @@ namespace RuiJi.Net.Owin.Controllers
 
         [HttpGet]
         [Route("crawl")]
-        public object RunCrawl([FromUri]CrawlTaskModel crawlTask)
+        public object RunCrawl(CrawlTaskModel crawlTask)
         {
             ParallelTask task;
 
@@ -159,7 +158,7 @@ namespace RuiJi.Net.Owin.Controllers
 
         [HttpPost]
         [Route("func")]
-        public object FuncTest(FuncModel func)
+        public object FuncTest([FromBody]FuncModel func)
         {
             var code = "{# " + func.Sample + " #}";
             var test = new ComplieFuncTest(func.Code);

@@ -1,0 +1,49 @@
+﻿<script id="setting_feed_node" type="text/html">
+    <div class="feed-node row">
+        <div class="col-md-2">
+            <span class="active-node-feed">{{feed}}</span>
+        </div>
+        <div class="col-md-2">
+            <input type="text" class="node-pages" value="{{pages}}" />
+        </div>
+        <div class="col-md-2">
+            <input type="button" value="Ok" class="save-feed btn btn-default" />
+        </div>
+    </div>
+</script>
+
+<script id="setting_crawler_node" type="text/html">
+    <div class="crawler-node row">
+        <div class="col-md-2">
+            <span class="active-node-crawler">{{crawler}}</span>
+        </div>
+        <div class="ips-set col-md-2">
+            {{each result as re i}}
+            <div><input class="tab-panel-node" type='checkbox' value='{{re.ip}}' {{if re.checked}} checked="checked" {{/if}} />{{re.ip}} </div>
+            {{/each}}
+        </div>
+        <div class="col-md-2"><input type="button" value="Ok" class="save-ips btn btn-default" /></div>
+    </div>
+</script>
+
+<div>&nbsp;</div>
+
+<div class="setting">
+    <span>Feed Setting</span>
+
+    <div class="panel panel-default">
+        <div>Please input the feed node to grab the page number range,50 per page,split by commas,for example: 1,3 </div>
+        <div class="panel-body" id="feed_node_set">
+
+        </div>
+    </div>
+</div>
+<div class="setting">
+    <span>Node Ip Setting</span>
+    <div class="panel panel-default">
+        <div>Please select IP that the node can use</div>
+        <div class="panel-body" id="crawler_node_set">
+
+        </div>
+    </div>
+</div>

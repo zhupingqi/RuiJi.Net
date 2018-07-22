@@ -1,15 +1,13 @@
-﻿using System;
+﻿using RuiJi.Net.Core.Utils.Logging;
 using System.Collections.Generic;
 using System.Threading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RuiJi.Net.Core.Utils.Logging;
+using Xunit;
 
 namespace RuiJi.Net.Test
 {
-    [TestClass]
     public class LoggerTest
     {
-        [TestMethod]
+        [Fact]
         public void TestMethod1()
         {
             Logger.Add("main", new List<IAppender> {
@@ -23,7 +21,7 @@ namespace RuiJi.Net.Test
 
             Thread.Sleep(300000);
 
-            Assert.IsTrue(true);
+            Assert.True(true);
         }
     }
 }

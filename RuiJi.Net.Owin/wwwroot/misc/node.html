@@ -1,0 +1,61 @@
+﻿<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="row">
+            <table width="100%">
+                <tr>
+                    <td width="400px" valign="top">
+                        <div id='tree'></div>
+                    </td>
+                    <td valign="top" style="padding:5px">
+                        <div><span>Node Stat</span></div>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div id='node_stat'></div>
+                            </div>
+                        </div>
+                        <div><span>Node Data</span></div>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div id='node_data'></div>
+                            </div>
+                        </div>
+                        <div id="crawler_node_set" class="setting">
+                            <div><span>Node Ip Setting</span></div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div id="node_set_panel">
+                                        <div>
+                                            <span>Current Node</span> <span id="active_node_crawler"></span>
+                                        </div>
+                                        <div>Please select IP that the node can use</div>
+                                        <div id="ips_set"></div>
+                                        <div><input type="button" value="OK" id="save_ips" /></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="feed_node_set" class="setting">
+                            <div><span>Feed Setting</span></div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div id="node_set_panel">
+                                        <div>
+                                            <span>Current Node</span> <span id="active_node_feed"></span>
+                                        </div>
+                                        <div>
+                                            Please input the feed node to grab the page number range,50 per page,split by commas,for example: 1,3
+                                        </div>
+                                        <input type="text" id="node_pages" />
+                                        <div><input type="button" value="OK" id="save_feed" /></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,20 +1,10 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using RestSharp;
-using RuiJi.Net.Node;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Http;
 
 namespace RuiJi.Net.Owin.Controllers
 {
-    [RoutePrefix("api/zk")]
-    public class ZooKeeperController : ApiController
+    [Route("api/zk")]
+    public class ZooKeeperController : ControllerBase
     {
         [HttpGet]
         [Route("tree")]
@@ -65,7 +55,7 @@ namespace RuiJi.Net.Owin.Controllers
 
         //private NodeBase GetLeaderNode()
         //{
-        //    var auth = Request.RequestUri.Authority;
+        //    var auth = Request.Host.Value;
         //    var leaderNode = ServerManager.GetLeader();
 
         //    if (leaderNode != null && leaderNode.BaseUrl == auth)

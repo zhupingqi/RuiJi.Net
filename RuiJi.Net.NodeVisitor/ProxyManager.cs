@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Org.Apache.Zookeeper.Data;
 using RestSharp;
+using RuiJi.Net.Core.Configuration;
 using RuiJi.Net.Core.Utils;
 using RuiJi.Net.Core.Utils.Logging;
 using System;
@@ -31,7 +32,7 @@ namespace RuiJi.Net.NodeVisitor
         private ProxyManager()
         {
             proxys = new List<LiveProxy>();
-            zkServer = ConfigurationManager.AppSettings["zkServer"];
+            zkServer = RuiJiConfiguration.ZkServer;
 
             Start();
         }

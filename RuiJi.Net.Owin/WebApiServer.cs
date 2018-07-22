@@ -1,26 +1,18 @@
-﻿using log4net;
-using Microsoft.Owin.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using RuiJi.Net.Core.Utils;
-using RuiJi.Net.Core.Utils.Logging;
 using RuiJi.Net.Node;
 using RuiJi.Net.Node.Crawler;
 using RuiJi.Net.Node.Extractor;
 using RuiJi.Net.Node.Feed;
-using RuiJi.Net.Node.Feed.LTS;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
+using System.IO;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace RuiJi.Net.Owin
 {
     public class WebApiServer
     {
-        private IDisposable app;
+        private IWebHost webHost;
 
         private ManualResetEvent resetEvent;
 
@@ -63,7 +55,14 @@ namespace RuiJi.Net.Owin
 
             baseUrl = IPHelper.FixLocalUrl(baseUrl);
 
-            app = WebApp.Start<Startup>("http://" + baseUrl);
+            webHost = new WebHostBuilder()
+                .UseKestrel()
+                .UseUrls("http://" + baseUrl)
+                .UseIISIntegration()
+                .UseStartup<Startup>()
+                .Build();
+
+            webHost.RunAsync();
 
             switch (nodeType)
             {
@@ -101,19 +100,27 @@ namespace RuiJi.Net.Owin
 
             Node.Start();
 
+
             resetEvent = new ManualResetEvent(false);
             resetEvent.WaitOne();
         }
 
         public void StartStandalone(string baseUrl)
         {
-            baseUrl = IPHelper.FixLocalUrl(baseUrl);
+            this.baseUrl = IPHelper.FixLocalUrl(baseUrl);
 
-            app = WebApp.Start<Startup>("http://" + baseUrl);
+            webHost = new WebHostBuilder()
+                .UseKestrel()
+                .UseUrls("http://" + this.baseUrl)
+                .UseIISIntegration()
+                .UseStartup<Startup>()
+                .Build();
 
-            Node = new StandaloneNode(baseUrl);
+            webHost.RunAsync();
 
-            Node.Start();            
+            Node = new StandaloneNode(this.baseUrl);
+
+            Node.Start();
         }
 
         public void Restart()
@@ -123,10 +130,10 @@ namespace RuiJi.Net.Owin
 
         public void Stop()
         {
-            if (app != null)
+            if (webHost != null)
             {
-                app.Dispose();
-                app = null;
+                webHost.Dispose();
+                webHost = null;
             }
 
             Node.Stop();

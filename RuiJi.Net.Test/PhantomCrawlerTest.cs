@@ -1,13 +1,11 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RuiJi.Net.Core.Crawler;
+﻿using RuiJi.Net.Core.Crawler;
+using Xunit;
 
 namespace RuiJi.Net.Test
 {
-    [TestClass]
     public class PhantomCrawlerTest
     {
-        [TestMethod]
+        [Fact]
         public void TestMethod1()
         {
             var request = new Request("http://www.baidu.com");
@@ -16,10 +14,10 @@ namespace RuiJi.Net.Test
 
             var response = crawler.Request(request);
 
-            Assert.IsTrue(response.Data.ToString().Length > 0);
+            Assert.True(response.Data.ToString().Length > 0);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestMethod2()
         {
             var request = new Request("https://gitee.com/zhupingqi/RuiJi.Net");
@@ -28,10 +26,10 @@ namespace RuiJi.Net.Test
 
             var response = crawler.Request(request);
 
-            Assert.IsTrue(response.Data.ToString().Length > 0);
+            Assert.True(response.Data.ToString().Length > 0);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestMethod3()
         {
             var request = new Request("http://www.ruijihg.com/");
@@ -45,10 +43,10 @@ namespace RuiJi.Net.Test
 
             var response = crawler.Request(request);
 
-            Assert.IsTrue(response.Data.ToString().Length > 0);
+            Assert.True(response.Data.ToString().Length > 0);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestMethod4()
         {
             var request = new Request("https://gitee.com/zhupingqi/RuiJi.Net");
@@ -59,10 +57,10 @@ namespace RuiJi.Net.Test
 
             var response = crawler.Request(request);
 
-            Assert.IsTrue(response.Data.ToString().Length > 0);
+            Assert.True(response.Data.ToString().Length > 0);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestMethod5()
         {
             var request = new Request("https://gitee.com/zhupingqi/RuiJi.Net");
@@ -77,10 +75,10 @@ namespace RuiJi.Net.Test
 
             var response = crawler.Request(request);
 
-            Assert.IsTrue(response.Data.ToString().Length > 0);
+            Assert.True(response.Data.ToString().Length > 0);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestMethod6()
         {
             var request = new Request("https://gitee.com/zhupingqi/RuiJi.Net");
@@ -95,7 +93,7 @@ namespace RuiJi.Net.Test
 
             var response = crawler.Request(request);
 
-            Assert.IsTrue(response.Data.ToString().Length > 0);
+            Assert.True(response.Data.ToString().Length > 0);
         }
     }
 }

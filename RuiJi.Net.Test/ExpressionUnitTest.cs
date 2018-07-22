@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RuiJi.Net.Core.Compile;
+﻿using RuiJi.Net.Core.Compile;
 using RuiJi.Net.Core.Crawler;
 using RuiJi.Net.Core.Expression;
 using RuiJi.Net.Core.Extractor;
@@ -10,13 +9,13 @@ using RuiJi.Net.NodeVisitor;
 using RuiJi.Net.Owin.Controllers;
 using System;
 using System.IO;
+using Xunit;
 
 namespace RuiJi.Net.Test
 {
-    [TestClass]
     public class ExpressionUnitTest
     {
-        [TestMethod]
+        [Fact]
         public void TestMeta()
         {
             var metas =
@@ -64,10 +63,10 @@ namespace RuiJi.Net.Test
 
             var m = RuiJiBlockParser.ParserMeta(metas);
 
-            Assert.IsTrue(m.Count > 0);
+            Assert.True(m.Count > 0);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestBlock()
         {
             var block = @"
@@ -113,10 +112,10 @@ css .list2
 
             var m = RuiJiBlockParser.ParserBlock(block);
 
-            Assert.IsTrue(m.Metas.Count > 0);
+            Assert.True(m.Metas.Count > 0);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestPaging()
         {
             var crawler = new RuiJiCrawler();
@@ -143,10 +142,10 @@ css #listnav a[href]
 
             var result = RuiJiExtractor.Extract(content, s);
 
-            Assert.IsTrue(true);
+            Assert.True(true);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestExtract()
         {
             var crawler = new RuiJiCrawler();
@@ -160,10 +159,10 @@ css #listnav a[href]
             block.TileSelector.Selectors.AddRange(s);
             var result = RuiJiExtractor.Extract(content, block);
 
-            Assert.IsTrue(true);
+            Assert.True(true);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestExtract2()
         {
             var crawler = new RuiJiCrawler();
@@ -176,10 +175,10 @@ css #listnav a[href]
             var eb = parser.ParseExtract("css a.blog-title-link[href]\nexp https://my.oschina.net/*/blog/*");
             var result = RuiJiExtractor.Extract(content, eb.Result);
 
-            Assert.IsTrue(true);
+            Assert.True(true);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestExtractTile()
         {
             var crawler = new RuiJiCrawler();
@@ -202,10 +201,10 @@ css article:html
 
             var result = RuiJiExtractor.Extract(content, eb.Result);
 
-            Assert.IsTrue(true);
+            Assert.True(true);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestExtractMeta()
         {
             var crawler = new RuiJiCrawler();
@@ -236,28 +235,28 @@ css article:html
 
             var result = RuiJiExtractor.Extract(content, eb.Result);
 
-            Assert.IsTrue(true);
+            Assert.True(true);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestHistoryUpdate()
         {
             var feed = FeedLiteDb.GetFeed(1);
             var job = new FeedExtractJob();
             job.DoTask(@"D:\云同步\vcoded\RuiJi.Net\RuiJi.Cmd\bin\Debug\snapshot\1_636635303414097356.json");
 
-            Assert.IsTrue(true);
+            Assert.True(true);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestUrlExtract()
         {
             var result = Cooperater.GetResult("http://www.cannews.com.cn/2018/0606/177699.shtml");
 
-            Assert.IsTrue(true);
+            Assert.True(true);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestCrawlTaskFunc()
         {
             var task = new ParallelTask();
@@ -267,10 +266,10 @@ css article:html
             var fun = new CrawlTaskFunc();
             var result = fun.Run(model, task);
 
-            Assert.IsTrue(result != null);
+            Assert.True(result != null);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestJsonPExtract()
         {
             var url = "http://app.cannews.com.cn/roll.php?do=query&callback=jsonp1475197217819&_={# ticks() #}&date={# now(\"yyyy-MM-dd\") #}&size=20&page=1";
@@ -288,16 +287,16 @@ jpath $..url
             var b = RuiJiBlockParser.ParserBlock(expression);
             var result = RuiJiExtractor.Extract(response.Data.ToString(), b);
 
-            Assert.IsTrue(result.Content.ToString().Length > 0);
+            Assert.True(result.Content.ToString().Length > 0);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestFeature()
         {
 
         }
 
-        [TestMethod]
+        [Fact]
         public void TestExpressionType()
         {
             var block = @"
@@ -344,17 +343,17 @@ css .list2
 
             var m = RuiJiBlockParser.ParserBlock(block);
 
-            Assert.IsTrue(m.Metas.Count > 0);
+            Assert.True(m.Metas.Count > 0);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestAdvExpression1()
         {
             var parser = new RuiJiParser();
             parser.ParseFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "expression_address.txt"));
 
 
-            Assert.IsTrue(true);
+            Assert.True(true);
         }
     }
 }

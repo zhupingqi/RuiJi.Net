@@ -1,31 +1,25 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using RestSharp;
-using RuiJi.Net.Core;
-using RuiJi.Net.Core.Crawler;
 using RuiJi.Net.Core.Extensions;
 using RuiJi.Net.Core.Extractor;
-using RuiJi.Net;
-using RuiJi.Net.Node.Extractor;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Http;
-using RuiJi.Net.NodeVisitor;
 using RuiJi.Net.Node;
+using RuiJi.Net.Node.Extractor;
+using RuiJi.Net.NodeVisitor;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace RuiJi.Net.Owin.Controllers
 {
-    [RoutePrefix("api/ep")]
-    public class ExtractorProxyController : ApiController
+    [Route("api/ep")]
+    public class ExtractorProxyController : ControllerBase
     {
         [HttpPost]
         [NodeRoute(Target = NodeTypeEnum.EXTRACTORPROXY)]
         [Route("extract")]
         public List<ExtractResult> Extract([FromBody]string json)
         {
-            var node = ServerManager.Get(Request.RequestUri.Authority);
+            var node = ServerManager.Get(Request.Host.Value);
 
             if (node.NodeType == Node.NodeTypeEnum.EXTRACTORPROXY)
             {
@@ -41,10 +35,15 @@ namespace RuiJi.Net.Owin.Controllers
                 restRequest.AddJsonBody(json);
                 restRequest.Timeout = 15000;
 
-                var restResponse = client.Execute(restRequest);
+                List<ExtractResult> response = null;
+                var resetEvent = new ManualResetEvent(false);
 
-                var response = JsonConvert.DeserializeObject<List<ExtractResult>>(restResponse.Content);
+                var handle = client.ExecuteAsync(restRequest, (restResponse) => {
+                    response = JsonConvert.DeserializeObject<List<ExtractResult>>(restResponse.Content);
+                    resetEvent.Set();
+                });
 
+                resetEvent.WaitOne();
                 return response;
             }
             else

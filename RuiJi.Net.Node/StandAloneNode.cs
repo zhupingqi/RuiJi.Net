@@ -28,8 +28,8 @@ namespace RuiJi.Net.Node
 
         public StandaloneNode(string baseUrl)
         {
-            this.BaseUrl = baseUrl;
-            this.NodeType = NodeTypeEnum.STANDALONE;
+            BaseUrl = baseUrl;
+            NodeType = NodeTypeEnum.STANDALONE;
 
             StartTime = DateTime.Now;
         }

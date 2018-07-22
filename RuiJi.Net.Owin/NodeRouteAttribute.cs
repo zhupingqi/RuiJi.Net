@@ -1,17 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Newtonsoft.Json;
 using RestSharp;
 using RuiJi.Net.Core.Extensions;
 using RuiJi.Net.Node;
 using RuiJi.Net.NodeVisitor;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Http.Controllers;
-using System.Web.Http.Filters;
+using System.Threading;
 
 namespace RuiJi.Net.Owin
 {
@@ -26,12 +21,13 @@ namespace RuiJi.Net.Owin
 
         }
 
-        public override void OnActionExecuting(HttpActionContext actionContext)
+        public override void OnActionExecuting(ActionExecutingContext actionContext)
         {
-            var node = ServerManager.Get(actionContext.Request.RequestUri.Authority);
+            var node = ServerManager.Get(actionContext.HttpContext.Request.Host.Value);
+
             if (node == null)
             {
-                actionContext.Response = actionContext.Request.CreateResponse(actionContext.Request.RequestUri.Authority + " no node mapping this uri");
+                actionContext.Result = new JsonResult(actionContext.HttpContext.Request.Host.Value + " no node mapping this uri");
             }
 
             if ((int)node.NodeType != (int)Target && node.NodeType != NodeTypeEnum.STANDALONE)
@@ -40,7 +36,7 @@ namespace RuiJi.Net.Owin
 
                 if ((int)Target < 3)
                 {
-                     baseUrl = ProxyManager.Instance.Elect((NodeProxyTypeEnum)Target);                    
+                    baseUrl = ProxyManager.Instance.Elect((NodeProxyTypeEnum)Target);
                 }
                 else
                 {
@@ -48,8 +44,8 @@ namespace RuiJi.Net.Owin
                 }
 
                 var client = new RestClient("http://" + baseUrl);
-                var restRequest = new RestRequest(actionContext.Request.RequestUri.PathAndQuery);
-                restRequest.Method = (actionContext.Request.Method == HttpMethod.Get) ? Method.GET : Method.POST;
+                var restRequest = new RestRequest(actionContext.HttpContext.Request.Path.Value + actionContext.HttpContext.Request.QueryString);
+                restRequest.Method = (actionContext.HttpContext.Request.Method == "GET") ? Method.GET : Method.POST;
                 restRequest.JsonSerializer = new NewtonJsonSerializer();
                 if (restRequest.Method == Method.POST)
                 {
@@ -59,18 +55,27 @@ namespace RuiJi.Net.Owin
                     }
                 }
 
-                var restResponse = client.Execute(restRequest);
+                var resetEvent = new ManualResetEvent(false);
 
-                if (actionContext.ActionDescriptor.ReturnType != null)
+                var handle = client.ExecuteAsync(restRequest, (restResponse) =>
                 {
-                    var obj = JsonConvert.DeserializeObject<object>(restResponse.Content);
+                    var m = ((ControllerActionDescriptor)actionContext.ActionDescriptor).MethodInfo;
 
-                    actionContext.Response = actionContext.Request.CreateResponse(obj);
-                }
-                else
-                {
-                    actionContext.Response = actionContext.Request.CreateResponse();
-                }
+                    if (m.ReturnType != null)
+                    {
+                        var obj = JsonConvert.DeserializeObject<object>(restResponse.Content);
+
+                        actionContext.Result = new JsonResult(obj);
+                    }
+                    else
+                    {
+                        actionContext.Result = null;
+                    }
+
+                    resetEvent.Set();
+                });
+
+                resetEvent.WaitOne();
             }
             else
             {

@@ -31,10 +31,10 @@ namespace RuiJi.Net.Node.Feed.LTS
             Schedulers = new Dictionary<string, FeedScheduler>();
 
             factory = new StdSchedulerFactory();
-            var factoryResult = factory.GetScheduler();
-            factoryResult.Wait();
+            var task = factory.GetScheduler();
+            task.Wait();
 
-            scheduler = factoryResult.Result;
+            scheduler = task.Result;
             scheduler.Start();
         }
 
@@ -168,7 +168,7 @@ namespace RuiJi.Net.Node.Feed.LTS
                 {
                     scheduler.Clear();
 
-                    if (NodeConfigurationSection.Standalone)
+                    if (RuiJiConfiguration.Standalone)
                     {
                         var page = 1;
 
@@ -232,7 +232,7 @@ namespace RuiJi.Net.Node.Feed.LTS
 
                 if (feed.Status == Status.ON)
                 {
-                    if (NodeConfigurationSection.Standalone)
+                    if (RuiJiConfiguration.Standalone)
                     {
                         AddJob(feed);
                     }

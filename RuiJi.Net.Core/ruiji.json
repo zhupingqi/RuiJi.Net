@@ -1,0 +1,52 @@
+{
+  "setting": {
+    "zkPath": "zookeeper-3.4.12",
+    "zkServer": "localhost:2181"//,
+    //"ruiJiServer": "localhost:36000",
+    //"docServer": "localhost:80"
+  },
+  "nodes": [
+    {
+      "baseUrl": "localhost:36000",
+      "type": "cp"
+    },
+    {
+      "baseUrl": "localhost:37000",
+      "type": "ep"
+    },
+    {
+      "baseUrl": "localhost:38000",
+      "type": "fp"
+    },
+    {
+      "baseUrl": "localhost:36001",
+      "type": "c",
+      "proxy": "localhost:36000"
+    },
+    {
+      "baseUrl": "localhost:36002",
+      "type": "c",
+      "proxy": "localhost:36000"
+    },
+    {
+      "baseUrl": "localhost:37001",
+      "type": "e",
+      "proxy": "localhost:37000"
+    },
+    {
+      "baseUrl": "localhost:37002",
+      "type": "e",
+      "proxy": "localhost:37000"
+    },
+    {
+      "baseUrl": "localhost:38001",
+      "type": "f",
+      "proxy": "localhost:38000"
+    },
+    {
+      "baseUrl": "localhost:38002",
+      "type": "f",
+      "proxy": "localhost:38000"
+    }
+  ]
+}
