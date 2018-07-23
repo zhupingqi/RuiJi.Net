@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace RuiJi.Net.Owin.Controllers
@@ -22,19 +23,18 @@ namespace RuiJi.Net.Owin.Controllers
         [Route("load")]
         public object SystemLoad()
         {
-            //var sys = new SystemInfo();
+            var sys = new SystemInfo();
 
-            //sys.ReckonSpeed();
+            sys.ReckonSpeed();
 
-            //return new
-            //{
-            //    memoryLoad = 100 - ((double)sys.MemoryAvailable / (double)sys.PhysicalMemory) * 100,
-            //    cpuLoad = sys.CpuLoad,
-            //    inSpeed = (double)sys.InSpeed * 100 / Convert.ToDouble(sys.SpeedTotal),
-            //    outSpeed = (double)sys.OutSpeed * 100 / Convert.ToDouble(sys.SpeedTotal)
-            //};
-            
-            return new object();
+            return new
+            {
+                memoryLoad = 100 - ((double)sys.MemoryAvailable / (double)sys.PhysicalMemory) * 100,
+                cpuLoad = sys.CpuLoad,
+                inSpeed = (double)sys.InSpeed * 100 / Convert.ToDouble(sys.SpeedTotal),
+                outSpeed = (double)sys.OutSpeed * 100 / Convert.ToDouble(sys.SpeedTotal)
+
+            };
         }
 
         /// <summary>
@@ -46,23 +46,23 @@ namespace RuiJi.Net.Owin.Controllers
         [Route("info")]
         public object Server()
         {
-            //var baseUrl = Request.Host.Value;
-            //var server = ServerManager.Get(baseUrl);
+            var baseUrl = Request.Host.Value;
+            var server = ServerManager.Get(baseUrl);
 
-            //var sys = new SystemInfo();
-            //var memory = Math.Round((double)sys.PhysicalMemory / 1024 / 1024 / 1024, 1, MidpointRounding.AwayFromZero) + "GB";
+            var sys = new SystemInfo();
+            var memory = Math.Round((double)sys.PhysicalMemory / 1024 / 1024 / 1024, 1, MidpointRounding.AwayFromZero) + "GB";
 
-            //return new
-            //{
-            //    nodeType = server.NodeType.ToString(),
-            //    startTime = server.StartTime.ToString("yyyy-MM-dd HH:mm:ss"),
-            //    cpu = sys.ProcessorName,
-            //    memory = memory,
-            //    efVersion = sys.Version,
-            //    cores = Environment.ProcessorCount
-            //};
+            return new
+            {
+                nodeType = server.NodeType.ToString(),
+                startTime = server.StartTime.ToString("yyyy-MM-dd HH:mm:ss"),
+                system = RuntimeInformation.OSDescription + " " + RuntimeInformation.OSArchitecture,
+                cpu = sys.ProcessorName,
+                cores = Environment.ProcessorCount,
+                memory = memory,
+                efVersion = Microsoft.Extensions.DependencyModel.DependencyContext.Default.Target.Framework
 
-            return new object();
+            };
         }
 
         /// <summary>
@@ -75,20 +75,20 @@ namespace RuiJi.Net.Owin.Controllers
         {
             var dlls = new string[] { "RuiJi.Net.Core", "RuiJi.Net.Node", "RuiJi.Net.NodeVisitor", "RuiJi.Net.Owin" };
             var versions = new List<string>();
-            
-            //foreach (var dll in dlls)
-            //{
-            //    string path = AppDomain.CurrentDomain.BaseDirectory + dll + ".dll";
-            //    if (!File.Exists(path))
-            //        path = AppDomain.CurrentDomain.BaseDirectory + dll + ".exe";
-            //    if (!File.Exists(path))
-            //        continue;
 
-            //    Assembly assembly = Assembly.LoadFile(path);
-            //    AssemblyName assemblyName = assembly.GetName();
-            //    Version version = assemblyName.Version;
-            //    versions.Add(dll + " " + version.ToString());
-            //}
+            foreach (var dll in dlls)
+            {
+                string path = AppDomain.CurrentDomain.BaseDirectory + dll + ".dll";
+                if (!System.IO.File.Exists(path))
+                    path = AppDomain.CurrentDomain.BaseDirectory + dll + ".exe";
+                if (!System.IO.File.Exists(path))
+                    continue;
+
+                Assembly assembly = Assembly.LoadFile(path);
+                AssemblyName assemblyName = assembly.GetName();
+                Version version = assemblyName.Version;
+                versions.Add(dll + " " + version.ToString());
+            }
             return new { versions };
         }
 
@@ -105,7 +105,8 @@ namespace RuiJi.Net.Owin.Controllers
             object response = new object();
             var resetEvent = new ManualResetEvent(false);
 
-            var handle = client.ExecuteAsync(restRequest,(restResponse)=> {
+            var handle = client.ExecuteAsync(restRequest, (restResponse) =>
+            {
                 response = JsonConvert.DeserializeObject<object>(restResponse.Content);
                 resetEvent.Set();
             });

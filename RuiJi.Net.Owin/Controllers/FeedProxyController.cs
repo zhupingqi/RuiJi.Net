@@ -12,6 +12,7 @@ using RuiJi.Net.Node.Feed.LTS;
 using RuiJi.Net.Storage;
 using RuiJi.Net.Storage.Model;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -264,6 +265,10 @@ namespace RuiJi.Net.Owin.Controllers
         public object GetShards()
         {
             var dbfile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LiteDb", "Content");
+            if (!System.IO.File.Exists(dbfile))
+            {
+                return new List<string> { DateTime.Now.ToString("yyyyMM")};
+            }
             var fileInfos = Directory.GetFiles(dbfile);
             var shards = fileInfos.Select(f => f.Substring(f.LastIndexOf("\\") + 1, f.IndexOf(".db") - f.LastIndexOf("\\") - 1)).OrderByDescending(f => f).ToList();
             return shards;

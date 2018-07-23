@@ -21,6 +21,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.1.1" />
     <PackageReference Include="RestSharp.NetCore" Version="105.2.3" />
+    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="4.5.0" />
     <PackageReference Include="System.Management" Version="4.5.0" />
     <PackageReference Include="Vanara.Core" Version="1.0.16" />
     <PackageReference Include="Vanara.PInvoke.IpHlpApi" Version="1.0.16" />
