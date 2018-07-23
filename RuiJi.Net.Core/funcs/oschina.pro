@@ -6,12 +6,11 @@
 
 if (content.EndsWith("天前"))
 {{
-	var hour = Convert.ToInt32(Regex.Match(content, @"[\d]*").Value);
-	results.Add(DateTime.Now.AddDays(-hour));
+	var days = Convert.ToInt32(Regex.Match(content, @"[\d]*").Value);
+	results.Add(DateTime.Now.AddDays(-days));
 }}
 
-if (content.EndsWith("AddMinutes"))
+if (content.EndsWith("刚刚"))
 {{
-	var hour = Convert.ToInt32(Regex.Match(content, @"[\d]*").Value);
-	results.Add(DateTime.Now.AddDays(-hour));
+	results.Add(DateTime.Now);
 }}

@@ -20,7 +20,7 @@ namespace RuiJi.Net.Owin.Controllers
         /// <returns>cpu 内存信息</returns>
         [HttpGet]
         [Route("load")]
-        public object System()
+        public object SystemLoad()
         {
             //var sys = new SystemInfo();
 
@@ -33,7 +33,7 @@ namespace RuiJi.Net.Owin.Controllers
             //    inSpeed = (double)sys.InSpeed * 100 / Convert.ToDouble(sys.SpeedTotal),
             //    outSpeed = (double)sys.OutSpeed * 100 / Convert.ToDouble(sys.SpeedTotal)
             //};
-
+            
             return new object();
         }
 
@@ -75,6 +75,7 @@ namespace RuiJi.Net.Owin.Controllers
         {
             var dlls = new string[] { "RuiJi.Net.Core", "RuiJi.Net.Node", "RuiJi.Net.NodeVisitor", "RuiJi.Net.Owin" };
             var versions = new List<string>();
+            
             //foreach (var dll in dlls)
             //{
             //    string path = AppDomain.CurrentDomain.BaseDirectory + dll + ".dll";
