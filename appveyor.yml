@@ -1,0 +1,21 @@
+version: 1.0.{build}
+branches:
+  only:
+  - develop
+image: Visual Studio 2017
+platform: Any CPU
+init:
+- cmd: git config --global core.autocrlf true
+build_script:
+- cmd: >-
+    dotnet publish RuiJi.Net.Core/RuiJi.Net.Core.csproj
+
+    dotnet publish RuiJi.Net.Node/RuiJi.Net.Node.csproj
+
+    dotnet publish RuiJi.Net.NodeVisitor/RuiJi.Net.NodeVisitor.csproj
+
+    dotnet publish RuiJi.Net.Owin/RuiJi.Net.Owin.csproj
+
+    dotnet publish RuiJi.Net.Storage/RuiJi.Net.Storage.csproj
+test: off
+deploy: off
