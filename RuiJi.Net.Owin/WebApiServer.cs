@@ -132,6 +132,7 @@ namespace RuiJi.Net.Owin
         {
             if (webHost != null)
             {
+                webHost.StopAsync(TimeSpan.FromSeconds(0));
                 webHost.Dispose();
                 webHost = null;
             }

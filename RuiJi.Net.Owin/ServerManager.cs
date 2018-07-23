@@ -65,7 +65,7 @@ namespace RuiJi.Net.Owin
                     return;
                 }
 
-                var t = Task.Factory.StartNew(() =>
+                var t = Task.Run(() =>
                 {
                     try
                     {
@@ -112,7 +112,7 @@ namespace RuiJi.Net.Owin
 
                 RuiJiConfiguration.Nodes.ForEach(m =>
                 {
-                    var t = Task.Factory.StartNew(() =>
+                    var t = Task.Run(() =>
                     {
                         try
                         {
@@ -135,17 +135,21 @@ namespace RuiJi.Net.Owin
             var baseUrl = RuiJiConfiguration.DocServer;
             if (!string.IsNullOrEmpty(baseUrl))
             {
-                baseUrl = IPHelper.FixLocalUrl(baseUrl);
+                var t = Task.Run(()=> {
+                    baseUrl = IPHelper.FixLocalUrl(baseUrl);
 
-                var webHost = new WebHostBuilder()
-                    .UseKestrel()
-                    .UseWebRoot(AppDomain.CurrentDomain.BaseDirectory + @"wwwroot\doc")
-                    .UseUrls("http://" + baseUrl)
-                    .UseIISIntegration()
-                    .UseStartup<DocStartup>()
-                    .Build();
+                    var webHost = new WebHostBuilder()
+                        .UseKestrel()
+                        .UseWebRoot(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "document"))
+                        .UseUrls("http://" + baseUrl)
+                        .UseIISIntegration()
+                        .UseStartup<DocStartup>()
+                        .Build();
 
-                webHost.Run();
+                    webHost.RunAsync();
+                });
+
+                tasks.Add(t);
             }
         }
 
@@ -160,7 +164,7 @@ namespace RuiJi.Net.Owin
                 }
                 else
                 {
-                    var t = Task.Factory.StartNew(() =>
+                    var t = Task.Run(() =>
                     {
                         try
                         {
@@ -207,6 +211,12 @@ namespace RuiJi.Net.Owin
                     Logger.GetLogger("").Info("server port with " + m.Port + " stop!");
                 });
                 servers.Clear();
+
+                tasks.ForEach(m=> {
+                    m.Dispose();
+                });
+
+                tasks.Clear();
             }
             catch (Exception ex)
             {

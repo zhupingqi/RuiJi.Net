@@ -25,7 +25,7 @@ namespace RuiJi.Net.Cmd
                     break;
                 }
 
-                if (cmd.StartsWith("stop"))
+                if (cmd != null && cmd.StartsWith("stop"))
                 {
                     var sp = cmd.Split(' ');
                     if (sp.Length == 2)
@@ -48,7 +48,7 @@ namespace RuiJi.Net.Cmd
                     }
                 }
 
-                if (cmd.StartsWith("start"))
+                if (cmd != null && cmd.StartsWith("start"))
                 {
                     var port = cmd.Split(' ')[1];
                     ServerManager.Start(Convert.ToInt32(port));
@@ -58,6 +58,8 @@ namespace RuiJi.Net.Cmd
             ServerManager.StopAll();
 
             Logger.GetLogger("").Info("Program stop all!");
+
+            return;
         }
     }
 }
