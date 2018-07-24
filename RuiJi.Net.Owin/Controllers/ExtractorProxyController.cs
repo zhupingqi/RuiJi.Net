@@ -11,6 +11,8 @@ using System.Threading;
 
 namespace RuiJi.Net.Owin.Controllers
 {
+    [ApiController]
+    [Produces("application/json")]
     [Route("api/ep")]
     public class ExtractorProxyController : ControllerBase
     {

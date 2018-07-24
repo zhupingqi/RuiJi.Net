@@ -10,6 +10,8 @@ using System.Threading;
 
 namespace RuiJi.Net.Owin.Controllers
 {
+    [ApiController]
+    [Produces("application/json")]
     [Route("api/cp")]
     public class CrawlerProxyController : ControllerBase
     {

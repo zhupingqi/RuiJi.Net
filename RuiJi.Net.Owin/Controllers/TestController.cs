@@ -18,6 +18,8 @@ using System.Linq;
 
 namespace RuiJi.Net.Owin.Controllers
 {
+    [ApiController]
+    [Produces("application/json")]
     [Route("api/test")]
     public class TestController : ControllerBase
     {

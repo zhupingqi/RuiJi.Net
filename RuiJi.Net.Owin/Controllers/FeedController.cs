@@ -7,6 +7,8 @@ using System.Linq;
 
 namespace RuiJi.Net.Owin.Controllers
 {
+    [ApiController]
+    [Produces("application/json")]
     [Route("api/feed")]
     public class FeedController : ControllerBase
     {

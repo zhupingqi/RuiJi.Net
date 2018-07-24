@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 
 namespace RuiJi.Net.Owin.Controllers
 {
+    [ApiController]
     [Produces("application/json")]
     [Route("api/crawler")]
     public class CrawlerController : ControllerBase
