@@ -60,25 +60,29 @@ namespace RuiJi.Net.Owin
             m_Version = Environment.Version.ToString();
 
             //获得物理内存
-            ManagementClass mc = new ManagementClass("Win32_ComputerSystem");
-            ManagementObjectCollection moc = mc.GetInstances();
-            foreach (ManagementObject mo in moc)
+            try
             {
-                if (mo["TotalPhysicalMemory"] != null)
+                ManagementClass mc = new ManagementClass("Win32_ComputerSystem");
+                ManagementObjectCollection moc = mc.GetInstances();
+                foreach (ManagementObject mo in moc)
                 {
-                    m_PhysicalMemory = long.Parse(mo["TotalPhysicalMemory"].ToString());
+                    if (mo["TotalPhysicalMemory"] != null)
+                    {
+                        m_PhysicalMemory = long.Parse(mo["TotalPhysicalMemory"].ToString());
+                    }
                 }
-            }
 
-            mc = new ManagementClass("Win32_Processor");
-            moc = mc.GetInstances();
-            foreach (ManagementObject mo in moc)
-            {
-                if (mo["Name"] != null)
+                mc = new ManagementClass("Win32_Processor");
+                moc = mc.GetInstances();
+                foreach (ManagementObject mo in moc)
                 {
-                    m_ProcessorName = mo["Name"].ToString();
+                    if (mo["Name"] != null)
+                    {
+                        m_ProcessorName = mo["Name"].ToString();
+                    }
                 }
             }
+            catch { }            
         }
         #endregion
 
@@ -138,19 +142,19 @@ namespace RuiJi.Net.Owin
             get
             {
                 long availablebytes = 0;
-                //ManagementObjectSearcher mos = new ManagementObjectSearcher("SELECT * FROM Win32_PerfRawData_PerfOS_Memory");
-                //foreach (ManagementObject mo in mos.Get())
-                //{
-                //    availablebytes = long.Parse(mo["Availablebytes"].ToString());
-                //}
-                ManagementClass mos = new ManagementClass("Win32_OperatingSystem");
-                foreach (ManagementObject mo in mos.GetInstances())
+                try
                 {
-                    if (mo["FreePhysicalMemory"] != null)
+                    ManagementClass mos = new ManagementClass("Win32_OperatingSystem");
+                    foreach (ManagementObject mo in mos.GetInstances())
                     {
-                        availablebytes = 1024 * long.Parse(mo["FreePhysicalMemory"].ToString());
+                        if (mo["FreePhysicalMemory"] != null)
+                        {
+                            availablebytes = 1024 * long.Parse(mo["FreePhysicalMemory"].ToString());
+                        }
                     }
                 }
+                catch { }
+
                 return availablebytes;
             }
         }

@@ -54,6 +54,19 @@ namespace RuiJi.Net.Core.Crawler
         /// <returns>crawl response</returns>
         public Response Request(Request request)
         {
+            if (!string.IsNullOrEmpty(request.Ip))
+            {
+                if (!IPHelper.IsHostIPAddress(IPAddress.Parse(request.Ip)))
+                {
+                    return new Response
+                    {
+                        IsRaw = false,
+                        StatusCode = HttpStatusCode.BadRequest,
+                        Data = "specified Ip is invalid!"
+                    };
+                }
+            }
+
             Logger.GetLogger(request.Elect).Info("request " + request.Uri.ToString() + " with ip:" + request.Ip + (request.Proxy != null ? (" proxy:" + request.Proxy.Ip + ":" + request.Proxy.Port) : ""));
 
             SimulateBrowser(request);
@@ -81,19 +94,6 @@ namespace RuiJi.Net.Core.Crawler
                     Logger.GetLogger(request.Elect).Info(request.Uri.ToString() + " response status is " + res.StatusCode.ToString());
 
                     return res;
-                }
-
-                if (!string.IsNullOrEmpty(request.Ip))
-                {
-                    if (!IPHelper.IsHostIPAddress(IPAddress.Parse(request.Ip)))
-                    {
-                        return new Response
-                        {
-                            IsRaw = false,
-                            StatusCode = HttpStatusCode.BadRequest,
-                            Data = "specified Ip is invalid!"
-                        };
-                    }
                 }
 
                 var httpResponse = GetHttpWebResponse(request);
@@ -146,6 +146,8 @@ namespace RuiJi.Net.Core.Crawler
                 var r = new Response();
                 r.StatusCode = HttpStatusCode.BadRequest;
                 r.Data = "response error " + ex.Message;
+
+                Logger.GetLogger(request.Elect).Error(request.Uri.ToString() + " response error is " + ex.Message);
 
                 return r;
             }

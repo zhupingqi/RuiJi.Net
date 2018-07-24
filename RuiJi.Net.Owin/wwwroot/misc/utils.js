@@ -73,7 +73,7 @@
 
             switch (opt.type) {
                 case 0: {
-                    var div = $("<div class='loading'><div><img src='/Content/images/loading.0.gif'style='margin-right:5px' /></div></div>");
+                    var div = $("<div class='loading'><div><img src='/content/images/loading.0.gif'style='margin-right:5px' /></div></div>");
                     div.find("div").css({
                         position: 'absolute',
                         top: '50%',
@@ -97,7 +97,7 @@
                     break;
                 }
                 case 1: {
-                    var div = $("<div class='loading'><img src='/Content/images/loading.0.gif' /><span></span></div>");
+                    var div = $("<div class='loading'><img src='/content/images/loading.0.gif' /><span></span></div>");
                     var css = $.extend({}, opt.css);
 
                     div.css(css);

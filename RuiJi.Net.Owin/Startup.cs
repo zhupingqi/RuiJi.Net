@@ -3,19 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Collections.Generic;
 
 namespace RuiJi.Net.Owin
 {
     public class Startup
     {
-        public IConfiguration Configuration { get; }
-
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
@@ -24,8 +16,9 @@ namespace RuiJi.Net.Owin
 
         public void Configure(IApplicationBuilder builder)
         {
+            builder.UseDeveloperExceptionPage();
             builder.UseCors();
-            builder.UseStaticFiles();
+
             builder.UseMvc();
 
             DefaultFilesOptions options = new DefaultFilesOptions();
@@ -33,8 +26,7 @@ namespace RuiJi.Net.Owin
             options.DefaultFileNames.Add("index.html");
 
             builder.UseDefaultFiles(options);
-
-            builder.UseMvcWithDefaultRoute();
+            builder.UseStaticFiles();
         }
     }
 }

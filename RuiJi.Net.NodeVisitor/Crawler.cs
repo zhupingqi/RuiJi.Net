@@ -21,15 +21,17 @@ namespace RuiJi.Net.NodeVisitor
         {
             if (RuiJiConfiguration.Standalone)
             {
-                var crawler = new RuiJiCrawler();
-                var response = crawler.Request(request);
-
                 if (string.IsNullOrEmpty(request.Ip))
                 {
                     var e = CrawlerServerManager.Instance.ElectIP(request.Uri);
                     if (e != null)
                         request.Ip = e.ClientIp;
+                    else
+                        request.Ip = IPHelper.GetDefaultIPAddress().ToString();
                 }
+
+                var crawler = new RuiJiCrawler();
+                var response = crawler.Request(request);
 
                 var maxRefresh = 2;
                 string refreshUrl;
@@ -64,7 +66,8 @@ namespace RuiJi.Net.NodeVisitor
                     Response response = null;
                     var resetEvent = new ManualResetEvent(false);
 
-                    var handle = client.ExecuteAsync(restRequest,(restResponse) => {
+                    var handle = client.ExecuteAsync(restRequest, (restResponse) =>
+                    {
                         response = JsonConvert.DeserializeObject<Response>(restResponse.Content);
                         resetEvent.Set();
                     });
@@ -103,7 +106,8 @@ namespace RuiJi.Net.NodeVisitor
                     Response response = null;
                     var resetEvent = new ManualResetEvent(false);
 
-                    var handle = client.ExecuteAsync(restRequest, (restResponse) => {
+                    var handle = client.ExecuteAsync(restRequest, (restResponse) =>
+                    {
                         response = JsonConvert.DeserializeObject<Response>(restResponse.Content);
                         resetEvent.Set();
                     });
@@ -171,7 +175,8 @@ namespace RuiJi.Net.NodeVisitor
             CrawlerElectResult response = null;
             var resetEvent = new ManualResetEvent(false);
 
-            var handle = client.ExecuteAsync(restRequest, (restResponse) => {
+            var handle = client.ExecuteAsync(restRequest, (restResponse) =>
+            {
                 response = JsonConvert.DeserializeObject<CrawlerElectResult>(restResponse.Content);
                 resetEvent.Set();
             });

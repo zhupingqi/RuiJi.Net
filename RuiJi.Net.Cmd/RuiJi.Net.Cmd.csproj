@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RuiJi.Net.Core\RuiJi.Net.Core.csproj" />
-    <ProjectReference Include="..\RuiJi.Net.Owin\RuiJi.Net.Owin.csproj" />
+    <ProjectReference Include="..\RuiJi.Net.Owin\RuiJi.Net.Owin.csproj" />	
   </ItemGroup>
 
 </Project>
