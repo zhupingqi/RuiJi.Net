@@ -65,10 +65,10 @@ namespace RuiJi.Net.Cmd
 
             while (true)
             {
-                Console.WriteLine("please ctrl + e to exit!");
-                var key = Console.ReadKey(true);
+                Console.WriteLine("please e to exit!");
+                var key = Console.ReadLine();
 
-                if ((key.Modifiers & ConsoleModifiers.Control) != 0 && key.Key.ToString().ToLower() == "e")
+                if (key.ToLower() == "e")
                 {
                     ServerManager.StopAll();
                     break;

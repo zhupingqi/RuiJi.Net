@@ -6,6 +6,8 @@ using System.Collections.Generic;
 
 namespace RuiJi.Net.Owin.Controllers
 {
+    [ApiController]
+    [Produces("application/json")]
     [Route("api/extractor")]
     public class ExtractorController : ControllerBase
     {

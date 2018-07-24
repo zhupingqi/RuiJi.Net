@@ -3,6 +3,8 @@ using RuiJi.Net.Core.Utils.Logging;
 
 namespace RuiJi.Net.Owin.Controllers
 {
+    [ApiController]
+    [Produces("application/json")]
     [Route("api/logger")]
     public class LoggerController : ControllerBase
     {

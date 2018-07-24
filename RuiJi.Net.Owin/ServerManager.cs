@@ -196,8 +196,10 @@ namespace RuiJi.Net.Owin
             //aliyun nat...
             baseUrl = baseUrl.Replace("118.31.61.230", "172.16.50.52");
 
-            var temp = servers.SingleOrDefault(m => m.Node.BaseUrl.ToLower() == baseUrl.ToLower());
-            return servers.SingleOrDefault(m => m.Node.BaseUrl.ToLower() == baseUrl.ToLower()).Node;
+            var ss = servers.Where(m => m.Node != null).ToList();
+
+            var temp = ss.SingleOrDefault(m => m.Node.BaseUrl.ToLower() == baseUrl.ToLower());
+            return ss.SingleOrDefault(m => m.Node.BaseUrl.ToLower() == baseUrl.ToLower()).Node;
         }
 
         public static List<INode> Get(NodeTypeEnum @enum)
