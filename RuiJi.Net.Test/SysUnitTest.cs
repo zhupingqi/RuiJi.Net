@@ -13,7 +13,7 @@ namespace RuiJi.Net.Test
             for (int i = 0; i < 10; i++)
             {
                 var c = new SysInfoController();
-                var info = c.System();
+                var info = c.SystemLoad();
 
                 Thread.Sleep(1000);
             }

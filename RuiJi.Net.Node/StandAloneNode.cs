@@ -11,6 +11,8 @@ namespace RuiJi.Net.Node
 {
     public class StandaloneNode : INode
     {
+        private FeedScheduler scheduler;
+
         static StandaloneNode()
         {
             var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LiteDb");
@@ -52,14 +54,19 @@ namespace RuiJi.Net.Node
                 new ConsoleAppender()
             });
 
-            new FeedScheduler().Start(BaseUrl, null);
+            scheduler = new FeedScheduler();
+            scheduler.Start(BaseUrl, null);
 
             Logger.GetLogger(BaseUrl).Info("Start WebApiServer At http://" + BaseUrl + " with " + NodeType.ToString() + " node");
         }
 
         public void Stop()
         {
-
+            if (scheduler != null)
+            {
+                scheduler.Stop();
+                scheduler = null;
+            }
         }
     }
 }

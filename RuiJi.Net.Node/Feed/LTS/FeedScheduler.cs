@@ -70,7 +70,15 @@ namespace RuiJi.Net.Node.Feed.LTS
                 .WithIdentity("extract_" + baseUrl)
                 .Build();
 
-            await scheduler.ScheduleJob(job, trigger);
+            try
+            {
+                await scheduler.ScheduleJob(job, trigger);
+
+            }
+            catch (Exception ex)
+            {
+                Logger.GetLogger(baseUrl).Info(baseUrl + ex.Message);
+            }
         }
 
         public async void AddJob(string jobKey, string[] cornExpressions, Dictionary<string, object> dic = null)

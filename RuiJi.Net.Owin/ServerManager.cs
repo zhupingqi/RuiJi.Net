@@ -16,14 +16,12 @@ namespace RuiJi.Net.Owin
 {
     public class ServerManager
     {
-        private static List<Task> tasks;
-        private static List<WebApiServer> servers;
+        private static List<IServer> servers;
         private static Process zkProcess;
 
         static ServerManager()
         {
-            servers = new List<WebApiServer>();
-            tasks = new List<Task>();
+            servers = new List<IServer>();
         }
 
         ~ServerManager()
@@ -33,29 +31,35 @@ namespace RuiJi.Net.Owin
                 zkProcess.Kill();
         }
 
-        public static void Start(string baseUrl, string type, string zkServer, string proxy = "")
+        public static void Start(string baseUrl, string type, string zkServer = "", string proxy = "")
         {
-            var server = new WebApiServer();
+            var server = new WebApiServer(baseUrl, type, zkServer, proxy);
             servers.Add(server);
 
-            server.Start(baseUrl, type, zkServer, proxy);
+            server.Start();
         }
 
-        public static void Stop(string port = "")
+        public static void Stop(int port = 80)
         {
             var server = servers.SingleOrDefault(m => m.Port == port);
             if (server != null)
             {
                 server.Stop();
 
-                Logger.GetLogger("").Info("server port with " + port + " stop!");
+                Logger.GetLogger("").Info("server with " + server.BaseUrl + " stop!");
             }
-
-            tasks.RemoveAll(m => m.Status != TaskStatus.Running);
         }
 
         public static void StartServers()
         {
+            if(!String.IsNullOrEmpty(RuiJiConfiguration.DocServer))
+            {
+                var server = new DocumentServer(RuiJiConfiguration.DocServer);
+                server.Start();
+
+                servers.Add(server);
+            }
+
             if (RuiJiConfiguration.Standalone)
             {
                 var baseUrl = RuiJiConfiguration.RuiJiServer;
@@ -65,118 +69,84 @@ namespace RuiJi.Net.Owin
                     return;
                 }
 
-                var t = Task.Run(() =>
+                try
                 {
-                    try
-                    {
-                        ServerManager.StartStandalone(baseUrl);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.GetLogger("").Fatal(ex.Message);
-                    }
-                });
-
-                tasks.Add(t);
+                    Start(baseUrl, "s");
+                }
+                catch (Exception ex)
+                {
+                    Logger.GetLogger("").Fatal(ex.Message);
+                }
             }
             else
             {
                 var zkServer = RuiJiConfiguration.ZkServer;
                 if (string.IsNullOrEmpty(zkServer))
                 {
-                    Logger.GetLogger("").Fatal("zkServer not defined");
+                    Logger.GetLogger("").Info("zkServer not defined");
                     return;
                 }
 
-                var zkPath = RuiJiConfiguration.ZkPath;
-                if (!string.IsNullOrEmpty(zkPath))
-                {
-                    var path = AppDomain.CurrentDomain.BaseDirectory + zkPath + @"\bin\zkServer.cmd";
-
-                    if (File.Exists(path))
-                    {
-                        Logger.GetLogger("").Info("start up embed zookeeper");
-
-                        zkProcess = new Process();
-                        zkProcess.StartInfo.FileName = path;
-                        zkProcess.StartInfo.UseShellExecute = false;
-                        zkProcess.StartInfo.RedirectStandardInput = false;
-                        zkProcess.StartInfo.RedirectStandardOutput = false;
-                        zkProcess.StartInfo.RedirectStandardError = false;
-                        zkProcess.StartInfo.CreateNoWindow = false;
-                        zkProcess.Start();
-                    }
-                }
-
-                Thread.Sleep(3000);
+                StartZKServer();
 
                 RuiJiConfiguration.Nodes.ForEach(m =>
                 {
-                    var t = Task.Run(() =>
+                    try
                     {
-                        try
-                        {
-                            Start(m.BaseUrl, m.Type, zkServer, m.Proxy);
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.GetLogger("").Info(ex.Message);
-                        }
-                    });
-
-                    tasks.Add(t);
-                    Thread.Sleep(1000);
+                        Start(m.BaseUrl, m.Type, zkServer, m.Proxy);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.GetLogger("").Info(ex.Message);
+                    }
                 });
             }
         }
 
-        public static void StartDocServer()
+        public static void StartZKServer()
         {
-            var baseUrl = RuiJiConfiguration.DocServer;
-            if (!string.IsNullOrEmpty(baseUrl))
+            var zkPath = RuiJiConfiguration.ZkPath;
+            if (!string.IsNullOrEmpty(zkPath))
             {
-                var t = Task.Run(()=> {
-                    baseUrl = IPHelper.FixLocalUrl(baseUrl);
+                var path = AppDomain.CurrentDomain.BaseDirectory + zkPath + @"\bin\zkServer.cmd";
 
-                    var webHost = new WebHostBuilder()
-                        .UseKestrel()
-                        .UseWebRoot(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "document"))
-                        .UseUrls("http://" + baseUrl)
-                        .UseIISIntegration()
-                        .UseStartup<DocStartup>()
-                        .Build();
+                if (File.Exists(path))
+                {
+                    Logger.GetLogger("").Info("start up embed zookeeper");
 
-                    webHost.RunAsync();
-                });
-
-                tasks.Add(t);
+                    zkProcess = new Process();
+                    zkProcess.StartInfo.FileName = path;
+                    zkProcess.StartInfo.UseShellExecute = false;
+                    zkProcess.StartInfo.RedirectStandardInput = false;
+                    zkProcess.StartInfo.RedirectStandardOutput = false;
+                    zkProcess.StartInfo.RedirectStandardError = false;
+                    zkProcess.StartInfo.CreateNoWindow = false;
+                    zkProcess.Start();
+                }
             }
+
+            Thread.Sleep(3000);
         }
 
         public static void Start(int port)
         {
-            var server = servers.SingleOrDefault(m => m.Port == port.ToString());
+            var server = servers.SingleOrDefault(m => m.Port == port);
             if (server != null)
             {
-                if (server.Running)
+                if (server.WebHost != null)
                 {
                     Logger.GetLogger("").Info("server " + server.Node.BaseUrl + " already running!");
                 }
                 else
                 {
-                    var t = Task.Run(() =>
+                    try
                     {
-                        try
-                        {
-                            server.Restart();
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.GetLogger("").Info(ex.Message);
-                        }
-                    });
-
-                    tasks.Add(t);
+                        server.Start();
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.GetLogger("").Info(ex.Message);
+                    }
 
                     Logger.GetLogger("").Info("server " + server.Node.BaseUrl + " restart!");
                 }
@@ -185,14 +155,6 @@ namespace RuiJi.Net.Owin
             {
                 Logger.GetLogger("").Info("server not find");
             }
-        }
-
-        public static void StartStandalone(string baseUrl)
-        {
-            var server = new WebApiServer();
-            servers.Add(server);
-
-            server.StartStandalone(baseUrl);
         }
 
         public static void StopAll()
@@ -208,15 +170,9 @@ namespace RuiJi.Net.Owin
                 servers.ForEach(m =>
                 {
                     m.Stop();
-                    Logger.GetLogger("").Info("server port with " + m.Port + " stop!");
+                    Logger.GetLogger("").Info("server port with " + m.BaseUrl + " stop!");
                 });
                 servers.Clear();
-
-                tasks.ForEach(m=> {
-                    m.Dispose();
-                });
-
-                tasks.Clear();
             }
             catch (Exception ex)
             {
