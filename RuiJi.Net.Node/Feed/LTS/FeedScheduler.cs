@@ -234,7 +234,7 @@ namespace RuiJi.Net.Node.Feed.LTS
             if (@event.Event == BroadcastEventEnum.UPDATE)
             {
 
-                var feed = ((JObject)@event.Args).ToObject<FeedModel>();
+                var feed = @event.Args is FeedModel ? @event.Args as FeedModel : ((JObject)@event.Args).ToObject<FeedModel>();
 
                 DeleteJob(feed.Id.ToString());
 
