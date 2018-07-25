@@ -31,7 +31,6 @@
 
   <ItemGroup>
     <Folder Include="Properties\" />
-    <Folder Include="Utils\" />
     <Folder Include="wwwroot\misc\feed\plugin\" />
   </ItemGroup>
 

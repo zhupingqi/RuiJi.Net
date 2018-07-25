@@ -3,10 +3,10 @@ using Newtonsoft.Json;
 using RestSharp;
 using RuiJi.Net.Core.Configuration;
 using RuiJi.Net.Core.Extensions;
+using RuiJi.Net.Owin.SysStatus;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
