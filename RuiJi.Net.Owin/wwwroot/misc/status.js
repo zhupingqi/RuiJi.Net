@@ -8,7 +8,7 @@
 
             setInterval(function () {
                 module.reloadSystem();
-            }, 5000);
+            }, 2000);
 
             $.getJSON('/api/sys/info', function (d) {
                 var t = utils.template("status_server_info", d);

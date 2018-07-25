@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace RuiJi.Net.Owin.SysStatus
 {
@@ -23,10 +24,10 @@ namespace RuiJi.Net.Owin.SysStatus
 
         public float Memory { get; set; }
 
-        public abstract float CpuUsage();
+        public abstract Task<double> CpuUsage();
 
-        public abstract float MemoryUsage();
+        public abstract Task<double> MemoryUsage();
 
-        public abstract object NetworkUsage();
+        public abstract Task<object> NetworkThroughput();
     }
 }

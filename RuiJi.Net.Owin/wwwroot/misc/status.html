@@ -1,26 +1,28 @@
 ﻿<script id="status_system_info" type="text/html">
     <div>
-        <span>The usage rate of Memory</span><br /><br />
+        <span>The usage rate of Memory({{memoryLoad}}%)</span><br /><br />
         <div class="progress">
             <div class="progress-bar" role="progressbar" title="{{memoryLoad}}" aria-valuenow="{{memoryLoad}}" aria-valuemin="0" aria-valuemax="100" style="width: {{memoryLoad}}%;">
             </div>
         </div>
     </div>
     <div>
-        <span>The usage rate of CPU</span><br /><br />
+        <span>The usage rate of CPU({{cpuLoad}}%)</span><br /><br />
         <div class="progress">
             <div class="progress-bar" role="progressbar" title="{{cpuLoad}}" aria-valuenow="{{cpuLoad}}" aria-valuemin="0" aria-valuemax="100" style="width:{{cpuLoad}}%;">
             </div>
         </div>
     </div>
     <div>
-        <span>The usage rate of Network</span><br /><br />
+        <span>Network throughput(100Mbs)</span><br /><br />
+        Sent({{netSpeed.sent}}MB/s)
         <div class="progress">
-            <span>In</span> <div class="progress-bar" title="{{netSpeed.outSpeed}}" role="progressbar" aria-valuenow="{{netSpeed.outSpeed}}" aria-valuemin="0" aria-valuemax="100" style="width: {{outSpeed}}%;">
+            <div class="progress-bar" title="{{netSpeed.sent}}" role="progressbar" aria-valuenow="{{netSpeed.sent}}" aria-valuemin="0" aria-valuemax="100" style="width: {{netSpeed.sent * 8 > 100 ? 100 : netSpeed.sent * 8}}%;">
             </div>
         </div>
+        Received({{netSpeed.received}}MB/s)
         <div class="progress">
-            Out <div class="progress-bar" title="{{netSpeed.inSpeed}}" role="progressbar" aria-valuenow="{{netSpeed.inSpeed}}" aria-valuemin="0" aria-valuemax="100" style="width: {{netSpeed.inSpeed}}%;">
+            <div class="progress-bar" title="{{netSpeed.received}}" role="progressbar" aria-valuenow="{{netSpeed.received}}" aria-valuemin="0" aria-valuemax="100" style="width: {{netSpeed.received * 8 > 100 ? 100 : netSpeed.received * 8}}%;">
             </div>
         </div>
     </div>

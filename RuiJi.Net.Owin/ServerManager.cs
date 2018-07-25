@@ -52,7 +52,7 @@ namespace RuiJi.Net.Owin
 
         public static void StartServers()
         {
-            if(!String.IsNullOrEmpty(RuiJiConfiguration.DocServer))
+            if (!String.IsNullOrEmpty(RuiJiConfiguration.DocServer))
             {
                 var server = new DocumentServer(RuiJiConfiguration.DocServer);
                 server.Start();
@@ -108,7 +108,7 @@ namespace RuiJi.Net.Owin
             var zkPath = RuiJiConfiguration.ZkPath;
             if (!string.IsNullOrEmpty(zkPath))
             {
-                var path = AppDomain.CurrentDomain.BaseDirectory + zkPath + @"\bin\zkServer.cmd";
+                var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, zkPath, @"\bin\zkServer.cmd");
 
                 if (File.Exists(path))
                 {

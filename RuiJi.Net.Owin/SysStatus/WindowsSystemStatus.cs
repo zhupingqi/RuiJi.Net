@@ -6,6 +6,7 @@ using System.Management;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using static Vanara.PInvoke.IpHlpApi;
 
 namespace RuiJi.Net.Owin.SysStatus
@@ -16,26 +17,25 @@ namespace RuiJi.Net.Owin.SysStatus
 
         private PerformanceCounter RamCounter { get; set; }
 
+        PerformanceCounter[] SentCounters { get; set; }
+
+        PerformanceCounter[] ReceivedCounters { get; set; }
+
         public WindowsSystemStatus()
         {
             try
             {
-                var mc = new ManagementClass("Win32_Processor");
-                var moc = mc.GetInstances();
-
-                foreach (ManagementObject mo in moc)
+                using (var mc = new ManagementClass("Win32_Processor"))
                 {
-                    if (mo["Name"] != null)
-                    {
-                        Cpu = mo["Name"].ToString();
-                    }
+                    var moc = mc.GetInstances();
+                    Cpu = moc.OfType<ManagementObject>()
+                     .Select(mo => mo["Name"].ToString())
+                     .FirstOrDefault();
                 }
-                moc.Dispose();
-                mc.Dispose();
             }
-            catch (Exception ex)
+            catch
             {
-                Cpu = "读取出错：" + ex.Message;
+                Cpu = "Unable to obtain";
             }
 
 
@@ -45,56 +45,46 @@ namespace RuiJi.Net.Owin.SysStatus
             RamCounter = new PerformanceCounter("Memory", "Available MBytes");
             RamCounter.NextValue();
 
+            PerformanceCounterCategory pcCategory = new PerformanceCounterCategory("Network Interface");
+            string[] iNames = pcCategory.GetInstanceNames();
+
+            SentCounters = iNames.Select(i => new PerformanceCounter("Network Interface", "Bytes Sent/sec", i)).ToArray();
+            SentCounters.Sum(s => s.NextValue());
+            ReceivedCounters = iNames.Select(i => new PerformanceCounter("Network Interface", "Bytes Received/sec", i)).ToArray();
+            ReceivedCounters.Sum(r => r.NextValue());
+
             var memStatus = new MEMORYSTATUSEX();
             var installedMemory = GlobalMemoryStatusEx(memStatus) ? memStatus.ullTotalPhys / 1024 / 1024 : 0f;
             Memory = installedMemory;
         }
-        public override float CpuUsage()
+        public override Task<double> CpuUsage()
         {
-            return CpuCounter.NextValue();
-        }
-
-        public override float MemoryUsage()
-        {
-            return (Memory - RamCounter.NextValue()) / Memory * 100;
-        }
-
-        public override object NetworkUsage()
-        {
-            var iftable1 = GetIfTable();
-            long inSpeed1 = iftable1.Sum(m => m.dwInOctets);
-            long outSpeed1 = iftable1.Sum(m => m.dwOutOctets);
-
-            Thread.Sleep(1000);
-
-            var iftable2 = GetIfTable();
-            var inSpeed2 = iftable2.Sum(m => m.dwInOctets);
-            var outSpeed2 = iftable2.Sum(m => m.dwOutOctets);
-
-            var m_InSpeed = inSpeed2 - inSpeed1;
-            var m_OutSpeed = outSpeed2 - outSpeed1;
-
-            var ada = GetInterfaceInfo();
-            ulong total = 0;
-
-            foreach (var a in ada.Adapter)
+            return Task.Run(() =>
             {
-                MIB_IF_ROW2 row = new MIB_IF_ROW2(a.Index);
-                GetIfEntry2(ref row);
+                return Math.Round(CpuCounter.NextValue());
+            });
+        }
 
-                if (row.InOctets > 0)
+        public override Task<double> MemoryUsage()
+        {
+            return Task.Run(() =>
+            {
+                return Math.Round((1 - RamCounter.NextValue() / Memory) * 100);
+            });
+
+        }
+
+        public override Task<object> NetworkThroughput()
+        {
+            return Task.Run(() =>
+            {
+                return (object)new
                 {
-                    total += row.ReceiveLinkSpeed;
-                }
-            }
+                    sent = Math.Round(SentCounters.Sum(s => s.NextValue()) / 1024 / 1024, 2),
+                    received = Math.Round(ReceivedCounters.Sum(r => r.NextValue()) / 1024 / 1024, 2)
+                };
+            });
 
-            double m_SpeedTotal = total / 8;
-
-            return new
-            {
-                inSpeed = m_InSpeed * 100 / m_SpeedTotal,
-                outSpeed = m_OutSpeed * 100 / m_SpeedTotal
-            };
         }
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]

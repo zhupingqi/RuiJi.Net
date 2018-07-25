@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace RuiJi.Net.Owin.Controllers
 {
@@ -24,12 +25,16 @@ namespace RuiJi.Net.Owin.Controllers
         [Route("load")]
         public object SystemLoad()
         {
+            var cputask = SystemStatusManager.Instance.CpuUsage();
+            var memtask = SystemStatusManager.Instance.MemoryUsage();
+            var networktask = SystemStatusManager.Instance.NetworkThroughput();
+            Task.WaitAll(new Task[] { cputask, memtask, networktask });
 
             return new
             {
-                memoryLoad = SystemStatusManager.Instance.MemoryUsage(),
-                cpuLoad = SystemStatusManager.Instance.CpuUsage(),
-                netSpeed = SystemStatusManager.Instance.NetworkUsage(),
+                memoryLoad = cputask.Result,
+                cpuLoad = memtask.Result,
+                netSpeed = networktask.Result,
             };
         }
 
