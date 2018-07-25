@@ -26,6 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="crawl.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="funcs\limit.fun">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
