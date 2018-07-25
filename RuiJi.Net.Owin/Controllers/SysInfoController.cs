@@ -24,17 +24,12 @@ namespace RuiJi.Net.Owin.Controllers
         [Route("load")]
         public object SystemLoad()
         {
-            var sys = new SystemInfo();
-
-            sys.ReckonSpeed();
 
             return new
             {
-                memoryLoad = 100 - ((double)sys.MemoryAvailable / (double)sys.PhysicalMemory) * 100,
-                cpuLoad = sys.CpuLoad,
-                inSpeed = (double)sys.InSpeed * 100 / Convert.ToDouble(sys.SpeedTotal),
-                outSpeed = (double)sys.OutSpeed * 100 / Convert.ToDouble(sys.SpeedTotal)
-
+                memoryLoad = SystemStatusManager.Instance.MemoryUsage(),
+                cpuLoad = SystemStatusManager.Instance.CpuUsage(),
+                netSpeed = SystemStatusManager.Instance.NetworkUsage(),
             };
         }
 
@@ -50,18 +45,17 @@ namespace RuiJi.Net.Owin.Controllers
             var baseUrl = Request.Host.Value;
             var server = ServerManager.Get(baseUrl);
 
-            var sys = new SystemInfo();
-            var memory = Math.Round((double)sys.PhysicalMemory / 1024 / 1024 / 1024, 1, MidpointRounding.AwayFromZero) + "GB";
+            var memory = Math.Round((double)SystemStatusManager.Instance.Memory / 1024, 1, MidpointRounding.AwayFromZero) + "GB";
 
             return new
             {
                 nodeType = server.NodeType.ToString(),
                 startTime = server.StartTime.ToString("yyyy-MM-dd HH:mm:ss"),
-                system = RuntimeInformation.OSDescription + " " + RuntimeInformation.OSArchitecture,
-                cpu = sys.ProcessorName,
-                cores = Environment.ProcessorCount,
+                system = SystemStatusManager.Instance.OS,
+                cpu = SystemStatusManager.Instance.Cpu,
+                cores = SystemStatusManager.Instance.CpuCores,
                 memory = memory,
-                efVersion = Microsoft.Extensions.DependencyModel.DependencyContext.Default.Target.Framework
+                efVersion = SystemStatusManager.Instance.Environment
 
             };
         }

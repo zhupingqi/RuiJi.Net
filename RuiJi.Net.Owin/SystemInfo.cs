@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using static Vanara.PInvoke.IpHlpApi;
 
-namespace RuiJi.Net.Owin
+namespace RuiJi.Net.Owin.zzz
 {
     public class SystemInfo
     {
