@@ -32,8 +32,8 @@ namespace RuiJi.Net.Owin.Controllers
 
             return new
             {
-                memoryLoad = cputask.Result,
-                cpuLoad = memtask.Result,
+                memoryLoad = memtask.Result,
+                cpuLoad = cputask.Result,
                 netSpeed = networktask.Result,
             };
         }
