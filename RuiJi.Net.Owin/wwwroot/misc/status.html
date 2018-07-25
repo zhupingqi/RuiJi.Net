@@ -1,0 +1,75 @@
+﻿<script id="status_system_info" type="text/html">
+    <div>
+        <span>The usage rate of Memory({{memoryLoad}}%)</span><br /><br />
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" title="{{memoryLoad}}" aria-valuenow="{{memoryLoad}}" aria-valuemin="0" aria-valuemax="100" style="width: {{memoryLoad}}%;">
+            </div>
+        </div>
+    </div>
+    <div>
+        <span>The usage rate of CPU({{cpuLoad}}%)</span><br /><br />
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" title="{{cpuLoad}}" aria-valuenow="{{cpuLoad}}" aria-valuemin="0" aria-valuemax="100" style="width:{{cpuLoad}}%;">
+            </div>
+        </div>
+    </div>
+    <div>
+        <span>Network throughput(100Mbs)</span><br /><br />
+        Sent({{netSpeed.sent}}MB/s)
+        <div class="progress">
+            <div class="progress-bar" title="{{netSpeed.sent}}" role="progressbar" aria-valuenow="{{netSpeed.sent}}" aria-valuemin="0" aria-valuemax="100" style="width: {{netSpeed.sent * 8 > 100 ? 100 : netSpeed.sent * 8}}%;">
+            </div>
+        </div>
+        Received({{netSpeed.received}}MB/s)
+        <div class="progress">
+            <div class="progress-bar" title="{{netSpeed.received}}" role="progressbar" aria-valuenow="{{netSpeed.received}}" aria-valuemin="0" aria-valuemax="100" style="width: {{netSpeed.received * 8 > 100 ? 100 : netSpeed.received * 8}}%;">
+            </div>
+        </div>
+    </div>
+</script>
+
+<script id="status_server_info" type="text/html">
+    <div>
+        <span>Node Type</span>
+        <div>{{nodeType}}</div>
+    </div>
+    <br />
+    <div>
+        <span>Start Time</span>
+        <div>{{startTime}}</div>
+    </div>
+    <br />
+    <div>
+        <span>Server</span>
+        <div><i>OS</i> {{system}}</div>
+        <div>
+            <i>Environment</i> {{efVersion}}
+        </div>
+        <div><i>CPU</i> {{cpu}}</div>
+        <div><i>Cores</i> {{cores}}</div>
+        <div><i>Memory</i> {{memory}}</div>
+    </div>
+</script>
+
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-lg-6 status-instance">
+                <div id="server_info">
+
+                </div>
+                <br />
+                <div id="dll_version">
+                    <span>Version</span>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div id="pulse">
+                    <span>Authors (monthly commits)</span>
+                </div>
+                <br />
+                <div id="system_info">
+                </div>
+            </div>
+        </div>
+    </div>

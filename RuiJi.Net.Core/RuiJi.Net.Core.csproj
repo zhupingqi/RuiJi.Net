@@ -1,243 +1,58 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A27677E3-1CE8-4A8C-B041-9F7A812546F2}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RuiJi.Net.Core</RootNamespace>
-    <AssemblyName>RuiJi.Net.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="CsQuery, Version=1.3.3.249, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CsQuery.1.3.4\lib\net40\CsQuery.dll</HintPath>
-    </Reference>
-    <Reference Include="DiffPlex, Version=1.2.0.0, Culture=neutral, PublicKeyToken=1d35e91d1bd7bc0f, processorArchitecture=MSIL">
-      <HintPath>..\packages\DiffPlex.1.2.1\lib\portable-net40+sl50+win+wpa81+wp80\DiffPlex.dll</HintPath>
-    </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.4.369, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
-      <HintPath>..\packages\ICSharpCode.SharpZipLib.dll.0.85.4.369\lib\net20\ICSharpCode.SharpZipLib.dll</HintPath>
-    </Reference>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Quartz, Version=3.0.5.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Quartz.3.0.5\lib\net452\Quartz.dll</HintPath>
-    </Reference>
-    <Reference Include="RestSharp, Version=106.2.2.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
-      <HintPath>..\packages\RestSharp.106.2.2\lib\net452\RestSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.IO.Compression.FileSystem" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Runtime.Remoting" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Ude, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\UDE.CSharp.1.1.0\lib\Ude.dll</HintPath>
-    </Reference>
-    <Reference Include="UniversalTypeConverter, Version=1.0.3.1, Culture=neutral, PublicKeyToken=2f110abc75e7903d, processorArchitecture=MSIL">
-      <HintPath>..\packages\UniversalTypeConverter.1.0.5\lib\net46\UniversalTypeConverter.dll</HintPath>
+    <PackageReference Include="CsQuery.NETStandard" Version="1.3.6.1" />
+    <PackageReference Include="DiffPlex" Version="1.4.1" />
+    <PackageReference Include="ICSharpCode.SharpZipLib.Patched" Version="0.86.5.1" />
+    <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Quartz" Version="3.0.5" />
+    <PackageReference Include="RestSharp.NetCore" Version="105.2.3" />
+    <PackageReference Include="System.CodeDom" Version="4.5.0" />
+    <PackageReference Include="UDE.CSharp" Version="1.1.0" />
+    <PackageReference Include="UniversalTypeConverter" Version="1.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNetCore.Http.Abstractions">
+      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.aspnetcore.http.abstractions\2.1.1\lib\netstandard2.0\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
     </Reference>
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Compile\ComplieBase.cs" />
-    <Compile Include="Compile\UrlFunction.cs" />
-    <Compile Include="Compile\FileFuncProvider.cs" />
-    <Compile Include="Compile\FileProProvider.cs" />
-    <Compile Include="Compile\FileProviderBase.cs" />
-    <Compile Include="Compile\ICompile.cs" />
-    <Compile Include="Compile\IProvider.cs" />
-    <Compile Include="Compile\JSCompile.cs" />
-    <Compile Include="Compile\ProcessorCompile.cs" />
-    <Compile Include="Configuration\NodeConfigurationElement.cs" />
-    <Compile Include="Configuration\NodeConfigurationElementCollection.cs" />
-    <Compile Include="Configuration\NodeConfigurationSection.cs" />
-    <Compile Include="Cookie\CookieFile.cs" />
-    <Compile Include="Cookie\IpCookieManager.cs" />
-    <Compile Include="Cookie\ManagedCookie.cs" />
-    <Compile Include="Crawler\CrawlerElectRequest.cs" />
-    <Compile Include="Crawler\CrawlerElectResult.cs" />
-    <Compile Include="Crawler\CrawlerServerManager.cs" />
-    <Compile Include="Crawler\PhantomCrawler.cs" />
-    <Compile Include="Crawler\RuiJiCrawler.cs" />
-    <Compile Include="Crawler\RequestProxy.cs" />
-    <Compile Include="Crawler\WebHeader.cs" />
-    <Compile Include="Expression\FeedSetting.cs" />
-    <Compile Include="Expression\IParseResult.cs" />
-    <Compile Include="Expression\IRuiJiParseResult.cs" />
-    <Compile Include="Expression\ParseResult.cs" />
-    <Compile Include="Extensions\EnumConvert.cs" />
-    <Compile Include="Extensions\NewtonJsonSerializer.cs" />
-    <Compile Include="Extensions\ISelectorConverter.cs" />
-    <Compile Include="Extensions\UriExtensions.cs" />
-    <Compile Include="Extractor\Enum\XPathTypeEnum.cs" />
-    <Compile Include="Extractor\ExtractBase.cs" />
-    <Compile Include="Extractor\ExtractFeature.cs" />
-    <Compile Include="Extractor\ExtractFeatureBlock.cs" />
-    <Compile Include="Extractor\ExtractRequest.cs" />
-    <Compile Include="Extractor\ExtractResult.cs" />
-    <Compile Include="Extractor\ExtractResultCollection.cs" />
-    <Compile Include="Extractor\ExtractTile.cs" />
-    <Compile Include="Extractor\ExtractMetaCollection.cs" />
-    <Compile Include="Extractor\PagingExtractor.cs" />
-    <Compile Include="Extractor\Processor\ClearTagProcessor.cs" />
-    <Compile Include="Extractor\Processor\ExpressionProcessor.cs" />
-    <Compile Include="Extractor\Processor\FunctionProcessor.cs" />
-    <Compile Include="Extractor\Processor\JsonPathProcessor.cs" />
-    <Compile Include="Extractor\Processor\XPathProcessor.cs" />
-    <Compile Include="Extractor\ProcessResult.cs" />
-    <Compile Include="Expression\RuiJiBlockParser.cs" />
-    <Compile Include="Extractor\RuiJiExtractor.cs" />
-    <Compile Include="Extractor\ExtractBlock.cs" />
-    <Compile Include="Extractor\ExtractBlockCollection.cs" />
-    <Compile Include="Extractor\Processor\CssProcessor.cs" />
-    <Compile Include="Extractor\Processor\ExcludeProcessor.cs" />
-    <Compile Include="Extractor\Processor\IProcessor.cs" />
-    <Compile Include="Extractor\Processor\RegexProcessor.cs" />
-    <Compile Include="Extractor\Processor\RegexSplitProcessor.cs" />
-    <Compile Include="Extractor\Processor\RegexReplaceProcessor.cs" />
-    <Compile Include="Extractor\Processor\ProcessorBase.cs" />
-    <Compile Include="Extractor\Processor\ProcessorManager.cs" />
-    <Compile Include="Extractor\Processor\TextRangeProcessor.cs" />
-    <Compile Include="Extractor\Selector\ClearTagSelector.cs" />
-    <Compile Include="Extractor\Selector\CssSelector.cs" />
-    <Compile Include="Extractor\Enum\CssTypeEnum.cs" />
-    <Compile Include="Extractor\Enum\ExcludeTypeEnum.cs" />
-    <Compile Include="Extractor\Enum\SelectorTypeEnum.cs" />
-    <Compile Include="Extractor\Selector\ExcludeSelector.cs" />
-    <Compile Include="Extractor\Selector\ExpressionSelector.cs" />
-    <Compile Include="Extractor\Selector\FunctionSelector.cs" />
-    <Compile Include="Extractor\Selector\ISelector.cs" />
-    <Compile Include="Extractor\Selector\JsonPathSelector.cs" />
-    <Compile Include="Extractor\Selector\RegexSelector.cs" />
-    <Compile Include="Extractor\Selector\RegexSplitSelector.cs" />
-    <Compile Include="Extractor\Selector\RegexReplaceSelector.cs" />
-    <Compile Include="Extractor\Selector\SelectorBase.cs" />
-    <Compile Include="Extractor\Selector\TextRangeSelector.cs" />
-    <Compile Include="Extractor\Selector\XPathSelector.cs" />
-    <Compile Include="Crawler\Request.cs" />
-    <Compile Include="IStorage.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Crawler\Response.cs" />
-    <Compile Include="Queue\QueueChangedEventHandler.cs" />
-    <Compile Include="Queue\QueueChangedAction.cs" />
-    <Compile Include="Queue\QueueChangedEventArgs.cs" />
-    <Compile Include="Queue\TaskQueuePool.cs" />
-    <Compile Include="Compile\UrlCompile.cs" />
-    <Compile Include="Utils\EncryptHelper.cs" />
-    <Compile Include="Compile\JITCompile.cs" />
-    <Compile Include="Utils\DecodeResult.cs" />
-    <Compile Include="Utils\Decoding.cs" />
-    <Compile Include="Utils\HtmlHelper.cs" />
-    <Compile Include="Utils\IPHelper.cs" />
-    <Compile Include="Utils\MimeDetect.cs" />
-    <Compile Include="Utils\Loggoing\AppenderBase.cs" />
-    <Compile Include="Utils\Loggoing\ConsoleAppender.cs" />
-    <Compile Include="Utils\Loggoing\IAppender.cs" />
-    <Compile Include="Utils\Loggoing\Logger.cs" />
-    <Compile Include="Utils\Loggoing\MemoryAppender.cs" />
-    <Compile Include="Utils\Loggoing\RollingFileAppender.cs" />
-    <Compile Include="Utils\Loggoing\SmtpAppender.cs" />
-    <Compile Include="Utils\Page\AjaxPaging.cs" />
-    <Compile Include="Utils\Page\IUrlPaging.cs" />
-    <Compile Include="Utils\Page\Paging.cs" />
-    <Compile Include="Utils\Page\SegmentPage.cs" />
-    <Compile Include="Utils\Page\SegmentPageResult.cs" />
-    <Compile Include="Utils\Page\SegmentPageStatistic.cs" />
-    <Compile Include="Utils\Page\SegmentPaging.cs" />
-    <Compile Include="Utils\Page\WebPaging.cs" />
-    <Compile Include="Utils\Page\_Paging.cs" />
-    <Compile Include="Expression\RuiJiParser.cs" />
-    <Compile Include="Utils\Suffix\Domain.cs" />
-    <Compile Include="Utils\Suffix\DomainParser.cs" />
-    <Compile Include="Utils\Suffix\Rule.cs" />
-    <Compile Include="Utils\Suffix\RuleDefinition.cs" />
-    <Compile Include="Utils\Tasks\IParallelTaskFunc.cs" />
-    <Compile Include="Utils\Tasks\IProgress.cs" />
-    <Compile Include="Utils\Tasks\ITask.cs" />
-    <Compile Include="Utils\Tasks\ITaskResultcs.cs" />
-    <Compile Include="Utils\Tasks\ParallelTask.cs" />
-    <Compile Include="Utils\Tasks\ParallelTaskBase.cs" />
-    <Compile Include="Utils\Tasks\ParallelTaskManager.cs" />
-    <Compile Include="Utils\Wildcard.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="funcs\limit.fun">
+    <None Update="crawl.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="funcs\now.fun">
+    <None Update="funcs\limit.fun">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="funcs\oschina.pro">
+    <None Update="funcs\now.fun">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="funcs\page.fun">
+    <None Update="funcs\oschina.pro">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="funcs\ticks.fun">
+    <None Update="funcs\page.fun">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="mimes.dat">
+    <None Update="funcs\ticks.fun">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="packages.config" />
-    <None Include="public_suffix_list.dat">
+    <None Update="mimes.dat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="text_mime.dat">
+    <None Update="public_suffix_list.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="text_mime.dat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="crawl.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="phantomjs.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="readme.md" />
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
+
 </Project>

@@ -19,6 +19,20 @@ namespace RuiJi.Net.Core.Utils.Suffix
 
         private readonly Rule _rule;
 
+        static DomainParser()
+        {
+            if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + fileName))
+            {
+                using (var client = new WebClient())
+                using (var stream = client.OpenRead(datUrl))
+                {
+                    var reader = new StreamReader(stream);
+
+                    File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + fileName, reader.ReadToEnd());
+                }
+            }
+        }
+
         private DomainParser(Rule rule)
         {
             _rule = rule;
@@ -174,16 +188,7 @@ namespace RuiJi.Net.Core.Utils.Suffix
         {
             get
             {
-                if (!File.Exists(AppDomain.CurrentDomain.BaseDirectory + fileName))
-                {
-                    using (var client = new WebClient())
-                    using (var stream = client.OpenRead(datUrl))
-                    {
-                        var reader = new StreamReader(stream);
-
-                        File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + fileName, reader.ReadToEnd());
-                    }
-                }
+                
 
                 if (cacheParser == null)
                 {

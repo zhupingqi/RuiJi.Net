@@ -1,21 +1,18 @@
-﻿using RuiJi.Net.Core.Utils.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Http;
+﻿using Microsoft.AspNetCore.Mvc;
+using RuiJi.Net.Core.Utils.Logging;
 
 namespace RuiJi.Net.Owin.Controllers
 {
-    [RoutePrefix("api/logger")]
-    public class LoggerController : ApiController
+    [ApiController]
+    [Produces("application/json")]
+    [Route("api/logger")]
+    public class LoggerController : ControllerBase
     {
         [HttpGet]
         [Route("log")]
         public object Log()
         {
-            var baseUrl = Request.RequestUri.Authority;
+            var baseUrl = Request.Host.Value;
             var node = ServerManager.Get(baseUrl);
 
             return MemoryAppender.GetMessage(node.BaseUrl);

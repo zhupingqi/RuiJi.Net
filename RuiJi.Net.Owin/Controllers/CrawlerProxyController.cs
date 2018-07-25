@@ -1,23 +1,26 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using RestSharp;
 using RuiJi.Net.Core;
 using RuiJi.Net.Core.Crawler;
 using RuiJi.Net.Node;
 using RuiJi.Net.Node.Feed.Db;
 using RuiJi.Net.NodeVisitor;
-using System.Web.Http;
+using System.Threading;
 
 namespace RuiJi.Net.Owin.Controllers
 {
-    [RoutePrefix("api/cp")]
-    public class CrawlerProxyController : ApiController
+    [ApiController]
+    [Produces("application/json")]
+    [Route("api/cp")]
+    public class CrawlerProxyController : ControllerBase
     {
         [HttpPost]
         [NodeRoute(Target = NodeTypeEnum.CRAWLERPROXY)]
         [Route("request")]
-        public Response Crawl(Request request)
+        public Response Crawl([FromBody]Request request)
         {
-            var node = ServerManager.Get(Request.RequestUri.Authority);
+            var node = ServerManager.Get(Request.Host.Value);
 
             if (node.NodeType == Node.NodeTypeEnum.CRAWLERPROXY)
             {
@@ -60,10 +63,16 @@ namespace RuiJi.Net.Owin.Controllers
                 restRequest.AddJsonBody(request);
                 restRequest.Timeout = request.Timeout;
 
-                var restResponse = client.Execute(restRequest);
+                Response response = null;
+                var resetEvent = new ManualResetEvent(false);
 
-                var response = JsonConvert.DeserializeObject<Response>(restResponse.Content);
-                response.ElectInfo = result.BaseUrl + "/" + result.ClientIp;
+                var handle = client.ExecuteAsync(restRequest,(restResponse)=> {
+                    response = JsonConvert.DeserializeObject<Response>(restResponse.Content);
+                    response.ElectInfo = result.BaseUrl + "/" + result.ClientIp;
+                    resetEvent.Set();
+                });
+
+                resetEvent.WaitOne();
 
                 return response;
             }
@@ -78,7 +87,7 @@ namespace RuiJi.Net.Owin.Controllers
         [Route("crawlers")]
         public object Crawlers()
         {
-            var node = ServerManager.Get(Request.RequestUri.Authority);
+            var node = ServerManager.Get(Request.Host.Value);
 
             if (node.NodeType == Node.NodeTypeEnum.CRAWLERPROXY)
             {
@@ -90,7 +99,7 @@ namespace RuiJi.Net.Owin.Controllers
         [HttpPost]
         [NodeRoute(Target = NodeTypeEnum.CRAWLERPROXY)]
         [Route("elect")]
-        public object Elect(CrawlerElectRequest request)
+        public object Elect([FromBody]CrawlerElectRequest request)
         {
             var result = new CrawlerElectResult();
 

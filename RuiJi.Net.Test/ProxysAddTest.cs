@@ -1,18 +1,13 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json.Linq;
-using RuiJi.Net.Node.Db;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json.Linq;
+using RuiJi.Net.Node.Feed.Db;
+using Xunit;
 
 namespace RuiJi.Net.Test
 {
-    [TestClass]
+
     public class ProxysAddTest
     {
-        [TestMethod]
+        [Fact]
         public void Add()
         {
             var files = System.IO.Directory.GetFiles(@"d:\download");

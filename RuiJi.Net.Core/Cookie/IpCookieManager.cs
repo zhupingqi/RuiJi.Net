@@ -7,6 +7,7 @@ using System.IO;
 using Newtonsoft.Json;
 using System.Net;
 using RuiJi.Net.Core.Utils;
+using RuiJi.Net.Core.Utils.Logging;
 
 namespace RuiJi.Net.Core.Cookie
 {
@@ -22,9 +23,10 @@ namespace RuiJi.Net.Core.Cookie
 
         static IpCookieManager()
         {
+            Logger.GetLogger("").Info("IpCookieManager init");
+
             var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookies");
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
+            Directory.CreateDirectory(path);
 
             _manager = new IpCookieManager();
         }
@@ -51,6 +53,8 @@ namespace RuiJi.Net.Core.Cookie
         /// </summary>
         public void Reload()
         {
+            Logger.GetLogger("").Info("reload cookies");
+
             cookies.Clear();
 
             foreach (var ipDir in Directory.GetDirectories(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookies")))
@@ -61,7 +65,10 @@ namespace RuiJi.Net.Core.Cookie
                     {
                         var json = File.ReadAllText(file, Encoding.UTF8);
                         var cookieFile = JsonConvert.DeserializeObject<CookieFile>(json);
-                        var host = file.Substring(file.LastIndexOf(@"\") + 1);
+
+                        var f = new FileInfo(file);
+
+                        var host = f.Name;
                         host = host.Substring(0, host.LastIndexOf("."));
                         host = "http://" + host + "/";
 
@@ -100,7 +107,9 @@ namespace RuiJi.Net.Core.Cookie
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
 
-            File.WriteAllText(path + "/" + (new Uri(url)).Host + ".txt", json, Encoding.UTF8);
+            var f = Path.Combine(path,(new Uri(url)).Host + ".txt");
+
+            File.WriteAllText(f, json, Encoding.UTF8);
         }
 
         /// <summary>

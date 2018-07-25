@@ -1,16 +1,16 @@
-﻿using System;
+﻿using RuiJi.Net.Core.Crawler;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RuiJi.Net.Core.Crawler;
+using Xunit;
 
 namespace RuiJi.Net.Test
 {
-    [TestClass]
+
     public class ProxyTest
     {
-        [TestMethod]
+        [Fact]
         public void TestMethod1()
         {
             var proxys = File.ReadAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "proxy.txt")).Distinct().ToList();

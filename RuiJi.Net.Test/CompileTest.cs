@@ -1,14 +1,13 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RuiJi.Net.Core.Compile;
+﻿using RuiJi.Net.Core.Compile;
 using RuiJi.Net.Node.Feed.Db;
 using RuiJi.Net.Owin.Controllers;
+using Xunit;
 
 namespace RuiJi.Net.Test
 {
-    [TestClass]
     public class CompileTest
     {
-        [TestMethod]
+        [Fact]
         public void TestMethod1()
         {
             var url = "http://app.cannews.com.cn/roll.php?do=query&callback=jsonp1475197217819&_={# ticks() #}&date={# now(\"yyyy-MM-dd\") #}&size=20&page={# page(1,10) #}&&start={# limit(1,5,2) #}";
@@ -16,10 +15,10 @@ namespace RuiJi.Net.Test
             var f = new UrlCompile();
             var urls = f.GetResult(url);
 
-            Assert.IsTrue(true);
+            Assert.True(true);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestSample()
         {
             var m = new FuncModel();
@@ -33,7 +32,7 @@ namespace RuiJi.Net.Test
             var func = new ComplieFuncTest("result = DateTime.Now.TimeOfDay;");
             var result = func.GetResult("{# " + m.Sample + " #}");
 
-            Assert.IsTrue(result.Length > 0);
+            Assert.True(result.Length > 0);
         }
     }
 }

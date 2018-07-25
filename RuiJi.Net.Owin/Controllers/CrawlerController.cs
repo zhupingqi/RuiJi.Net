@@ -1,30 +1,26 @@
-﻿using Newtonsoft.Json;
-using RuiJi.Net.Core;
+﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using RuiJi.Net.Core.Crawler;
 using RuiJi.Net.Core.Utils;
-using RuiJi.Net;
-using RuiJi.Net.Node.Crawler;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Web.Http;
-using RuiJi.Net.NodeVisitor;
 using RuiJi.Net.Node;
+using RuiJi.Net.Node.Crawler;
+using RuiJi.Net.NodeVisitor;
+using System;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace RuiJi.Net.Owin.Controllers
 {
-    [RoutePrefix("api/crawler")]
-    public class CrawlerController : ApiController
+    [ApiController]
+    [Produces("application/json")]
+    [Route("api/crawler")]
+    public class CrawlerController : ControllerBase
     {
         [HttpPost]
-        [WebApiCache(Duration = 10)]
         [Route("request")]
-        public Response Crawl(Request request)
+        public Response Crawl([FromBody]Request request)
         {
-            var node = ServerManager.Get(Request.RequestUri.Authority);
+            var node = ServerManager.Get(Request.Host.Value);
 
             if (node.NodeType == Node.NodeTypeEnum.CRAWLER)
             {
@@ -76,7 +72,7 @@ namespace RuiJi.Net.Owin.Controllers
         [Route("info")]
         public object ServerInfo()
         {
-            var node = ServerManager.Get(Request.RequestUri.Authority);
+            var node = ServerManager.Get(Request.Host.Value);
 
             if (node.NodeType == Node.NodeTypeEnum.CRAWLER)
             {
@@ -97,13 +93,13 @@ namespace RuiJi.Net.Owin.Controllers
         [HttpPost]
         [NodeRoute(Target = NodeTypeEnum.CRAWLER, RouteArgumentName = "baseUrl")]
         [Route("ips")]
-        public void SetIps([FromBody]string[] ips,[FromUri]string baseUrl)
+        public void SetIps([FromBody]string[] ips,string baseUrl)
         {
-            var node = ServerManager.Get(Request.RequestUri.Authority);
+            var node = ServerManager.Get(Request.Host.Value);
 
-            var path = "/config/crawler/" + Request.RequestUri.Authority;
+            var path = "/config/crawler/" + Request.Host.Value;
 
-            var data = node.GetData("/config/crawler/" + Request.RequestUri.Authority);
+            var data = node.GetData("/config/crawler/" + Request.Host.Value);
             var config = JsonConvert.DeserializeObject<CrawlerConfig>(data.Data);
             config.Ips = ips;
             node.SetData(path, JsonConvert.SerializeObject(config));

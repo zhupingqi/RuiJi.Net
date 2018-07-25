@@ -1,47 +1,39 @@
-﻿using log4net;
-using Microsoft.Owin.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using RuiJi.Net.Core.Utils;
-using RuiJi.Net.Core.Utils.Logging;
 using RuiJi.Net.Node;
 using RuiJi.Net.Node.Crawler;
 using RuiJi.Net.Node.Extractor;
 using RuiJi.Net.Node.Feed;
-using RuiJi.Net.Node.Feed.LTS;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
+using System.IO;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace RuiJi.Net.Owin
 {
-    public class WebApiServer
+    public class WebApiServer : IServer
     {
-        private IDisposable app;
+        public IWebHost WebHost { get; private set; }
 
-        private ManualResetEvent resetEvent;
+        public string BaseUrl { get; private set; }
 
-        public bool Running
+        public string NodeType { get; private set; }
+
+        public string ZkServer { get; private set; }
+
+        public string Proxy { get; private set; }
+
+        public int Port { get; private set; }
+
+        public WebApiServer(string baseUrl, string nodeType, string zkServer = "", string proxy = "")
         {
-            get;
-            private set;
-        }
+            BaseUrl = IPHelper.FixLocalUrl(baseUrl);
+            NodeType = nodeType;
+            ZkServer = zkServer;
+            Proxy = proxy;
 
-        private string baseUrl;
-
-        private string nodeType;
-
-        private string zkServer;
-
-        private string proxy;
-
-        public string Port
-        {
-            get;
-            private set;
+            Port = 80;
+            if (BaseUrl.IndexOf(":") != -1)
+                Port = Convert.ToInt32(BaseUrl.Split(':')[1]);
         }
 
         public INode Node
@@ -50,90 +42,69 @@ namespace RuiJi.Net.Owin
             internal set;
         }
 
-        public void Start(string baseUrl, string nodeType, string zkServer, string proxy = "")
+        public void Start()
         {
-            Running = true;
+            WebHost = new WebHostBuilder()
+                .UseKestrel()
+                .UseUrls("http://" + BaseUrl)
+                .UseIISIntegration()
+                .UseStartup<Startup>()
+                .Build();
 
-            this.Port = baseUrl.Split(':')[1];
+            WebHost.RunAsync();
 
-            this.baseUrl = baseUrl;
-            this.nodeType = nodeType;
-            this.zkServer = zkServer;
-            this.proxy = proxy;
-
-            baseUrl = IPHelper.FixLocalUrl(baseUrl);
-
-            app = WebApp.Start<Startup>("http://" + baseUrl);
-
-            switch (nodeType)
+            switch (NodeType)
             {
                 case "c":
                     {
-                        Node = new CrawlerNode(baseUrl, zkServer, proxy);
+                        Node = new CrawlerNode(BaseUrl, ZkServer, Proxy);
                         break;
                     }
                 case "cp":
                     {
-                        Node = new CrawlerProxyNode(baseUrl, zkServer);
+                        Node = new CrawlerProxyNode(BaseUrl, ZkServer);
                         break;
                     }
                 case "e":
                     {
-                        Node = new ExtractorNode(baseUrl, zkServer, proxy);
+                        Node = new ExtractorNode(BaseUrl, ZkServer, Proxy);
                         break;
                     }
                 case "ep":
                     {
-                        Node = new ExtractorProxyNode(baseUrl, zkServer);
+                        Node = new ExtractorProxyNode(BaseUrl, ZkServer);
                         break;
                     }
                 case "f":
                     {
-                        Node = new FeedNode(baseUrl, zkServer, proxy);
+                        Node = new FeedNode(BaseUrl, ZkServer, Proxy);
                         break;
                     }
                 case "fp":
                     {
-                        Node = new FeedProxyNode(baseUrl, zkServer);
+                        Node = new FeedProxyNode(BaseUrl, ZkServer);
+                        break;
+                    }
+                case "s":
+                    {
+                        Node = new StandaloneNode(this.BaseUrl);
                         break;
                     }
             }
 
             Node.Start();
-
-            resetEvent = new ManualResetEvent(false);
-            resetEvent.WaitOne();
-        }
-
-        public void StartStandalone(string baseUrl)
-        {
-            baseUrl = IPHelper.FixLocalUrl(baseUrl);
-
-            app = WebApp.Start<Startup>("http://" + baseUrl);
-
-            Node = new StandaloneNode(baseUrl);
-
-            Node.Start();            
-        }
-
-        public void Restart()
-        {
-            Start(baseUrl, nodeType, zkServer, proxy);
         }
 
         public void Stop()
         {
-            if (app != null)
+            if (WebHost != null)
             {
-                app.Dispose();
-                app = null;
+                WebHost.StopAsync(TimeSpan.FromSeconds(0));
+                WebHost.Dispose();
+                WebHost = null;
             }
 
             Node.Stop();
-            if (resetEvent != null)
-                resetEvent.Set();
-
-            Running = false;
         }
     }
 }

@@ -1,0 +1,6 @@
+{
+  "setting": {
+    "ruiJiServer": "localhost:36000",
+    "docServer": "localhost:80"
+  }
+}

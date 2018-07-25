@@ -143,8 +143,9 @@ namespace RuiJi.Net.Node.Feed.LTS
         {
             try
             {
-                var filename = path.Substring(path.LastIndexOf(@"\") + 1);
-                var sp = filename.Split('_');
+                var file = new FileInfo(path);
+
+                var sp = file.Name.Split('_');
                 var feedId = Convert.ToInt32(sp[0]);
                 var content = File.ReadAllText(path);
 
@@ -193,7 +194,7 @@ namespace RuiJi.Net.Node.Feed.LTS
                     });
                 }
 
-                var destFile = path.Replace("snapshot", "pre").Replace(filename, feedId + ".txt");
+                var destFile = path.Replace("snapshot", "pre").Replace(file.Name, feedId + ".txt");
                 if (File.Exists(destFile))
                     File.Delete(destFile);
 
@@ -201,7 +202,9 @@ namespace RuiJi.Net.Node.Feed.LTS
 
                 Logger.GetLogger(baseUrl).Info(" move feed snapshot to pre fold " + destFile);
             }
-            catch { }
+            catch(Exception ex) {
+                Logger.GetLogger(baseUrl).Error(" feed snapshot extract error " + ex.Message);
+            }
         }
 
         protected void Save(int feedId, string url, ExtractResult result)
@@ -232,7 +235,7 @@ namespace RuiJi.Net.Node.Feed.LTS
                 var task = Task.Run(() =>
                 {
                     var snapshots = GetSnapshot();
-                    Logger.GetLogger(baseUrl).Info(" get snapshot feed " + snapshots.Count);
+                    Logger.GetLogger(baseUrl).Info(" get snapshot feed count:" + snapshots.Count);
 
                     foreach (var snapshot in snapshots)
                     {

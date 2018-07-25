@@ -3,32 +3,32 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2005
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Net.Core", "RuiJi.Net.Core\RuiJi.Net.Core.csproj", "{A27677E3-1CE8-4A8C-B041-9F7A812546F2}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Net.Cmd", "RuiJi.Net.Cmd\RuiJi.Net.Cmd.csproj", "{38676AB4-4262-4CCE-8AE5-C67694C1A376}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Net.Owin", "RuiJi.Net.Owin\RuiJi.Net.Owin.csproj", "{0E98716C-4A38-45D4-8B53-7705A342AA42}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Net.Node", "RuiJi.Net.Node\RuiJi.Net.Node.csproj", "{97673817-F983-4CE8-919E-D2E43E46144C}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{53DD9533-82ED-43BB-935F-C60394EE6B2E}"
 	ProjectSection(SolutionItems) = preProject
-		.travis.yml = .travis.yml
+		appveyor.yml = appveyor.yml
 		bug.txt = bug.txt
 		expression.txt = expression.txt
-		LICENSE.txt = LICENSE.txt
+		LICENSE = LICENSE
 		nextVersion.txt = nextVersion.txt
 		README.md = README.md
-		C:\Users\朱平齐\Desktop\ruiji.jpg = C:\Users\朱平齐\Desktop\ruiji.jpg
+		ruiji.ini = ruiji.ini
 		storage.txt = storage.txt
 		technology.txt = technology.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Net.Test", "RuiJi.Net.Test\RuiJi.Net.Test.csproj", "{58F8B8EC-F5DB-4653-84DF-BF4C81ACA8ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RuiJi.Net.Core", "RuiJi.Net.Core\RuiJi.Net.Core.csproj", "{A1FA9138-0CFC-4B39-BF66-4591DCD2DADB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Net.Storage", "RuiJi.Net.Storage\RuiJi.Net.Storage.csproj", "{39D023C5-67EF-4396-967B-396EFA9770C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RuiJi.Net.Node", "RuiJi.Net.Node\RuiJi.Net.Node.csproj", "{C9493CB3-8247-453D-8B29-04E002CCEBD4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuiJi.Net.NodeVisitor", "RuiJi.Net.NodeVisitor\RuiJi.Net.NodeVisitor.csproj", "{934BEB73-E7C2-4C70-B697-A5FB2066C17E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RuiJi.Net.NodeVisitor", "RuiJi.Net.NodeVisitor\RuiJi.Net.NodeVisitor.csproj", "{1922D013-CBEC-4A8F-BADE-D54E33F31DD6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RuiJi.Net.Owin", "RuiJi.Net.Owin\RuiJi.Net.Owin.csproj", "{94457779-DB33-483F-A9F9-F0DBF92FA5E3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RuiJi.Net.Storage", "RuiJi.Net.Storage\RuiJi.Net.Storage.csproj", "{5C07096A-7DC1-4E2B-ADE8-2CBE740A541D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RuiJi.Net.Cmd", "RuiJi.Net.Cmd\RuiJi.Net.Cmd.csproj", "{E677819E-2416-45DB-AFE9-F2C798D2829C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RuiJi.Net.Test", "RuiJi.Net.Test\RuiJi.Net.Test.csproj", "{4336DEAE-9335-4741-865A-A13C8DF9ED73}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,34 +36,34 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A27677E3-1CE8-4A8C-B041-9F7A812546F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A27677E3-1CE8-4A8C-B041-9F7A812546F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A27677E3-1CE8-4A8C-B041-9F7A812546F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A27677E3-1CE8-4A8C-B041-9F7A812546F2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{38676AB4-4262-4CCE-8AE5-C67694C1A376}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{38676AB4-4262-4CCE-8AE5-C67694C1A376}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{38676AB4-4262-4CCE-8AE5-C67694C1A376}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{38676AB4-4262-4CCE-8AE5-C67694C1A376}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0E98716C-4A38-45D4-8B53-7705A342AA42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0E98716C-4A38-45D4-8B53-7705A342AA42}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0E98716C-4A38-45D4-8B53-7705A342AA42}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0E98716C-4A38-45D4-8B53-7705A342AA42}.Release|Any CPU.Build.0 = Release|Any CPU
-		{97673817-F983-4CE8-919E-D2E43E46144C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{97673817-F983-4CE8-919E-D2E43E46144C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{97673817-F983-4CE8-919E-D2E43E46144C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{97673817-F983-4CE8-919E-D2E43E46144C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{58F8B8EC-F5DB-4653-84DF-BF4C81ACA8ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{58F8B8EC-F5DB-4653-84DF-BF4C81ACA8ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{58F8B8EC-F5DB-4653-84DF-BF4C81ACA8ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{58F8B8EC-F5DB-4653-84DF-BF4C81ACA8ED}.Release|Any CPU.Build.0 = Release|Any CPU
-		{39D023C5-67EF-4396-967B-396EFA9770C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{39D023C5-67EF-4396-967B-396EFA9770C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{39D023C5-67EF-4396-967B-396EFA9770C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{39D023C5-67EF-4396-967B-396EFA9770C2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{934BEB73-E7C2-4C70-B697-A5FB2066C17E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{934BEB73-E7C2-4C70-B697-A5FB2066C17E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{934BEB73-E7C2-4C70-B697-A5FB2066C17E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{934BEB73-E7C2-4C70-B697-A5FB2066C17E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1FA9138-0CFC-4B39-BF66-4591DCD2DADB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1FA9138-0CFC-4B39-BF66-4591DCD2DADB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1FA9138-0CFC-4B39-BF66-4591DCD2DADB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1FA9138-0CFC-4B39-BF66-4591DCD2DADB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9493CB3-8247-453D-8B29-04E002CCEBD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9493CB3-8247-453D-8B29-04E002CCEBD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9493CB3-8247-453D-8B29-04E002CCEBD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9493CB3-8247-453D-8B29-04E002CCEBD4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1922D013-CBEC-4A8F-BADE-D54E33F31DD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1922D013-CBEC-4A8F-BADE-D54E33F31DD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1922D013-CBEC-4A8F-BADE-D54E33F31DD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1922D013-CBEC-4A8F-BADE-D54E33F31DD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94457779-DB33-483F-A9F9-F0DBF92FA5E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94457779-DB33-483F-A9F9-F0DBF92FA5E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94457779-DB33-483F-A9F9-F0DBF92FA5E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94457779-DB33-483F-A9F9-F0DBF92FA5E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C07096A-7DC1-4E2B-ADE8-2CBE740A541D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C07096A-7DC1-4E2B-ADE8-2CBE740A541D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C07096A-7DC1-4E2B-ADE8-2CBE740A541D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C07096A-7DC1-4E2B-ADE8-2CBE740A541D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E677819E-2416-45DB-AFE9-F2C798D2829C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E677819E-2416-45DB-AFE9-F2C798D2829C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E677819E-2416-45DB-AFE9-F2C798D2829C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E677819E-2416-45DB-AFE9-F2C798D2829C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4336DEAE-9335-4741-865A-A13C8DF9ED73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4336DEAE-9335-4741-865A-A13C8DF9ED73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4336DEAE-9335-4741-865A-A13C8DF9ED73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4336DEAE-9335-4741-865A-A13C8DF9ED73}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

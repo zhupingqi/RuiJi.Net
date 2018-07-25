@@ -31,10 +31,10 @@ namespace RuiJi.Net.Node.Feed.LTS
             Schedulers = new Dictionary<string, FeedScheduler>();
 
             factory = new StdSchedulerFactory();
-            var factoryResult = factory.GetScheduler();
-            factoryResult.Wait();
+            var task = factory.GetScheduler();
+            task.Wait();
 
-            scheduler = factoryResult.Result;
+            scheduler = task.Result;
             scheduler.Start();
         }
 
@@ -70,7 +70,15 @@ namespace RuiJi.Net.Node.Feed.LTS
                 .WithIdentity("extract_" + baseUrl)
                 .Build();
 
-            await scheduler.ScheduleJob(job, trigger);
+            try
+            {
+                await scheduler.ScheduleJob(job, trigger);
+
+            }
+            catch (Exception ex)
+            {
+                Logger.GetLogger(baseUrl).Info(baseUrl + ex.Message);
+            }
         }
 
         public async void AddJob(string jobKey, string[] cornExpressions, Dictionary<string, object> dic = null)
@@ -168,7 +176,7 @@ namespace RuiJi.Net.Node.Feed.LTS
                 {
                     scheduler.Clear();
 
-                    if (NodeConfigurationSection.Standalone)
+                    if (RuiJiConfiguration.Standalone)
                     {
                         var page = 1;
 
@@ -226,13 +234,13 @@ namespace RuiJi.Net.Node.Feed.LTS
             if (@event.Event == BroadcastEventEnum.UPDATE)
             {
 
-                var feed = ((JObject)@event.Args).ToObject<FeedModel>();
+                var feed = @event.Args is FeedModel ? @event.Args as FeedModel : ((JObject)@event.Args).ToObject<FeedModel>();
 
                 DeleteJob(feed.Id.ToString());
 
                 if (feed.Status == Status.ON)
                 {
-                    if (NodeConfigurationSection.Standalone)
+                    if (RuiJiConfiguration.Standalone)
                     {
                         AddJob(feed);
                     }

@@ -1,14 +1,16 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using RuiJi.Net.Node;
 using RuiJi.Net.Node.Feed.LTS;
 using System;
 using System.Linq;
-using System.Web.Http;
 
 namespace RuiJi.Net.Owin.Controllers
 {
-    [RoutePrefix("api/feed")]
-    public class FeedController : ApiController
+    [ApiController]
+    [Produces("application/json")]
+    [Route("api/feed")]
+    public class FeedController : ControllerBase
     {
         #region Feed
         [HttpGet]
@@ -28,7 +30,7 @@ namespace RuiJi.Net.Owin.Controllers
 
         [HttpPost]
         [Route("set")]
-        public void SetFeedPage([FromBody]string pages, [FromUri]string baseUrl)
+        public void SetFeedPage([FromBody]string pages, string baseUrl)
         {
             var node = ServerManager.ZkNode();
 
@@ -49,7 +51,7 @@ namespace RuiJi.Net.Owin.Controllers
         [Route("change")]
         public void Change([FromBody]BroadcastEvent @event)
         {
-            var secheduler = FeedScheduler.GetSecheduler(Request.RequestUri.Authority);
+            var secheduler = FeedScheduler.GetSecheduler(Request.Host.Value);
             secheduler.OnReceive(@event);
         }
         #endregion

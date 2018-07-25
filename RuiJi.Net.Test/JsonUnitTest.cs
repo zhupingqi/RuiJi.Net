@@ -1,20 +1,15 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using RuiJi.Net.Core.Extractor;
 using RuiJi.Net.Core.Extractor.Enum;
 using RuiJi.Net.Core.Extractor.Selector;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Xunit;
 
 namespace RuiJi.Net.Test
 {
-    [TestClass]
     public class JsonUnitTest
     {
-        [TestMethod]
+        [Fact]
         public void TestJson()
         {
             var block = new ExtractBlock();
@@ -43,17 +38,17 @@ namespace RuiJi.Net.Test
 
             var o = JsonConvert.DeserializeObject<ExtractBlock>(json);
 
-            Assert.IsTrue(o.Selectors.Count > 0);
+            Assert.True(o.Selectors.Count > 0);
         }
 
-        [TestMethod]
+        [Fact]
         public void TestConverter()
         {
             var t = new ExtractTile("a");
 
             var json = JsonConvert.SerializeObject(t);
 
-            Assert.IsTrue(true);
+            Assert.True(true);
         }
     }
 }

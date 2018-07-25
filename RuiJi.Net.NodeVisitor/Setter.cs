@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace RuiJi.Net.NodeVisitor
@@ -16,9 +17,9 @@ namespace RuiJi.Net.NodeVisitor
         {
             var proxyUrl = "";
 
-            if (NodeConfigurationSection.Standalone)
+            if (RuiJiConfiguration.Standalone)
             {
-                proxyUrl = ConfigurationManager.AppSettings["RuiJiServer"];
+                proxyUrl = RuiJiConfiguration.RuiJiServer;
             }
             else
             {
@@ -35,9 +36,17 @@ namespace RuiJi.Net.NodeVisitor
             restRequest.Method = Method.GET;
             restRequest.Timeout = 15000;
 
-            var restResponse = client.Execute(restRequest);
+            string response = "";
+            var resetEvent = new ManualResetEvent(false);
 
-            return restResponse.Content;
+            var handle = client.ExecuteAsync(restRequest, (restResponse) => {
+                response = restResponse.Content;
+                resetEvent.Set();
+            });
+
+            resetEvent.WaitOne();
+
+            return response;
         }
     }
 }

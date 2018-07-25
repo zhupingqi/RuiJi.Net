@@ -85,11 +85,11 @@ namespace RuiJi.Net.Core.Utils
 
         public static DecodeResult GetStringFromBuff(byte[] buff, HttpWebResponse response, string charset = null)
         {
-            if (response.ContentEncoding.Equals("gzip"))
+            if (response.ContentEncoding != null && response.ContentEncoding.Equals("gzip"))
             {
                 buff = DecompressGZip(buff);
             }
-            if (response.ContentEncoding.Equals("deflate"))
+            if (response.ContentEncoding != null && response.ContentEncoding.Equals("deflate"))
             {
                 buff = DecompressDeflate(buff);
             }
