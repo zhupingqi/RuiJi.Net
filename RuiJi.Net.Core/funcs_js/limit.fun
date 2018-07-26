@@ -1,0 +1,1 @@
+﻿for (var i = {0}; i <= {1}; i++){{results.push((i-1)*{2});}}

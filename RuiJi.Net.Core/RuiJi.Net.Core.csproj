@@ -12,6 +12,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="NiL.JS.NetCore" Version="2.5.1275" />
     <PackageReference Include="Quartz" Version="3.0.5" />
     <PackageReference Include="RestSharp.NetCore" Version="105.2.3" />
     <PackageReference Include="System.CodeDom" Version="4.5.0" />
@@ -43,6 +44,21 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="funcs\ticks.fun">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="funcs_js\limit.fun">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="funcs_js\now.fun">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="funcs_js\oschina.pro">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="funcs_js\page.fun">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="funcs_js\ticks.fun">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="mimes.dat">

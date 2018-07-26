@@ -421,10 +421,10 @@ Date.prototype.format = function (fmt) { //author: meizz
         "S": this.getMilliseconds()             //毫秒 
     };
     if (/(y+)/.test(fmt))
-        fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        fmt = fmt.replace(/(y+)/.exec(fmt)[0], (this.getFullYear() + "").substr(4 - /(y+)/.exec(fmt)[0].length));
     for (var k in o)
         if (new RegExp("(" + k + ")").test(fmt))
-            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            fmt = fmt.replace(new RegExp("(" + k + ")").exec(fmt)[0], (new RegExp("(" + k + ")").exec(fmt)[0].length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
 };
 

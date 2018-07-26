@@ -24,7 +24,7 @@ namespace RuiJi.Net.Core.Extractor.Processor
         {
             var pr = new ProcessResult();
 
-            var compile = new ProcessorCompile();
+            var compile = new JSProcessorCompile();
             var r = compile.GetResult(new KeyValuePair<string, string>(selector.Name, result.Content));
 
             if (r.Length > 0)

@@ -68,7 +68,7 @@ namespace RuiJi.Net.Owin.Controllers
         {
             try
             {
-                var compile = new Node.Compile.UrlCompile();
+                var compile = new Node.Compile.JSUrlCompile();
                 var addrs = compile.GetResult(feed.Address);
                 var results = new List<ExtractResult>();
 
@@ -237,7 +237,7 @@ namespace RuiJi.Net.Owin.Controllers
 
             reporter.Report("正在下载 Feed");
 
-            var compile = new Node.Compile.UrlCompile();
+            var compile = new Node.Compile.JSUrlCompile();
             var addrs = compile.GetResult(feed.Address);
 
             foreach (var addr in addrs)
@@ -330,7 +330,7 @@ namespace RuiJi.Net.Owin.Controllers
         }
     }
 
-    public class ComplieFuncTest : Core.Compile.UrlCompile
+    public class ComplieFuncTest : Core.Compile.JSUrlCompile
     {
         private string code;
 

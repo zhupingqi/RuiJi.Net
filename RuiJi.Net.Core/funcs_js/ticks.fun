@@ -1,0 +1,1 @@
+﻿results.push(new Date().getTime());
