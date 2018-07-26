@@ -21,6 +21,7 @@ namespace RuiJi.Net.Core.Utils
 
         static Decoding()
         {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             encodings = System.Text.Encoding.GetEncodings().Select(m => m.Name.ToLower()).ToList();
             encodings.Add("gbk");
         }
@@ -108,7 +109,7 @@ namespace RuiJi.Net.Core.Utils
 
                 return new DecodeResult(charset, body);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return null;
             }
