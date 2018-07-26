@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace RuiJi.Net.Owin
+namespace RuiJi.Net.Owin.SysStatus
 {
     public class SystemStatusManager
     {

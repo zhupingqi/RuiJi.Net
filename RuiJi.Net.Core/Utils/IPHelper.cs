@@ -23,7 +23,7 @@ namespace RuiJi.Net.Core.Utils
         public static IPAddress[] GetHostIPAddress()
         {
             var ips = Dns.GetHostEntry(Dns.GetHostName()).AddressList.ToList();
-            ips.RemoveAll(m => m.AddressFamily != AddressFamily.InterNetwork || m.ToString() == "127.0.0.1");
+            ips.RemoveAll(m => m.AddressFamily != AddressFamily.InterNetwork || m.ToString() == "127.0.0.1" || m.ToString() == "0.0.0.0");
 
             return (from m in ips
                     orderby m.ToString()
