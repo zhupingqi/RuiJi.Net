@@ -1,10 +1,8 @@
-﻿using Microsoft.CSharp;
-using System;
+﻿using System;
 using System.CodeDom.Compiler;
-using System.Linq;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq;
+using Microsoft.CSharp;
 
 namespace RuiJi.Net.Core.Compile
 {
@@ -22,23 +20,13 @@ namespace RuiJi.Net.Core.Compile
         {
             return @"
             using System;
-            using System.ComponentModel;
-            using System.Text;
-            using System.Text.RegularExpressions;
-            using System.Collections;
             using System.Collections.Generic;
-            using System.Reflection;
 
-            sealed class RuiJiCompile
+            public class RuiJiCompile
             {                
-                public static void Main()
-                {
-                    
-                }
-
                 public static List<object> Exec()
                 {
-                    var results = new List<object>();
+                    List<object> results = new List<object>();
                     " + code + @"
                     return results;
                 }
@@ -52,13 +40,16 @@ namespace RuiJi.Net.Core.Compile
         /// <returns>compile result</returns>
         public CompilerResults Compile(string code)
         {
-            var compiler = new CSharpCodeProvider();
-            var parameters = new CompilerParameters();
-            parameters.WarningLevel = 4;
-            parameters.GenerateInMemory = true;
-            parameters.ReferencedAssemblies.Add("System.dll");
-
-            return compiler.CompileAssemblyFromSource(parameters, code);
+            var provider = CodeDomProvider.CreateProvider("CSharp");
+            var cp = new CompilerParameters();
+            //cp.GenerateExecutable = true;
+            cp.GenerateInMemory = true;
+            cp.TreatWarningsAsErrors = false;
+            cp.IncludeDebugInformation = true;
+            cp.MainClass = "RuiJiCompile";
+            //cp.ReferencedAssemblies.Add("System.dll");
+            
+            return provider.CompileAssemblyFromSource(cp, code);
         }
 
         /// <summary>
