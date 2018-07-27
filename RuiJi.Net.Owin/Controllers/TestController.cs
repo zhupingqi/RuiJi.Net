@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using RuiJi.Net.Core.Compile;
 using RuiJi.Net.Core.Crawler;
 using RuiJi.Net.Core.Expression;
 using RuiJi.Net.Core.Extractor;
+using RuiJi.Net.Core.JITCompile;
 using RuiJi.Net.Core.Utils.Tasks;
 using RuiJi.Net.Node.Feed.Db;
 using RuiJi.Net.Node.Feed.LTS;
@@ -68,8 +68,8 @@ namespace RuiJi.Net.Owin.Controllers
         {
             try
             {
-                var compile = new Node.Compile.JSUrlCompile();
-                var addrs = compile.GetResult(feed.Address);
+                //var compile = new Node.Compile.JSUrlCompile();
+                var addrs = CompilerManager.GetResult("url",feed.Address); //compile.GetResult(feed.Address);
                 var results = new List<ExtractResult>();
 
                 foreach (var addr in addrs)
@@ -163,8 +163,11 @@ namespace RuiJi.Net.Owin.Controllers
         public object FuncTest([FromBody]FuncModel func)
         {
             var code = "{# " + func.Sample + " #}";
-            var test = new ComplieFuncTest(func.Code);
-            return test.GetResult(code);
+
+            return CompilerManager.GetResult("url", func.Name, func.Code);
+
+            //var test = new ComplieFuncTest(func.Code);
+            //return test.GetResult(code);
         }
 
         [HttpGet]
@@ -237,8 +240,8 @@ namespace RuiJi.Net.Owin.Controllers
 
             reporter.Report("正在下载 Feed");
 
-            var compile = new Node.Compile.JSUrlCompile();
-            var addrs = compile.GetResult(feed.Address);
+            //var compile = new Node.Compile.JSUrlCompile();
+            var addrs = CompilerManager.GetResult("url", feed.Address); //compile.GetResult(feed.Address);
 
             foreach (var addr in addrs)
             {
@@ -330,26 +333,26 @@ namespace RuiJi.Net.Owin.Controllers
         }
     }
 
-    public class ComplieFuncTest : Core.Compile.JSUrlCompile
-    {
-        private string code;
+    //public class ComplieFuncTest : Core.Compile.JSUrlCompile
+    //{
+    //    private string code;
 
-        public ComplieFuncTest(string code)
-        {
-            this.code = code;
-        }
+    //    public ComplieFuncTest(string code)
+    //    {
+    //        this.code = code;
+    //    }
 
-        protected override string FormatCode(UrlFunction result)
-        {
-            try
-            {
-                var formatCode = string.Format(code, result.Args);
+    //    protected override string FormatCode(UrlFunction result)
+    //    {
+    //        try
+    //        {
+    //            var formatCode = string.Format(code, result.Args);
 
-                return formatCode;
-            }catch(Exception e)
-            {
-                return e.Message;
-            }
-        }
-    }
+    //            return formatCode;
+    //        }catch(Exception e)
+    //        {
+    //            return e.Message;
+    //        }
+    //    }
+    //}
 }

@@ -13,11 +13,6 @@ namespace RuiJi.Net.Core.JITCompile
 
         protected IJITComplie JITCompile { get; private set; }
 
-        static Compiler()
-        {
-            compilers = new Dictionary<string, Compiler>();
-        }
-
         public Compiler(string language = "javascript")
         {
             Providers = new List<ICodeProvider>();
@@ -116,16 +111,24 @@ namespace RuiJi.Net.Core.JITCompile
             if (type == "url")
             {
                 var url = p[0].ToString();
-                
-                var compileExtract = ExtractFunction(url);
-                if (compileExtract == null)
-                    return new string[] { url };
+                var code = "";
 
-                var reg = new Regex(@"\{#(.*?)#\}");
+                if (p.Length == 2)
+                {
+                    code = p[1].ToString();
+                }
+                else
+                {
+                    var compileExtract = ExtractFunction(url);
+                    if (compileExtract == null)
+                        return new string[] { url };
 
-                var code = FormatCode(compileExtract);
+                    code = FormatCode(compileExtract);
+                }
+
                 var addrs = new List<string>();
                 var results = JITCompile.CompileCode(code);
+                var reg = new Regex(@"\{#(.*?)#\}");
 
                 foreach (var r in results)
                 {

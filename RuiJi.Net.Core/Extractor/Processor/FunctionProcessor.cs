@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using RuiJi.Net.Core.Compile;
-using RuiJi.Net.Core.Extractor.Selector;
+﻿using RuiJi.Net.Core.Extractor.Selector;
 using RuiJi.Net.Core.JITCompile;
+using System.Linq;
 
 namespace RuiJi.Net.Core.Extractor.Processor
 {

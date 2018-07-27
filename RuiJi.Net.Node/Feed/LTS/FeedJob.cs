@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Quartz;
 using RuiJi.Net.Core.Crawler;
+using RuiJi.Net.Core.JITCompile;
 using RuiJi.Net.Core.Queue;
 using RuiJi.Net.Core.Utils.Logging;
 using RuiJi.Net.Node.Feed.Db;
@@ -109,13 +110,21 @@ namespace RuiJi.Net.Node.Feed.LTS
 
             Logger.GetLogger(baseUrl).Info(" feed job " + context.JobDetail.Key + " add to feed crawl queue");
 
-            queuePool.QueueAction(() =>
-            {
-                Logger.GetLogger(baseUrl).Info(" feed job " + feedRequest.Request.Uri.ToString() + " starting");
+            var addrs = CompilerManager.GetResult("url", feedRequest.Request.Uri.ToString());
 
-                var response = DoTask(feedRequest);
-                Save(feedRequest, response);
-            });
+            foreach (var addr in addrs)
+            {
+                queuePool.QueueAction(() =>
+                {
+                    Logger.GetLogger(baseUrl).Info(" feed job " + addr.ToString() + " starting");
+
+                    feedRequest.Request = feedRequest.Request.Clone() as Request;
+                    feedRequest.Request.Uri = new Uri(addr.ToString());
+
+                    var response = DoTask(feedRequest);
+                    Save(feedRequest, response);
+                });
+            }
         }
     }
 }
