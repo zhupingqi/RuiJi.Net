@@ -341,9 +341,15 @@ namespace RuiJi.Net.Owin.Controllers
 
         protected override string FormatCode(UrlFunction result)
         {
-            var formatCode = string.Format(code, result.Args);
+            try
+            {
+                var formatCode = string.Format(code, result.Args);
 
-            return formatCode;
+                return formatCode;
+            }catch(Exception e)
+            {
+                return e.Message;
+            }
         }
     }
 }

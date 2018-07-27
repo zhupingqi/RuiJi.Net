@@ -12,19 +12,20 @@ namespace RuiJi.Net.Core.Compile
 {
     public class JSCompile : ICompile
     {
-        Context context;
-        private static bool initProto = false;
-        public JSCompile()
+        static Context context;
+
+        static JSCompile()
         {
             context = new Context();
 
-            if (!initProto)
-            {
-                var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "wwwroot", "misc", "proto.js");
-                var proto = File.ReadAllText(path);
-                context.Eval(proto);
-                initProto = true;
-            }
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "wwwroot", "misc", "proto.js");
+            var proto = File.ReadAllText(path);
+            context.Eval(proto);
+        }
+
+        public JSCompile()
+        {
+            
         }
 
         public CompilerResults Compile(string code)
