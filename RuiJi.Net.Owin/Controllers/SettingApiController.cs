@@ -67,7 +67,7 @@ namespace RuiJi.Net.Owin.Controllers
         [HttpPost]
         [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
         [Route("func/update")]
-        public object UpdateFunc([FromBody]FuncModel func)
+        public object UpdateFunc(FuncModel func)
         {
             if (func.Name == "now" || func.Name == "ticks")
                 return false;

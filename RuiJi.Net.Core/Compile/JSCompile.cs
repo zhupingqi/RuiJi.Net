@@ -20,7 +20,7 @@ namespace RuiJi.Net.Core.Compile
 
             var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "wwwroot", "misc", "proto.js");
             var proto = File.ReadAllText(path);
-            context.Eval(proto);
+            context.RootContext.Eval(proto);
         }
 
         public JSCompile()
@@ -40,6 +40,7 @@ namespace RuiJi.Net.Core.Compile
                 context.Eval(@"var results=[];" + code);
 
                 var jsobj = context.GetVariable("results").ToObject();
+
                 return JSObjToListObj(jsobj);
             }
             catch (JSException e)

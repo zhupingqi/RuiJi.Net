@@ -150,7 +150,7 @@
 
             $.ajax({
                 url: "/api/setting/func/update",
-                data: d,
+                data: JSON.stringify(d),
                 type: "POST",
                 contentType: "application/json",
                 success: function (res) {
