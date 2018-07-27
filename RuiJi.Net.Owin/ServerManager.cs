@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using RuiJi.Net.Core.Configuration;
+using RuiJi.Net.Core.JITCompile;
 using RuiJi.Net.Core.Utils;
 using RuiJi.Net.Core.Utils.Logging;
 using RuiJi.Net.Node;
+using RuiJi.Net.Node.Compile;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -22,6 +24,16 @@ namespace RuiJi.Net.Owin
         static ServerManager()
         {
             servers = new List<IServer>();
+
+            CompilerManager.Create("url", new List<ICodeProvider> {
+                new FileCodeProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"funcs"),"fun"),
+                new LiteDbCodeProvider(Node.Feed.Db.FuncType.URLFUNCTION)
+            });
+
+            CompilerManager.Create("proc", new List<ICodeProvider> {
+                new FileCodeProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"funcs"),"pro"),
+                new LiteDbCodeProvider(Node.Feed.Db.FuncType.SELECTORPROCESSOR)
+            });
         }
 
         ~ServerManager()

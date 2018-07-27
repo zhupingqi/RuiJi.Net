@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using RuiJi.Net.Core.Compile;
 using RuiJi.Net.Core.Extractor.Selector;
+using RuiJi.Net.Core.JITCompile;
 
 namespace RuiJi.Net.Core.Extractor.Processor
 {
@@ -24,8 +25,7 @@ namespace RuiJi.Net.Core.Extractor.Processor
         {
             var pr = new ProcessResult();
 
-            var compile = new JSProcessorCompile();
-            var r = compile.GetResult(new KeyValuePair<string, string>(selector.Name, result.Content));
+            var r = CompilerManager.GetResult("proc", selector.Name, result.Content);
 
             if (r.Length > 0)
                 pr.Matches.Add(r.First().ToString());
