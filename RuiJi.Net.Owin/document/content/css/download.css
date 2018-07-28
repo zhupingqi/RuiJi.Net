@@ -1,0 +1,105 @@
+﻿body {
+    margin: 0 auto;
+    background-color: black;
+}
+
+#nav {
+    position: static;
+    height: 60px;
+    line-height: 60px;
+    background-color: #1a1c21;
+}
+
+    #nav > span {
+        float: right;
+        color: white;
+        margin: 15px 5px;
+        height: 30px;
+        line-height: 30px;
+        padding: 0 5px;
+        border: 1px solid #666666;
+        box-sizing: border-box;
+        font-size: 14px;
+    }
+
+        #nav > span:first-child {
+            margin-right: 20px;
+            height: 20px;
+            line-height: 20px;
+        }
+
+            #nav > span:first-child a {
+                margin-right: 10px;
+            }
+
+    #nav a {
+        color: white;
+        text-decoration: none;
+    }
+
+        #nav a:hover {
+            text-decoration: underline;
+        }
+
+#header {
+    background-image: url('/content/bg.png');
+    background-size: 100% auto;
+    background-repeat-y: no-repeat;
+    background-position: center;
+    height: 250px;
+    color: white;
+    text-align: center;
+}
+
+    #header > div:first-child {
+        padding-top: 30px;
+    }
+
+    #header > div:not(:first-child):not(:last-child) {
+        line-height: 50px;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+#contrainer {
+    color: white;
+}
+
+    #contrainer a {
+        color: white;
+        text-decoration: none;
+    }
+    #contrainer a:hover {
+        color: #666;
+    }
+
+#bdy-download > div {
+    padding-left: 100px;
+}
+
+.row {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+    .row i {
+        font-size: 65px;
+        padding-right: 15px;
+    }
+
+h2, h3, h4 {
+    color: white;
+    text-indent: 10px;
+    margin: 0;
+    padding-top: 10px;
+}
+
+
+
+.github-btn {
+    overflow: hidden;
+    border: 0;
+    vertical-align: middle;
+    box-sizing: border-box;
+    display: inline-block;
+}

@@ -155,3 +155,35 @@
     box-sizing: border-box;
     display: inline-block;
 }
+
+#download {
+    background-color: #254786
+}
+
+#down {
+    margin: 0 auto;
+    display: table;
+}
+
+    #down > div {
+        width: 200px;
+        height: 190px;
+        box-sizing: border-box;
+        display: table-cell;
+        float: left;
+    }
+
+        #down > div > a {
+            display: block;
+            height: 150px;
+            border: 1px solid #9999ff;
+            margin: 20px;
+            line-height: 150px;
+            text-align: center;
+            color: white;
+            text-decoration: none;
+        }
+
+            #down > div > a:hover {
+                background-color: #9999ff;
+            }
