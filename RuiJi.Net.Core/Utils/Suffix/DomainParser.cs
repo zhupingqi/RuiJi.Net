@@ -107,7 +107,7 @@ namespace RuiJi.Net.Core.Utils.Suffix
                 return Read(reader);
             }
         }
-        
+
         public static Task<DomainParser> FromStreamAsync(Stream stream)
         {
             using (var reader = new StreamReader(stream))
@@ -127,7 +127,7 @@ namespace RuiJi.Net.Core.Utils.Suffix
 
                 lines.Add(l);
             }
-            
+
             return CreateDomainParser(lines);
         }
 
@@ -188,8 +188,6 @@ namespace RuiJi.Net.Core.Utils.Suffix
         {
             get
             {
-                
-
                 if (cacheParser == null)
                 {
                     cacheParser = FromFile(AppDomain.CurrentDomain.BaseDirectory + fileName);

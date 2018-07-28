@@ -5,7 +5,6 @@ using Xunit;
 
 namespace RuiJi.Net.Test
 {
-
     public class QueueTaskTest
     {
         [Fact]

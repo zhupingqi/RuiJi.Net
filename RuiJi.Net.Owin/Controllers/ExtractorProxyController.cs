@@ -25,7 +25,6 @@ namespace RuiJi.Net.Owin.Controllers
 
             if (node.NodeType == Node.NodeTypeEnum.EXTRACTORPROXY)
             {
-
                 var result = ExtractorManager.Instance.Elect();
                 if (result == null)
                     return new List<ExtractResult>();

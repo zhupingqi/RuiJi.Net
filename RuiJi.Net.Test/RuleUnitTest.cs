@@ -10,7 +10,6 @@ using Xunit;
 
 namespace RuiJi.Net.Test
 {
-
     public class RuleUnitTest
     {
         [Fact]

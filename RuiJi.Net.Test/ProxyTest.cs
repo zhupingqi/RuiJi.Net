@@ -7,7 +7,6 @@ using Xunit;
 
 namespace RuiJi.Net.Test
 {
-
     public class ProxyTest
     {
         [Fact]

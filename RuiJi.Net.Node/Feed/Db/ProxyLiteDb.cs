@@ -98,7 +98,6 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static bool StatusChange(int[] ids, Status status)
         {
-
             using (var db = new LiteDatabase(@"LiteDb/Proxys.db"))
             {
                 var col = db.GetCollection<ProxyModel>("proxys");

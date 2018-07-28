@@ -6,7 +6,6 @@ using Xunit;
 
 namespace RuiJi.Net.Test
 {
-
     public class ProcessorTest
     {
         [Fact]

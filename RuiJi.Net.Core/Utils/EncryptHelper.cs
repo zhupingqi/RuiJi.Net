@@ -42,7 +42,6 @@ namespace RuiJi.Net.Core.Utils
         /// <returns></returns>
         public static string Encrypt_DES(string str)
         {
-
             System.Security.Cryptography.TripleDESCryptoServiceProvider des = new System.Security.Cryptography.TripleDESCryptoServiceProvider();
             byte[] inputByteArray = System.Text.Encoding.Unicode.GetBytes(str);
             des.Key = Convert.FromBase64String(GetMD5Hash(key));

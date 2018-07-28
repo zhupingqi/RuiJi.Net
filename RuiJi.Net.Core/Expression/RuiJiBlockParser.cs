@@ -47,7 +47,6 @@ namespace RuiJi.Net.Core.Expression
                             }
                         case "[storage]":
                             {
-
                                 break;
                             }
                         case "[blocks]":

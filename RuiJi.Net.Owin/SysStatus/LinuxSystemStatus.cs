@@ -63,8 +63,6 @@ namespace RuiJi.Net.Owin.SysStatus
             });
         }
 
-
-
         public override Task<double> MemoryUsage()
         {
             return Task.Run(() =>

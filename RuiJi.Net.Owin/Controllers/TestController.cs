@@ -176,7 +176,6 @@ namespace RuiJi.Net.Owin.Controllers
 
             try
             {
-
                 var crawler = new RuiJiCrawler();
                 var request = new Request("https://www.baidu.com/");
                 request.Timeout = 15000;
