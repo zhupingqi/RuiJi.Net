@@ -30,7 +30,6 @@ namespace RuiJi.Net.Node.Feed.Db
                 if (!string.IsNullOrEmpty(type) && type.ToLower() != "all" && type.ToLower() != "type")
                     expression = expression.And(x => x.Type.Equals(Enum.Parse(typeof(FeedTypeEnum), type.ToUpper())));
 
-
                 if (!string.IsNullOrEmpty(status) && status.ToLower() != "all" && status.ToLower() != "status")
                     expression = expression.And(x => x.Status.Equals(Enum.Parse(typeof(Status), status.ToUpper())));
 

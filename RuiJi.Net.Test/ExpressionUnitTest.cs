@@ -346,7 +346,6 @@ css .list2
             var parser = new RuiJiParser();
             parser.ParseFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "expression_address.txt"));
 
-
             Assert.True(true);
         }
     }

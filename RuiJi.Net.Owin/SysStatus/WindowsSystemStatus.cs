@@ -38,7 +38,6 @@ namespace RuiJi.Net.Owin.SysStatus
                 Cpu = "Unable to obtain";
             }
 
-
             CpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
             CpuCounter.NextValue();
 
@@ -102,7 +101,6 @@ namespace RuiJi.Net.Owin.SysStatus
                 this.dwLength = (uint)Marshal.SizeOf(typeof(MEMORYSTATUSEX));
             }
         }
-
 
         [return: MarshalAs(UnmanagedType.Bool)]
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]

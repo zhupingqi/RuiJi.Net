@@ -25,10 +25,8 @@ namespace RuiJi.Net.Node.Feed.Db
                 if (!string.IsNullOrEmpty(key))
                     expression = expression.And(x => x.Domain.Contains(key) || x.Expression.Contains(key) || x.Url.Contains(key));
 
-
                 if (!string.IsNullOrEmpty(type) && type.ToLower() != "all" && type.ToLower() != "type")
                     expression = expression.And(x => x.Type.Equals(Enum.Parse(typeof(RuleTypeEnum), type.ToUpper())));
-
 
                 if (!string.IsNullOrEmpty(status) && status.ToLower() != "all" && status.ToLower() != "status")
                     expression = expression.And(x => x.Status.Equals(Enum.Parse(typeof(Status), status.ToUpper())));

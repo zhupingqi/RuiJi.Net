@@ -4,7 +4,6 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 
-
 namespace RuiJi.Net.Core.Utils.Page
 {
     public class Paging : _Paging

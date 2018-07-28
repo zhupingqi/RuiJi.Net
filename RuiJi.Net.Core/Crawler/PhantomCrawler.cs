@@ -149,7 +149,6 @@ namespace RuiJi.Net.Core.Crawler
                 else
                     response.IsRaw = MimeDetect.IsRaw(res.contentType);
 
-
                 File.Delete(file + ".json");
             }
 

@@ -69,7 +69,6 @@ namespace RuiJi.Net.Core.Extractor.Processor
             var bt = b[0].Value;
             var et = e[0].Value;
 
-
             var begin = content.IndexOf(bt);
             var end = content.LastIndexOf(et);
 

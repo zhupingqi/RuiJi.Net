@@ -40,7 +40,6 @@ namespace RuiJi.Net.Core.Utils.Page
             else if (Start > Count)
                 CurrentPage = Pages;
 
-
             segmentPage = (from p in segmentPage
                            group p by p.Shard into g
                            select new SegmentPage() { Shard = g.Key, Count = g.Sum(m => m.Count), Value = g.FirstOrDefault().Value }).ToList();

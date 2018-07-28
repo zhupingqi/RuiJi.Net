@@ -56,7 +56,6 @@ namespace RuiJi.Net.Test
             //    }
             //});
 
-
             block.TileSelector.Metas.AddMeta("title", new List<ISelector> {
                 new CssSelector(".pt-cv-title")
             });

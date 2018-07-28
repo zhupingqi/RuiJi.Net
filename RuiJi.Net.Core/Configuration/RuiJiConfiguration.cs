@@ -25,7 +25,6 @@ namespace RuiJi.Net.Core.Configuration
 
         public static string ZkServer { get; private set; }
 
-
         public static string ZkPath { get; private set; }
 
         static RuiJiConfiguration()

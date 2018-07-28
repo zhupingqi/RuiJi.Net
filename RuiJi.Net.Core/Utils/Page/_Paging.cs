@@ -1,6 +1,5 @@
 ﻿using System;
 
-
 namespace RuiJi.Net.Core.Utils.Page
 {
     public abstract class _Paging

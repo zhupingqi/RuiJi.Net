@@ -215,7 +215,6 @@ namespace RuiJi.Net.Core.Expression
                                         else
                                             property.Value = data;
 
-
                                         break;
                                     }
                                 default:
