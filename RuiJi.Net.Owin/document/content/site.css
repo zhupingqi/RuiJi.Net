@@ -178,7 +178,7 @@
             height: 150px;
             border: 1px solid #9999ff;
             margin: 20px;
-            line-height: 150px;
+            line-height: 30px;
             text-align: center;
             color: white;
             text-decoration: none;
@@ -187,3 +187,7 @@
             #down > div > a:hover {
                 background-color: #9999ff;
             }
+        #down > div > a>i {
+            margin-top:50px;
+            margin-right:10px;
+        }
