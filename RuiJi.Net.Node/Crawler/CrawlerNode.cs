@@ -39,7 +39,9 @@ namespace RuiJi.Net.Node.Crawler
                     return JsonConvert.DeserializeObject<CrawlerConfig>(r);
                 }
             }
-            catch { }
+            catch
+            {
+            }
 
             return new CrawlerConfig();
         }

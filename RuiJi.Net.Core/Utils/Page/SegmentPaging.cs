@@ -87,7 +87,7 @@ namespace RuiJi.Net.Core.Utils.Page
                 }
                 else if (i == lastIndex)
                 {
-                    var row = PageSize * CurrentPage - ary[i].Start;
+                    var row = (PageSize * CurrentPage) - ary[i].Start;
                     sr.Start = 0;
                     sr.Rows = row > ary[i].Count ? ary[i].Count : row;
                     sr.Shard = segmentPage[i].Shard;

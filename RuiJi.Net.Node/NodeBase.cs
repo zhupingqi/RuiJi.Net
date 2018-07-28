@@ -249,7 +249,9 @@ namespace RuiJi.Net.Node
             {
                 zooKeeper.SetData(path, data.GetBytes(), version);
             }
-            catch { }
+            catch
+            {
+            }
         }
 
         public NodeData GetData(string path)
@@ -269,7 +271,9 @@ namespace RuiJi.Net.Node
                     Path = path
                 };
             }
-            catch { }
+            catch
+            {
+            }
 
             return null;
         }

@@ -58,7 +58,9 @@ namespace RuiJi.Net.Node.Extractor
 
                 ExtractorManager.Instance.ClearAndAddServer(nodes.ToArray());
             }
-            catch { }
+            catch
+            {
+            }
         }
 
         protected override NodeTypeEnum SetNodeType()

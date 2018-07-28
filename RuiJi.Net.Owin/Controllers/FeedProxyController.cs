@@ -235,7 +235,9 @@ namespace RuiJi.Net.Owin.Controllers
 
                 return feeds;
             }
-            catch { }
+            catch
+            {
+            }
 
             return new { };
         }

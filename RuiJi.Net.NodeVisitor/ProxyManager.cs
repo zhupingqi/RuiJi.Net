@@ -125,7 +125,9 @@ namespace RuiJi.Net.NodeVisitor
 
                 return Encoding.UTF8.GetString(b);
             }
-            catch { }
+            catch
+            {
+            }
 
             return null;
         }

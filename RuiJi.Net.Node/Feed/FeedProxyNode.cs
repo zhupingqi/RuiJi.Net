@@ -54,7 +54,9 @@ namespace RuiJi.Net.Node.Feed
                 var nodes = zooKeeper.GetChildren("/live_nodes/feed", new LiveFeedWatcher(this));
                 FeedManager.Instance.ClearAndAddServer(nodes.ToArray());
             }
-            catch { }
+            catch
+            {
+            }
         }
 
         protected override NodeTypeEnum SetNodeType()

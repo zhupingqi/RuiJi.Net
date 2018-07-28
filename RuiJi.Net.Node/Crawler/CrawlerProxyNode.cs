@@ -56,7 +56,9 @@ namespace RuiJi.Net.Node.Crawler
                         CrawlerServerManager.Instance.AddServer(node, d.Ips);
                 }
             }
-            catch { }
+            catch
+            {
+            }
         }
 
         public CrawlerConfig GetCrawlerConfig(string baseUrl)
@@ -69,7 +71,9 @@ namespace RuiJi.Net.Node.Crawler
 
                 return d;
             }
-            catch { }
+            catch
+            {
+            }
 
             return null;
         }

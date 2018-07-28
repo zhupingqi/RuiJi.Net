@@ -37,7 +37,9 @@ namespace RuiJi.Net.Core.Extractor.Processor
                 var nodes = doc.SelectNodes(selector.XPath);
                 pr = ProcessResult(nodes, selector);
             }
-            catch { }
+            catch
+            {
+            }
 
             return pr;
         }

@@ -20,10 +20,6 @@ namespace RuiJi.Net.Core.Utils.Logging
     {
         static Dictionary<string, ILoggerRepository> logger = new Dictionary<string, ILoggerRepository>();
 
-        static Logger()
-        {            
-        }
-
         /// <summary>
         /// add appender
         /// </summary>

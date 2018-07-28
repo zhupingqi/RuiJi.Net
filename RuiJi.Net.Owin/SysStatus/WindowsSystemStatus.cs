@@ -69,7 +69,7 @@ namespace RuiJi.Net.Owin.SysStatus
         {
             return Task.Run(() =>
             {
-                return Math.Round((1 - RamCounter.NextValue() / Memory) * 100);
+                return Math.Round((1 - (RamCounter.NextValue() / Memory)) * 100);
             });
         }
 

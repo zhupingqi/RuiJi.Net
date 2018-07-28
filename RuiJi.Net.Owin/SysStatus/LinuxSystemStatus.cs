@@ -59,7 +59,7 @@ namespace RuiJi.Net.Owin.SysStatus
                 float softirq2 = float.Parse(cpu2[7]);
                 float total2 = user2 + nice2 + sys2 + idle2 + iowait2 + irq2 + softirq2;
 
-                return total2 - total1 == 0 ? 0 : Math.Round((1 - (idle2 - idle1) / (total2 - total1)) * 100);
+                return (total2 - total1 == 0) ? 0 : Math.Round((1 - ((idle2 - idle1) / (total2 - total1))) * 100);
             });
         }
 

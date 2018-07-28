@@ -56,7 +56,9 @@ namespace RuiJi.Net.Core.Queue
                             else
                                 result.Action.DynamicInvoke();
                         }
-                        catch { }
+                        catch
+                        {
+                        }
 
                         OnTaskComplete();
                     });
