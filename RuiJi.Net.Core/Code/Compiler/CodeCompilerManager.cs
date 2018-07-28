@@ -37,6 +37,19 @@ namespace RuiJi.Net.Core.Code.Compiler
             return compiler;
         }
 
+        public static bool Exsits(string name)
+        {
+            return compilers.ContainsKey(name);
+        }
+
+        public static CodeCompilerBase GetCompiler(string name)
+        {
+            if (compilers.ContainsKey(name))
+                return compilers[name];
+
+            return null;
+        }
+
         public static object[] GetResult(string name, params object[] p)
         {
             if (compilers.ContainsKey(name))

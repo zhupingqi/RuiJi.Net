@@ -275,16 +275,10 @@ namespace RuiJi.Net.Node
             return null;
         }
 
-        public List<NodeData> GetCluster()
+        public List<NodeData> GetLiveNode()
         {
             var results = new List<NodeData>();
-
             var nodes = new List<string>();
-
-            nodes.AddRange(GetChildren("/config/proxy").AllKeys);
-            nodes.AddRange(GetChildren("/config/crawler").AllKeys);
-            nodes.AddRange(GetChildren("/config/extractor").AllKeys);
-            nodes.AddRange(GetChildren("/config/feed").AllKeys);
 
             nodes.AddRange(GetChildren("/live_nodes/proxy").AllKeys);
             nodes.AddRange(GetChildren("/live_nodes/crawler").AllKeys);
@@ -297,6 +291,27 @@ namespace RuiJi.Net.Node
                 results.Add(data);
             }
 
+            return results;
+        }
+
+        public List<NodeData> GetCluster()
+        {
+            var results = new List<NodeData>();
+
+            var nodes = new List<string>();
+
+            nodes.AddRange(GetChildren("/config/proxy").AllKeys);
+            nodes.AddRange(GetChildren("/config/crawler").AllKeys);
+            nodes.AddRange(GetChildren("/config/extractor").AllKeys);
+            nodes.AddRange(GetChildren("/config/feed").AllKeys);
+
+            foreach (var node in nodes)
+            {
+                var data = GetData(node);
+                results.Add(data);
+            }
+
+            results.AddRange(GetLiveNode());
             return results;
         }
 

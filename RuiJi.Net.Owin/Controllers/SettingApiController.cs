@@ -39,7 +39,7 @@ namespace RuiJi.Net.Owin.Controllers
         [HttpGet]
         [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
         [Route("func/list")]
-        public object Funcs(int offset, int limit)
+        public object Funcs(int offset, int limit, string type)
         {
             var node = ServerManager.Get(Request.Host.Value);
 
@@ -47,7 +47,7 @@ namespace RuiJi.Net.Owin.Controllers
             paging.CurrentPage = (offset / limit) + 1;
             paging.PageSize = limit;
 
-            var list = FuncLiteDb.GetModels(paging);
+            var list = FuncLiteDb.GetModels(paging, type);
 
             return new
             {
@@ -62,6 +62,14 @@ namespace RuiJi.Net.Owin.Controllers
         public object GetFunc(int id)
         {
             return FuncLiteDb.Get(id);
+        }
+
+        [HttpGet]
+        [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
+        [Route("func")]
+        public object GetFunc(string name, FuncType funcType)
+        {
+            return FuncLiteDb.Get(name, funcType);
         }
 
         [HttpPost]

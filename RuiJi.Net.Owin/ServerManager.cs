@@ -4,6 +4,7 @@ using RuiJi.Net.Core.Configuration;
 using RuiJi.Net.Core.Utils.Logging;
 using RuiJi.Net.Node;
 using RuiJi.Net.Node.Compile;
+using RuiJi.Net.Node.Feed.Db;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,16 +22,6 @@ namespace RuiJi.Net.Owin
         static ServerManager()
         {
             servers = new List<IServer>();
-
-            CodeCompilerManager.Create("url", new List<ICodeProvider> {
-                new FileCodeProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"funcs_js"),"fun"),
-                new LiteDbCodeProvider(Node.Feed.Db.FuncType.URLFUNCTION)
-            });
-
-            CodeCompilerManager.Create("proc", new List<ICodeProvider> {
-                new FileCodeProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"funcs_js"),"pro"),
-                new LiteDbCodeProvider(Node.Feed.Db.FuncType.SELECTORPROCESSOR)
-            });
         }
 
         ~ServerManager()
@@ -41,7 +32,7 @@ namespace RuiJi.Net.Owin
         }
 
         public static void Start(string baseUrl, string type, string zkServer = "", string proxy = "")
-        {
+        {           
             var server = new WebApiServer(baseUrl, type, zkServer, proxy);
             servers.Add(server);
 
@@ -86,6 +77,14 @@ namespace RuiJi.Net.Owin
                 {
                     Logger.GetLogger("").Fatal(ex.Message);
                 }
+
+                CodeCompilerManager.Create("url", new List<ICodeProvider> {
+                    new LiteDbCodeProvider(Node.Feed.Db.FuncType.URLFUNCTION)
+                });
+
+                CodeCompilerManager.Create("proc", new List<ICodeProvider> {
+                    new LiteDbCodeProvider(Node.Feed.Db.FuncType.SELECTORPROCESSOR)
+                });
             }
             else
             {
@@ -108,6 +107,14 @@ namespace RuiJi.Net.Owin
                     {
                         Logger.GetLogger("").Info(ex.Message);
                     }
+                });
+
+                CodeCompilerManager.Create("url", new List<ICodeProvider> {
+                    new RemoteCodeProvider(ZkNode(),FuncType.URLFUNCTION.ToString())
+                });
+
+                CodeCompilerManager.Create("proc", new List<ICodeProvider> {
+                    new RemoteCodeProvider(ZkNode(),FuncType.SELECTORPROCESSOR.ToString())
                 });
             }
         }

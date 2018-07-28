@@ -15,7 +15,7 @@ namespace RuiJi.Net.Node.Feed.Db
             CreateIndex();
         }
 
-        public static List<FuncModel> GetModels(Paging page)
+        public static List<FuncModel> GetModels(Paging page, string type = "")
         {
             using (var db = new LiteDatabase(@"LiteDb/Funcs.db"))
             {
@@ -23,7 +23,10 @@ namespace RuiJi.Net.Node.Feed.Db
 
                 page.Count = col.Count();
 
-                return col.Find(Query.All(), page.Start, page.PageSize).ToList();
+                if (string.IsNullOrEmpty(type))
+                    return col.Find(Query.All(), page.Start, page.PageSize).ToList();
+                else
+                    return col.Find(Query.Where("Type", m => ((FuncType)m.AsInt32).ToString().ToLower() == type.ToLower()), page.Start, page.PageSize).ToList();
             }
         }
 
@@ -88,17 +91,7 @@ namespace RuiJi.Net.Node.Feed.Db
             }
         }
 
-        public static FuncModel Get(string name)
-        {
-            using (var db = new LiteDatabase(@"LiteDb/Funcs.db"))
-            {
-                var col = db.GetCollection<FuncModel>("funcs");
-
-                return col.Find(m => m.Name == name).FirstOrDefault();
-            }
-        }
-
-        public static FuncModel Get(string name,FuncType funcType)
+        public static FuncModel Get(string name, FuncType funcType = FuncType.URLFUNCTION)
         {
             using (var db = new LiteDatabase(@"LiteDb/Funcs.db"))
             {
