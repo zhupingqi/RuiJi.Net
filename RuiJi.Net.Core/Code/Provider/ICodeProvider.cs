@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RuiJi.Net.Core.JITCompile
+namespace RuiJi.Net.Core.Code.Provider
 {
     public interface ICodeProvider
     {

@@ -1,8 +1,5 @@
-﻿using RuiJi.Net.Core.JITCompile;
+﻿using RuiJi.Net.Core.Code.Provider;
 using RuiJi.Net.Node.Feed.Db;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace RuiJi.Net.Node.Compile
 {

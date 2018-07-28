@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace RuiJi.Net.Core.JITCompile
+namespace RuiJi.Net.Core.Code.Jit
 {
-    internal class SharpJITCompile : IJITComplie
+    internal class SharpJitCompile : IJitCompile
     {
         /// <summary>
         /// generate code

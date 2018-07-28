@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RuiJi.Net.Core.JITCompile
+namespace RuiJi.Net.Core.Code.Jit
 {
     /// <summary>
     /// compile interface
     /// </summary>
-    public interface IJITComplie
+    public interface IJitCompile
     {
         /// <summary>
         /// compile code and return result

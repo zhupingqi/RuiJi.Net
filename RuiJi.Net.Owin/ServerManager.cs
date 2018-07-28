@@ -1,18 +1,15 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using RuiJi.Net.Core.Code.Compiler;
+using RuiJi.Net.Core.Code.Provider;
 using RuiJi.Net.Core.Configuration;
-using RuiJi.Net.Core.JITCompile;
-using RuiJi.Net.Core.Utils;
 using RuiJi.Net.Core.Utils.Logging;
 using RuiJi.Net.Node;
 using RuiJi.Net.Node.Compile;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace RuiJi.Net.Owin
 {
@@ -25,13 +22,13 @@ namespace RuiJi.Net.Owin
         {
             servers = new List<IServer>();
 
-            CompilerManager.Create("url", new List<ICodeProvider> {
-                new FileCodeProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"funcs"),"fun"),
+            CodeCompilerManager.Create("url", new List<ICodeProvider> {
+                new FileCodeProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"funcs_js"),"fun"),
                 new LiteDbCodeProvider(Node.Feed.Db.FuncType.URLFUNCTION)
             });
 
-            CompilerManager.Create("proc", new List<ICodeProvider> {
-                new FileCodeProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"funcs"),"pro"),
+            CodeCompilerManager.Create("proc", new List<ICodeProvider> {
+                new FileCodeProvider(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"funcs_js"),"pro"),
                 new LiteDbCodeProvider(Node.Feed.Db.FuncType.SELECTORPROCESSOR)
             });
         }

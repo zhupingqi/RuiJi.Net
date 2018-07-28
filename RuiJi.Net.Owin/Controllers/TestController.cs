@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using RuiJi.Net.Core.Code.Compiler;
 using RuiJi.Net.Core.Crawler;
 using RuiJi.Net.Core.Expression;
 using RuiJi.Net.Core.Extractor;
-using RuiJi.Net.Core.JITCompile;
 using RuiJi.Net.Core.Utils.Tasks;
 using RuiJi.Net.Node.Feed.Db;
 using RuiJi.Net.Node.Feed.LTS;
@@ -48,7 +48,7 @@ namespace RuiJi.Net.Owin.Controllers
 
                 var result = results.OrderByDescending(m => m.Metas.Count).FirstOrDefault();
 
-                if (result.Paging != null && result.Paging.Count > 0 && result.Metas != null && result.Metas.ContainsKey("content"))
+                if (result != null && result.Paging != null && result.Paging.Count > 0 && result.Metas != null && result.Metas.ContainsKey("content"))
                 {
                     result = PagingExtractor.MergeContent(new Uri(rule.Url), result, block);
                 }
@@ -69,7 +69,7 @@ namespace RuiJi.Net.Owin.Controllers
             try
             {
                 //var compile = new Node.Compile.JSUrlCompile();
-                var addrs = CompilerManager.GetResult("url",feed.Address); //compile.GetResult(feed.Address);
+                var addrs = CodeCompilerManager.GetResult("url", feed.Address); //compile.GetResult(feed.Address);
                 var results = new List<ExtractResult>();
 
                 foreach (var addr in addrs)
@@ -124,7 +124,7 @@ namespace RuiJi.Net.Owin.Controllers
 
         [HttpGet]
         [Route("crawl")]
-        public object RunCrawl(CrawlTaskModel crawlTask)
+        public object RunCrawl([FromQuery]CrawlTaskModel crawlTask)
         {
             ParallelTask task;
 
@@ -162,12 +162,9 @@ namespace RuiJi.Net.Owin.Controllers
         [Route("func")]
         public object FuncTest([FromBody]FuncModel func)
         {
-            var code = "{# " + func.Sample + " #}";
+            var type = (func.Type == FuncType.URLFUNCTION) ? "url" : "proc";
 
-            return CompilerManager.GetResult("url", func.Name, func.Code);
-
-            //var test = new ComplieFuncTest(func.Code);
-            //return test.GetResult(code);
+            return CodeCompilerManager.Test(type, func.Sample, func.Code);
         }
 
         [HttpGet]
@@ -241,7 +238,7 @@ namespace RuiJi.Net.Owin.Controllers
             reporter.Report("正在下载 Feed");
 
             //var compile = new Node.Compile.JSUrlCompile();
-            var addrs = CompilerManager.GetResult("url", feed.Address); //compile.GetResult(feed.Address);
+            var addrs = CodeCompilerManager.GetResult("url", feed.Address); //compile.GetResult(feed.Address);
 
             foreach (var addr in addrs)
             {
@@ -332,27 +329,4 @@ namespace RuiJi.Net.Owin.Controllers
             }
         }
     }
-
-    //public class ComplieFuncTest : Core.Compile.JSUrlCompile
-    //{
-    //    private string code;
-
-    //    public ComplieFuncTest(string code)
-    //    {
-    //        this.code = code;
-    //    }
-
-    //    protected override string FormatCode(UrlFunction result)
-    //    {
-    //        try
-    //        {
-    //            var formatCode = string.Format(code, result.Args);
-
-    //            return formatCode;
-    //        }catch(Exception e)
-    //        {
-    //            return e.Message;
-    //        }
-    //    }
-    //}
 }

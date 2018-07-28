@@ -1,5 +1,5 @@
-﻿using RuiJi.Net.Core.Extractor.Selector;
-using RuiJi.Net.Core.JITCompile;
+﻿using RuiJi.Net.Core.Code.Compiler;
+using RuiJi.Net.Core.Extractor.Selector;
 using System.Linq;
 
 namespace RuiJi.Net.Core.Extractor.Processor
@@ -19,7 +19,7 @@ namespace RuiJi.Net.Core.Extractor.Processor
         {
             var pr = new ProcessResult();
 
-            var r = CompilerManager.GetResult("proc", selector.Name, result.Content);
+            var r = CodeCompilerManager.GetResult("proc", selector.Name, result.Content);
 
             if (r.Length > 0)
                 pr.Matches.Add(r.First().ToString());

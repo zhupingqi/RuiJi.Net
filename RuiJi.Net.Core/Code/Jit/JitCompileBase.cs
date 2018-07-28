@@ -1,15 +1,16 @@
-﻿using System;
+﻿using RuiJi.Net.Core.Code.Provider;
+using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RuiJi.Net.Core.JITCompile
+namespace RuiJi.Net.Core.Code.Jit
 {
-    public abstract class JITComplieBase : IJITComplie
+    public abstract class JitCompileBase : IJitCompile
     {
         public List<ICodeProvider> Providers { get; protected set; }
 
-        public JITComplieBase()
+        public JitCompileBase()
         {
             Providers = new List<ICodeProvider>();
         }

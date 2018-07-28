@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Quartz;
+using RuiJi.Net.Core.Code.Compiler;
 using RuiJi.Net.Core.Crawler;
-using RuiJi.Net.Core.JITCompile;
 using RuiJi.Net.Core.Queue;
 using RuiJi.Net.Core.Utils.Logging;
 using RuiJi.Net.Node.Feed.Db;
@@ -110,7 +110,7 @@ namespace RuiJi.Net.Node.Feed.LTS
 
             Logger.GetLogger(baseUrl).Info(" feed job " + context.JobDetail.Key + " add to feed crawl queue");
 
-            var addrs = CompilerManager.GetResult("url", feedRequest.Request.Uri.ToString());
+            var addrs = CodeCompilerManager.GetResult("url", feedRequest.Request.Uri.ToString());
 
             foreach (var addr in addrs)
             {

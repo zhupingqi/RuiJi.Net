@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace RuiJi.Net.Core.JITCompile
+namespace RuiJi.Net.Core.Code.Provider
 {
     public class FileCodeProvider : ICodeProvider
     {

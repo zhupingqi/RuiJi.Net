@@ -6,19 +6,19 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace RuiJi.Net.Core.JITCompile
+namespace RuiJi.Net.Core.Code.Jit
 {
-    internal class JavascriptJITCompile : IJITComplie
+    internal class JavascriptJitCompile : IJitCompile
     {
         static Context context;
 
-        static JavascriptJITCompile()
+        static JavascriptJitCompile()
         {
             context = new Context();
 
             var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "wwwroot", "misc", "proto.js");
             var proto = File.ReadAllText(path);
-            context.RootContext.Eval(proto);
+            context.Eval(proto);
         }
 
         public List<object> CompileCode(string code)
@@ -27,9 +27,9 @@ namespace RuiJi.Net.Core.JITCompile
             {
                 context.Eval(@"var results=[];" + code);
 
-                var jsobj = context.GetVariable("results").ToObject();
+                var jsobj = context.GetVariable("results").Select(m=>m.Value.ToString()).ToList<object>();
 
-                return JSObjToListObj(jsobj);
+                return jsobj;
             }
             catch (JSException e)
             {
