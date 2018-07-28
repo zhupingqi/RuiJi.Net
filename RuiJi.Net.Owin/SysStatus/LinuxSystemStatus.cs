@@ -92,7 +92,6 @@ namespace RuiJi.Net.Owin.SysStatus
                     var netArr = Regex.Split(net, "\\s+");
                     sentSum1 += float.Parse(netArr[1]);
                     receivedSum1 += float.Parse(netArr[9]);
-
                 }
 
                 Thread.Sleep(1000);
@@ -109,7 +108,6 @@ namespace RuiJi.Net.Owin.SysStatus
                     var netArr = Regex.Split(net, "\\s+");
                     sentSum2 += float.Parse(netArr[1]);
                     receivedSum2 += float.Parse(netArr[9]);
-
                 }
 
                 return (object)new

@@ -139,7 +139,6 @@ namespace RuiJi.Net.Node.Feed.Db
                         break;
                     line = reader.ReadLine();
                 }
-
             }
             return result;
         }

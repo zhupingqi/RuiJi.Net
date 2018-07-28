@@ -19,7 +19,6 @@ namespace RuiJi.Net.Node.Crawler
 
         public CrawlerProxyNode(string baseUrl, string zkServer) : base(baseUrl, zkServer)
         {
-
         }
 
         protected override void OnStartup()

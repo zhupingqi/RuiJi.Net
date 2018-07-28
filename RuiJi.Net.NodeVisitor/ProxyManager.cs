@@ -39,7 +39,6 @@ namespace RuiJi.Net.NodeVisitor
 
         ~ProxyManager()
         {
-
         }
 
         public static ProxyManager Instance

@@ -48,7 +48,6 @@ namespace RuiJi.Net.Core.Extractor
         /// </summary>
         public ExtractBlock():this("")
         {
-
         }
     }
 }

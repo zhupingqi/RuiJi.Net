@@ -16,7 +16,6 @@ namespace RuiJi.Net.Core.Utils.Page
         public Paging()
             : this(10, 1)
         {
-
         }
 
         /// <summary>

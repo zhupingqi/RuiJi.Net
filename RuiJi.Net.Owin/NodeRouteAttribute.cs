@@ -18,7 +18,6 @@ namespace RuiJi.Net.Owin
 
         public NodeRouteAttribute()
         {
-
         }
 
         public override void OnActionExecuting(ActionExecutingContext actionContext)

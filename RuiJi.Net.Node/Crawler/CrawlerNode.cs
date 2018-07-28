@@ -17,7 +17,6 @@ namespace RuiJi.Net.Node.Crawler
     {
         public CrawlerNode(string baseUrl, string zkServer, string proxyUrl) : base(baseUrl, zkServer, proxyUrl)
         {
-
         }
 
         public override void Start()

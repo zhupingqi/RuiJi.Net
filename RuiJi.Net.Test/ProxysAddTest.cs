@@ -25,7 +25,6 @@ namespace RuiJi.Net.Test
                     ProxyLiteDb.AddOrUpdate(proxy);
                 }
             }
-
         }
     }
 }

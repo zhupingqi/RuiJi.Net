@@ -71,7 +71,6 @@ namespace RuiJi.Net.Core.Crawler
         /// </summary>
         public PhantomCrawler()
         {
-
         }
 
         /// <summary>

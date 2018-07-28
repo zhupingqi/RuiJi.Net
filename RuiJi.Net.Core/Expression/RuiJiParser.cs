@@ -27,7 +27,6 @@ namespace RuiJi.Net.Core.Expression
         /// </summary>
         public RuiJiParser()
         {
-
         }
 
         /// <summary>

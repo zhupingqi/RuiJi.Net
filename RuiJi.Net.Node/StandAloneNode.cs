@@ -43,7 +43,6 @@ namespace RuiJi.Net.Node
 
         public void SetData(string path, string data, int version = -1)
         {
-
         }
 
         public void Start()

@@ -58,7 +58,6 @@ namespace RuiJi.Net.Core.Cookie
                 }
                 catch
                 {
-
                 }
             }
 

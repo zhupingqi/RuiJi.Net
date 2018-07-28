@@ -11,7 +11,6 @@ namespace RuiJi.Net.Core.Code.Compiler
     {
         public CodeCompiler(string language = "javascript") : base(language)
         {
-
         }
 
         /// <summary>

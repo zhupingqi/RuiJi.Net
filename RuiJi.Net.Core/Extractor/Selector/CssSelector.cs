@@ -58,7 +58,6 @@ namespace RuiJi.Net.Core.Extractor.Selector
         /// </summary>
         public CssSelector()
         {
-
         }
 
         /// <summary>

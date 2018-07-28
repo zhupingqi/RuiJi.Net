@@ -31,7 +31,6 @@ namespace RuiJi.Net.Core.Extractor.Selector
         /// </summary>
         public ExpressionSelector()
         {
-
         }
 
         /// <summary>

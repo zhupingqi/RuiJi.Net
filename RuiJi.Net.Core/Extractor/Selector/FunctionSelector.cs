@@ -23,7 +23,6 @@ namespace RuiJi.Net.Core.Extractor.Selector
         /// </summary>
         public FunctionSelector()
         {
-
         }
 
         /// <summary>

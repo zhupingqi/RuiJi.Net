@@ -12,7 +12,6 @@ namespace RuiJi.Net.Storage
     {
         public MongoDBStorage(string connectString, string databaseName, string collectionName) : base(connectString, databaseName, collectionName)
         {
-
         }
 
         public override int Insert(IStorageModel content)

@@ -258,7 +258,6 @@ namespace RuiJi.Net.Owin.Controllers
             {
                 return false;
             }
-
         }
 
         [HttpGet]

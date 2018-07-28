@@ -34,7 +34,6 @@ namespace RuiJi.Net.Storage
 
         public virtual void CreateIndex(string field, bool unique = false)
         {
-
         }
     }
 }

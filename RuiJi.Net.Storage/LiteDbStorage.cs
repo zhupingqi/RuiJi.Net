@@ -20,7 +20,6 @@ namespace RuiJi.Net.Storage
 
         public LiteDbStorage(string connectString, string collectionName) : base(connectString, "", collectionName)
         {
-
         }
 
         public override int Insert(IStorageModel content)

@@ -35,7 +35,6 @@ namespace RuiJi.Net.Core.Extractor.Processor
 
             if(content.StartsWith("<tr"))
             {
-
             }
             else
             {

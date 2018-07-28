@@ -268,7 +268,6 @@ namespace RuiJi.Net.Node
                     Data = Encoding.UTF8.GetString(b),
                     Path = path
                 };
-
             }
             catch { }
 

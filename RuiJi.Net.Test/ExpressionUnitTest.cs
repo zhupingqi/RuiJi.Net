@@ -291,12 +291,6 @@ jpath $..url
         }
 
         [Fact]
-        public void TestFeature()
-        {
-
-        }
-
-        [Fact]
         public void TestExpressionType()
         {
             var block = @"

@@ -21,7 +21,6 @@ namespace RuiJi.Net.Storage
 
         public FileStorage(string folder, string databaseName = "", string collectionName = "") : base(folder, databaseName, collectionName)
         {
-
         }
 
         public override int Insert(DownloadContentModel content)
@@ -55,8 +54,8 @@ namespace RuiJi.Net.Storage
                 else
                     File.WriteAllText(path, content.Data.ToString());
             }
-            catch(Exception ex) {
-
+            catch(Exception ex)
+            {
             }
 
             return 0;

@@ -65,6 +65,5 @@ namespace RuiJi.Net.Node.Feed.Db
 
         [JsonProperty("rexp")]
         public string RuiJiExpression { get; set; }
-
     }
 }

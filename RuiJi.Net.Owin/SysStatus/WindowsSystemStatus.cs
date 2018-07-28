@@ -71,7 +71,6 @@ namespace RuiJi.Net.Owin.SysStatus
             {
                 return Math.Round((1 - RamCounter.NextValue() / Memory) * 100);
             });
-
         }
 
         public override Task<object> NetworkThroughput()
@@ -84,7 +83,6 @@ namespace RuiJi.Net.Owin.SysStatus
                     received = Math.Round(ReceivedCounters.Sum(r => r.NextValue()) / 1024 / 1024, 2)
                 };
             });
-
         }
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]

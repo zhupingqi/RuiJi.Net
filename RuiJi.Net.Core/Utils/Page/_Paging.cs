@@ -39,7 +39,6 @@ namespace RuiJi.Net.Core.Utils.Page
             {
                 _currentPage = value;
             }
-
         }
         #endregion
 

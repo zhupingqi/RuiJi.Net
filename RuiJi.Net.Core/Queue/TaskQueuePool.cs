@@ -128,7 +128,6 @@ namespace RuiJi.Net.Core.Queue
 
         public void WaitAll()
         {
-
         }
     }
 }

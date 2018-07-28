@@ -24,7 +24,6 @@ namespace RuiJi.Net.Node.Feed
 
         public FeedNode(string baseUrl, string zkServer, string proxyUrl) : base(baseUrl, zkServer, proxyUrl)
         {
-
         }
 
         ~FeedNode()

@@ -61,7 +61,6 @@ namespace RuiJi.Net.Owin.Controllers
                 cores = SystemStatusManager.Instance.CpuCores,
                 memory = memory,
                 efVersion = SystemStatusManager.Instance.Environment
-
             };
         }
 
