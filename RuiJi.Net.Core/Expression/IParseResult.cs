@@ -14,7 +14,7 @@ namespace RuiJi.Net.Core.Expression
         /// <summary>
         /// if true, the parse is successful
         /// </summary>
-        bool Success { get;}
+        bool Success { get; }
 
         /// <summary>
         /// error message

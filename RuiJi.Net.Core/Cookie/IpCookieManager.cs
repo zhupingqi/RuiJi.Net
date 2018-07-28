@@ -100,14 +100,14 @@ namespace RuiJi.Net.Core.Cookie
             var cookieFile = new CookieFile();
             cookieFile.Ip = ip;
             cookieFile.UserAgent = ua;
-            cookieFile.Cookie = cookie ;
+            cookieFile.Cookie = cookie;
 
             var json = JsonConvert.SerializeObject(cookieFile);
             var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "cookies", ip, EncryptHelper.GetMD5Hash(ua));
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
 
-            var f = Path.Combine(path,(new Uri(url)).Host + ".txt");
+            var f = Path.Combine(path, (new Uri(url)).Host + ".txt");
 
             File.WriteAllText(f, json, Encoding.UTF8);
         }

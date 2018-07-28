@@ -41,7 +41,7 @@ namespace RuiJi.Net.Core.Extractor
         /// extract meta result
         /// </summary>
         [JsonProperty("metas", NullValueHandling = NullValueHandling.Ignore)]
-        public Dictionary<string, object> Metas { get;set; }
+        public Dictionary<string, object> Metas { get; set; }
 
         /// <summary>
         /// extract paging result
@@ -65,7 +65,7 @@ namespace RuiJi.Net.Core.Extractor
 
                 foreach (var t in pageBlock.Tiles)
                 {
-                    if(t.Content!= null && !string.IsNullOrEmpty(t.Content.ToString()))
+                    if (t.Content != null && !string.IsNullOrEmpty(t.Content.ToString()))
                         dic.Add(t.Content.ToString());
                 }
 
