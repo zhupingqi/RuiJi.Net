@@ -17,8 +17,7 @@ namespace RuiJi.Net.Node.Extractor
     public class ExtractorProxyNode : NodeBase
     {
         public ExtractorProxyNode(string baseUrl, string zkServer) : base(baseUrl, zkServer)
-        {
-            
+        {            
         }
 
         protected override void OnStartup()

@@ -44,7 +44,6 @@ namespace RuiJi.Net.Core.Crawler
         /// </summary>
         public RuiJiCrawler()
         {
-
         }
 
         /// <summary>
@@ -234,7 +233,6 @@ namespace RuiJi.Net.Core.Crawler
                 try
                 {
                     return (HttpWebResponse)httpRequest.GetResponse();
-
                 }
                 catch (WebException ex)
                 {

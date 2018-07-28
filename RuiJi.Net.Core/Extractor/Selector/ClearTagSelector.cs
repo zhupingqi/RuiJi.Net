@@ -13,8 +13,7 @@ namespace RuiJi.Net.Core.Extractor.Selector
     public class ClearTagSelector : SelectorBase
     {
         public ClearTagSelector()
-        {
-            
+        {            
         }
 
         /// <summary>

@@ -29,8 +29,7 @@ namespace RuiJi.Net.Core.Crawler
         /// constructor
         /// </summary>
         public WebHeader()
-        { 
-        
+        {        
         }
 
         /// <summary>

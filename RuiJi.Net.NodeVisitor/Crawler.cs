@@ -17,7 +17,7 @@ namespace RuiJi.Net.NodeVisitor
 {
     public class Crawler
     {
-        public static Response Request(Request request, bool usecp = false)
+        public static Response Request(Request request)
         {
             if (RuiJiConfiguration.Standalone)
             {
@@ -55,67 +55,44 @@ namespace RuiJi.Net.NodeVisitor
 
                 proxyUrl = IPHelper.FixLocalUrl(proxyUrl);
 
-                if (usecp)
+                if (!request.Session)
+                    request = (Request)request.Clone();
+
+                var elect = Elect(new CrawlerElectRequest
                 {
-                    var client = new RestClient("http://" + proxyUrl);
-                    var restRequest = new RestRequest("api/cp/crawl");
-                    restRequest.Method = Method.POST;
-                    restRequest.AddJsonBody(request);
-                    restRequest.Timeout = request.Timeout;
+                    ElectIp = string.IsNullOrEmpty(request.Ip),
+                    ElectProxy = request.Proxy is null,
+                    Uri = request.Uri
+                });
 
-                    Response response = null;
-                    var resetEvent = new ManualResetEvent(false);
+                if (request.Proxy is null)
+                    request.Proxy = elect.Proxy;
 
-                    var handle = client.ExecuteAsync(restRequest, (restResponse) =>
-                    {
-                        response = JsonConvert.DeserializeObject<Response>(restResponse.Content);
-                        resetEvent.Set();
-                    });
+                if (string.IsNullOrEmpty(request.Ip))
+                    request.Ip = elect.ClientIp;
 
-                    resetEvent.WaitOne();
+                if (string.IsNullOrEmpty(request.Elect))
+                    request.Elect = elect.BaseUrl;
 
-                    return response;
-                }
-                else
+                var client = new RestClient("http://" + request.Elect);
+                var restRequest = new RestRequest("api/crawler/request");
+                restRequest.Method = Method.POST;
+                restRequest.AddJsonBody(request);
+                restRequest.Timeout = request.Timeout;
+
+                Response response = null;
+                var resetEvent = new ManualResetEvent(false);
+
+                var handle = client.ExecuteAsync(restRequest, (restResponse) =>
                 {
-                    if (!request.Session)
-                        request = (Request)request.Clone();
+                    response = JsonConvert.DeserializeObject<Response>(restResponse.Content);
 
-                    var elect = Elect(new CrawlerElectRequest
-                    {
-                        ElectIp = string.IsNullOrEmpty(request.Ip),
-                        ElectProxy = request.Proxy is null,
-                        Uri = request.Uri
-                    });
+                    resetEvent.Set();
+                });
 
-                    if (request.Proxy is null)
-                        request.Proxy = elect.Proxy;
+                resetEvent.WaitOne();
 
-                    if (string.IsNullOrEmpty(request.Ip))
-                        request.Ip = elect.ClientIp;
-
-                    if (string.IsNullOrEmpty(request.Elect))
-                        request.Elect = elect.BaseUrl;
-
-                    var client = new RestClient("http://" + request.Elect);
-                    var restRequest = new RestRequest("api/crawler/request");
-                    restRequest.Method = Method.POST;
-                    restRequest.AddJsonBody(request);
-                    restRequest.Timeout = request.Timeout;
-
-                    Response response = null;
-                    var resetEvent = new ManualResetEvent(false);
-
-                    var handle = client.ExecuteAsync(restRequest, (restResponse) =>
-                    {
-                        response = JsonConvert.DeserializeObject<Response>(restResponse.Content);
-                        resetEvent.Set();
-                    });
-
-                    resetEvent.WaitOne();
-
-                    return response;
-                }
+                return response;
             }
         }
 
@@ -140,12 +117,12 @@ namespace RuiJi.Net.NodeVisitor
             return false;
         }
 
-        public static Response Request(string url, string method = "GET", bool usecp = false)
+        public static Response Request(string url, string method = "GET")
         {
             var request = new Request(url);
             request.Method = method;
 
-            return Request(request, usecp);
+            return Request(request);
         }
 
         public static CrawlerElectResult Elect(CrawlerElectRequest request)

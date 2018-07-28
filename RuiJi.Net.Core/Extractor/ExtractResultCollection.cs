@@ -25,8 +25,7 @@ namespace RuiJi.Net.Core.Extractor
         /// constructor
         /// </summary>
         public ExtractResultCollection()
-        {
-            
+        {            
         }
 
         /// <summary>

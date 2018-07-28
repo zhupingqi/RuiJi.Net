@@ -14,8 +14,7 @@ namespace RuiJi.Net.Core.Utils.Page
         public object Value { get; set; }
 
         public SegmentPage()
-        { 
-            
+        {            
         }
 
         public SegmentPage(int count,string shard,object value = null)

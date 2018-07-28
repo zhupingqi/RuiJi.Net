@@ -21,8 +21,7 @@ namespace RuiJi.Net.Core.Utils.Tasks
         }
 
         private ParallelTaskManager()
-        {
-            
+        {            
         }
 
         public static ParallelTask StartNew<T>(object arg) where T : IParallelTaskFunc, new()

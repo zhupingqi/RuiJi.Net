@@ -52,8 +52,7 @@ namespace RuiJi.Net.Core.Cookie
         }
 
         public CookieFile()
-        {
-            
+        {            
         }
     }
 }

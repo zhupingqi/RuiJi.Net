@@ -73,7 +73,6 @@ namespace RuiJi.Net.Node.Feed.LTS
             try
             {
                 await scheduler.ScheduleJob(job, trigger);
-
             }
             catch (Exception ex)
             {
@@ -233,7 +232,6 @@ namespace RuiJi.Net.Node.Feed.LTS
 
             if (@event.Event == BroadcastEventEnum.UPDATE)
             {
-
                 var feed = @event.Args is FeedModel ? @event.Args as FeedModel : ((JObject)@event.Args).ToObject<FeedModel>();
 
                 DeleteJob(feed.Id.ToString());

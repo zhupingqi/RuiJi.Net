@@ -25,8 +25,7 @@ namespace RuiJi.Net.Node.Feed
         }
 
         public FeedProxyNode(string baseUrl, string zkServer) : base(baseUrl, zkServer)
-        {
-            
+        {            
         }
 
         protected override void OnStartup()
