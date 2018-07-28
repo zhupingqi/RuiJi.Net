@@ -70,7 +70,7 @@ namespace RuiJi.Net.Owin.SysStatus
                 var infos = File.ReadAllLines("/proc/meminfo");
 
                 var availableMem = int.Parse(Regex.Split(infos.FirstOrDefault(i => i.StartsWith("MemAvailable:")), "\\s+")[1]);
-                return Math.Round((1 - availableMem / 1024 / Memory) * 100);
+                return Math.Round((1 - (availableMem / 1024 / Memory)) * 100);
             });
         }
 

@@ -132,5 +132,10 @@ namespace RuiJi.Net.NodeVisitor
 
             return response;
         }
+
+        public static object Get(int feedId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,12 +1,11 @@
-﻿using RuiJi.Net.Core.Compile;
-using RuiJi.Net.Core.Crawler;
+﻿using RuiJi.Net.Core.Crawler;
 using RuiJi.Net.Core.Expression;
 using RuiJi.Net.Core.Extractor;
 using RuiJi.Net.Core.Utils.Tasks;
 using RuiJi.Net.Node.Feed.Db;
 using RuiJi.Net.Node.Feed.LTS;
 using RuiJi.Net.NodeVisitor;
-using RuiJi.Net.Owin.Controllers;
+using RuiJi.Net.Owin.Models;
 using System;
 using System.IO;
 using Xunit;
@@ -269,26 +268,26 @@ css article:html
             Assert.True(result != null);
         }
 
-        [Fact]
-        public void TestJsonPExtract()
-        {
-            var url = "http://app.cannews.com.cn/roll.php?do=query&callback=jsonp1475197217819&_={# ticks() #}&date={# now(\"yyyy-MM-dd\") #}&size=20&page=1";
+//        [Fact]
+//        public void TestJsonPExtract()
+//        {
+//            var url = "http://app.cannews.com.cn/roll.php?do=query&callback=jsonp1475197217819&_={# ticks() #}&date={# now(\"yyyy-MM-dd\") #}&size=20&page=1";
 
-            var f = new JSUrlCompile();
-            //url = f.Compile(url);
+//            var f = new JSUrlCompile();
+//            //url = f.Compile(url);
 
-            var c = new RuiJiCrawler();
-            var response = c.Request(new Request(url));
+//            var c = new RuiJiCrawler();
+//            var response = c.Request(new Request(url));
 
-            var expression = @"
-reg /jsonp[\d]+?\((.*)\)/ 1
-jpath $..url
-";
-            var b = RuiJiBlockParser.ParserBlock(expression);
-            var result = RuiJiExtractor.Extract(response.Data.ToString(), b);
+//            var expression = @"
+//reg /jsonp[\d]+?\((.*)\)/ 1
+//jpath $..url
+//";
+//            var b = RuiJiBlockParser.ParserBlock(expression);
+//            var result = RuiJiExtractor.Extract(response.Data.ToString(), b);
 
-            Assert.True(result.Content.ToString().Length > 0);
-        }
+//            Assert.True(result.Content.ToString().Length > 0);
+//        }
 
         [Fact]
         public void TestExpressionType()

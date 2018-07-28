@@ -6,14 +6,7 @@ using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Queue
 {
-    public class ActionDelegate
-    {
-        public Delegate Action { get; set; }
-
-        public object Args { get; set; }
-    }
-
-    public sealed class TaskQueuePool : ConcurrentQueue<ActionDelegate>
+    public sealed class TaskQueuePool : ConcurrentQueue<QueueActionDelegate>
     {
         private AutoResetEvent resetEvent = new AutoResetEvent(false);
 
@@ -73,11 +66,11 @@ namespace RuiJi.Net.Core.Queue
                 mainTask.Dispose();
         }
 
-        private new void Enqueue(ActionDelegate @delegate)
+        private new void Enqueue(QueueActionDelegate @delegate)
         {
             lock (this)
             {
-                base.Enqueue(new ActionDelegate { Action = @delegate.Action, Args = @delegate.Args });
+                base.Enqueue(new QueueActionDelegate { Action = @delegate.Action, Args = @delegate.Args });
 
                 if (currentTasks < MaxTasks)
                     resetEvent.Set();
@@ -86,11 +79,11 @@ namespace RuiJi.Net.Core.Queue
             }
         }
 
-        private ActionDelegate Dequeue()
+        private QueueActionDelegate Dequeue()
         {
             resetEvent.WaitOne();
 
-            ActionDelegate action;
+            QueueActionDelegate action;
 
             if (base.TryDequeue(out action))
             {
@@ -116,7 +109,7 @@ namespace RuiJi.Net.Core.Queue
         {
             lock (this)
             {
-                Enqueue(new ActionDelegate { Action = action });
+                Enqueue(new QueueActionDelegate { Action = action });
             }
         }
 
@@ -124,7 +117,7 @@ namespace RuiJi.Net.Core.Queue
         {
             lock (this)
             {
-                Enqueue(new ActionDelegate { Action = action, Args = args });
+                Enqueue(new QueueActionDelegate { Action = action, Args = args });
             }
         }
 
