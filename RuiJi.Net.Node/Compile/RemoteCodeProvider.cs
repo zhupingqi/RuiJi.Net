@@ -15,25 +15,17 @@ namespace RuiJi.Net.Node.Compile
         private bool init = false;
         private string baseUrl;
 
-        private readonly NodeBase nodeBase;
         private readonly string funcType;
 
-        public RemoteCodeProvider(NodeBase node, string type = "")
+        public RemoteCodeProvider(string baseUrl, string type = "")
         {
             functions = new Dictionary<string, FuncModel>();
-            this.nodeBase = node;
+            this.baseUrl = baseUrl;
             this.funcType = type;
         }
 
         private bool Init()
         {
-            var nodes = nodeBase.GetLiveNode();
-            var node = nodes.First(m => m.Data == "feed proxy");
-            if (node == null)
-                return false;
-
-            baseUrl = node.Path.Substring(node.Path.LastIndexOf("/"));
-
             var offset = 0;
             var limit = 100;
 
@@ -65,7 +57,7 @@ namespace RuiJi.Net.Node.Compile
             {
                 var obj = JObject.Parse(restResponse.Content);
 
-                results = JsonConvert.DeserializeObject<List<FuncModel>>(obj.GetValue("list").ToString());
+                results = JsonConvert.DeserializeObject<List<FuncModel>>(obj.GetValue("rows").ToString());
 
                 resetEvent.Set();
             });
@@ -77,7 +69,7 @@ namespace RuiJi.Net.Node.Compile
         private FuncModel Query(string name)
         {
             var client = new RestClient("http://" + baseUrl);
-            var restRequest = new RestRequest("api/setting/func/name=" + name);
+            var restRequest = new RestRequest("api/setting/func/name?name=" + name);
             restRequest.Method = Method.GET;
 
             var resetEvent = new ManualResetEvent(false);

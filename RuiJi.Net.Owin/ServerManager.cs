@@ -110,11 +110,11 @@ namespace RuiJi.Net.Owin
                 });
 
                 CodeCompilerManager.Create("url", new List<ICodeProvider> {
-                    new RemoteCodeProvider(ZkNode(),FuncType.URLFUNCTION.ToString())
+                    new RemoteCodeProvider(ZkNode().BaseUrl,FuncType.URLFUNCTION.ToString())
                 });
 
                 CodeCompilerManager.Create("proc", new List<ICodeProvider> {
-                    new RemoteCodeProvider(ZkNode(),FuncType.SELECTORPROCESSOR.ToString())
+                    new RemoteCodeProvider(ZkNode().BaseUrl,FuncType.SELECTORPROCESSOR.ToString())
                 });
             }
         }
@@ -124,7 +124,7 @@ namespace RuiJi.Net.Owin
             var zkPath = RuiJiConfiguration.ZkPath;
             if (!string.IsNullOrEmpty(zkPath))
             {
-                var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, zkPath, @"\bin\zkServer.cmd");
+                var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, zkPath,"bin", "zkServer.cmd");
 
                 if (File.Exists(path))
                 {

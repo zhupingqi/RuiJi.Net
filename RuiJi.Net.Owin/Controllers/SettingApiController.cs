@@ -59,15 +59,15 @@ namespace RuiJi.Net.Owin.Controllers
         [HttpGet]
         [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
         [Route("func")]
-        public object GetFunc(int id)
+        public object GetFuncById(int id)
         {
             return FuncLiteDb.Get(id);
         }
 
         [HttpGet]
         [NodeRoute(Target = NodeTypeEnum.FEEDPROXY)]
-        [Route("func")]
-        public object GetFunc(string name, FuncType funcType)
+        [Route("func/name")]
+        public object GetFuncByName(string name, FuncType funcType)
         {
             return FuncLiteDb.Get(name, funcType);
         }
@@ -77,8 +77,8 @@ namespace RuiJi.Net.Owin.Controllers
         [Route("func/update")]
         public object UpdateFunc(FuncModel func)
         {
-            if (func.Name == "now" || func.Name == "ticks")
-                return false;
+            //if (func.Name == "now" || func.Name == "ticks")
+            //    return false;
 
             var f = FuncLiteDb.Get(func.Name);
             if (f != null && f.Id == 0)
