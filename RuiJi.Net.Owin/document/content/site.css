@@ -174,9 +174,6 @@
     }
 
         #down > div > a {
-            display: block;
-            height: 150px;
-            border: 1px solid #9999ff;
             margin: 20px;
             line-height: 30px;
             text-align: center;
@@ -184,10 +181,13 @@
             text-decoration: none;
         }
 
-            #down > div > a:hover {
-                background-color: #9999ff;
-            }
-        #down > div > a>i {
-            margin-top:50px;
-            margin-right:10px;
+    #down i {
+        font-size: 60px;
+        margin: 15px;
+    }
+
+        #down > div > span {
+            display: block;
+            text-indent: 10px;
+            color: aquamarine;
         }
