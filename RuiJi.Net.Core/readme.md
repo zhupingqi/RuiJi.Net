@@ -141,3 +141,32 @@ RuiJi.Net has extract model called RuiJi Expression,It divides the web page into
 RuiJi.Net have more features including extract rule match by url wildcard and page feature, paging extract, url function, cookie manager and cookie channel,much selecors to clear data, ...
 
 If you like , please star my project, It will give me more motivation to improve this project.
+
+#### chromium install
+If you want to run html page with javascript.please install chromium.
+
+如果你想要使用ChromiumCrawler等待页面运行JS，请安装chromium。参考以下教程。
+
+目前chromium版本号为555668 
+
+下载Ruiji.Net部署操作系统对应的zip
+ 
+在编译后的运行目录里建立以下路径
+ 
+编译后的运行目录\.local-chromium\{操作系统}-555668\
+ 
+{操作系统}分别对应：
+
+Linux64位系统：Linux
+
+Windows32位系统：Win
+
+Windows64位系统：Win64
+
+Mac系统：Mac
+ 
+将下载好的zip解压到创建好的目录中。
+ 
+已linux为例 chromium所在路径为  运行目录\.local-chromium\Linux-555668\chrome-linux
+
+网盘地址：https://pan.baidu.com/s/1rsyCNnXxbobCBLZuPTiJHQ  cr3e
