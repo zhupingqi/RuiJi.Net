@@ -74,8 +74,11 @@ namespace RuiJi.Net.Core.Crawler
             {
                 if (request.RunJS)
                 {
-                    var p = new PhantomCrawler();
-                    var res = p.Request(request);
+                    var chromium = new ChromiumCrawler();
+                    var resTask = chromium.RequestAsync(request);
+                    resTask.Wait();
+                    var res = resTask.Result;
+
                     if (request.UseCookie && res.Headers != null)
                     {
                         var cookies = res.Headers.Where(m => m.Name == "Set-Cookie").Select(m => m.Value).ToList();

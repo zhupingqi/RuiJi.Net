@@ -137,6 +137,9 @@
             var msg = "";
 
             $.each(t, function () {
+                if ($.trim(this.value) == "")
+                    return true;
+
                 d[this.name] = this.value;
                 if ($.trim(d[this.name]) == "") {
                     msg += "\nneed " + this.name;

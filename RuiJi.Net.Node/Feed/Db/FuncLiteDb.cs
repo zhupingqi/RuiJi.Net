@@ -3,6 +3,7 @@ using RuiJi.Net.Core.Utils.Page;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,13 +21,17 @@ namespace RuiJi.Net.Node.Feed.Db
             using (var db = new LiteDatabase(@"LiteDb/Funcs.db"))
             {
                 var col = db.GetCollection<FuncModel>("funcs");
+                Expression<Func<FuncModel, bool>> expression = x => true;
 
-                page.Count = col.Count();
+                if (!string.IsNullOrEmpty(type))
+                    expression = expression.And(x => ((FuncType)Convert.ToInt32(x.Type)).ToString().ToLower() == type.ToLower());
+
+                page.Count = col.Count(expression);
 
                 if (string.IsNullOrEmpty(type))
-                    return col.Find(Query.All(), page.Start, page.PageSize).ToList();
+                    return col.Find(expression, page.Start, page.PageSize).ToList();
                 else
-                    return col.Find(Query.Where("Type", m => ((FuncType)m.AsInt32).ToString().ToLower() == type.ToLower()), page.Start, page.PageSize).ToList();
+                    return col.Find(expression, page.Start, page.PageSize).ToList();
             }
         }
 
@@ -64,7 +69,7 @@ namespace RuiJi.Net.Node.Feed.Db
         {
             using (var db = new LiteDatabase(@"LiteDb/Funcs.db"))
             {
-                var col = db.GetCollection<RuleModel>("funcs");
+                var col = db.GetCollection<FuncModel>("funcs");
 
                 col.Delete(x => ids.Contains(x.Id));
             }

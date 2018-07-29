@@ -52,7 +52,7 @@ namespace RuiJi.Net.Owin.Controllers
             return new
             {
                 rows = list,
-                total = list.Count
+                total = paging.Count
             };
         }
 

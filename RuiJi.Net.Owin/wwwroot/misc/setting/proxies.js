@@ -158,6 +158,9 @@
             $("input[name]:not(:disabled),textarea", "#proxy_dialog").each(function (index, e) {
                 e = $(e);
                 var v = e.val();
+                if ($.trim(v) == "")
+                    return true;
+
                 if (v == "true")
                     d[e.attr("name")] = true;
                 else if (v == "false")

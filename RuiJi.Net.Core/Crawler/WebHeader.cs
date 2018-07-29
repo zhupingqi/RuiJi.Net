@@ -62,5 +62,21 @@ namespace RuiJi.Net.Core.Crawler
 
             return hs;
         }
+
+        public static List<WebHeader> FromDictionary(Dictionary<string,object> dictionary)
+        {
+            var hs = new List<WebHeader>();
+
+            foreach (var key in dictionary.Keys)
+            {
+                hs.Add(new WebHeader()
+                {
+                    Name = key,
+                    Value = dictionary[key].ToString()
+                });
+            }
+
+            return hs;
+        }
     }
 }

@@ -77,7 +77,10 @@ namespace RuiJi.Net.Owin.Controllers
                     feed.Address = addr.ToString();
                     var job = new FeedJob();
                     var response = job.DoTask(feed);
-
+                    if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                    {
+                        return response.Data;
+                    }
                     if (string.IsNullOrEmpty(feed.RuiJiExpression))
                     {
                         results.Add(new ExtractResult());

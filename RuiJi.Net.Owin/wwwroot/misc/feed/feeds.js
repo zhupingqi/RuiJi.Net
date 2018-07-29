@@ -103,7 +103,7 @@
                         }
 
                         if (p == "method" && v == "POST") {
-                            $(".method-group", f ).removeClass("hide");
+                            $(".method-group", f).removeClass("hide");
                         }
 
                         if (p == "contentType" && v == "application/json") {
@@ -276,6 +276,9 @@
             $("input[name]:not(:disabled),textarea", "#feed_dialog").each(function (index, e) {
                 e = $(e);
                 var v = e.val();
+                if ($.trim(v) == "")
+                    return true;
+
                 if (v == "true")
                     d[e.attr("name")] = true;
                 else if (v == "false")
