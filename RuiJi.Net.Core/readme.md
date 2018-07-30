@@ -1,7 +1,6 @@
-﻿
-#### RuiJi.Net Documentation
+﻿#### RuiJi.Net Documentation
 
-http://www.ruijihg.com/archives/ruijinet/getting-started
+http://doc.ruijihg.com/
 
 #### Star on github
 
@@ -9,14 +8,11 @@ https://github.com/zhupingqi/RuiJi.Net
 
 #### RuiJi.Net.Core Sample
 
-
-
 crawl use local ip automatic
 
 	var crawler = new RuiJiCrawler();
 	var request = new Request("https://www.baidu.com");
 	var response = crawler.Request(request);
-
 
 crawl with special ip
 
@@ -65,7 +61,6 @@ extract tile
 	ex /Read more »/ -e");
 
 	var result = RuiJiExtractor.Extract(content, eb.Block);
-
 
 extract meta
 
@@ -128,10 +123,6 @@ please visit my github
 
 https://github.com/zhupingqi
 
-or my website
-
-http://www.ruijihg.com/archives/ruijinet/getting-started
-
 #### RuiJi.Net Cluster is waitting for you
 
 RuiJi.Net is a dotnet distributed crawler framework written in c#.Major features include distribute crawler, distribute Extractor and managed cookie, support ip polling that using the server public network address and proxy server.
@@ -142,8 +133,8 @@ RuiJi.Net have more features including extract rule match by url wildcard and pa
 
 If you like , please star my project, It will give me more motivation to improve this project.
 
-#### chromium install
-If you want to run html page with javascript.please install chromium.
+#### Javascript support
+If you want to run html page with javascript, please install chromium.
 
 如果你想要使用ChromiumCrawler等待页面运行JS，请安装chromium。参考以下教程。
 
@@ -167,6 +158,6 @@ Mac系统：Mac
  
 将下载好的zip解压到创建好的目录中。
  
-已linux为例 chromium所在路径为  运行目录\.local-chromium\Linux-555668\chrome-linux
+以linux为例 chromium所在路径为  运行目录\.local-chromium\Linux-555668\chrome-linux
 
 网盘地址：https://pan.baidu.com/s/1rsyCNnXxbobCBLZuPTiJHQ  cr3e

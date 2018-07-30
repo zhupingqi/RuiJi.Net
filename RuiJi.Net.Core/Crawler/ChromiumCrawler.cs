@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Crawler
 {
@@ -23,7 +23,7 @@ namespace RuiJi.Net.Core.Crawler
         /// </summary>
         /// <param name="request">Crawl Request</param>
         /// <returns>Crawl Response</returns>
-        public async System.Threading.Tasks.Task<Response> RequestAsync(Request request)
+        public async Task<Response> RequestAsync(Request request)
         {
             var args = new List<string> { "--no-sandbox" };
 
@@ -63,6 +63,7 @@ namespace RuiJi.Net.Core.Crawler
                     response.Headers = WebHeader.FromDictionary(res.Headers);
                     response.Data = htmlString;
                     response.StatusCode = res.Status;
+
                     return response;
 
                 }
