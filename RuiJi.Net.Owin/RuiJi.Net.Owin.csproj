@@ -45,6 +45,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="document\cn\index.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="ruiji.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
