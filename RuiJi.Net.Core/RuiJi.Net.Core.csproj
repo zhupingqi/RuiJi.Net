@@ -39,37 +39,34 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="crawl.js">
+    <None Update="funcs\sharp\limit.fun">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="funcs\limit.fun">
+    <None Update="funcs\sharp\now.fun">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="funcs\now.fun">
+    <None Update="funcs\sharp\oschina.pro">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="funcs\oschina.pro">
+    <None Update="funcs\sharp\page.fun">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="funcs\page.fun">
+    <None Update="funcs\sharp\ticks.fun">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="funcs\ticks.fun">
+    <None Update="funcs\js\limit.fun">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="funcs_js\limit.fun">
+    <None Update="funcs\js\now.fun">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="funcs_js\now.fun">
+    <None Update="funcs\js\oschina.pro">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="funcs_js\oschina.pro">
+    <None Update="funcs\js\page.fun">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="funcs_js\page.fun">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="funcs_js\ticks.fun">
+    <None Update="funcs\js\ticks.fun">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="mimes.dat">

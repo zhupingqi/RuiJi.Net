@@ -3,8 +3,10 @@ using RuiJi.Net.Core.Cookie;
 using RuiJi.Net.Core.Utils;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace RuiJi.Net.Core.Crawler
@@ -33,6 +35,21 @@ namespace RuiJi.Net.Core.Crawler
             }
 
             var launchOptions = new LaunchOptions { Headless = true, Args = args.ToArray() };
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                launchOptions.ExecutablePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "chromium", "chrome.exe");
+            }
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                launchOptions.ExecutablePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "chromium", "chrome");
+            }
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                
+            }            
 
             using (var browser = await Puppeteer.LaunchAsync(launchOptions))
             using (var page = await browser.NewPageAsync())
