@@ -3,7 +3,7 @@ using RuiJi.Net.Core.Code.Provider;
 using RuiJi.Net.Core.Configuration;
 using RuiJi.Net.Core.Utils.Logging;
 using RuiJi.Net.Node;
-using RuiJi.Net.Node.Compile;
+using RuiJi.Net.Node.CodeProvider;
 using RuiJi.Net.Node.Feed.Db;
 using System;
 using System.Collections.Generic;

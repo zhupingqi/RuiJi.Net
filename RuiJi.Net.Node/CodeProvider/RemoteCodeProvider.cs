@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-namespace RuiJi.Net.Node.Compile
+namespace RuiJi.Net.Node.CodeProvider
 {
     public class RemoteCodeProvider : ICodeProvider
     {

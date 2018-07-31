@@ -1,7 +1,7 @@
 ﻿using RuiJi.Net.Core.Code.Provider;
 using RuiJi.Net.Node.Feed.Db;
 
-namespace RuiJi.Net.Node.Compile
+namespace RuiJi.Net.Node.CodeProvider
 {
     public class LiteDbCodeProvider : ICodeProvider
     {
