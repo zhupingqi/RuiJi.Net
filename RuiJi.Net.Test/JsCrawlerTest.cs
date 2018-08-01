@@ -3,7 +3,7 @@ using Xunit;
 
 namespace RuiJi.Net.Test
 {
-    public class PhantomCrawlerTest
+    public class JsCrawlerTest
     {
         [Fact]
         public void TestMethod1()
@@ -89,6 +89,18 @@ namespace RuiJi.Net.Test
             request.RunJS = true;
             request.Timeout = 15000;
 
+            var crawler = new RuiJiCrawler();
+
+            var response = crawler.Request(request);
+
+            Assert.True(response.Data.ToString().Length > 0);
+        }
+
+        [Fact]
+        public void TestTC()
+        {
+            var request = new Request("http://ghotel.ly.com/hd-centara-watergate-pavillion-hotel-bangkok-14638/?spm0=10002.2024.206898039.2.3.1.1");
+            request.RunJS = true;
             var crawler = new RuiJiCrawler();
 
             var response = crawler.Request(request);
