@@ -13,7 +13,7 @@ namespace RuiJi.Net.Storage
     {
         static LiteDbStorage()
         {
-            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LiteDB");
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LiteDb");
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
         }
