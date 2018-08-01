@@ -48,8 +48,8 @@ namespace RuiJi.Net.Core.Crawler
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
-                
-            }            
+
+            }
 
             using (var browser = await Puppeteer.LaunchAsync(launchOptions))
             using (var page = await browser.NewPageAsync())
@@ -73,7 +73,10 @@ namespace RuiJi.Net.Core.Crawler
                     var ua = request.Headers.SingleOrDefault(m => m.Name == "User-Agent").Value;
                     await page.SetUserAgentAsync(ua);
 
+
                     var res = await page.GoToAsync(Uri.EscapeUriString(request.Uri.ToString()));
+                    //await page.WaitForSelectorAsync("table.hpl_roomInfo");
+
                     var htmlString = await page.GetContentAsync();
 
                     var response = new Response();

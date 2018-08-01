@@ -216,7 +216,7 @@ namespace RuiJi.Net.Owin.Controllers
 
                     restRequest.Timeout = 15000;
 
-                    client.ExecuteAsync(restRequest,(restResponse)=> { });
+                    client.ExecuteAsync(restRequest, (restResponse) => { });
                 }
             }
         }
@@ -268,12 +268,12 @@ namespace RuiJi.Net.Owin.Controllers
         public object GetShards()
         {
             var dbfile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LiteDb", "Content");
-            if (!System.IO.File.Exists(dbfile))
+            if (!Directory.Exists(dbfile))
             {
-                return new List<string> { DateTime.Now.ToString("yyyyMM")};
+                return new List<string> { DateTime.Now.ToString("yyyyMM") };
             }
             var fileInfos = Directory.GetFiles(dbfile);
-            var shards = fileInfos.Select(f => f.Substring(f.LastIndexOf("\\") + 1, f.IndexOf(".db") - f.LastIndexOf("\\") - 1)).OrderByDescending(f => f).ToList();
+            var shards = fileInfos.Select(f => new FileInfo(f).Name.Replace(".db", "")).ToList();
             return shards;
         }
 
