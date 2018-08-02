@@ -98,7 +98,7 @@ namespace RuiJi.Net.Owin.Controllers
 
                     if (down)
                     {
-                        var s = new FileStorage(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "www", "download"));
+                        var s = new FileStorage(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "wwwroot", "download"));
 
                         var files = result.Content.ToString().Replace("\r\n", "\n").Split('\n');
                         foreach (var file in files)

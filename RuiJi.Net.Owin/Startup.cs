@@ -12,12 +12,15 @@ namespace RuiJi.Net.Owin
         {
             services.AddCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddDirectoryBrowser();
         }
 
         public void Configure(IApplicationBuilder builder)
         {
             builder.UseDeveloperExceptionPage();
             builder.UseCors();
+
+            builder.UseDirectoryBrowser();
 
             builder.UseMvc();
 
