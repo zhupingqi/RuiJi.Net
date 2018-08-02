@@ -73,12 +73,10 @@ namespace RuiJi.Net.Core.Crawler
                     var ua = request.Headers.SingleOrDefault(m => m.Name == "User-Agent").Value;
                     await page.SetUserAgentAsync(ua);
 
-
                     var res = await page.GoToAsync(Uri.EscapeUriString(request.Uri.ToString()));
 
                     if (!string.IsNullOrEmpty(request.WaitDom))
                         await page.WaitForSelectorAsync("table.hpl_roomInfo");
-
 
                     var htmlString = await page.GetContentAsync();
 
@@ -88,7 +86,6 @@ namespace RuiJi.Net.Core.Crawler
                     response.StatusCode = res.Status;
 
                     return response;
-
                 }
                 catch (Exception ex)
                 {
