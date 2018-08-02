@@ -5,4 +5,4 @@
 
 1.修复添加feed和rule前，无法执行test按钮bug
 2.修复GrabResult中Shard选项读取错误bug
-3.
+3.增加runjs时waitDom功能

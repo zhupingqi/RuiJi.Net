@@ -60,6 +60,16 @@
                 h.next().val(menu.text());
             });
 
+            $(document).on("click", "#rule_dialog div.runjs label.btn", function () {
+                var btn = $(this);
+                var v = $(":radio", btn).val();
+                if (v == "ON") {
+                    $("#rule_dialog .runjs-group").removeClass("hide");
+                } else {
+                    $("#rule_dialog .runjs-group").addClass("hide");
+                }
+            });
+
             //modify dialog 
             $(document).on("click", "#tb_rules .fa-edit", function () {
                 var ele = $(this);
@@ -80,13 +90,14 @@
                         }
 
                         if (p == "status" && v == "OFF") {
-                            f.find("div.status :radio[value='ON']").parent().removeClass("active");
-                            f.find("div.status :radio[value='OFF']").parent().addClass("active");
+                            $("div.status :radio[value='ON']", f).parent().removeClass("active");
+                            $("div.status :radio[value='OFF']", f).parent().addClass("active");
                         }
 
                         if (p == "runJs" && v == "ON") {
-                            f.find("div.runjs :radio[value='OFF']").parent().removeClass("active");
-                            f.find("div.runjs :radio[value='ON']").parent().addClass("active");
+                            $("div.runjs :radio[value='OFF']", f).parent().removeClass("active");
+                            $("div.runjs :radio[value='ON']", f).parent().addClass("active");
+                            $(".runjs-group", f).removeClass("hide");
                         }
                     }
 

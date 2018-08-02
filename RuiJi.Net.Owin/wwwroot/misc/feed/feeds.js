@@ -74,6 +74,16 @@
                 }
             });
 
+            $(document).on("click", "#feed_dialog div.runjs label.btn", function () {
+                var btn = $(this);
+                var v = $(":radio", btn).val();
+                if (v == "ON") {
+                    $("#feed_dialog .runjs-group").removeClass("hide");
+                } else {
+                    $("#feed_dialog .runjs-group").addClass("hide");
+                }
+            });
+
             $(document).on("click", "#feed_dialog ul.dropdown-menu[contentType] a", function () {
                 var menu = $(this);
                 var v = menu.attr("data-bind") ? menu.attr("data-bind") : menu.text();
@@ -111,13 +121,14 @@
                         }
 
                         if (p == "status" && v == "OFF") {
-                            f.find("div.status :radio[value='ON']").parent().removeClass("active");
-                            f.find("div.status :radio[value='OFF']").parent().addClass("active");
+                            $("div.status :radio[value='ON']", f).parent().removeClass("active");
+                            $("div.status :radio[value='OFF']", f).parent().addClass("active");
                         }
 
                         if (p == "runJs" && v == "ON") {
-                            f.find("div.runjs :radio[value='OFF']").parent().removeClass("active");
-                            f.find("div.runjs :radio[value='ON']").parent().addClass("active");
+                            $("div.runjs :radio[value='OFF']", f).parent().removeClass("active");
+                            $("div.runjs :radio[value='ON']", f).parent().addClass("active");
+                            $(".runjs-group", f).removeClass("hide");
                         }
                     }
 

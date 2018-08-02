@@ -31,7 +31,9 @@ namespace RuiJi.Net.Owin.Controllers
             var request = new Request(rule.Url);
             request.Method = rule.Method;
             request.RunJS = (rule.RunJS == Status.ON);
-
+            if (request.RunJS)
+                request.WaitDom = request.WaitDom;
+            
             var response = Crawler.Request(request);
             if (response != null && response.Data != null)
             {

@@ -60,6 +60,9 @@ namespace RuiJi.Net.Node.Feed.Db
         [JsonConverter(typeof(EnumConvert<Status>))]
         public Status RunJS { get; set; }
 
+        [JsonProperty("waitDom")]
+        public string WaitDom { get; set; }
+
         [JsonProperty("block")]
         public string BlockExpression { get; set; }
 

@@ -75,7 +75,10 @@ namespace RuiJi.Net.Core.Crawler
 
 
                     var res = await page.GoToAsync(Uri.EscapeUriString(request.Uri.ToString()));
-                    //await page.WaitForSelectorAsync("table.hpl_roomInfo");
+
+                    if (!string.IsNullOrEmpty(request.WaitDom))
+                        await page.WaitForSelectorAsync("table.hpl_roomInfo");
+
 
                     var htmlString = await page.GetContentAsync();
 

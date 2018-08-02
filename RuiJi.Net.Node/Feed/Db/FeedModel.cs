@@ -71,6 +71,9 @@ namespace RuiJi.Net.Node.Feed.Db
         [JsonConverter(typeof(EnumConvert<Status>))]
         public Status RunJS { get; set; }
 
+        [JsonProperty("waitDom")]
+        public string WaitDom { get; set; }
+
         [JsonProperty("feedonly")]
         public bool FeedOnly { get; set; }
 
@@ -84,6 +87,9 @@ namespace RuiJi.Net.Node.Feed.Db
         {
             var request = new Request(feed.Address);
             request.RunJS = (feed.RunJS == Status.ON);
+            if (request.RunJS)
+                request.WaitDom = feed.WaitDom;
+            
             if (feed.Headers != null)
             {
                 request.Headers = GetHeaders(feed.Headers);

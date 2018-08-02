@@ -78,7 +78,7 @@ namespace RuiJi.Net.Node.Feed.LTS
                 var files = Directory.GetFiles(delayPath);
                 foreach (var file in files)
                 {
-                    var filename = file.Substring(file.LastIndexOf(@"\") + 1);
+                    var filename = new FileInfo(file).Name;
                     var sp = filename.Split('_');
                     var ticks = sp[1].Substring(0, sp[1].LastIndexOf("."));
 
@@ -179,7 +179,8 @@ namespace RuiJi.Net.Node.Feed.LTS
                 {
                     Logger.GetLogger(baseUrl).Info(" extract job " + u + " add to feed extract queue");
 
-                    queuePool.QueueAction(() => {
+                    queuePool.QueueAction(() =>
+                    {
                         Logger.GetLogger(baseUrl).Info(" extract job " + u + " starting");
 
                         var result = NodeVisitor.Cooperater.GetResult(u);
@@ -202,7 +203,8 @@ namespace RuiJi.Net.Node.Feed.LTS
 
                 Logger.GetLogger(baseUrl).Info(" move feed snapshot to pre fold " + destFile);
             }
-            catch(Exception ex) {
+            catch (Exception ex)
+            {
                 Logger.GetLogger(baseUrl).Error(" feed snapshot extract error " + ex.Message);
             }
         }
