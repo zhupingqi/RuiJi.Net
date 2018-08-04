@@ -24,8 +24,6 @@ namespace RuiJi.Net.Storage
     /// <typeparam name="T"></typeparam>
     public interface IStorage<T> where T : IStorageModel
     {
-        string ConnectString { get; set; }
-
         int Insert(T content);
 
         int Insert(T[] contents);

@@ -11,6 +11,10 @@ namespace RuiJi.Net.Storage
 {
     public class LiteDbStorage : StorageBase<IStorageModel>
     {
+        public string ConnectString { get; set; }
+
+        public string CollectionName { get; set; }
+
         static LiteDbStorage()
         {
             var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LiteDb");
@@ -18,8 +22,10 @@ namespace RuiJi.Net.Storage
                 Directory.CreateDirectory(path);
         }
 
-        public LiteDbStorage(string connectString, string collectionName) : base(connectString, "", collectionName)
+        public LiteDbStorage(string connectString, string collectionName)
         {
+            this.ConnectString = connectString;
+            this.CollectionName = collectionName;
         }
 
         public override int Insert(IStorageModel content)

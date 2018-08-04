@@ -8,20 +8,7 @@ using System.Threading.Tasks;
 namespace RuiJi.Net.Storage
 {
     public abstract class StorageBase<T> : IStorage<T> where T : IStorageModel
-    {
-        public string ConnectString { get; set; }
-
-        public string DatabaseName { get; set; }
-
-        public string CollectionName { get; set; }
-
-        public StorageBase(string connectString,string databaseName, string collectionName)
-        {
-            this.ConnectString = connectString;
-            this.DatabaseName = databaseName;
-            this.CollectionName = collectionName;
-        }
-
+    {       
         public abstract int Insert(T content);
 
         public abstract int Insert(T[] contents);
