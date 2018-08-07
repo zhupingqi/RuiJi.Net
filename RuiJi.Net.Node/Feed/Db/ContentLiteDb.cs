@@ -24,14 +24,14 @@ namespace RuiJi.Net.Node.Feed.Db
             {
                 var col = db.GetCollection<ContentModel>("contents");
 
-                Expression<Func<ContentModel, bool>> expression = x => true;
+                var q = Query.All();
 
                 if (feedID != 0)
-                    expression = expression.And(x => x.FeedId == feedID);
+                    q = Query.Where("FeedId", m => m.AsInt32 == feedID);
 
-                page.Count = col.Count(expression);
+                page.Count = col.Count(q);
 
-                return col.Find(expression).OrderByDescending(m => m.Id).Skip(page.Start).Take(page.PageSize).ToList();
+                return col.Find(q).OrderByDescending(m => m.Id).Skip(page.Start).Take(page.PageSize).ToList();
             }
         }
 
