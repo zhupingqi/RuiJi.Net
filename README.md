@@ -17,7 +17,6 @@ Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com
 
 <a href="https://opencollective.com/ruijinet#backers" target="_blank"><img src="https://opencollective.com/ruijinet/backers.svg?width=890"></a>
 
-
 #### Sponsors
 
 Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/ruijinet#sponsor)]
@@ -32,6 +31,13 @@ Support this project by becoming a sponsor. Your logo will show up here with a l
 <a href="https://opencollective.com/ruijinet/sponsor/7/website" target="_blank"><img src="https://opencollective.com/ruijinet/sponsor/7/avatar.svg"></a>
 <a href="https://opencollective.com/ruijinet/sponsor/8/website" target="_blank"><img src="https://opencollective.com/ruijinet/sponsor/8/avatar.svg"></a>
 <a href="https://opencollective.com/ruijinet/sponsor/9/website" target="_blank"><img src="https://opencollective.com/ruijinet/sponsor/9/avatar.svg"></a>
+
+
+#### Support us
+
+https://www.scraperapi.com/?fp_ref=ruijinet
+
+https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=r1bio67c&utm_source=r1bio67c
 
 ## About RuiJi.Net
 RuiJi.Net is a distributed crawl framework written in netcore.

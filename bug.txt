@@ -2,3 +2,4 @@
 
 Node.Compile读取func方式不对，不可直接访问LiteDb
 api/test/crawl
+download在分布模式下，会访问不到该文件夹

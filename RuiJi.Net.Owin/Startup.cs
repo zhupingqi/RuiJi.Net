@@ -20,8 +20,6 @@ namespace RuiJi.Net.Owin
             builder.UseDeveloperExceptionPage();
             builder.UseCors();
 
-            builder.UseDirectoryBrowser();
-
             builder.UseMvc();
 
             DefaultFilesOptions options = new DefaultFilesOptions();
@@ -30,6 +28,7 @@ namespace RuiJi.Net.Owin
 
             builder.UseDefaultFiles(options);
             builder.UseStaticFiles();
+            builder.UseDirectoryBrowser("download");
         }
     }
 }
