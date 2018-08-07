@@ -6,6 +6,26 @@
     <title>RuiJi.Net - A dotnet distributed crawler framework</title>
     <link href="content/site.css" rel="stylesheet" />
     <link href="content/fonts/font-awesome.min.css" rel="stylesheet" />
+    <script language="javascript" type="text/javascript">
+        var arr = ["http://yyrfile.qianqian.com/22000e48009a097f44787c60a8404c7d.mp3", "http://yyrfile.qianqian.com/5197c2f1276e30312a7124f500114c62.mp3","http://yyrfile.qianqian.com/f0168e1627fb204049f77cf9f0811389.mp3", "http://yyrfile.qianqian.com/3b0bfc76dd51b63bbd6dc4670463a9a3.mp3"];
+        window.onload = function () {
+            var myAudio = new Audio();
+            myAudio.preload = true;
+            myAudio.controls = true;
+            myAudio.src = arr.pop();
+            myAudio.addEventListener('ended', playEndedHandler, false);
+            myAudio.play();
+            document.getElementById("audioBox").appendChild(myAudio);
+            myAudio.loop = false;
+
+            function playEndedHandler() {
+                myAudio.src = arr.pop();
+                myAudio.play();
+                console.log(arr.length);
+                !arr.length && myAudio.removeEventListener('ended', playEndedHandler, false);
+            }
+        }
+    </script>
 </head>
 <body>
     <div id="nav">
@@ -16,6 +36,8 @@
             <a href="https://ci.appveyor.com/project/zhupingqi/ruiji-net" rel="nofollow" target="_blank"><img src="https://camo.githubusercontent.com/ae51befa56f16a4a4f92cdca854098d91ceb9dd0/68747470733a2f2f63692e6170707665796f722e636f6d2f6170692f70726f6a656374732f7374617475732f366873396134377466746b763179656f3f7376673d74727565" alt="Build status" data-canonical-src="https://ci.appveyor.com/api/projects/status/6hs9a47tftkv1yeo?svg=true" style="max-width:100%;"></a>
             <a href="https://opencollective.com/ruijinet" rel="nofollow" target="_blank"><img src="https://camo.githubusercontent.com/59faff39be59807560090d20f3899961c04e6e7e/68747470733a2f2f6f70656e636f6c6c6563746976652e636f6d2f7275696a696e65742f74696572732f6261636b65722f62616467652e7376673f6c6162656c3d6261636b657226636f6c6f723d627269676874677265656e" alt="Build status" data-canonical-src="https://opencollective.com/ruijinet/tiers/backer/badge.svg?label=backer&amp;color=brightgreen" style="max-width:100%;"></a>
             <a href="https://opencollective.com/ruijinet" rel="nofollow" target="_blank"><img src="https://camo.githubusercontent.com/3994b1f73127a4380d66c189cb1d9d5d88dbb5a8/68747470733a2f2f6f70656e636f6c6c6563746976652e636f6d2f7275696a696e65742f74696572732f73706f6e736f722f62616467652e7376673f6c6162656c3d73706f6e736f7226636f6c6f723d627269676874677265656e" alt="Build status" data-canonical-src="https://opencollective.com/ruijinet/tiers/sponsor/badge.svg?label=sponsor&amp;color=brightgreen" style="max-width:100%;"></a>
+
+            <div id="audioBox" style="margin-top:-6px;"></div>
         </span>
 
         <span><i class="fa fa-github"></i> <a href="https://github.com/zhupingqi/RuiJi.Net">Source</a></span>
@@ -119,11 +141,7 @@
     <div id="contributors">
         <h3><i class="fa fa-user"></i> Contributors</h3>
         <div id="con">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
+            <a href="https://github.com/zhupingqi/RuiJi.Net/graphs/contributors" target="_blank"><img src="https://opencollective.com/ruijinet/contributors.svg?button=false" /></a>
         </div>
     </div>
 </body>

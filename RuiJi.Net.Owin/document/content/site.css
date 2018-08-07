@@ -82,6 +82,15 @@
         font-weight: normal;
     }
 
+        .features_row h3 + span {
+            display: block;
+            padding-top: 20px!important;
+            line-height: 24px;
+            padding: 10px;
+            font-family: arial;
+        }
+
+
     .features_row > div.gray {
         color: gray !important;
     }
