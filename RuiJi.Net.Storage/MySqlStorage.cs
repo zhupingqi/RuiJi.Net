@@ -9,7 +9,7 @@ namespace RuiJi.Net.Storage
 {
     public class MySqlStorage : StorageBase<IStorageModel>
     {
-        public MySqlStorage(string connectString, string databaseName = "", string collectionName = "") : base(connectString, databaseName, collectionName)
+        public MySqlStorage(string connectString, string databaseName = "", string collectionName = "")
         {
         }
 

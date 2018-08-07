@@ -12,15 +12,18 @@ namespace RuiJi.Net.Storage
 {
     public class FileStorage : StorageBase<DownloadContentModel>
     {
+        public string Folder { get; private set; }
+
         static FileStorage()
         {
-            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "www","download");
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "www", "download");
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
         }
 
-        public FileStorage(string folder, string databaseName = "", string collectionName = "") : base(folder, databaseName, collectionName)
+        public FileStorage(string folder)
         {
+            Folder = folder;
         }
 
         public override int Insert(DownloadContentModel content)
@@ -29,12 +32,12 @@ namespace RuiJi.Net.Storage
             {
                 var ext = Path.GetExtension(content.Url).ToLower();
                 var name = GetMD5Hash(content.Url);
-                if(string.IsNullOrEmpty(ext))
+                if (string.IsNullOrEmpty(ext))
                 {
                     ext = ".txt";
                 }
 
-                var path = Path.Combine(ConnectString, name + ext);
+                var path = Path.Combine(Folder, name + ext);
 
                 if (content.IsRaw)
                 {
@@ -54,7 +57,7 @@ namespace RuiJi.Net.Storage
                 else
                     File.WriteAllText(path, content.Data.ToString());
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
             }
 

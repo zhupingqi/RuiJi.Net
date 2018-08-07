@@ -9,7 +9,7 @@ namespace RuiJi.Net.Storage
 {
     public class SolrStorage : StorageBase<IStorageModel>
     {
-        public SolrStorage(string connectString, string databaseName = "", string collectionName = "") : base(connectString, databaseName, collectionName)
+        public SolrStorage(string connectString, string databaseName = "", string collectionName = "")
         {
         }
 

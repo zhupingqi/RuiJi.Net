@@ -9,8 +9,9 @@ namespace RuiJi.Net.Storage
 {
     public class MsSqlStorage : StorageBase<IStorageModel>
     {
-        public MsSqlStorage(string folder, string databaseName, string collectionName) : base(folder, databaseName, collectionName)
+        public MsSqlStorage(string folder, string databaseName, string collectionName)
         {
+
         }
 
         public override int Insert(IStorageModel content)
