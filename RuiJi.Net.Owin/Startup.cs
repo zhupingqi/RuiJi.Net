@@ -28,7 +28,7 @@ namespace RuiJi.Net.Owin
 
             builder.UseDefaultFiles(options);
             builder.UseStaticFiles();
-            builder.UseDirectoryBrowser("download");
+            builder.UseDirectoryBrowser("/download");
         }
     }
 }
