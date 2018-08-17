@@ -247,7 +247,7 @@ the service startup is complete!
 
 ## RuiJi Expression
 
-RuiJi Expression is a way to quickly add the rules of page extraction and implement soft coding. The ruiji expressions are as simple and understandable as possible.Before we start, we should first understand the rule model of RuiJi.Net.
+RuiJi Expression is a way to quickly add the rules of page extraction. The ruiji expressions are as simple and understandable as possible.Before we start, we should first understand the rule model of RuiJi.Net.
 
 The RuiJi expression uses the structure described in the figure above to extract the pages that need to be extracted, and the extraction unit is Block, as shown in the following figure.
 
