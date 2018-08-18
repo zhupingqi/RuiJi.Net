@@ -5,6 +5,15 @@
     <ApplicationIcon />
     <OutputType>Library</OutputType>
     <StartupObject></StartupObject>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>zhupingqi</Authors>
+    <Company>zhupingqi</Company>
+    <Product>zhupingqi</Product>
+    <Description>crawler framework , distributed crawler extractor.</Description>
+    <Copyright>LGPL-3.0</Copyright>
+    <PackageLicenseUrl>https://github.com/zhupingqi/RuiJi.Net/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/zhupingqi/RuiJi.Net</PackageProjectUrl>
+    <PackageIconUrl>https://en.gravatar.com/userimage/140719246/b6e863263e40477530620ea2ddde0aac.jpg</PackageIconUrl>
   </PropertyGroup>
 
   <ItemGroup>
