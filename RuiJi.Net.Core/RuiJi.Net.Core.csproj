@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <Version>1.0.6</Version>
+    <Version>1.0.7</Version>
     <Authors>zhupingqi</Authors>
     <Company>zhupingqi</Company>
     <Product>RuiJi.Net</Product>
@@ -14,7 +14,7 @@
     <PackageTags>crawler extractor</PackageTags>
     <AssemblyVersion>1.0.7.0</AssemblyVersion>
     <FileVersion>1.0.7.0</FileVersion>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,7 +25,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="NiL.JS.NetCore" Version="2.5.1275" />
+    <PackageReference Include="NiL.JS.NetCore" Version="2.5.1278" />
     <PackageReference Include="PuppeteerSharp" Version="1.4.0" />
     <PackageReference Include="Quartz" Version="3.0.6" />
     <PackageReference Include="RestSharp.NetCore" Version="105.2.3" />
