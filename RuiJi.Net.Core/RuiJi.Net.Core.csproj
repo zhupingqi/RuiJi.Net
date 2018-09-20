@@ -11,10 +11,10 @@
     <PackageLicenseUrl>https://github.com/zhupingqi/RuiJi.Net/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/zhupingqi/RuiJi.Net</PackageProjectUrl>
     <PackageIconUrl>https://en.gravatar.com/userimage/140719246/b6e863263e40477530620ea2ddde0aac.jpg</PackageIconUrl>
-    <PackageTags>crawler extractor</PackageTags>
+    <PackageTags>crawler extractor scraper</PackageTags>
     <AssemblyVersion>1.1.0.0</AssemblyVersion>
     <FileVersion>1.1.0.0</FileVersion>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
