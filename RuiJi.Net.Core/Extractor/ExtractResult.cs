@@ -28,7 +28,7 @@ namespace RuiJi.Net.Core.Extractor
         /// <summary>
         /// extract tile result
         /// </summary>
-        [JsonProperty("tiles", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("tile", NullValueHandling = NullValueHandling.Ignore)]
         public ExtractResultCollection Tiles { get; set; }
 
         /// <summary>

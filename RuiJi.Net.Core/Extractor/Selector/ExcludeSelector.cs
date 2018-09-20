@@ -33,6 +33,34 @@ namespace RuiJi.Net.Core.Extractor.Selector
             return SelectorTypeEnum.EXCLUDE;
         }
 
+        public override string ToString()
+        {
+            var cmd = "ex";
+            var exp = "";
+            var remove = Remove ? "-r" : "";
+
+            switch (Type)
+            {
+                case ExcludeTypeEnum.BEGIN:
+                    {
+                        exp = "ex /" + Pattern + "/ -b";
+                        break;
+                    }
+                case ExcludeTypeEnum.END:
+                    {
+                        exp = "ex /" + Pattern + "/ -b";
+                        break;
+                    }
+                case ExcludeTypeEnum.ALL:
+                    {
+                        exp = "ex /" + Pattern + "/ -b";
+                        break;
+                    }
+            }
+
+            return string.Join(" ", cmd, exp, remove);
+        }
+
         /// <summary>
         /// constructor
         /// </summary>

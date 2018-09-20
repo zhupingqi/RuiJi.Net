@@ -52,5 +52,11 @@ namespace RuiJi.Net.Core.Extractor.Selector
         {
             return SelectorTypeEnum.TEXTRANGE;
         }
+
+        public override string ToString()
+        {
+            var remove = Remove ? " -r" : "";
+            return "text /" + Begin + "/ /" + End + "/" + remove;
+        }
     }
 }

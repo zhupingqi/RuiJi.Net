@@ -64,5 +64,19 @@ namespace RuiJi.Net.Core.Extractor.Selector
         {
             return SelectorTypeEnum.REGEX;
         }
+
+        public override string ToString()
+        {
+            var remove = Remove ? " -r" : "";
+
+            if (Index.Length == 0)
+            {
+                return "reg /" + Pattern + "/" + remove;
+            }
+            else
+            {
+                return "reg /" + Pattern + "/ " + string.Join(" ",Index) + remove;
+            }
+        }
     }
 }

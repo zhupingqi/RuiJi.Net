@@ -256,7 +256,11 @@ namespace RuiJi.Net.Core.Expression
             {
                 case "clear":
                     {
-                        var selector = new ClearTagSelector();
+                        var tags = p.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).ToArray();
+                        if (tags.Length == 0)
+                            return null;
+
+                        var selector = new ClearTagSelector(tags);
                         selector.Remove = remove;
 
                         return selector;

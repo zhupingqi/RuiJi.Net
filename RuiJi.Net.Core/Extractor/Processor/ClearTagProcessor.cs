@@ -17,7 +17,7 @@ namespace RuiJi.Net.Core.Extractor.Processor
         public override ProcessResult ProcessNeed(ClearTagSelector selector, ProcessResult result)
         {
             var pr = new ProcessResult();
-            pr.Matches.Add(HtmlHelper.ClearTag(result.Content));
+            pr.Matches.Add(HtmlHelper.ClearTag(result.Content,selector.Tags));
 
             return pr;
         }

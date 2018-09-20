@@ -68,5 +68,11 @@ namespace RuiJi.Net.Core.Extractor.Selector
         {
             return SelectorTypeEnum.XPATH;
         }
+
+        public override string ToString()
+        {
+            var remove = Remove ? " -r" : "";
+            return "xpath " + XPath + remove;
+        }
     }
 }

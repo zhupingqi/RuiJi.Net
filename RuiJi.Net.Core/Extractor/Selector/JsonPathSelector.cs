@@ -26,6 +26,12 @@ namespace RuiJi.Net.Core.Extractor.Selector
             return SelectorTypeEnum.JPATH;
         }
 
+        public override string ToString()
+        {
+            var remove = Remove ? " -r" : "";
+            return "jpath " + JsonPath + remove;
+        }
+
         /// <summary>
         /// constructor
         /// </summary>

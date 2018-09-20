@@ -52,5 +52,17 @@ namespace RuiJi.Net.Core.Extractor.Selector
         {
             return SelectorTypeEnum.EXPRESSION;
         }
+
+        public override string ToString()
+        {
+            var remove = Remove ? " -r" : "";
+
+            if (string.IsNullOrEmpty(Split))
+            {
+                return "exp " + Expression + remove;
+            }
+
+            return "exp " + Expression + " -s " + Split + remove;
+        }
     }
 }

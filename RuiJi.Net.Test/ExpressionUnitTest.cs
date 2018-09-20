@@ -70,36 +70,16 @@ namespace RuiJi.Net.Test
         {
             var block = @"
 [block]
-#name
-css .entry-content:html
-
-[blocks]
-    @block1
-    @block2
-
 [tile]
-    #aa
-    css a:ohtml
+css img
 
-    [meta]
-    #time
-    css time:text
+	[meta]
+	#title
+	css img[title]
 
-[meta]
-    #time
-    css time:text
+	#src
+	css img[src]
 
-    #author
-    css .author:text
-
-    #title
-    css .entry-title:text
-
-    #content
-    css .entry-content:html
-
-    #link
-    css h4 a[href] -r
 [block]
 #block1
 css .list1
@@ -110,6 +90,7 @@ css .list2
 ";
 
             var m = RuiJiBlockParser.ParserBlock(block);
+            var exp = Converter.ToExpression(m);
 
             Assert.True(m.Metas.Count > 0);
         }

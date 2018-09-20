@@ -37,6 +37,8 @@ namespace RuiJi.Net.Core.Extractor.Selector
         /// <returns>selector type enum</returns>
         protected abstract SelectorTypeEnum SetSelectType();
 
+        public override abstract string ToString();
+
         /// <summary>
         /// constructor
         /// </summary>

@@ -23,5 +23,15 @@ namespace RuiJi.Net.Core.Utils
 
             return input.Trim();
         }
+
+        public static string ClearTag(string input,string[] tags)
+        {
+            foreach (var tag in tags)
+            {
+                input = Regex.Replace(input, "<"+ tag +".*?>.*?</" + tag + ">", "", RegexOptions.Singleline | RegexOptions.IgnoreCase);
+            }
+
+            return input.Trim();
+        }
     }
 }

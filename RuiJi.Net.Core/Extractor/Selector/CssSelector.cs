@@ -68,5 +68,37 @@ namespace RuiJi.Net.Core.Extractor.Selector
         {
             return SelectorTypeEnum.CSS;
         }
+
+        public override string ToString()
+        {
+            var cmd = "css";
+            var exp = "";
+            var remove = Remove ? "-r" : "";
+
+            switch (Type){
+                case CssTypeEnum.ATTR:
+                    {
+                        exp = Selector + "[" + AttrName + "]";
+                        break;
+                    }
+                case CssTypeEnum.INNERHTML:
+                    {
+                        exp = Selector + ":html";
+                        break;
+                    }
+                case CssTypeEnum.OUTERHTML:
+                    {
+                        exp = Selector + ":ohtml";
+                        break;
+                    }
+                case CssTypeEnum.TEXT:
+                    {
+                        exp = Selector + ":text";
+                        break;
+                    }
+            }
+
+            return string.Join(" ", cmd, exp, remove);
+        }
     }
 }

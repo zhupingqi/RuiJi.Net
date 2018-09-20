@@ -12,8 +12,17 @@ namespace RuiJi.Net.Core.Extractor.Selector
     /// </summary>
     public class ClearTagSelector : SelectorBase
     {
-        public ClearTagSelector()
-        {            
+        public string[] Tags { get; set; }
+
+        public ClearTagSelector(string[] tags)
+        {
+            this.Tags = tags;
+        }
+
+        public override string ToString()
+        {
+            var remove = Remove ? "-r" : "";
+            return string.Join(" ", "clear", Tags, remove);
         }
 
         /// <summary>

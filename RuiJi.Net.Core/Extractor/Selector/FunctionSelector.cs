@@ -42,5 +42,11 @@ namespace RuiJi.Net.Core.Extractor.Selector
         {
             return SelectorTypeEnum.FUNCTION;
         }
+
+        public override string ToString()
+        {
+            var remove = Remove ? " -r" : "";
+            return "proc " + Name + remove;
+        }
     }
 }
