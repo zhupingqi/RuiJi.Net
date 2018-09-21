@@ -24,17 +24,25 @@ namespace RuiJi.Net.Core.Extractor.Processor
         {
             var regex = new Regex(selector.Pattern);
             var m = regex.Match(result.Content);
+            if (!m.Success)
+                return result;
 
             var results = new List<string>();
-
-            foreach (var index in selector.Index)
-            {
-                if (index < m.Groups.Count)
-                    results.Add(m.Groups[index].Value);
-            }
-
             var pr = new ProcessResult();
-            pr.Matches.Add(string.Join(" ", results.ToArray()));
+
+            if (selector.Index.Length > 0)
+            {
+                foreach (var index in selector.Index)
+                {
+                    if (index < m.Groups.Count)
+                        results.Add(m.Groups[index].Value);
+                }
+                pr.Matches.Add(string.Join(" ", results.ToArray()));
+            }
+            else
+            {
+                pr.Matches.Add(m.Value);
+            }
 
             return pr;
         }

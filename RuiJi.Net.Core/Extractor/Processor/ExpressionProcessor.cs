@@ -28,39 +28,20 @@ namespace RuiJi.Net.Core.Extractor.Processor
                 return pr;
             }
 
-            var ary = new string[] { result.Content };
-
-            if (result == null)
+            foreach (var item in result.Matches)
             {
+                var ary = new string[] { item };
+
                 if (!string.IsNullOrEmpty(selector.Split))
                 {
-                    ary = result.Content.Split(new string[] { selector.Split }, StringSplitOptions.RemoveEmptyEntries);
+                    ary = item.Split(new string[] { selector.Split }, StringSplitOptions.RemoveEmptyEntries);
                 }
 
-                foreach (var item in ary)
+                foreach (var it in ary)
                 {
-                    var m = Wildcard.IsMatch(item, new string[] { selector.Expression });
+                    var m = Wildcard.IsMatch(it, new string[] { selector.Expression });
                     if (m)
-                        pr.Matches.Add(selector.Expression);
-                }
-            }
-            else
-            {
-                foreach (var item in result.Matches)
-                {
-                    ary = new string[] { item };
-
-                    if (!string.IsNullOrEmpty(selector.Split))
-                    {
-                        ary = item.Split(new string[] { selector.Split }, StringSplitOptions.RemoveEmptyEntries);
-                    }
-
-                    foreach (var it in ary)
-                    {
-                        var m = Wildcard.IsMatch(it, new string[] { selector.Expression });
-                        if (m)
-                            pr.Matches.Add(it);
-                    }
+                        pr.Matches.Add(it);
                 }
             }
 
@@ -81,39 +62,21 @@ namespace RuiJi.Net.Core.Extractor.Processor
             {
                 return pr;
             }
-            var ary = new string[] { result.Content };
 
-            if (result == null)
+            foreach (var item in result.Matches)
             {
+                var ary = new string[] { item };
+
                 if (!string.IsNullOrEmpty(selector.Split))
                 {
-                    ary = result.Content.Split(new string[] { selector.Split }, StringSplitOptions.RemoveEmptyEntries);
+                    ary = item.Split(new string[] { selector.Split }, StringSplitOptions.RemoveEmptyEntries);
                 }
 
-                foreach (var item in ary)
+                foreach (var it in ary)
                 {
-                    var m = Wildcard.IsMatch(item, new string[] { selector.Expression });
+                    var m = Wildcard.IsMatch(it, new string[] { selector.Expression });
                     if (!m)
-                        pr.Matches.Add(selector.Expression);
-                }
-            }
-            else
-            {
-                foreach (var item in result.Matches)
-                {
-                    ary = new string[] { item };
-
-                    if (!string.IsNullOrEmpty(selector.Split))
-                    {
-                        ary = item.Split(new string[] { selector.Split }, StringSplitOptions.RemoveEmptyEntries);
-                    }
-
-                    foreach (var it in ary)
-                    {
-                        var m = Wildcard.IsMatch(it, new string[] { selector.Expression });
-                        if (!m)
-                            pr.Matches.Add(it);
-                    }
+                        pr.Matches.Add(it);
                 }
             }
 

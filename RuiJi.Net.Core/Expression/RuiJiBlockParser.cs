@@ -308,7 +308,7 @@ namespace RuiJi.Net.Core.Expression
                         var selector = new ExcludeSelector();
                         selector.Remove = remove;
                         selector.Pattern = Regex.Replace(p, @"\-[bea]?$", "").Trim();
-                        if (selector.Pattern.StartsWith("/") && selector.Pattern.StartsWith("/"))
+                        if (selector.Pattern.StartsWith("/"))
                             selector.Pattern = selector.Pattern.TrimStart('/').TrimEnd('/');
 
                         if (p.EndsWith("-b"))
