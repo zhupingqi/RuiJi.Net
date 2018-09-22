@@ -50,8 +50,6 @@ namespace RuiJi.Net.Core.Extractor.Processor
             var sp = Regex.Split(result.Content, selector.Pattern, RegexOptions.IgnorePatternWhitespace).ToList();
             sp.RemoveAll(m => string.IsNullOrEmpty(m));
 
-            var results = new List<string>();
-
             foreach (var index in selector.Index.OrderByDescending(m => m))
             {
                 sp.RemoveAt(index);
