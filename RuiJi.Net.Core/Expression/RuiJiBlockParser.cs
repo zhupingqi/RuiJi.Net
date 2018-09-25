@@ -288,7 +288,7 @@ namespace RuiJi.Net.Core.Expression
                         else
                         {
                             selector.Type = CssTypeEnum.ATTR;
-                            var ms = Regex.Match(p, @"(.*)\[(.*?)\]");
+                            var ms = Regex.Match(p, @"(.*):\[(.*?)\]$");
                             if (ms.Groups.Count == 3)
                             {
                                 selector.Selector = ms.Groups[1].Value.Trim();
@@ -437,7 +437,7 @@ namespace RuiJi.Net.Core.Expression
                         else
                         {
                             selector.Type = XPathTypeEnum.ATTR;
-                            var ms = Regex.Match(p, @"(.*)\[(.*?)\]");
+                            var ms = Regex.Match(p, @"(.*):\[(.*?)\]");
                             if (ms.Groups.Count == 3)
                             {
                                 selector.XPath = ms.Groups[1].Value.Trim();

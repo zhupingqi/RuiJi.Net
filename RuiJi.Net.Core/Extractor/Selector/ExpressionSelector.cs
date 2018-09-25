@@ -62,7 +62,7 @@ namespace RuiJi.Net.Core.Extractor.Selector
                 return "exp " + Expression + remove;
             }
 
-            return "exp " + Expression + " " + Split + remove;
+            return "exp " + Expression + " /" + Split + "/" + remove;
         }
     }
 }

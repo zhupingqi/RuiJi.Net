@@ -43,17 +43,17 @@ namespace RuiJi.Net.Core.Extractor.Selector
             {
                 case ExcludeTypeEnum.BEGIN:
                     {
-                        exp = "ex /" + Pattern + "/ -b";
+                        exp = "/" + Pattern + "/ -b";
                         break;
                     }
                 case ExcludeTypeEnum.END:
                     {
-                        exp = "ex /" + Pattern + "/ -b";
+                        exp = "/" + Pattern + "/ -e";
                         break;
                     }
                 case ExcludeTypeEnum.ALL:
                     {
-                        exp = "ex /" + Pattern + "/ -b";
+                        exp = "/" + Pattern + "/ -a";
                         break;
                     }
             }
