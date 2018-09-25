@@ -309,7 +309,7 @@ namespace RuiJi.Net.Core.Expression
                         selector.Remove = remove;
                         selector.Pattern = Regex.Replace(p, @"\-[bea]?$", "").Trim();
                         if (selector.Pattern.StartsWith("/"))
-                            selector.Pattern = selector.Pattern.TrimStart('/').TrimEnd('/');
+                            selector.Pattern = selector.Pattern.Trim('/');
 
                         if (p.EndsWith("-b"))
                         {
@@ -331,11 +331,11 @@ namespace RuiJi.Net.Core.Expression
                         var selector = new ExpressionSelector();
                         selector.Remove = remove;
                         selector.Expression = p;
-                        var ssp = p.Split(new string[] { " -s " }, StringSplitOptions.RemoveEmptyEntries);
+                        var ssp = p.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
                         if (ssp.Length == 2)
                         {
                             selector.Expression = ssp[0];
-                            selector.Split = ssp[1];
+                            selector.Split = ssp[1].Trim('/');
                         }
 
                         return selector;
@@ -406,8 +406,8 @@ namespace RuiJi.Net.Core.Expression
 
                         if (ms.Count == 2)
                         {
-                            selector.Begin = ms[0].Value;
-                            selector.End = ms[1].Value;
+                            selector.Begin = ms[0].Value.Trim('/');
+                            selector.End = ms[1].Value.Trim('/');
 
                             return selector;
                         }
@@ -418,7 +418,37 @@ namespace RuiJi.Net.Core.Expression
                     {
                         var selector = new XPathSelector();
                         selector.Remove = remove;
-                        selector.XPath = p;
+
+                        if (p.EndsWith(":oxml"))
+                        {
+                            selector.Type = XPathTypeEnum.OUTERXML;
+                            selector.XPath = Regex.Replace(p, ":oxml", "").Trim();
+                        }
+                        else if (p.EndsWith(":xml"))
+                        {
+                            selector.Type = XPathTypeEnum.INNERXML;
+                            selector.XPath = Regex.Replace(p, ":xml$", "").Trim();
+                        }
+                        else if (p.EndsWith(":text"))
+                        {
+                            selector.Type = XPathTypeEnum.TEXT;
+                            selector.XPath = Regex.Replace(p, ":text$", "").Trim();
+                        }
+                        else
+                        {
+                            selector.Type = XPathTypeEnum.ATTR;
+                            var ms = Regex.Match(p, @"(.*)\[(.*?)\]");
+                            if (ms.Groups.Count == 3)
+                            {
+                                selector.XPath = ms.Groups[1].Value.Trim();
+                                selector.AttrName = ms.Groups[2].Value.Trim();
+                            }
+                            else
+                            {
+                                selector.Type = XPathTypeEnum.OUTERXML;
+                                selector.XPath = Regex.Replace(p, ":oxml$", "").Trim();
+                            }
+                        }
 
                         return selector;
                     }

@@ -16,6 +16,7 @@ namespace RuiJi.Net.Core.Extractor.Selector
         /// <summary>
         /// xpath
         /// </summary>
+        [JsonProperty("xpath")]
         public string XPath { get; set; }
 
         /// <summary>
@@ -71,8 +72,35 @@ namespace RuiJi.Net.Core.Extractor.Selector
 
         public override string ToString()
         {
-            var remove = Remove ? " -r" : "";
-            return "xpath " + XPath + remove;
+            var cmd = "xpath";
+            var exp = "";
+            var remove = Remove ? "-r" : "";
+
+            switch (Type)
+            {
+                case XPathTypeEnum.ATTR:
+                    {
+                        exp = XPath + "[" + AttrName + "]";
+                        break;
+                    }
+                case XPathTypeEnum.INNERXML:
+                    {
+                        exp = XPath + ":xml";
+                        break;
+                    }
+                case XPathTypeEnum.OUTERXML:
+                    {
+                        exp = XPath + ":oxml";
+                        break;
+                    }
+                case XPathTypeEnum.TEXT:
+                    {
+                        exp = XPath + ":text";
+                        break;
+                    }
+            }
+
+            return string.Join(" ", cmd, exp, remove);
         }
     }
 }

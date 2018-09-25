@@ -19,45 +19,66 @@ namespace RuiJi.Net.Test
         {
             var metas =
                 @"
-                #css
-                css h4 a[href] -r
-                css h4:ohtml
-                css h4:html -r
-                css h4 a:text
+[block]
+css #content_left
 
-                #exclude
-                ex /:/ -b
-                ex /\-e/ -e
-                ex /\-/ -a
-                ex /[\d]*/
+[tile]
+css .result
 
-                #expression
-                exp ????/??/?? ??:??:??* 
-                exp datetime_?? -r
+	[meta]
+	#title
+	css h3.c-title:text
 
-                #regex
-                reg /[\d]*/
-                reg /aa([\d]*)sf/ 0 1
-                reg /aa([\d]*)sf/ -r
+	#src
+	css h3.c-title a[href]
 
-                #regexReplace
-                regR />>/ >
-                
-                #regexSplit
-                regS /aaa/ 2 3 5
-                regS /aaa/ 2 3 5 -r
+	#media
+	css .c-author:text
+	regS /\s+/ 0
 
-                #textRange
-                text /a\naa/ /b\tbb/
-                text /aaa/ /bbb/ -r
+	#date
+	css .c-author:text
+	regS /\s+/ 1
 
-                #xpath
-                xpath ladkfeio
-                xpath dlqwekrjl -r
+	#summary
+	css .c-summary
+	css .c-info -r
+	css .c-author:text -r
 
-                #jsonPath
-                jpath dlsldf.kljs
-                jpath dlkejl -r
+	#text
+	css .c-summary:text
+	text /bmw/ /bmw/
+
+	#regS
+	css .c-summary
+	regS /bmw/ 1
+
+	#regR
+	css .c-summary
+	regR /bmw/ aabbcc
+
+	#ex
+	css .c-summary
+	ex /bmw/ -b
+
+	#exp
+	css .c-summary
+	exp http://*.baidu.com/* /\s+/
+
+	#jpath
+	css .c-summary
+	jpath ..url
+
+	#xpath
+	css .c-summary
+	xpath /aa/bb/c[data]
+    xpath /aa/bb/c:text
+    xpath /aa/bb/c:xml
+    xpath /aa/bb/c
+
+	#clear
+	css .c-summary
+	clear span em
                 ";
 
             var m = RuiJiBlockParser.ParserMeta(metas);
