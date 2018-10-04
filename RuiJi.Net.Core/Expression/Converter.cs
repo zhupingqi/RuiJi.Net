@@ -23,9 +23,22 @@ namespace RuiJi.Net.Core.Expression
             {
                 expression.Add("[block]");
                 expression.AddRange(GetSelectorsExpression(block));    
-            }               
+            }
 
-            if(block.TileSelector.Selectors.Count > 0)
+            if (block.Blocks.Count(m=>m.Name!="_paging") > 0)
+            {
+                expression.Add("[blocks]");
+                foreach (var b in block.Blocks)
+                {
+                    if (b.Name == "_paging")
+                        continue;
+
+                    expression.Add("@" + b.Name);
+                }
+                expression[expression.Count-1] += "\r\n";
+            }
+
+            if (block.TileSelector.Selectors.Count > 0)
             {
                 expression.Add("[tile]");
                 expression.AddRange(GetSelectorsExpression(block.TileSelector));
@@ -59,6 +72,17 @@ namespace RuiJi.Net.Core.Expression
             {
                 expression.Add("[paging]");
                 expression.AddRange(GetSelectorsExpression(block.Paging.TileSelector));
+            }
+
+            if(block.Blocks.Count > 0)
+            {
+                foreach (var b in block.Blocks)
+                {
+                    if (b.Name == "_paging")
+                        continue;
+
+                    expression.Add(ToExpression(b));
+                }
             }
 
             return string.Join("\r\n",expression);

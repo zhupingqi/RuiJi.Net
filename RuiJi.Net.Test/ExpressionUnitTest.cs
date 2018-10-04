@@ -92,6 +92,10 @@ css .result
             var block = @"
 [block]
 
+[blocks]
+@block1
+@block2
+
 [tile]
 css img
 
