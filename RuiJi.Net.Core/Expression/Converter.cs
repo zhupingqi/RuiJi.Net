@@ -38,6 +38,12 @@ namespace RuiJi.Net.Core.Expression
                         expression.AddRange(GetSelectorsExpression(meta.Value, 1));
                     }
                 }
+
+                if(block.TileSelector.Paging!=null)
+                {
+                    expression.Add("\t[paging]");
+                    expression.AddRange(GetSelectorsExpression(block.TileSelector.Paging.TileSelector, 1));
+                }
             }
 
             if (block.Metas.Count > 0)
@@ -47,6 +53,12 @@ namespace RuiJi.Net.Core.Expression
                 {
                     expression.AddRange(GetSelectorsExpression(meta.Value));
                 }                
+            }
+
+            if (block.Paging != null)
+            {
+                expression.Add("[paging]");
+                expression.AddRange(GetSelectorsExpression(block.Paging.TileSelector));
             }
 
             return string.Join("\r\n",expression);

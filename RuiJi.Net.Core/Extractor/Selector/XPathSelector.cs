@@ -80,7 +80,7 @@ namespace RuiJi.Net.Core.Extractor.Selector
             {
                 case XPathTypeEnum.ATTR:
                     {
-                        exp = XPath + "[" + AttrName + "]";
+                        exp = XPath + ":[" + AttrName + "]";
                         break;
                     }
                 case XPathTypeEnum.INNERXML:

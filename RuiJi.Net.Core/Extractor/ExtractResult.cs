@@ -28,7 +28,7 @@ namespace RuiJi.Net.Core.Extractor
         /// <summary>
         /// extract tile result
         /// </summary>
-        [JsonProperty("tile", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("tiles", NullValueHandling = NullValueHandling.Ignore)]
         public ExtractResultCollection Tiles { get; set; }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace RuiJi.Net.Core.Extractor
         /// <summary>
         /// extract paging result
         /// </summary>
-        [JsonProperty("paging", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("_paging", NullValueHandling = NullValueHandling.Ignore)]
         public List<string> Paging
         {
             get
@@ -54,7 +54,7 @@ namespace RuiJi.Net.Core.Extractor
                 if (Blocks == null)
                     return null;
 
-                var pageBlock = Blocks.SingleOrDefault(m => m.Name == "paging");
+                var pageBlock = Blocks.SingleOrDefault(m => m.Name == "_paging");
 
                 if (pageBlock == null)
                 {

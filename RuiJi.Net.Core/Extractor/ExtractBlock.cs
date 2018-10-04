@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using RuiJi.Net.Core.Expression;
+using RuiJi.Net.Core.Extensions;
 using RuiJi.Net.Core.Extractor.Selector;
 
 namespace RuiJi.Net.Core.Extractor
@@ -31,6 +32,12 @@ namespace RuiJi.Net.Core.Extractor
         /// </summary>
         [JsonProperty("metas", NullValueHandling = NullValueHandling.Ignore)]
         public ExtractMetaCollection Metas { get; set; }
+
+        /// <summary>
+        /// page selectors
+        /// </summary>
+        [JsonProperty("paging", ItemConverterType = typeof(ISelectorConverter))]
+        public ExtractBlock Paging { get; set; }
 
         /// <summary>
         /// constructor

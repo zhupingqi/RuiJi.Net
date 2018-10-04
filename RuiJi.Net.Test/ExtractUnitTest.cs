@@ -166,7 +166,7 @@ namespace RuiJi.Net.Test
     css td[data-title='PORT']:text
 
 [paging]
-css #listnav a[href]";
+css #listnav a:[href]";
 
             var block = RuiJiBlockParser.ParserBlock(exp);
             var result = RuiJiExtractor.Extract(content, block);
@@ -210,7 +210,7 @@ css #listnav a[href]";
 
 [paging]
 css .a-page
-css a[href]";
+css a:[href]";
 
             var block = RuiJiBlockParser.ParserBlock(exp);
             var result = RuiJiExtractor.Extract(content, block);

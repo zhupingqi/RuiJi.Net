@@ -21,6 +21,12 @@ namespace RuiJi.Net.Core.Extractor
         public ExtractMetaCollection Metas { get; set; }
 
         /// <summary>
+        /// page selectors
+        /// </summary>
+        [JsonProperty("paging", ItemConverterType = typeof(ISelectorConverter))]
+        public ExtractBlock Paging { get; set; }
+
+        /// <summary>
         /// constructor
         /// </summary>
         /// <param name="name">tile name</param>

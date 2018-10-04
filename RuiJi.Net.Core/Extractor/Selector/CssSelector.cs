@@ -78,7 +78,7 @@ namespace RuiJi.Net.Core.Extractor.Selector
             switch (Type){
                 case CssTypeEnum.ATTR:
                     {
-                        exp = Selector + "[" + AttrName + "]";
+                        exp = Selector + ":[" + AttrName + "]";
                         break;
                     }
                 case CssTypeEnum.INNERHTML:

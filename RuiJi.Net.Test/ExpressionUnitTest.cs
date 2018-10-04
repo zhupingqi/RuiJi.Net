@@ -30,7 +30,7 @@ css .result
 	css h3.c-title:text
 
 	#src
-	css h3.c-title a[href]
+	css h3.c-title a:[href]
 
 	#media
 	css .c-author:text
@@ -71,7 +71,7 @@ css .result
 
 	#xpath
 	css .c-summary
-	xpath /aa/bb/c[data]
+	xpath /aa/bb/c:[data]
     xpath /aa/bb/c:text
     xpath /aa/bb/c:xml
     xpath /aa/bb/c
@@ -91,15 +91,22 @@ css .result
         {
             var block = @"
 [block]
+
 [tile]
 css img
 
 	[meta]
 	#title
-	css img[title]
+	css img:[title]
 
 	#src
-	css img[src]
+	css img:[src]
+
+	[paging]
+	css #listnav a:[href]
+
+[paging]
+css #listnav a:[href]
 
 [block]
 #block1
@@ -138,7 +145,7 @@ css .list2
     css td[data-title='PORT']:text
 
 [paging]
-css #listnav a[href]
+css #listnav a:[href]
 ");
 
             var result = RuiJiExtractor.Extract(content, s);
@@ -156,7 +163,7 @@ css #listnav a[href]
             var content = response.Data.ToString();
 
             var block = new ExtractBlock();
-            var s = RuiJiBlockParser.ParserBase("css a[href]").Selectors;
+            var s = RuiJiBlockParser.ParserBase("css a:[href]").Selectors;
             block.TileSelector.Selectors.AddRange(s);
             var result = RuiJiExtractor.Extract(content, block);
 
@@ -173,7 +180,7 @@ css #listnav a[href]
             var content = response.Data.ToString();
 
             var parser = new RuiJiParser();
-            var eb = parser.ParseExtract("css a.blog-title-link[href]\nexp https://my.oschina.net/*/blog/*");
+            var eb = parser.ParseExtract("css a.blog-title-link:[href]\nexp https://my.oschina.net/*/blog/*");
             var result = RuiJiExtractor.Extract(content, eb.Result);
 
             Assert.True(true);
@@ -325,7 +332,7 @@ css .entry-content:html
     css .entry-content:html
 
     #hasLink_b
-    css h4 a[href] -r
+    css h4 a:[href] -r
 
 [block]
 #block1

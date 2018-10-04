@@ -31,7 +31,7 @@ namespace RuiJi.Net.Core.Expression
             {
                 var block = new ExtractBlock();
                 var blockExp = exp.Replace("\r\n", "\n").Trim();
-                var lines = Split(blockExp, new string[] { "[block]", "[blocks]", "[tile]", "[meta]", "[paging]" });
+                var lines = Split(blockExp, new string[] { @"\[block\]", @"\[blocks\]", @"\[tile\]", @"\[meta\]", @"\[paging\]" });
 
                 foreach (var key in lines.Keys)
                 {
@@ -73,14 +73,19 @@ namespace RuiJi.Net.Core.Expression
                             }
                         case "[paging]":
                             {
-                                var b = new ExtractBlock("paging");
-                                string.IsNullOrEmpty(b.Name);
-                                b.Name = "paging";
+                                var b = new ExtractBlock("_paging");
                                 b.TileSelector = ParserTile(lines[key]);
+                                block.Paging = b;
                                 block.Blocks.Add(b);
                                 break;
                             }
                     }
+                }
+
+                if (block.TileSelector.Paging != null)
+                {
+                    block.Blocks.RemoveAll(m => m.Name == "_paging");
+                    block.Blocks.Add(block.TileSelector.Paging);
                 }
 
                 results.Add(block);
@@ -115,14 +120,35 @@ namespace RuiJi.Net.Core.Expression
         public static ExtractTile ParserTile(string expression)
         {
             expression = expression.Trim();
-            var lines = Regex.Split(expression, @"\s+\[meta\]\n");
+            var lines = Split(expression, new string[] { @"\s+\[meta\]", @"\s+\[paging\]" });
 
             var tile = new ExtractTile();
-            var b = ParserBase(lines.First());
-            tile.Name = b.Name;
-            tile.Selectors = b.Selectors;
-            if(lines.Length > 1)
-                tile.Metas = ParserMeta(lines.Last());
+
+            foreach (var key in lines.Keys)
+            {
+                switch (key.Trim())
+                {
+                    case "":
+                        {
+                            var b = ParserBase(lines[key]);
+                            tile.Name = b.Name;
+                            tile.Selectors = b.Selectors;
+                            break;
+                        }
+                    case "[meta]":
+                        {
+                            tile.Metas = ParserMeta(lines[key]);
+                            break;
+                        }
+                    case "[paging]":
+                        {
+                            var b = new ExtractBlock("_paging");
+                            b.TileSelector = ParserTile(lines[key]);
+                            tile.Paging = b;
+                            break;
+                        }
+                }
+            }
 
             return tile;
         }
@@ -503,7 +529,7 @@ namespace RuiJi.Net.Core.Expression
 
             foreach (var line in lines)
             {
-                if (splits.Contains(line))
+                if (SplitsMatch(splits,line))
                 {
                     dic.Add(line, "");
                     key = line;
@@ -518,6 +544,19 @@ namespace RuiJi.Net.Core.Expression
             }
 
             return dic;
+        }
+
+        private static bool SplitsMatch(string[] splits,string line)
+        {
+            foreach (var split in splits)
+            {
+                var m = Regex.Match(line, split);
+
+                if (m.Success && m.Value == line)
+                    return true;
+            }
+
+            return false;
         }
     }
 }
