@@ -1,4 +1,5 @@
-﻿using RuiJi.Net.Core.Crawler;
+﻿using Newtonsoft.Json;
+using RuiJi.Net.Core.Crawler;
 using RuiJi.Net.Core.Expression;
 using RuiJi.Net.Core.Extractor;
 using RuiJi.Net.Core.Utils.Tasks;
@@ -122,6 +123,7 @@ css .list2
 ";
 
             var m = RuiJiBlockParser.ParserBlock(block);
+            var j = JsonConvert.SerializeObject(m);
             var exp = Converter.ToExpression(m);
 
             Assert.True(m.Metas.Count > 0);
@@ -359,6 +361,16 @@ css .list2
             parser.ParseFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "expression_address.txt"));
 
             Assert.True(true);
+        }
+
+        [Fact]
+        public void TestJsonConvert()
+        {
+            var json = @"{'tile':{'metas':{'title':{'name':'title','type':18,'selectors':[{'selector':'h3.c-title','attr':null,'ctype':2,'remove':false,'type':0}]},'src':{'name':'src','type':18,'selectors':[{'selector':'h3.c-title a[href]','attr':null,'ctype':1,'remove':false,'type':0}]},'media':{'name':'media','type':18,'selectors':[{'selector':'.c-author','attr':null,'ctype':2,'remove':false,'type':0},{'pattern':'\\s+','index':[0],'remove':false,'type':2}]},'date':{'name':'date','type':18,'selectors':[{'selector':'.c-author','attr':null,'ctype':2,'remove':false,'type':0},{'pattern':'\\s+','index':[1],'remove':false,'type':2}]},'summary':{'name':'summary','type':18,'selectors':[{'selector':'.c-summary','attr':null,'ctype':1,'remove':false,'type':0},{'selector':'.c-info','attr':null,'ctype':1,'remove':true,'type':0},{'selector':'.c-author','attr':null,'ctype':2,'remove':true,'type':0}]}},'paging':{'selectors':[{'attr':null,'ctype':1,'remove':false,'selector':'#page a','type':0}],'name':'paging','type':18},'name':'','type':18,'selectors':[{'selector':'.result','attr':null,'ctype':1,'remove':false,'type':0}]},'blocks':[],'metas':{},'paging':null,'name':'','type':18,'selectors':[{'selector':'#content_left','attr':null,'ctype':1,'remove':false,'type':0}]}";
+
+            var j = JsonConvert.DeserializeObject<ExtractBlock>(json);
+
+            Assert.True(j.Metas.Count > 0);
         }
     }
 }

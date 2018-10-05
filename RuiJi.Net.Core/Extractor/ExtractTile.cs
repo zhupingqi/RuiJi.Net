@@ -23,7 +23,7 @@ namespace RuiJi.Net.Core.Extractor
         /// <summary>
         /// page selectors
         /// </summary>
-        [JsonProperty("paging", ItemConverterType = typeof(ISelectorConverter))]
+        [JsonProperty("paging", NullValueHandling = NullValueHandling.Ignore)]
         public ExtractBlock Paging { get; set; }
 
         /// <summary>
