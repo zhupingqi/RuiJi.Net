@@ -16,6 +16,7 @@ namespace RuiJi.Net.Core.Extractor.Selector
         /// <summary>
         /// function name
         /// </summary>
+        [JsonProperty("name")]
         public string Name { get; set; }
 
         /// <summary>

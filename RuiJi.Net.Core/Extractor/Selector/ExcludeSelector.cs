@@ -16,6 +16,7 @@ namespace RuiJi.Net.Core.Extractor.Selector
         /// <summary>
         /// exclude regex pattern
         /// </summary>
+        [JsonProperty("pattern")]
         public string Pattern { get; set; }
 
         /// <summary>

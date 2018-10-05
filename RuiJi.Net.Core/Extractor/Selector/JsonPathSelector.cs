@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using RuiJi.Net.Core.Extractor.Enum;
 
 namespace RuiJi.Net.Core.Extractor.Selector
@@ -15,6 +16,7 @@ namespace RuiJi.Net.Core.Extractor.Selector
         /// <summary>
         /// json path
         /// </summary>
+        [JsonProperty("jsonPath")]
         public string JsonPath { get; set; }
 
         /// <summary>

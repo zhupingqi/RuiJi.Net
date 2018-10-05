@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using RuiJi.Net.Core.Extractor.Enum;
 
 namespace RuiJi.Net.Core.Extractor.Selector
@@ -15,11 +16,13 @@ namespace RuiJi.Net.Core.Extractor.Selector
         /// <summary>
         /// wildcard expression
         /// </summary>
+        [JsonProperty("expression")]
         public string Expression { get; set; }
 
         /// <summary>
         ///  Dividing values into multiple addresses with this
         /// </summary>
+        [JsonProperty("split")]
         public string Split
         {
             get;
