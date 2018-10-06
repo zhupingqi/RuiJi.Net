@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RuiJi.Net.Core.Expression;
 using RuiJi.Net.Core.Extractor;
 using RuiJi.Net.Core.Extractor.Enum;
 using RuiJi.Net.Core.Extractor.Selector;
@@ -49,6 +50,54 @@ namespace RuiJi.Net.Test
             var json = JsonConvert.SerializeObject(t);
 
             Assert.True(true);
+        }
+
+        [Fact]
+        public void TestJC2()
+        {
+            var exp = @"
+[block]
+
+[blocks]
+@block1
+@block2
+
+[tile]
+css img
+
+	[meta]
+	#title
+	css img:[title]
+	proc aabbcc
+
+	#src
+	css img:[src]
+
+	[paging]
+	css #listnav a:[href]
+
+[paging]
+css #listnav a:[href]
+
+[block]
+#block1
+css .list1
+
+[block]
+#block2
+css .list2
+";
+
+            var b = RuiJiBlockParser.ParserBlock(exp);
+
+            var json = JsonConvert.SerializeObject(b);
+
+            b = JsonConvert.DeserializeObject<ExtractBlock>(json);
+
+            exp = Converter.ToExpression(b);
+            
+            Assert.True(b.Metas.Count > 0);
+
         }
     }
 }

@@ -103,6 +103,7 @@ css img
 	[meta]
 	#title
 	css img:[title]
+	proc aabbcc
 
 	#src
 	css img:[src]
