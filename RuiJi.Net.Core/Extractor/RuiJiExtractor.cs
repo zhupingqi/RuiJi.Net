@@ -80,6 +80,11 @@ namespace RuiJi.Net.Core.Extractor
             if (block.Blocks != null && block.Blocks.Count > 0)
             {
                 result.Blocks = Extract(result.Content.ToString(), block.Blocks);
+                var paging = result.Blocks.SingleOrDefault(m => m.Name == "_paging");
+                if(paging != null && paging.Tiles.Count == 0)
+                {
+                    paging = Extract(content, block.Blocks.Single(m=>m.Name == "_paging"));
+                }
             }
 
             if (block.TileSelector != null && block.TileSelector.Selectors.Count > 0)
