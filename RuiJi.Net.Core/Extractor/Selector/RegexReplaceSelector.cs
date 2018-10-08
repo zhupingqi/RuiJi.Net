@@ -30,6 +30,7 @@ namespace RuiJi.Net.Core.Extractor.Selector
         /// </summary>
         public RegexReplaceSelector()
         {
+            Pattern = NewString = "";
         }
 
         /// <summary>

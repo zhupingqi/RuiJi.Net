@@ -90,7 +90,7 @@ css .result
         [Fact]
         public void TestBlock()
         {
-            var block = @"
+            var exp = @"
 [block]
 
 [blocks]
@@ -103,7 +103,6 @@ css img
 	[meta]
 	#title
 	css img:[title]
-	proc aabbcc
 
 	#src
 	css img:[src]
@@ -123,9 +122,59 @@ css .list1
 css .list2
 ";
 
-            var m = RuiJiBlockParser.ParserBlock(block);
+            var m = RuiJiBlockParser.ParserBlock(exp);
             var j = JsonConvert.SerializeObject(m);
-            var exp = Converter.ToExpression(m);
+            exp = Converter.ToExpression(m);
+
+            Assert.True(m.Metas.Count > 0);
+        }
+
+        [Fact]
+        public void TestReg()
+        {
+            var exp = @"
+[block]
+
+[blocks]
+@block1
+@block2
+
+[tile]
+css img
+
+	[meta]
+	#title
+	css img:[title]
+	regR /aabbcc/
+	regR /aabbcc/ 123 
+
+	#src
+	css img:[src]
+	reg /aabbcc/ 
+	reg /aabbcc/ 1
+	reg /aabbcc/ 1 2
+	regS /aabbcc/
+	regS /aabbcc/ 1
+	regS /aabbcc/ 1 2
+
+	[paging]
+	css #listnav a:[href]
+
+[paging]
+css #listnav a:[href]
+
+[block]
+#block1
+css .list1
+
+[block]
+#block2
+css .list2
+";
+
+            var m = RuiJiBlockParser.ParserBlock(exp);
+            var j = JsonConvert.SerializeObject(m);
+            exp = Converter.ToExpression(m);
 
             Assert.True(m.Metas.Count > 0);
         }

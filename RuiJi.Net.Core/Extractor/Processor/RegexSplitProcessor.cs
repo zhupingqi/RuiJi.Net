@@ -27,10 +27,17 @@ namespace RuiJi.Net.Core.Extractor.Processor
 
             var results = new List<string>();
 
-            foreach (var index in selector.Index)
+            if (selector.Index.Length > 0)
             {
-                if (index < sp.Count)
-                    results.Add(sp[index]);
+                foreach (var index in selector.Index)
+                {
+                    if (index < sp.Count)
+                        results.Add(sp[index]);
+                }
+            }
+            else
+            {
+                results = sp;
             }
 
             var pr = new ProcessResult();

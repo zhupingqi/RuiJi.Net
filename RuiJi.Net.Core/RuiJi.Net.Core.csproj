@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <Version>1.1.6</Version>
+    <Version>1.1.7</Version>
     <Authors>zhupingqi</Authors>
     <Company>zhupingqi</Company>
     <Product>RuiJi.Net</Product>
@@ -12,8 +12,8 @@
     <PackageProjectUrl>https://github.com/zhupingqi/RuiJi.Net</PackageProjectUrl>
     <PackageIconUrl>https://en.gravatar.com/userimage/140719246/b6e863263e40477530620ea2ddde0aac.jpg</PackageIconUrl>
     <PackageTags>crawler extractor scraper</PackageTags>
-    <AssemblyVersion>1.1.6.0</AssemblyVersion>
-    <FileVersion>1.1.6.0</FileVersion>
+    <AssemblyVersion>1.1.7.0</AssemblyVersion>
+    <FileVersion>1.1.7.0</FileVersion>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>

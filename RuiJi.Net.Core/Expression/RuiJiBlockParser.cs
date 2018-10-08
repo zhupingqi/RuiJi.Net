@@ -371,16 +371,14 @@ namespace RuiJi.Net.Core.Expression
                         var selector = new RegexSelector();
                         selector.Remove = remove;
 
-                        var ms = Regex.Match(p, @"/?(.*)/([\d\s]*)");
-                        if (ms.Groups.Count == 2)
-                        {
-                            selector.Pattern = ms.Groups[0].Value;
-                            return selector;
-                        }
+                        var ms = Regex.Match(p, @"^/(.*?)/([\d\s]*)?");
                         if (ms.Groups.Count == 3)
                         {
                             selector.Pattern = ms.Groups[1].Value;
-                            selector.Index = ms.Groups[2].Value.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).Select(m => Convert.ToInt32(m)).ToArray();
+                            if (!string.IsNullOrEmpty(ms.Groups[2].Value))
+                                selector.Index = ms.Groups[2].Value
+                                    .Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)
+                                    .Select(m => Convert.ToInt32(m)).ToArray();
 
                             return selector;
                         }
@@ -391,18 +389,13 @@ namespace RuiJi.Net.Core.Expression
                         var selector = new RegexReplaceSelector();
                         selector.Remove = remove;
 
-                        var ms = Regex.Match(p, @"^/(.*?)/[\s]+(.*)");
+                        var ms = Regex.Match(p, @"^/(.*?)/(.*)?");
 
-                        if (ms.Groups.Count == 2)
-                        {
-                            selector.Pattern = ms.Groups[1].Value;
-                            selector.NewString = "";
-                            return selector;
-                        }
                         if (ms.Groups.Count == 3)
                         {
                             selector.Pattern = ms.Groups[1].Value;
-                            selector.NewString = ms.Groups[2].Value;
+                            if(!string.IsNullOrEmpty( ms.Groups[2].Value))
+                                selector.NewString = ms.Groups[2].Value.Substring(1);
 
                             return selector;
                         }
@@ -413,11 +406,14 @@ namespace RuiJi.Net.Core.Expression
                         var selector = new RegexSplitSelector();
                         selector.Remove = remove;
 
-                        var ms = Regex.Match(p, @"/?(.*)/([\d\s]*)");
+                        var ms = Regex.Match(p, @"^/(.*)/([\d\s]*)?");
                         if (ms.Groups.Count == 3)
                         {
                             selector.Pattern = ms.Groups[1].Value;
-                            selector.Index = ms.Groups[2].Value.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).Select(m => Convert.ToInt32(m)).ToArray();
+                            if (!string.IsNullOrEmpty(ms.Groups[2].Value))
+                                selector.Index = ms.Groups[2].Value
+                                    .Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)
+                                    .Select(m => Convert.ToInt32(m)).ToArray();
                             return selector;
                         }
 

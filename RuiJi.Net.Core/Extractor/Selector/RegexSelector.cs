@@ -55,7 +55,10 @@ namespace RuiJi.Net.Core.Extractor.Selector
         /// constructor
         /// </summary>
         public RegexSelector()
-        { }
+        {
+            Pattern = "";
+            Index = new int[0];
+        }
 
         /// <summary>
         /// set selector type enum
