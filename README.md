@@ -5,6 +5,10 @@
 [![Build status](https://opencollective.com/ruijinet/tiers/backer/badge.svg?label=backer&color=brightgreen)](https://opencollective.com/ruijinet)
 [![Build status](https://opencollective.com/ruijinet/tiers/sponsor/badge.svg?label=sponsor&color=brightgreen)](https://opencollective.com/ruijinet)
 
+#### About RuiJi Scraper
+
+RuiJi Scraper is a RuiJi expression based browser plug-in that uses visual rule editing and generates RuiJi expressions for RuiJi. Net.
+
 #### Contributors
 
 This project exists thanks to all the people who contribute. 
