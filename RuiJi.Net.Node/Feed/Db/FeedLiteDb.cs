@@ -4,11 +4,31 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.InteropServices;
 
 namespace RuiJi.Net.Node.Feed.Db
 {
     public class FeedLiteDb
     {
+        /**
+         * System.TypeInitializationException: The type initializer for 'RuiJi.Net.Node.Feed.Db.FeedLiteDb' threw an exception. --->
+         * System.InvalidOperationException:
+         * Your platform does not support FileStream.Lock. Please set mode=Exclusive in your connnection string to avoid this error. ---> System.PlatformNotSupportedException: Locking/unlocking file regions is not supported on this platform. Use FileShare on the entire file instead.
+         *
+         * fix:
+         * OS X do not support file lock, so you can't use LiteDB with lock support (no multi process access). But you can still use LiteDB in multi thread model, using: "Mode=Exclusive" in connection string (exclusive mode do not lock file because open file in exclusive mode
+         * https://github.com/mbdavid/LiteDB/issues/787
+         * 
+         */
+        static readonly bool isOSX = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        static readonly string connectionString = 
+            isOSX ? @"Filename=LiteDb/Feeds.db;Mode=Exclusive"
+                : @"LiteDb/Feeds.db";
+        
         static FeedLiteDb()
         {
             CreateIndex();
@@ -16,7 +36,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static List<FeedModel> GetFeedModels(Paging page, string key = null, string method = null, string type = null, string status = null)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
+            using (var db = new LiteDatabase(connectionString))
             {
                 var col = db.GetCollection<FeedModel>("feeds");
 
@@ -41,7 +61,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static List<FeedModel> GetAvailableFeeds(Paging page)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
+            using (var db = new LiteDatabase(connectionString))
             {
                 var col = db.GetCollection<FeedModel>("feeds");
 
@@ -53,7 +73,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static List<FeedModel> GetFeedModels(int[] pages, int pageSize)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
+            using (var db = new LiteDatabase(connectionString))
             {
                 var col = db.GetCollection<FeedModel>("feeds");
 
@@ -72,7 +92,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static void AddOrUpdate(FeedModel feed)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
+            using (var db = new LiteDatabase(connectionString))
             {
                 var col = db.GetCollection<FeedModel>("feeds");
 
@@ -85,7 +105,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static bool ChangeStatus(int[] ids, Status status)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
+            using (var db = new LiteDatabase(connectionString))
             {
                 var col = db.GetCollection<FeedModel>("feeds");
                 var list = col.Find(i => ids.Contains(i.Id)).ToList();
@@ -101,7 +121,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static bool Remove(int id)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
+            using (var db = new LiteDatabase(connectionString))
             {
                 var col = db.GetCollection<FeedModel>("feeds");
                 return col.Delete(id);
@@ -110,7 +130,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static bool Remove(int[] ids)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
+            using (var db = new LiteDatabase(connectionString))
             {
                 var col = db.GetCollection<FeedModel>("feeds");
                 col.Delete(x => ids.Contains(x.Id));
@@ -121,7 +141,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static void RemoveAll()
         {
-            using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
+            using (var db = new LiteDatabase(connectionString))
             {
                 var col = db.GetCollection<FeedModel>("feeds");
                 col.Delete(Query.All());
@@ -130,7 +150,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static void CreateIndex()
         {
-            using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
+            using (var db = new LiteDatabase(@"Filename=LiteDb/Feeds.db;Mode=Exclusive"))
             {
                 var col = db.GetCollection<FeedModel>("feeds");
                 col.EnsureIndex(m => m.SiteName);
@@ -142,7 +162,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static FeedModel GetFeed(int id)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
+            using (var db = new LiteDatabase(connectionString))
             {
                 var col = db.GetCollection<FeedModel>("feeds");
 
@@ -152,7 +172,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static List<FeedModel> GetFeed(int[] ids)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
+            using (var db = new LiteDatabase(connectionString))
             {
                 var col = db.GetCollection<FeedModel>("feeds");
                 return col.Find(i => ids.Contains(i.Id)).ToList();
