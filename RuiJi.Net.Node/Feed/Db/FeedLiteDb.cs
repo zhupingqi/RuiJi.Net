@@ -150,7 +150,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static void CreateIndex()
         {
-            using (var db = new LiteDatabase(@"Filename=LiteDb/Feeds.db;Mode=Exclusive"))
+            using (var db = new LiteDatabase(connectionString))
             {
                 var col = db.GetCollection<FeedModel>("feeds");
                 col.EnsureIndex(m => m.SiteName);
