@@ -5,11 +5,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using RuiJi.Net.Storage;
 
 namespace RuiJi.Net.Node.Feed.Db
 {
     public class RuleLiteDb
     {
+        private static readonly string connectionString = LiteDbStorageHelper.GetConnectionString(@"LiteDb/Rules.db");
+
         static RuleLiteDb()
         {
             CreateIndex();
@@ -17,7 +20,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static List<RuleModel> GetModels(Paging page, string key = null, string type = null, string status = null)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Rules.db"))
+            using (var db = new LiteDatabase(connectionString))
             {
                 var col = db.GetCollection<RuleModel>("rules");
 
@@ -39,7 +42,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static void AddOrUpdate(RuleModel rule)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Rules.db"))
+            using (var db = new LiteDatabase(connectionString))
             {
                 var col = db.GetCollection<RuleModel>("rules");
                 if (Uri.IsWellFormedUriString(rule.Url, UriKind.Absolute))
@@ -61,7 +64,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static bool Remove(int id)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Rules.db"))
+            using (var db = new LiteDatabase(connectionString))
             {
                 var col = db.GetCollection<RuleModel>("rules");
                 return col.Delete(id);
@@ -70,7 +73,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static bool Remove(int[] ids)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Rules.db"))
+            using (var db = new LiteDatabase(connectionString))
             {
                 var col = db.GetCollection<RuleModel>("rules");
 
@@ -82,7 +85,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static bool StatusChange(int[] ids, Status status)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Rules.db"))
+            using (var db = new LiteDatabase(connectionString))
             {
                 var col = db.GetCollection<RuleModel>("rules");
                 var list = col.Find(i => ids.Contains(i.Id)).ToList();
@@ -98,7 +101,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static void CreateIndex()
         {
-            using (var db = new LiteDatabase(@"LiteDb/Rules.db"))
+            using (var db = new LiteDatabase(connectionString))
             {
                 var col = db.GetCollection<RuleModel>("feeds");
                 col.EnsureIndex(m => m.Domain);
@@ -110,7 +113,7 @@ namespace RuiJi.Net.Node.Feed.Db
             url = url.Trim().ToLower();
             var domain = new Uri(url).GetDomain();
 
-            using (var db = new LiteDatabase(@"LiteDb/Rules.db"))
+            using (var db = new LiteDatabase(connectionString))
             {
                 var col = db.GetCollection<RuleModel>("rules");
                 var rules = col.Find(Query.Where("Domain", m => m.AsString == domain)).ToList();
@@ -125,7 +128,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static RuleModel Get(int id)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Rules.db"))
+            using (var db = new LiteDatabase(connectionString))
             {
                 var col = db.GetCollection<RuleModel>("rules");
 

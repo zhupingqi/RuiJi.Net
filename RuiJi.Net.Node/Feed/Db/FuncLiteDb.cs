@@ -6,11 +6,14 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using RuiJi.Net.Storage;
 
 namespace RuiJi.Net.Node.Feed.Db
 {
     public class FuncLiteDb
     {
+        private static readonly string connectionString = LiteDbStorageHelper.GetConnectionString(@"LiteDb/Funcs.db");
+
         static FuncLiteDb()
         {
             CreateIndex();
@@ -18,7 +21,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static List<FuncModel> GetModels(Paging page, string type = "")
         {
-            using (var db = new LiteDatabase(@"LiteDb/Funcs.db"))
+            using (var db = new LiteDatabase(connectionString))
             {
                 var col = db.GetCollection<FuncModel>("funcs");
                 Expression<Func<FuncModel, bool>> expression = x => true;
@@ -37,7 +40,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static void AddOrUpdate(FuncModel rule)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Funcs.db"))
+            using (var db = new LiteDatabase(connectionString))
             {
                 var col = db.GetCollection<FuncModel>("funcs");
 
@@ -58,7 +61,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static void Remove(int id)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Funcs.db"))
+            using (var db = new LiteDatabase(connectionString))
             {
                 var col = db.GetCollection<FuncModel>("funcs");
                 col.Delete(id);
@@ -67,7 +70,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static bool Remove(int[] ids)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Funcs.db"))
+            using (var db = new LiteDatabase(connectionString))
             {
                 var col = db.GetCollection<FuncModel>("funcs");
 
@@ -79,7 +82,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static void CreateIndex()
         {
-            using (var db = new LiteDatabase(@"LiteDb/Funcs.db"))
+            using (var db = new LiteDatabase(connectionString))
             {
                 var col = db.GetCollection<FuncModel>("funcs");
                 col.EnsureIndex(m => m.Name);
@@ -88,7 +91,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static FuncModel Get(int id)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Funcs.db"))
+            using (var db = new LiteDatabase(connectionString))
             {
                 var col = db.GetCollection<FuncModel>("funcs");
 
@@ -98,7 +101,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static FuncModel Get(string name, FuncType funcType = FuncType.URLFUNCTION)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Funcs.db"))
+            using (var db = new LiteDatabase(connectionString))
             {
                 var col = db.GetCollection<FuncModel>("funcs");
 

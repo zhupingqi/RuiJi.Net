@@ -2,6 +2,7 @@
 using RuiJi.Net.Owin;
 using System;
 using System.Diagnostics;
+using System.Net.NetworkInformation;
 
 namespace RuiJi.Net.Cmd
 {
@@ -9,6 +10,21 @@ namespace RuiJi.Net.Cmd
     {
         static void Main(string[] args)
         {
+//            
+//            foreach (NetworkInterface netInterface in NetworkInterface.GetAllNetworkInterfaces())
+//            {
+//                Console.WriteLine("Name: " + netInterface.Name);
+//                Console.WriteLine("Description: " + netInterface.Description);
+//                Console.WriteLine("Addresses: ");
+//                IPInterfaceProperties ipProps = netInterface.GetIPProperties();
+//                foreach (UnicastIPAddressInformation addr in ipProps.UnicastAddresses)
+//                {
+//                    Console.WriteLine(" " + addr.Address.ToString());
+//                }
+//                Console.WriteLine("");
+//            }
+            
+            
             Logger.GetLogger("").Info("Program started!");
 
             ServerManager.StartServers();

@@ -5,29 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.InteropServices;
+using RuiJi.Net.Storage;
 
 namespace RuiJi.Net.Node.Feed.Db
 {
     public class FeedLiteDb
     {
-        /**
-         * System.TypeInitializationException: The type initializer for 'RuiJi.Net.Node.Feed.Db.FeedLiteDb' threw an exception. --->
-         * System.InvalidOperationException:
-         * Your platform does not support FileStream.Lock. Please set mode=Exclusive in your connnection string to avoid this error. ---> System.PlatformNotSupportedException: Locking/unlocking file regions is not supported on this platform. Use FileShare on the entire file instead.
-         *
-         * fix:
-         * OS X do not support file lock, so you can't use LiteDB with lock support (no multi process access). But you can still use LiteDB in multi thread model, using: "Mode=Exclusive" in connection string (exclusive mode do not lock file because open file in exclusive mode
-         * https://github.com/mbdavid/LiteDB/issues/787
-         * 
-         */
-        static readonly bool isOSX = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        static readonly string connectionString = 
-            isOSX ? @"Filename=LiteDb/Feeds.db;Mode=Exclusive"
-                : @"LiteDb/Feeds.db";
+        private static readonly string connectionString = LiteDbStorageHelper.GetConnectionString(@"LiteDb/Feeds.db");
         
         static FeedLiteDb()
         {

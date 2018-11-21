@@ -6,6 +6,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using RuiJi.Net.Storage;
 
 namespace RuiJi.Net.Node.Feed.Db
 {
@@ -18,12 +19,14 @@ namespace RuiJi.Net.Node.Feed.Db
             CreateIndex();
         }
 
-        private static readonly string Db = @"LiteDb/UAs.db";
         private static readonly string COLLECTION = "uAs";
+        
+        private static readonly string connectionString = LiteDbStorageHelper.GetConnectionString(@"LiteDb/UAs.db");
+
 
         public static List<UAModel> GetModels(Paging page, int groupId)
         {
-            using (var db = new LiteDatabase(Db))
+            using (var db = new LiteDatabase(connectionString))
             {
                 var col = db.GetCollection<UAModel>(COLLECTION);
                 Expression<Func<UAModel, bool>> expression = x => true;
@@ -38,7 +41,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static void AddOrUpdate(UAModel ua)
         {
-            using (var db = new LiteDatabase(Db))
+            using (var db = new LiteDatabase(connectionString))
             {
                 var col = db.GetCollection<UAModel>(COLLECTION);
 
@@ -58,7 +61,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static bool Remove(int[] ids)
         {
-            using (var db = new LiteDatabase(Db))
+            using (var db = new LiteDatabase(connectionString))
             {
                 var col = db.GetCollection<UAModel>(COLLECTION);
 
@@ -70,7 +73,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static bool RemoveByGorup(int groupId)
         {
-            using (var db = new LiteDatabase(Db))
+            using (var db = new LiteDatabase(connectionString))
             {
                 var col = db.GetCollection<UAModel>(COLLECTION);
 
@@ -82,7 +85,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static UAModel Get(int id)
         {
-            using (var db = new LiteDatabase(Db))
+            using (var db = new LiteDatabase(connectionString))
             {
                 var col = db.GetCollection<UAModel>(COLLECTION);
 
@@ -92,7 +95,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static string GetOne()
         {
-            using (var db = new LiteDatabase(@"LiteDb/UAs.db"))
+            using (var db = new LiteDatabase(connectionString))
             {
                 var col = db.GetCollection<UAModel>("uAs");
 
@@ -108,7 +111,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static void CreateIndex()
         {
-            using (var db = new LiteDatabase(Db))
+            using (var db = new LiteDatabase(connectionString))
             {
                 var col = db.GetCollection<UAModel>(COLLECTION);
                 col.EnsureIndex(m => m.GroupId);

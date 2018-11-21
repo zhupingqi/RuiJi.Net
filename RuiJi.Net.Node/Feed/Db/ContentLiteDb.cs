@@ -6,11 +6,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using RuiJi.Net.Storage;
 
 namespace RuiJi.Net.Node.Feed.Db
 {
     public class ContentLiteDb
     {
+        private static readonly string connectionString = LiteDbStorageHelper.GetConnectionString(@"LiteDb/Proxys.db");
+
         static ContentLiteDb()
         {
             var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LiteDb", "Content");
@@ -20,7 +23,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static List<ContentModel> GetModels(Paging page, string shard, int feedID = 0)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Content/" + shard + ".db"))
+            using (var db = new LiteDatabase(LiteDbStorageHelper.GetConnectionString(@"LiteDb/Content/" + shard + ".db")))
             {
                 var col = db.GetCollection<ContentModel>("contents");
 
@@ -37,7 +40,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static bool Remove(int[] ids, string shard)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Content/" + shard + ".db"))
+            using (var db = new LiteDatabase(LiteDbStorageHelper.GetConnectionString(@"LiteDb/Content/" + shard + ".db")))
             {
                 var col = db.GetCollection<ContentModel>("contents");
 
