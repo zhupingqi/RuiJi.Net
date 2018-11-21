@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RuiJi.Net.Storage;
 
 namespace RuiJi.Net.Node.Feed.Db
 {
     public class UAGroupLiteDb
     {
-        private static readonly string Db = @"LiteDb/UAs.db";
+        private static readonly string Db = LiteDbStorageHelper.GetConnectionString(@"LiteDb/UAs.db");
         private static readonly string COLLECTION = "uAGroups";
 
         public static List<UAGroupModel> GetModels()
