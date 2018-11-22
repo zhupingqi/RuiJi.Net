@@ -9,12 +9,11 @@ namespace RuiJi.Net.Node.Feed.Db
 {
     public class UAGroupLiteDb
     {
-        private static readonly string Db = @"LiteDb/UAs.db";
         private static readonly string COLLECTION = "uAGroups";
 
         public static List<UAGroupModel> GetModels()
         {
-            using (var db = new LiteDatabase(Db))
+            using (var db = new LiteDatabase(LiteDbConfiguration.UA))
             {
                 var col = db.GetCollection<UAGroupModel>(COLLECTION);
 
@@ -24,7 +23,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static UAGroupModel Get(int id)
         {
-            using (var db = new LiteDatabase(Db))
+            using (var db = new LiteDatabase(LiteDbConfiguration.UA))
             {
                 var col = db.GetCollection<UAGroupModel>(COLLECTION);
 
@@ -35,7 +34,7 @@ namespace RuiJi.Net.Node.Feed.Db
         public static int AddOrUpdate(UAGroupModel group)
         {
             var result = group.Id;
-            using (var db = new LiteDatabase(Db))
+            using (var db = new LiteDatabase(LiteDbConfiguration.UA))
             {
                 var col = db.GetCollection<UAGroupModel>(COLLECTION);
 
@@ -55,7 +54,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static bool Remove(int id)
         {
-            using (var db = new LiteDatabase(Db))
+            using (var db = new LiteDatabase(LiteDbConfiguration.UA))
             {
                 var col = db.GetCollection<UAGroupModel>(COLLECTION);
 

@@ -18,9 +18,15 @@ namespace RuiJi.Net.Node.Feed.Db
                 Directory.CreateDirectory(path);
         }
 
-        public static List<ContentModel> GetModels(Paging page, string shard, int feedID = 0)
+        public static List<ContentModel> GetModels(Paging page, string shard = "", int feedID = 0)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Content/" + shard + ".db"))
+            var connectString = LiteDbConfiguration.CONTENT;
+            if (connectString.IndexOf("{shard}") != -1 && !string.IsNullOrEmpty(shard))
+            {
+                connectString = connectString.Replace("{shard}",shard);
+            }
+
+            using (var db = new LiteDatabase(connectString))
             {
                 var col = db.GetCollection<ContentModel>("contents");
 
@@ -35,9 +41,15 @@ namespace RuiJi.Net.Node.Feed.Db
             }
         }
 
-        public static bool Remove(int[] ids, string shard)
+        public static bool Remove(int[] ids, string shard = "")
         {
-            using (var db = new LiteDatabase(@"LiteDb/Content/" + shard + ".db"))
+            var connectString = LiteDbConfiguration.CONTENT;
+            if (connectString.IndexOf("{shard}") != -1 && !string.IsNullOrEmpty(shard))
+            {
+                connectString = connectString.Replace("{shard}", shard);
+            }
+
+            using (var db = new LiteDatabase(connectString))
             {
                 var col = db.GetCollection<ContentModel>("contents");
 
