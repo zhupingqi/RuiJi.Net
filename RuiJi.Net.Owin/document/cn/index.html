@@ -50,9 +50,9 @@
     </div>
 </body>
 </html>
-<script src="../js/jquery.min.js"></script>
-<script src="../js/ztree.all.js"></script>
-<script src="../js/jquery.ztree.exhide.min.js"></script>
+<script src="../content/js/jquery.min.js"></script>
+<script src="../content/js/ztree.all.js"></script>
+<script src="../content/js/jquery.ztree.exhide.min.js"></script>
 <script>
     var zTreeObj; var expandStatus = true; $(document).ready(function () { var setting = { view: { showLine: true, showIcon: true }, callback: { onClick: function (e, treeId, treeNode) { if (treeNode !== null && !treeNode.isParent && typeof (treeNode.children) === "undefined") { var sort_id = treeNode.sort_id; var content = json_data.content; for (var c in content) { if (c == sort_id) { $("#page-detail .title").html(treeNode.name); $("#page-detail .content").html(content[c]); return false } } } else { zTreeObj.expandNode(treeNode) } } }, data: { simpleData: { enable: true } } }; zTreeObj = $.fn.zTree.init($("#tree"), setting, json_data.title); var first_content = json_data.title[0]; $("#page-detail .title").html(first_content.name); $("#page-detail .content").html(json_data.content[first_content.sort_id]); $("#preview-title").html(json_data.preview_title); $("#ex-all").on("click", function (e) { zTreeObj.expandAll(!expandStatus); expandStatus = !expandStatus; if (expandStatus) { $(this).text("收缩全部章节") } else { $(this).text("展开全部章节") } }) });
 </script>
