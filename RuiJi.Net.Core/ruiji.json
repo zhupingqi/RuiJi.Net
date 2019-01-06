@@ -48,5 +48,13 @@
     //  "type": "f",
     //  "proxy": "localhost:38000"
     //}
-  ]
+  ],
+  "storage": {
+    "ua": "Filename=LiteDb/UAs.db;Mode=Exclusive",
+    "rule": "Filename=LiteDb/Rules.db;Mode=Exclusive",
+    "proxy": "Filename=LiteDb/Proxys.db;Mode=Exclusive",
+    "func": "Filename=LiteDb/Funcs.db;Mode=Exclusive",
+    "feed": "Filename=LiteDb/Feeds.db;Mode=Exclusive",
+    "content": "Filename=LiteDb/Content/{shard}.db;Mode=Exclusive"
+  }
 }

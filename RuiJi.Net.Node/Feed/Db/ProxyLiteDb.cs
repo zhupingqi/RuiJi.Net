@@ -20,7 +20,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static List<ProxyModel> GetModels(Paging page)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Proxys.db"))
+            using (var db = new LiteDatabase(LiteDbConfiguration.PROXY))
             {
                 var col = db.GetCollection<ProxyModel>("proxys");
 
@@ -32,7 +32,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static List<ProxyModel> GetModels(int[] pages, int pageSize)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Proxys.db"))
+            using (var db = new LiteDatabase(LiteDbConfiguration.PROXY))
             {
                 var col = db.GetCollection<ProxyModel>("proxys");
 
@@ -50,7 +50,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static void AddOrUpdate(ProxyModel proxy)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Proxys.db"))
+            using (var db = new LiteDatabase(LiteDbConfiguration.PROXY))
             {
                 lock (_lck)
                 {
@@ -69,7 +69,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static void Remove(int id)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Proxys.db"))
+            using (var db = new LiteDatabase(LiteDbConfiguration.PROXY))
             {
                 lock (_lck)
                 {
@@ -81,7 +81,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static bool Remove(int[] ids)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Proxys.db"))
+            using (var db = new LiteDatabase(LiteDbConfiguration.PROXY))
             {
                 lock (_lck)
                 {
@@ -98,7 +98,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static bool StatusChange(int[] ids, Status status)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Proxys.db"))
+            using (var db = new LiteDatabase(LiteDbConfiguration.PROXY))
             {
                 var col = db.GetCollection<ProxyModel>("proxys");
                 var list = col.Find(i => ids.Contains(i.Id)).ToList();
@@ -114,7 +114,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static void CreateIndex()
         {
-            using (var db = new LiteDatabase(@"LiteDb/Proxys.db"))
+            using (var db = new LiteDatabase(LiteDbConfiguration.PROXY))
             {
                 var col = db.GetCollection<ProxyModel>("proxys");
                 col.EnsureIndex(m => m.Ip);
@@ -125,7 +125,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static ProxyModel Get(int id)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Proxys.db"))
+            using (var db = new LiteDatabase(LiteDbConfiguration.PROXY))
             {
                 var col = db.GetCollection<ProxyModel>("proxys");
 
@@ -135,7 +135,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static ProxyModel Get(string scheme)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Proxys.db"))
+            using (var db = new LiteDatabase(LiteDbConfiguration.PROXY))
             {
                 lock (_lck)
                 {

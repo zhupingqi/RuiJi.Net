@@ -22,8 +22,8 @@ namespace RuiJi.Net.Test
         {
             //no ip
             var crawler = new RuiJiCrawler();
-            var request = new Request("https://www.baidu.com");
-            request.Ip = "192.168.31.196";
+            var request = new Request("http://www.cannews.com.cn/2018/1121/185448.shtml");
+            request.Ip = "192.168.31.32";
             var response = crawler.Request(request);
 
             Assert.Equal("https://www.baidu.com/", response.ResponseUri.ToString());

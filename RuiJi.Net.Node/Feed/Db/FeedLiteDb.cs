@@ -16,7 +16,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static List<FeedModel> GetFeedModels(Paging page, string key = null, string method = null, string type = null, string status = null)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
+            using (var db = new LiteDatabase(LiteDbConfiguration.FEED))
             {
                 var col = db.GetCollection<FeedModel>("feeds");
 
@@ -41,7 +41,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static List<FeedModel> GetAvailableFeeds(Paging page)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
+            using (var db = new LiteDatabase(LiteDbConfiguration.FEED))
             {
                 var col = db.GetCollection<FeedModel>("feeds");
 
@@ -53,7 +53,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static List<FeedModel> GetFeedModels(int[] pages, int pageSize)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
+            using (var db = new LiteDatabase(LiteDbConfiguration.FEED))
             {
                 var col = db.GetCollection<FeedModel>("feeds");
 
@@ -72,7 +72,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static void AddOrUpdate(FeedModel feed)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
+            using (var db = new LiteDatabase(LiteDbConfiguration.FEED))
             {
                 var col = db.GetCollection<FeedModel>("feeds");
 
@@ -85,7 +85,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static bool ChangeStatus(int[] ids, Status status)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
+            using (var db = new LiteDatabase(LiteDbConfiguration.FEED))
             {
                 var col = db.GetCollection<FeedModel>("feeds");
                 var list = col.Find(i => ids.Contains(i.Id)).ToList();
@@ -101,7 +101,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static bool Remove(int id)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
+            using (var db = new LiteDatabase(LiteDbConfiguration.FEED))
             {
                 var col = db.GetCollection<FeedModel>("feeds");
                 return col.Delete(id);
@@ -110,7 +110,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static bool Remove(int[] ids)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
+            using (var db = new LiteDatabase(LiteDbConfiguration.FEED))
             {
                 var col = db.GetCollection<FeedModel>("feeds");
                 col.Delete(x => ids.Contains(x.Id));
@@ -121,7 +121,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static void RemoveAll()
         {
-            using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
+            using (var db = new LiteDatabase(LiteDbConfiguration.FEED))
             {
                 var col = db.GetCollection<FeedModel>("feeds");
                 col.Delete(Query.All());
@@ -130,7 +130,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static void CreateIndex()
         {
-            using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
+            using (var db = new LiteDatabase(LiteDbConfiguration.FEED))
             {
                 var col = db.GetCollection<FeedModel>("feeds");
                 col.EnsureIndex(m => m.SiteName);
@@ -142,7 +142,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static FeedModel GetFeed(int id)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
+            using (var db = new LiteDatabase(LiteDbConfiguration.FEED))
             {
                 var col = db.GetCollection<FeedModel>("feeds");
 
@@ -152,7 +152,7 @@ namespace RuiJi.Net.Node.Feed.Db
 
         public static List<FeedModel> GetFeed(int[] ids)
         {
-            using (var db = new LiteDatabase(@"LiteDb/Feeds.db"))
+            using (var db = new LiteDatabase(LiteDbConfiguration.FEED))
             {
                 var col = db.GetCollection<FeedModel>("feeds");
                 return col.Find(i => ids.Contains(i.Id)).ToList();
