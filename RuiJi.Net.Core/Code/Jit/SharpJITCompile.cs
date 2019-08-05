@@ -44,7 +44,7 @@ namespace RuiJi.Net.Core.Code.Jit
             cp.TreatWarningsAsErrors = false;
             cp.IncludeDebugInformation = true;
             cp.MainClass = "RuiJiCompile";
-            //cp.ReferencedAssemblies.Add("System.dll");
+            cp.ReferencedAssemblies.Add("System.dll");
 
             return provider.CompileAssemblyFromSource(cp, code);
         }

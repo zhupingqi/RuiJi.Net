@@ -1,4 +1,8 @@
-﻿using RuiJi.Net.Node.Feed.Db;
+﻿using RuiJi.Net.Core.Code.Compiler;
+using RuiJi.Net.Core.Code.Provider;
+using RuiJi.Net.Node.CodeProvider;
+using RuiJi.Net.Node.Feed.Db;
+using System.Collections.Generic;
 using Xunit;
 
 namespace RuiJi.Net.Test
@@ -8,12 +12,20 @@ namespace RuiJi.Net.Test
         [Fact]
         public void TestMethod1()
         {
-            //var url = "http://app.cannews.com.cn/roll.php?do=query&callback=jsonp1475197217819&_={# ticks() #}&date={# now(\"yyyy-MM-dd\") #}&size=20&page={# page(1,10) #}&&start={# limit(1,5,2) #}";
+            var url = "http://www.onezh.com/hall/show_{# page(146,707) #}.html";
 
-            //var f = new JSUrlCompile();
-            //var urls = f.GetResult(url);
+            CodeCompilerManager.Create("url", new List<ICodeProvider> {
+                    new LiteDbCodeProvider(Node.Feed.Db.FuncType.URLFUNCTION),
+                    new FileCodeProvider("funcs/js","fun")
+                });
 
-            //Assert.True(true);
+            CodeCompilerManager.Create("proc", new List<ICodeProvider> {
+                    new LiteDbCodeProvider(Node.Feed.Db.FuncType.SELECTORPROCESSOR),
+                    new FileCodeProvider("funcs/js","pro")
+                });
+            var addrs = CodeCompilerManager.GetResult("url", url);
+
+            Assert.True(true);
         }
 
         //[Fact]
