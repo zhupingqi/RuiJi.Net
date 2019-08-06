@@ -44,7 +44,7 @@ namespace RuiJi.Net.Node.Feed.Db
         public string UA { get; set; }
 
         [JsonProperty("headers")]
-        public List<WebHeader> Headers { get; set; }
+        public string Headers { get; set; }
 
         [JsonProperty("url")]
         public string Url { get; set; }

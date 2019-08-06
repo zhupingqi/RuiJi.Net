@@ -4,6 +4,14 @@
     //"zkServer": "localhost:2181"//,
     "ruiJiServer": "localhost:36000",
     "docServer": "localhost:80"
+  },
+  "storage": {
+    "ua": "LiteDb/UAs.db",
+    "rule": "LiteDb/Rules.db",
+    "proxy": "LiteDb/Proxys.db",
+    "func": "LiteDb/Funcs.db",
+    "feed": "LiteDb/Feeds.db",
+    "content": "LiteDb/Content/{shard}.db"
   }
   //,
   //"nodes": [
