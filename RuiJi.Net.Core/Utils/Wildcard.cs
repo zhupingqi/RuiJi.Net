@@ -53,7 +53,10 @@ namespace RuiJi.Net.Core.Utils
         /// <returns></returns>
         public static bool IsMatch(string content, string[] masks)
         {
-            content = content.ToLower();
+            if (string.IsNullOrEmpty(content))
+                return false;
+
+            content = content.ToLower().Trim();
 
             foreach (var mask in masks)
             {

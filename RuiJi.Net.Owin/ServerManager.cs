@@ -79,11 +79,13 @@ namespace RuiJi.Net.Owin
                 }
 
                 CodeCompilerManager.Create("url", new List<ICodeProvider> {
-                    new LiteDbCodeProvider(Node.Feed.Db.FuncType.URLFUNCTION)
+                    new LiteDbCodeProvider(Node.Feed.Db.FuncType.URLFUNCTION),
+                    new FileCodeProvider("funcs/js","fun")
                 });
 
                 CodeCompilerManager.Create("proc", new List<ICodeProvider> {
-                    new LiteDbCodeProvider(Node.Feed.Db.FuncType.SELECTORPROCESSOR)
+                    new LiteDbCodeProvider(Node.Feed.Db.FuncType.SELECTORPROCESSOR),
+                    new FileCodeProvider("funcs/js","pro")
                 });
             }
             else
