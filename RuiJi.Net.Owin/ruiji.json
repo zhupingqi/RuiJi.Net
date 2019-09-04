@@ -6,12 +6,12 @@
     "docServer": "localhost:80"
   },
   "storage": {
-    "ua": "LiteDb/UAs.db",
-    "rule": "LiteDb/Rules.db",
-    "proxy": "LiteDb/Proxys.db",
-    "func": "LiteDb/Funcs.db",
-    "feed": "LiteDb/Feeds.db",
-    "content": "LiteDb/Content/{shard}.db"
+    "ua": "LiteDb/UAs.db;Mode=Exclusive",
+    "rule": "LiteDb/Rules.db;Mode=Exclusive",
+    "proxy": "LiteDb/Proxys.db;Mode=Exclusive",
+    "func": "LiteDb/Funcs.db;Mode=Exclusive",
+    "feed": "LiteDb/Feeds.db;Mode=Exclusive",
+    "content": "LiteDb/Content/{shard}.db;Mode=Exclusive"
   }
   //,
   //"nodes": [

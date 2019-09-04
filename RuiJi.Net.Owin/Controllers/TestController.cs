@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 
 namespace RuiJi.Net.Owin.Controllers
 {
@@ -37,10 +38,18 @@ namespace RuiJi.Net.Owin.Controllers
             var response = Crawler.Request(request);
             if (response != null && response.Data != null)
             {
+                if (response.StatusCode!= HttpStatusCode.OK)
+                {
+                    // TODO:
+                }
                 var content = response.Data.ToString();
-                var block = RuiJiBlockParser.ParserBlock(rule.RuiJiExpression);
                 var r = new ExtractRequest();
                 r.Content = content;
+                if (string.IsNullOrWhiteSpace(rule.RuiJiExpression))
+                {
+                    return r;
+                }
+                var block = RuiJiBlockParser.ParserBlock(rule.RuiJiExpression);
 
                 r.Blocks = new List<ExtractFeatureBlock> {
                     new ExtractFeatureBlock (block,rule.Feature)
@@ -48,7 +57,7 @@ namespace RuiJi.Net.Owin.Controllers
 
                 var results = Extractor.Extract(r);
 
-                var result = results.OrderByDescending(m => m.Metas.Count).FirstOrDefault();
+                var result = results?.OrderByDescending(m => m.Metas?.Count??0)?.FirstOrDefault();
 
                 if (result != null && result.Paging != null && result.Paging.Count > 0 && result.Metas != null && result.Metas.ContainsKey("content"))
                 {

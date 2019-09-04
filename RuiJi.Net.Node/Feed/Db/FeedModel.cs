@@ -134,18 +134,28 @@ namespace RuiJi.Net.Node.Feed.Db
                 while (!string.IsNullOrEmpty(line))
                 {
                     var sp = line.Split(':');
+
                     if (sp.Length < 2)
                     {
-                        continue;
+                        /*
+                         * 这里原来的 continue 会导致死循环 endless loop:
+                         * Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36
+                         */
+                        goto next;
                     }
 
-                    result.Add(new WebHeader(line.Substring(0, line.IndexOf(':')), line.Substring(line.IndexOf(':') + 1)));
+                    var endIndex = line.IndexOf(':');
+                    result.Add(new WebHeader(line.Substring(0, endIndex),
+                        line.Substring(endIndex + 1)));
 
                     if (reader.EndOfStream)
                         break;
+
+                    next:
                     line = reader.ReadLine();
                 }
             }
+
             return result;
         }
     }
