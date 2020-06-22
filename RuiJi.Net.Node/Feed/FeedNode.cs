@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
+using org.apache.zookeeper;
 using RuiJi.Net.Node.Feed.LTS;
-using ZooKeeperNet;
+using System.Text;
+using static org.apache.zookeeper.ZooDefs;
 
 namespace RuiJi.Net.Node.Feed
 {
@@ -21,7 +23,7 @@ namespace RuiJi.Net.Node.Feed
         {
             base.CreateLiveNode("/live_nodes/feed/" + BaseUrl, null);
 
-            var stat = zooKeeper.Exists("/config/feed/" + BaseUrl, false);
+            var stat = zooKeeper.existsAsync("/config/feed/" + BaseUrl, false).Result;
             if (stat == null)
             {
                 var d = new NodeConfig()
@@ -30,7 +32,7 @@ namespace RuiJi.Net.Node.Feed
                     baseUrl = BaseUrl,
                     Proxy = ProxyUrl
                 };
-                zooKeeper.Create("/config/feed/" + BaseUrl, JsonConvert.SerializeObject(d).GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+                zooKeeper.createAsync("/config/feed/" + BaseUrl, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(d)), Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
             }
 
             scheduler = new FeedScheduler();

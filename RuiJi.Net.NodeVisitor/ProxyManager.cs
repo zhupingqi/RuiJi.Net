@@ -1,17 +1,15 @@
-﻿using Newtonsoft.Json;
-using Org.Apache.Zookeeper.Data;
-using RestSharp;
+﻿using org.apache.zookeeper;
+using org.apache.zookeeper.data;
 using RuiJi.Net.Core.Configuration;
 using RuiJi.Net.Core.Utils;
 using RuiJi.Net.Core.Utils.Logging;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using ZooKeeperNet;
+using static org.apache.zookeeper.Watcher.Event;
 
 namespace RuiJi.Net.NodeVisitor
 {
@@ -55,7 +53,7 @@ namespace RuiJi.Net.NodeVisitor
             var watcher = new SessionWatcher(this, resetEvent);
             try
             {
-                zooKeeper = new ZooKeeper(zkServer, TimeSpan.FromSeconds(15), watcher);
+                zooKeeper = new ZooKeeper(zkServer, 15000, watcher);
                 resetEvent.WaitOne();
 
                 LoadLiveProxy();
@@ -71,7 +69,7 @@ namespace RuiJi.Net.NodeVisitor
             proxys.Clear();
             try
             {
-                var nodes = zooKeeper.GetChildren("/live_nodes/proxy", new LiveProxyWatcher(this));
+                var nodes = zooKeeper.getChildrenAsync("/live_nodes/proxy", new LiveProxyWatcher(this)).Result.Children;
 
                 foreach (var node in nodes)
                 {
@@ -96,7 +94,7 @@ namespace RuiJi.Net.NodeVisitor
 
             if (zooKeeper != null)
             {
-                zooKeeper.Dispose();
+                zooKeeper.closeAsync();
                 zooKeeper = null;
             }
         }
@@ -119,7 +117,7 @@ namespace RuiJi.Net.NodeVisitor
             {
                 var stat = new Stat();
 
-                var b = zooKeeper.GetData(path, null, stat);
+                var b = zooKeeper.getDataAsync(path, false).Result.Data;
                 if (b == null)
                     b = new byte[0];
 
@@ -132,7 +130,7 @@ namespace RuiJi.Net.NodeVisitor
             return null;
         }
 
-        class SessionWatcher : IWatcher
+        class SessionWatcher : Watcher
         {
             ProxyManager manager;
             ManualResetEvent resetEvent;
@@ -143,11 +141,11 @@ namespace RuiJi.Net.NodeVisitor
                 this.resetEvent = resetEvent;
             }
 
-            public void Process(WatchedEvent @event)
+            public override Task process(WatchedEvent @event)
             {
-                if (@event.Type == EventType.None)
+                if (@event.get_Type() == EventType.None)
                 {
-                    switch (@event.State)
+                    switch (@event.getState())
                     {
                         case KeeperState.Disconnected:
                             {
@@ -169,21 +167,23 @@ namespace RuiJi.Net.NodeVisitor
                                 resetEvent.Set();
                                 break;
                             }
-                        case KeeperState.NoSyncConnected:
+                        case KeeperState.ConnectedReadOnly:
                             {
-                                Console.WriteLine("zookeeper server NoSyncConnected!");
+                                Console.WriteLine("zookeeper server ConnectedReadOnly!");
                                 break;
                             }
-                        case KeeperState.Unknown:
+                        case KeeperState.AuthFailed:
                             {
                                 break;
                             }
                     }
                 }
+
+                return Task.CompletedTask;
             }
         }
 
-        class LiveProxyWatcher : IWatcher
+        class LiveProxyWatcher : Watcher
         {
             ProxyManager manager;
 
@@ -192,12 +192,12 @@ namespace RuiJi.Net.NodeVisitor
                 this.manager = manager;
             }
 
-            public void Process(WatchedEvent @event)
+            public override Task process(WatchedEvent @event)
             {
-                if (string.IsNullOrEmpty(@event.Path))
-                    return;
+                if (string.IsNullOrEmpty(@event.getPath()))
+                    return Task.CompletedTask;
 
-                switch (@event.Type)
+                switch (@event.get_Type())
                 {
                     case EventType.NodeChildrenChanged:
                         {
@@ -206,6 +206,8 @@ namespace RuiJi.Net.NodeVisitor
                             break;
                         }
                 }
+
+                return Task.CompletedTask;
             }
         }
     }

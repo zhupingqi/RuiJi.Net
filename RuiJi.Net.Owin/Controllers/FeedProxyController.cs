@@ -216,7 +216,7 @@ namespace RuiJi.Net.Owin.Controllers
 
                     restRequest.Timeout = 15000;
 
-                    client.ExecuteAsync(restRequest, (restResponse) => { });
+                    client.Execute(restRequest);
                 }
             }
         }

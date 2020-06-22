@@ -1,17 +1,13 @@
 ﻿using Newtonsoft.Json;
-using RuiJi.Net.Core;
+using org.apache.zookeeper;
 using RuiJi.Net.Core.Utils.Logging;
-using RuiJi.Net.Node.Extractor;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using ZooKeeperNet;
+using static org.apache.zookeeper.Watcher.Event;
+using static org.apache.zookeeper.ZooDefs;
 
 namespace RuiJi.Net.Node.Feed
 {
@@ -30,10 +26,10 @@ namespace RuiJi.Net.Node.Feed
 
         protected override void OnStartup()
         {
-            base.CreateLiveNode("/live_nodes/proxy/" + BaseUrl, "feed proxy".GetBytes());
+            base.CreateLiveNode("/live_nodes/proxy/" + BaseUrl, Encoding.UTF8.GetBytes("feed proxy"));
 
             //create crawler proxy config in zookeeper
-            var stat = zooKeeper.Exists("/config/proxy/" + BaseUrl, false);
+            var stat = zooKeeper.existsAsync("/config/proxy/" + BaseUrl, false).Result;
             if (stat == null)
             {
                 var d = new 
@@ -41,7 +37,7 @@ namespace RuiJi.Net.Node.Feed
                     type = "feed"
                 };
 
-                zooKeeper.Create("/config/proxy/" + BaseUrl, JsonConvert.SerializeObject(d).GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+                zooKeeper.createAsync("/config/proxy/" + BaseUrl, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(d)), Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
             }
 
             LoadLiveFeed();
@@ -51,7 +47,7 @@ namespace RuiJi.Net.Node.Feed
         {
             try
             {
-                var nodes = zooKeeper.GetChildren("/live_nodes/feed", new LiveFeedWatcher(this));
+                var nodes = zooKeeper.getChildrenAsync("/live_nodes/feed", new LiveFeedWatcher(this)).Result.Children;
                 FeedManager.Instance.ClearAndAddServer(nodes.ToArray());
             }
             catch
@@ -64,7 +60,7 @@ namespace RuiJi.Net.Node.Feed
             return NodeTypeEnum.FEEDPROXY;
         }
 
-        class LiveFeedWatcher : IWatcher
+        class LiveFeedWatcher : Watcher
         {
             FeedProxyNode node;
 
@@ -73,9 +69,9 @@ namespace RuiJi.Net.Node.Feed
                 this.node = node;
             }
 
-            public void Process(WatchedEvent @event)
+            public override Task process(WatchedEvent @event)
             {
-                switch (@event.Type)
+                switch (@event.get_Type())
                 {
                     case EventType.NodeChildrenChanged:
                         {
@@ -84,6 +80,8 @@ namespace RuiJi.Net.Node.Feed
                             break;
                         }
                 }
+
+                return Task.CompletedTask;
             }
         }
     }

@@ -36,17 +36,18 @@ namespace RuiJi.Net.NodeVisitor
             restRequest.Method = Method.GET;
             restRequest.Timeout = 15000;
 
-            string response = "";
-            var resetEvent = new ManualResetEvent(false);
+            //string response = "";
+            //var resetEvent = new ManualResetEvent(false);
 
-            var handle = client.ExecuteAsync(restRequest, (restResponse) => {
-                response = restResponse.Content;
-                resetEvent.Set();
-            });
+            //var handle = client.ExecuteAsync(restRequest, (restResponse) => {
+            //    response = restResponse.Content;
+            //    resetEvent.Set();
+            //});
 
-            resetEvent.WaitOne();
+            //resetEvent.WaitOne();
 
-            return response;
+            var res = client.Execute(restRequest);
+            return res.Content;
         }
     }
 }

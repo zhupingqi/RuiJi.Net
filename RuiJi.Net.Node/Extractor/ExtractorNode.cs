@@ -1,15 +1,8 @@
-﻿using RuiJi.Net.Core.Utils;
+﻿using Newtonsoft.Json;
+using org.apache.zookeeper;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Net;
 using System.Text;
-using System.Threading.Tasks;
-using ZooKeeperNet;
-using System.Threading;
-using RuiJi.Net.Core;
-using Newtonsoft.Json;
+using static org.apache.zookeeper.ZooDefs;
 
 namespace RuiJi.Net.Node.Extractor
 {
@@ -32,7 +25,7 @@ namespace RuiJi.Net.Node.Extractor
             base.CreateLiveNode("/live_nodes/extractor/" + BaseUrl, null);
 
             //create extreacter config in zookeeper
-            var stat = zooKeeper.Exists("/config/extractor/" + BaseUrl, false);
+            var stat = zooKeeper.existsAsync("/config/extractor/" + BaseUrl, false).Result;
             if (stat == null)
             {
                 var d = new NodeConfig()
@@ -42,7 +35,7 @@ namespace RuiJi.Net.Node.Extractor
                     Proxy = ProxyUrl,
                     Pages = new int[0]
                 };
-                zooKeeper.Create("/config/extractor/" + BaseUrl, JsonConvert.SerializeObject(d).GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+                zooKeeper.createAsync("/config/extractor/" + BaseUrl, Encoding.UTF8.GetBytes( JsonConvert.SerializeObject(d)), Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
             }
         }
 

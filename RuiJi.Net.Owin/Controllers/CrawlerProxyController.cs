@@ -63,16 +63,20 @@ namespace RuiJi.Net.Owin.Controllers
                 restRequest.AddJsonBody(request);
                 restRequest.Timeout = request.Timeout;
 
-                Response response = null;
-                var resetEvent = new ManualResetEvent(false);
+                //Response response = null;
+                //var resetEvent = new ManualResetEvent(false);
 
-                var handle = client.ExecuteAsync(restRequest,(restResponse)=> {
-                    response = JsonConvert.DeserializeObject<Response>(restResponse.Content);
-                    response.ElectInfo = result.BaseUrl + "/" + result.ClientIp;
-                    resetEvent.Set();
-                });
+                //var handle = client.ExecuteAsync(restRequest,(restResponse)=> {
+                //    response = JsonConvert.DeserializeObject<Response>(restResponse.Content);
+                //    response.ElectInfo = result.BaseUrl + "/" + result.ClientIp;
+                //    resetEvent.Set();
+                //});
 
-                resetEvent.WaitOne();
+                //resetEvent.WaitOne();
+
+                var res = client.Execute(restRequest);
+                var response = JsonConvert.DeserializeObject<Response>(res.Content);
+                response.ElectInfo = result.BaseUrl + "/" + result.ClientIp;
 
                 return response;
             }

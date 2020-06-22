@@ -1,6 +1,5 @@
-﻿using log4net;
-using Newtonsoft.Json;
-using Org.Apache.Zookeeper.Data;
+﻿using org.apache.zookeeper;
+using org.apache.zookeeper.data;
 using RuiJi.Net.Core.Utils;
 using RuiJi.Net.Core.Utils.Logging;
 using System;
@@ -10,7 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using ZooKeeperNet;
+using static org.apache.zookeeper.KeeperException;
+using static org.apache.zookeeper.Watcher.Event;
+using static org.apache.zookeeper.ZooDefs;
 
 namespace RuiJi.Net.Node
 {
@@ -36,7 +37,7 @@ namespace RuiJi.Net.Node
         {
             get
             {
-                return zooKeeper.State.State;
+                return zooKeeper.getState().ToString();
             }
         }
 
@@ -75,7 +76,7 @@ namespace RuiJi.Net.Node
                 Logger.GetLogger(BaseUrl).Info("node " + BaseUrl + " ready to startup!");
                 Logger.GetLogger(BaseUrl).Info("try connect to zookeeper server : " + ZkServer);
 
-                zooKeeper = new ZooKeeper(ZkServer, TimeSpan.FromSeconds(30), watcher);
+                zooKeeper = new ZooKeeper(ZkServer, 30000, watcher);
                 resetEvent.WaitOne();
 
                 CreateCommonNode();
@@ -95,7 +96,7 @@ namespace RuiJi.Net.Node
 
             if (zooKeeper != null)
             {
-                zooKeeper.Dispose();
+                zooKeeper.closeAsync();
                 zooKeeper = null;
             }
         }
@@ -107,88 +108,88 @@ namespace RuiJi.Net.Node
         protected void CreateCommonNode()
         {
             //live_nodes node
-            var stat = zooKeeper.Exists("/live_nodes", false);
+            var stat = zooKeeper.existsAsync("/live_nodes", false).Result;
             if (stat == null)
-                zooKeeper.Create("/live_nodes", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+                zooKeeper.createAsync("/live_nodes", null, Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
 
-            stat = zooKeeper.Exists("/live_nodes/crawler", false);
+            stat = zooKeeper.existsAsync("/live_nodes/crawler", false).Result;
             if (stat == null)
-                zooKeeper.Create("/live_nodes/crawler", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+                zooKeeper.createAsync("/live_nodes/crawler", null, Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
 
-            stat = zooKeeper.Exists("/live_nodes/extractor", false);
+            stat = zooKeeper.existsAsync("/live_nodes/extractor", false).Result;
             if (stat == null)
-                zooKeeper.Create("/live_nodes/extractor", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+                zooKeeper.createAsync("/live_nodes/extractor", null, Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
 
-            stat = zooKeeper.Exists("/live_nodes/feed", false);
+            stat = zooKeeper.existsAsync("/live_nodes/feed", false).Result;
             if (stat == null)
-                zooKeeper.Create("/live_nodes/feed", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+                zooKeeper.createAsync("/live_nodes/feed", null, Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
 
-            stat = zooKeeper.Exists("/live_nodes/proxy", false);
+            stat = zooKeeper.existsAsync("/live_nodes/proxy", false).Result;
             if (stat == null)
-                zooKeeper.Create("/live_nodes/proxy", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+                zooKeeper.createAsync("/live_nodes/proxy", null, Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
 
             //config node
-            stat = zooKeeper.Exists("/config", false);
+            stat = zooKeeper.existsAsync("/config", false).Result;
             if (stat == null)
-                zooKeeper.Create("/config", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+                zooKeeper.createAsync("/config", null, Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
 
-            stat = zooKeeper.Exists("/config/crawler", false);
+            stat = zooKeeper.existsAsync("/config/crawler", false).Result;
             if (stat == null)
-                zooKeeper.Create("/config/crawler", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+                zooKeeper.createAsync("/config/crawler", null, Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
 
-            stat = zooKeeper.Exists("/config/extractor", false);
+            stat = zooKeeper.existsAsync("/config/extractor", false).Result;
             if (stat == null)
-                zooKeeper.Create("/config/extractor", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+                zooKeeper.createAsync("/config/extractor", null, Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
 
-            stat = zooKeeper.Exists("/config/proxy", false);
+            stat = zooKeeper.existsAsync("/config/proxy", false).Result;
             if (stat == null)
-                zooKeeper.Create("/config/proxy", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+                zooKeeper.createAsync("/config/proxy", null, Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
 
-            stat = zooKeeper.Exists("/config/feed", false);
+            stat = zooKeeper.existsAsync("/config/feed", false).Result;
             if (stat == null)
-                zooKeeper.Create("/config/feed", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+                zooKeeper.createAsync("/config/feed", null, Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
 
-            stat = zooKeeper.Exists("/overseer", false);
+            stat = zooKeeper.existsAsync("/overseer", false).Result;
             if (stat == null)
-                zooKeeper.Create("/overseer", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+                zooKeeper.createAsync("/overseer", null, Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
 
-            stat = zooKeeper.Exists("/overseer/election", false);
+            stat = zooKeeper.existsAsync("/overseer/election", false).Result;
             if (stat == null)
-                zooKeeper.Create("/overseer/election", null, Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+                zooKeeper.createAsync("/overseer/election", null, Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
         }
 
         protected void CreateLiveNode(string path, byte[] data)
         {
-            var stat = zooKeeper.Exists(path, false);
+            var stat = zooKeeper.existsAsync(path, false).Result;
             if (stat != null)
-                zooKeeper.Delete(path, -1);
+                zooKeeper.deleteAsync(path, -1);
 
-            zooKeeper.Create(path, data, Ids.OPEN_ACL_UNSAFE, CreateMode.Ephemeral);
+            zooKeeper.createAsync(path, data, Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
         }
 
         private void CreateOverseerNode()
         {
-            var nodes = zooKeeper.GetChildren("/overseer/election", null);
+            var nodes = zooKeeper.getChildrenAsync("/overseer/election", null).Result.Children;
             if (nodes.Count(m => m.IndexOf(BaseUrl) != -1) > 0)
                 return;
-            zooKeeper.Create("/overseer/election/" + BaseUrl + "_", null, Ids.OPEN_ACL_UNSAFE, CreateMode.EphemeralSequential);
+            zooKeeper.createAsync("/overseer/election/" + BaseUrl + "_", null, Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);
         }
 
         protected void RunForLeaderNode()
         {
             try
             {
-                var stat = zooKeeper.Exists("/overseer/leader", new LeaderNodeDeleteWatcher(this));
+                var stat = zooKeeper.existsAsync("/overseer/leader", new LeaderNodeDeleteWatcher(this)).Result;
                 if (stat == null)
                 {
-                    zooKeeper.Create("/overseer/leader", BaseUrl.GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Ephemeral);
+                    zooKeeper.createAsync("/overseer/leader", Encoding.UTF8.GetBytes( BaseUrl), Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
                     IsLeader = true;
                     LeaderBaseUrl = GetLeader();
 
                     Logger.GetLogger(BaseUrl).Info("current leader is " + BaseUrl);
                 }
             }
-            catch (ZooKeeperNet.KeeperException.NodeExistsException ex)
+            catch (NodeExistsException ex)
             {
                 IsLeader = false;
                 LeaderBaseUrl = GetLeader();
@@ -205,8 +206,8 @@ namespace RuiJi.Net.Node
         {
             try
             {
-                var stat = new Org.Apache.Zookeeper.Data.Stat();
-                var b = zooKeeper.GetData("/overseer/leader", false, stat);
+                var stat = new Stat();
+                var b = zooKeeper.getDataAsync("/overseer/leader", false).Result.Data;
                 if (b != null)
                 {
                     return Encoding.UTF8.GetString(b);
@@ -226,13 +227,13 @@ namespace RuiJi.Net.Node
             {
                 var nv = new NameValueCollection();
 
-                var nodes = zooKeeper.GetChildren(path, null);
+                var nodes = zooKeeper.getChildrenAsync(path, null).Result.Children;
                 foreach (var node in nodes)
                 {
                     var n = path == "/" ? path + node : path + "/" + node;
 
-                    var stat = zooKeeper.Exists(n, false);
-                    nv.Add(n, stat.NumChildren.ToString());
+                    var stat = zooKeeper.existsAsync(n, false).Result;
+                    nv.Add(n, stat.getNumChildren().ToString());
                 }
 
                 return nv;
@@ -247,7 +248,7 @@ namespace RuiJi.Net.Node
         {
             try
             {
-                zooKeeper.SetData(path, data.GetBytes(), version);
+                zooKeeper.setDataAsync(path, Encoding.UTF8.GetBytes(data), version);
             }
             catch
             {
@@ -260,7 +261,7 @@ namespace RuiJi.Net.Node
             {
                 var stat = new Stat();
 
-                var b = zooKeeper.GetData(path, null, stat);
+                var b = zooKeeper.getDataAsync(path, false).Result.Data;
                 if (b == null)
                     b = new byte[0];
 
@@ -318,7 +319,7 @@ namespace RuiJi.Net.Node
             return results;
         }
 
-        class SessionWatcher : IWatcher
+        class SessionWatcher : Watcher
         {
             NodeBase service;
             ManualResetEvent resetEvent;
@@ -329,11 +330,11 @@ namespace RuiJi.Net.Node
                 this.resetEvent = resetEvent;
             }
 
-            public void Process(WatchedEvent @event)
+            public override Task process(WatchedEvent @event)
             {
-                if (@event.Type == EventType.None)
+                if (@event.get_Type() == EventType.None)
                 {
-                    switch (@event.State)
+                    switch (@event.getState())
                     {
                         case KeeperState.Disconnected:
                             {
@@ -357,21 +358,23 @@ namespace RuiJi.Net.Node
                                 resetEvent.Set();
                                 break;
                             }
-                        case KeeperState.NoSyncConnected:
+                        case KeeperState.ConnectedReadOnly:
                             {
-                                Logger.GetLogger(service.BaseUrl).Info("zookeeper server NoSyncConnected!");
+                                Logger.GetLogger(service.BaseUrl).Info("zookeeper server ConnectedReadOnly!");
                                 break;
                             }
-                        case KeeperState.Unknown:
+                        case KeeperState.AuthFailed:
                             {
                                 break;
                             }
                     }
                 }
+
+                return Task.CompletedTask;
             }
         }
 
-        class LeaderNodeDeleteWatcher : IWatcher
+        class LeaderNodeDeleteWatcher : Watcher
         {
             NodeBase service;
             public LeaderNodeDeleteWatcher(NodeBase service)
@@ -379,13 +382,15 @@ namespace RuiJi.Net.Node
                 this.service = service;
             }
 
-            public void Process(WatchedEvent @event)
+            public override Task process(WatchedEvent @event)
             {
-                if (@event.Type == EventType.NodeDeleted)
+                if (@event.get_Type() == EventType.NodeDeleted)
                 {
                     Logger.GetLogger(service.BaseUrl).Error("leader offline, run for leader");
                     service.RunForLeaderNode();
                 }
+
+                return Task.CompletedTask;
             }
         }
     }

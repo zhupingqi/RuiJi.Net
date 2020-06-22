@@ -36,16 +36,18 @@ namespace RuiJi.Net.Owin.Controllers
                 restRequest.AddJsonBody(json);
                 restRequest.Timeout = 15000;
 
-                List<ExtractResult> response = null;
-                var resetEvent = new ManualResetEvent(false);
+                //List<ExtractResult> response = null;
+                //var resetEvent = new ManualResetEvent(false);
 
-                var handle = client.ExecuteAsync(restRequest, (restResponse) => {
-                    response = JsonConvert.DeserializeObject<List<ExtractResult>>(restResponse.Content);
-                    resetEvent.Set();
-                });
+                //var handle = client.ExecuteAsync(restRequest, (restResponse) => {
+                //    response = JsonConvert.DeserializeObject<List<ExtractResult>>(restResponse.Content);
+                //    resetEvent.Set();
+                //});
 
-                resetEvent.WaitOne();
-                return response;
+                //resetEvent.WaitOne();
+
+                var res = client.Execute(restRequest);
+                return JsonConvert.DeserializeObject<List<ExtractResult>>(res.Content);
             }
             else
             {

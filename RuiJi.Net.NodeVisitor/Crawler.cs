@@ -83,14 +83,17 @@ namespace RuiJi.Net.NodeVisitor
                 Response response = null;
                 var resetEvent = new ManualResetEvent(false);
 
-                var handle = client.ExecuteAsync(restRequest, (restResponse) =>
-                {
-                    response = JsonConvert.DeserializeObject<Response>(restResponse.Content);
+                //var handle = client.ExecuteAsync(restRequest, (restResponse) =>
+                //{
+                //    response = JsonConvert.DeserializeObject<Response>(restResponse.Content);
 
-                    resetEvent.Set();
-                });
+                //    resetEvent.Set();
+                //});
 
-                resetEvent.WaitOne();
+                var res = client.Execute(restRequest);
+                response = JsonConvert.DeserializeObject<Response>(res.Content);
+
+                //resetEvent.WaitOne();
 
                 return response;
             }
@@ -149,18 +152,19 @@ namespace RuiJi.Net.NodeVisitor
             restRequest.AddJsonBody(request);
             restRequest.Timeout = 15000;
 
-            CrawlerElectResult response = null;
-            var resetEvent = new ManualResetEvent(false);
+            //CrawlerElectResult response = null;
+            //var resetEvent = new ManualResetEvent(false);
 
-            var handle = client.ExecuteAsync(restRequest, (restResponse) =>
-            {
-                response = JsonConvert.DeserializeObject<CrawlerElectResult>(restResponse.Content);
-                resetEvent.Set();
-            });
+            //var handle = client.ExecuteAsync(restRequest, (restResponse) =>
+            //{
+            //    response = JsonConvert.DeserializeObject<CrawlerElectResult>(restResponse.Content);
+            //    resetEvent.Set();
+            //});
 
-            resetEvent.WaitOne();
+            //resetEvent.WaitOne();
 
-            return response;
+            var res = client.Execute(restRequest);
+            return JsonConvert.DeserializeObject<CrawlerElectResult>(res.Content);
         }
     }
 }

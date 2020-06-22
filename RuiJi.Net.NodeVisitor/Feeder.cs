@@ -43,17 +43,18 @@ namespace RuiJi.Net.NodeVisitor
 
             restRequest.Timeout = 15000;
 
-            List<ExtractFeatureBlock> response = null;
-            var resetEvent = new ManualResetEvent(false);
+            //List<ExtractFeatureBlock> response = null;
+            //var resetEvent = new ManualResetEvent(false);
 
-            var handle = client.ExecuteAsync(restRequest, (restResponse) => {
-                response = JsonConvert.DeserializeObject<List<ExtractFeatureBlock>>(restResponse.Content);
-                resetEvent.Set();
-            });
+            //var handle = client.ExecuteAsync(restRequest, (restResponse) => {
+            //    response = JsonConvert.DeserializeObject<List<ExtractFeatureBlock>>(restResponse.Content);
+            //    resetEvent.Set();
+            //});
 
-            resetEvent.WaitOne();
+            //resetEvent.WaitOne();
 
-            return response;
+            var res = client.Execute(restRequest);
+            return JsonConvert.DeserializeObject<List<ExtractFeatureBlock>>(res.Content);
         }
 
         public static string GetFeedJobs(string pages)
@@ -83,17 +84,18 @@ namespace RuiJi.Net.NodeVisitor
             restRequest.AddParameter("pages", pages);
             restRequest.Timeout = 15000;
 
-            string response = "";
-            var resetEvent = new ManualResetEvent(false);
+            //string response = "";
+            //var resetEvent = new ManualResetEvent(false);
 
-            var handle = client.ExecuteAsync(restRequest, (restResponse) => {
-                response = restResponse.Content;
-                resetEvent.Set();
-            });
+            //var handle = client.ExecuteAsync(restRequest, (restResponse) => {
+            //    response = restResponse.Content;
+            //    resetEvent.Set();
+            //});
 
-            resetEvent.WaitOne();
+            //resetEvent.WaitOne();
 
-            return response;
+            var res = client.Execute(restRequest);
+            return res.Content;
         }
 
         public static bool SaveContent(object content)
@@ -120,17 +122,18 @@ namespace RuiJi.Net.NodeVisitor
             restRequest.AddJsonBody(content);
             restRequest.Timeout = 15000;
 
-            bool response = false;
-            var resetEvent = new ManualResetEvent(false);
+            //bool response = false;
+            //var resetEvent = new ManualResetEvent(false);
 
-            var handle = client.ExecuteAsync(restRequest, (restResponse) => {
-                response = JsonConvert.DeserializeObject<bool>(restResponse.Content);
-                resetEvent.Set();
-            });
+            //var handle = client.ExecuteAsync(restRequest, (restResponse) => {
+            //    response = JsonConvert.DeserializeObject<bool>(restResponse.Content);
+            //    resetEvent.Set();
+            //});
 
-            resetEvent.WaitOne();
+            //resetEvent.WaitOne();
 
-            return response;
+            var res = client.Execute(restRequest);
+            return JsonConvert.DeserializeObject<bool>(res.Content);
         }
 
         public static object Get(int feedId)

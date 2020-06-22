@@ -1,15 +1,8 @@
-﻿using RuiJi.Net.Core.Utils;
+﻿using Newtonsoft.Json;
+using org.apache.zookeeper;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Net;
 using System.Text;
-using System.Threading.Tasks;
-using ZooKeeperNet;
-using System.Threading;
-using RuiJi.Net.Core;
-using Newtonsoft.Json;
+using static org.apache.zookeeper.ZooDefs;
 
 namespace RuiJi.Net.Node.Crawler
 {
@@ -31,9 +24,9 @@ namespace RuiJi.Net.Node.Crawler
         {
             try
             {
-                if (zooKeeper != null && zooKeeper.State == ZooKeeper.States.CONNECTED)
+                if (zooKeeper != null && zooKeeper.getState() == ZooKeeper.States.CONNECTED)
                 {
-                    var b = zooKeeper.GetData("/config/crawler/" + BaseUrl, false, null);
+                    var b = zooKeeper.getDataAsync("/config/crawler/" + BaseUrl, false).Result.Data;
                     var r = System.Text.Encoding.UTF8.GetString(b);
 
                     return JsonConvert.DeserializeObject<CrawlerConfig>(r);
@@ -51,7 +44,7 @@ namespace RuiJi.Net.Node.Crawler
             base.CreateLiveNode("/live_nodes/crawler/" + BaseUrl,null);
 
             //create crawler config in zookeeper
-            var stat = zooKeeper.Exists("/config/crawler/" + BaseUrl, false);
+            var stat = zooKeeper.existsAsync("/config/crawler/" + BaseUrl, false).Result;
             if (stat == null)
             {
                 var d = new CrawlerConfig()
@@ -62,7 +55,7 @@ namespace RuiJi.Net.Node.Crawler
                     Ips = new string[0],
                     UseCookie = true
                 };
-                zooKeeper.Create("/config/crawler/" + BaseUrl, JsonConvert.SerializeObject(d).GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+                zooKeeper.createAsync("/config/crawler/" + BaseUrl, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(d)), Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
             }
         }
 

@@ -57,7 +57,7 @@ namespace RuiJi.Net.Storage
                 else
                     File.WriteAllText(path, content.Data.ToString());
             }
-            catch (Exception ex)
+            catch 
             {
             }
 

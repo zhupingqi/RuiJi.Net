@@ -24,7 +24,7 @@ namespace RuiJi.Net.Node.Feed.LTS
         internal static TaskQueuePool queuePool;
 
         private string baseUrl;
-        private string proxyUrl;
+        //private string proxyUrl;
 
         static FeedJob()
         {

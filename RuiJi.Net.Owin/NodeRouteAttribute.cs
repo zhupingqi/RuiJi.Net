@@ -54,27 +54,41 @@ namespace RuiJi.Net.Owin
                     }
                 }
 
-                var resetEvent = new ManualResetEvent(false);
+                //var resetEvent = new ManualResetEvent(false);
 
-                var handle = client.ExecuteAsync(restRequest, (restResponse) =>
+                //var handle = client.ExecuteAsync(restRequest, (restResponse) =>
+                //{
+                //    var m = ((ControllerActionDescriptor)actionContext.ActionDescriptor).MethodInfo;
+
+                //    if (m.ReturnType != null)
+                //    {
+                //        var obj = JsonConvert.DeserializeObject<object>(restResponse.Content);
+
+                //        actionContext.Result = new JsonResult(obj);
+                //    }
+                //    else
+                //    {
+                //        actionContext.Result = null;
+                //    }
+
+                //    resetEvent.Set();
+                //});
+
+                //resetEvent.WaitOne();
+
+                var res = client.Execute(restRequest);
+                var m = ((ControllerActionDescriptor)actionContext.ActionDescriptor).MethodInfo;
+
+                if (m.ReturnType != null)
                 {
-                    var m = ((ControllerActionDescriptor)actionContext.ActionDescriptor).MethodInfo;
+                    var obj = JsonConvert.DeserializeObject<object>(res.Content);
 
-                    if (m.ReturnType != null)
-                    {
-                        var obj = JsonConvert.DeserializeObject<object>(restResponse.Content);
-
-                        actionContext.Result = new JsonResult(obj);
-                    }
-                    else
-                    {
-                        actionContext.Result = null;
-                    }
-
-                    resetEvent.Set();
-                });
-
-                resetEvent.WaitOne();
+                    actionContext.Result = new JsonResult(obj);
+                }
+                else
+                {
+                    actionContext.Result = null;
+                }
             }
             else
             {

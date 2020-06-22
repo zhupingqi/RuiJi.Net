@@ -1,16 +1,11 @@
 ﻿using Newtonsoft.Json;
+using org.apache.zookeeper;
 using RuiJi.Net.Core;
 using RuiJi.Net.Core.Utils.Logging;
-using RuiJi.Net.Node.Crawler;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Net;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using ZooKeeperNet;
+using static org.apache.zookeeper.Watcher.Event;
+using static org.apache.zookeeper.ZooDefs;
 
 namespace RuiJi.Net.Node.Crawler
 {
@@ -22,10 +17,10 @@ namespace RuiJi.Net.Node.Crawler
 
         protected override void OnStartup()
         {
-            base.CreateLiveNode("/live_nodes/proxy/" + BaseUrl, "crawler proxy".GetBytes());
+            base.CreateLiveNode("/live_nodes/proxy/" + BaseUrl, Encoding.UTF8.GetBytes("crawler proxy"));
 
             //create crawler proxy config in zookeeper
-            var stat = zooKeeper.Exists("/config/proxy/" + BaseUrl, false);
+            var stat = zooKeeper.existsAsync("/config/proxy/" + BaseUrl, false).Result;
             if (stat == null)
             {
                 var d = new
@@ -34,7 +29,7 @@ namespace RuiJi.Net.Node.Crawler
                     mode = CrawlerProxyNodeModeEnum.MIX
                 };
 
-                zooKeeper.Create("/config/proxy/" + BaseUrl, JsonConvert.SerializeObject(d).GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+                zooKeeper.createAsync("/config/proxy/" + BaseUrl, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(d)), Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
             }
 
             LoadLiveCrawler();
@@ -46,7 +41,7 @@ namespace RuiJi.Net.Node.Crawler
 
             try
             {
-                var nodes = zooKeeper.GetChildren("/live_nodes/crawler", new LiveCrawlerWatcher(this));
+                var nodes = zooKeeper.getChildrenAsync("/live_nodes/crawler", new LiveCrawlerWatcher(this)).Result.Children;
 
                 foreach (var node in nodes)
                 {
@@ -64,7 +59,7 @@ namespace RuiJi.Net.Node.Crawler
         {
             try
             {
-                var b = zooKeeper.GetData("/config/crawler/" + baseUrl, new CrawlerConfigWatcher(this), null);
+                var b = zooKeeper.getDataAsync("/config/crawler/" + baseUrl, new CrawlerConfigWatcher(this)).Result.Data;
                 var r = Encoding.UTF8.GetString(b);
                 var d = JsonConvert.DeserializeObject<CrawlerConfig>(r);
 
@@ -82,7 +77,7 @@ namespace RuiJi.Net.Node.Crawler
             return NodeTypeEnum.CRAWLERPROXY;
         }
 
-        class LiveCrawlerWatcher : IWatcher
+        class LiveCrawlerWatcher : Watcher
         {
             CrawlerProxyNode node;
 
@@ -91,9 +86,9 @@ namespace RuiJi.Net.Node.Crawler
                 this.node = node;
             }
 
-            public void Process(WatchedEvent @event)
+            public override Task process(WatchedEvent @event)
             {
-                switch (@event.Type)
+                switch (@event.get_Type())
                 {
                     case EventType.NodeChildrenChanged:
                         {
@@ -102,10 +97,12 @@ namespace RuiJi.Net.Node.Crawler
                             break;
                         }
                 }
+
+                return Task.CompletedTask;
             }
         }
 
-        class CrawlerConfigWatcher : IWatcher
+        class CrawlerConfigWatcher : Watcher
         {
             CrawlerProxyNode node;
 
@@ -114,14 +111,14 @@ namespace RuiJi.Net.Node.Crawler
                 this.node = node;
             }
 
-            public void Process(WatchedEvent @event)
+            public override Task process(WatchedEvent @event)
             {
-                if (string.IsNullOrEmpty(@event.Path))
-                    return;
+                if (string.IsNullOrEmpty(@event.getPath()))
+                    return Task.CompletedTask;
 
-                var baseUrl = @event.Path.Split('/')[3];
+                var baseUrl = @event.getPath().Split('/')[3];
 
-                switch (@event.Type)
+                switch (@event.get_Type())
                 {
                     case EventType.NodeDataChanged:
                         {
@@ -135,6 +132,8 @@ namespace RuiJi.Net.Node.Crawler
                             break;
                         }
                 }
+
+                return Task.CompletedTask;
             }
         }
     }

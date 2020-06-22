@@ -42,17 +42,18 @@ namespace RuiJi.Net.NodeVisitor
                 restRequest.AddJsonBody(json);
                 restRequest.Timeout = 15000;
 
-                List<ExtractResult> response = null;
+                //List<ExtractResult> response = null;
                 var resetEvent = new ManualResetEvent(false);
 
-                var handle = client.ExecuteAsync(restRequest, (restResponse) => {
-                    response = JsonConvert.DeserializeObject<List<ExtractResult>>(restResponse.Content);
-                    resetEvent.Set();
-                });
+                //var handle = client.ExecuteAsync(restRequest, (restResponse) => {
+                //    response = JsonConvert.DeserializeObject<List<ExtractResult>>(restResponse.Content);
+                //    resetEvent.Set();
+                //});
 
-                resetEvent.WaitOne();
+                //resetEvent.WaitOne();
 
-                return response;
+                var res = client.Execute(restRequest);
+                return JsonConvert.DeserializeObject<List<ExtractResult>>(res.Content);
             }            
         }
     }

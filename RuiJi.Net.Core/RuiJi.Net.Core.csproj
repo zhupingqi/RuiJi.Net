@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <Version>1.1.8</Version>
     <Authors>zhupingqi</Authors>
     <Company>zhupingqi</Company>
@@ -14,7 +14,7 @@
     <PackageTags>crawler extractor scraper</PackageTags>
     <AssemblyVersion>1.1.8.0</AssemblyVersion>
     <FileVersion>1.1.8.0</FileVersion>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
@@ -29,18 +29,18 @@
     <PackageReference Include="NiL.JS.NetCore" Version="2.5.1278" />
     <PackageReference Include="PuppeteerSharp" Version="1.4.0" />
     <PackageReference Include="Quartz" Version="3.0.6" />
-    <PackageReference Include="RestSharp.NetCore" Version="105.2.3" />
+    <PackageReference Include="RestSharp" Version="106.11.4" />
     <PackageReference Include="System.CodeDom" Version="4.5.0" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="4.5.0" />
-    <PackageReference Include="UDE.CSharp" Version="1.1.0" />
+    <PackageReference Include="Ude.NetStandard" Version="1.2.0" />
     <PackageReference Include="UniversalTypeConverter" Version="1.0.5" />
   </ItemGroup>
 
-  <ItemGroup>
+  <!--<ItemGroup>
     <Reference Include="Microsoft.AspNetCore.Http.Abstractions">
       <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.aspnetcore.http.abstractions\2.1.1\lib\netstandard2.0\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
     </Reference>
-  </ItemGroup>
+  </ItemGroup>-->
 
   <ItemGroup>
     <None Update="funcs\sharp\limit.fun">

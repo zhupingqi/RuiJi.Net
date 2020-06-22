@@ -50,20 +50,22 @@ namespace RuiJi.Net.Node.CodeProvider
             var restRequest = new RestRequest("api/setting/func/list?offset=" + offset + "&limit=" + limit + "&type=" + funcType);
             restRequest.Method = Method.GET;
 
-            var resetEvent = new ManualResetEvent(false);
-            var results = new List<FuncModel>();
+            //var resetEvent = new ManualResetEvent(false);
+            //var results = new List<FuncModel>();
 
-            var handle = client.ExecuteAsync(restRequest, (restResponse) =>
-            {
-                var obj = JObject.Parse(restResponse.Content);
+            //var handle = client.ExecuteAsync(restRequest, (restResponse) =>
+            //{
+            //    var obj = JObject.Parse(restResponse.Content);
 
-                results = JsonConvert.DeserializeObject<List<FuncModel>>(obj.GetValue("rows").ToString());
+            //    results = JsonConvert.DeserializeObject<List<FuncModel>>(obj.GetValue("rows").ToString());
 
-                resetEvent.Set();
-            });
+            //    resetEvent.Set();
+            //});
 
-            resetEvent.WaitOne();
-            return results;
+            //resetEvent.WaitOne();
+
+            var res = client.Execute(restRequest);
+            return JsonConvert.DeserializeObject<List<FuncModel>>(res.Content);
         }
 
         private FuncModel Query(string name)
@@ -72,17 +74,20 @@ namespace RuiJi.Net.Node.CodeProvider
             var restRequest = new RestRequest("api/setting/func/name?name=" + name);
             restRequest.Method = Method.GET;
 
-            var resetEvent = new ManualResetEvent(false);
-            FuncModel funcModel = null;
+            //var resetEvent = new ManualResetEvent(false);
+            //FuncModel funcModel = null;
 
-            var handle = client.ExecuteAsync(restRequest, (restResponse) =>
-            {
-                funcModel = JsonConvert.DeserializeObject<FuncModel>(restResponse.Content);
+            //var handle = client.ExecuteAsync(restRequest, (restResponse) =>
+            //{
+            //    funcModel = JsonConvert.DeserializeObject<FuncModel>(restResponse.Content);
 
-                resetEvent.Set();
-            });
+            //    resetEvent.Set();
+            //});
 
-            resetEvent.WaitOne();
+            //resetEvent.WaitOne();
+
+            var res = client.Execute(restRequest);
+            var funcModel = JsonConvert.DeserializeObject<FuncModel>(res.Content);
 
             if (funcModel != null)
             {

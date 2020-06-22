@@ -108,7 +108,7 @@ namespace RuiJi.Net.Core.Utils
 
                 return new DecodeResult(charset, body);
             }
-            catch (Exception ex)
+            catch
             {
                 return null;
             }

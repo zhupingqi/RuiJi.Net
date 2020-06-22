@@ -1,16 +1,11 @@
 ﻿using Newtonsoft.Json;
-using RuiJi.Net.Core;
+using org.apache.zookeeper;
 using RuiJi.Net.Core.Utils.Logging;
-using RuiJi.Net.Node.Extractor;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
-using System.Net;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using ZooKeeperNet;
+using static org.apache.zookeeper.Watcher.Event;
+using static org.apache.zookeeper.ZooDefs;
 
 namespace RuiJi.Net.Node.Extractor
 {
@@ -22,10 +17,10 @@ namespace RuiJi.Net.Node.Extractor
 
         protected override void OnStartup()
         {
-            base.CreateLiveNode("/live_nodes/proxy/" + BaseUrl, "Extractor proxy".GetBytes());
+            base.CreateLiveNode("/live_nodes/proxy/" + BaseUrl, Encoding.UTF8.GetBytes("Extractor proxy"));
 
             //create crawler proxy config in zookeeper
-            var stat = zooKeeper.Exists("/config/proxy/" + BaseUrl, false);
+            var stat = zooKeeper.existsAsync("/config/proxy/" + BaseUrl, false).Result;
             if (stat == null)
             {
                 var d = new 
@@ -33,7 +28,7 @@ namespace RuiJi.Net.Node.Extractor
                     type = "Extractor"
                 };
 
-                zooKeeper.Create("/config/proxy/" + BaseUrl, JsonConvert.SerializeObject(d).GetBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.Persistent);
+                zooKeeper.createAsync("/config/proxy/" + BaseUrl, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(d)), Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
             }
 
             LoadLiveExtractor();
@@ -41,7 +36,7 @@ namespace RuiJi.Net.Node.Extractor
 
         public NodeConfig GetExtractorConfig(string baseUrl)
         {
-            var b = zooKeeper.GetData("/config/crawler/" + baseUrl, false, null);
+            var b = zooKeeper.getDataAsync("/config/crawler/" + baseUrl, false).Result.Data;
             var r = System.Text.Encoding.UTF8.GetString(b);
             var d = JsonConvert.DeserializeObject<NodeConfig>(r);
 
@@ -54,7 +49,7 @@ namespace RuiJi.Net.Node.Extractor
             {
                 ExtractorManager.Instance.Clear();
 
-                var nodes = zooKeeper.GetChildren("/live_nodes/extractor", new LiveExtractorWatcher(this));
+                var nodes = zooKeeper.getChildrenAsync("/live_nodes/extractor", new LiveExtractorWatcher(this)).Result.Children;
 
                 ExtractorManager.Instance.ClearAndAddServer(nodes.ToArray());
             }
@@ -68,7 +63,7 @@ namespace RuiJi.Net.Node.Extractor
             return NodeTypeEnum.EXTRACTORPROXY;
         }
 
-        class LiveExtractorWatcher : IWatcher
+        class LiveExtractorWatcher : Watcher
         {
             ExtractorProxyNode node;
 
@@ -77,9 +72,9 @@ namespace RuiJi.Net.Node.Extractor
                 this.node = node;
             }
 
-            public void Process(WatchedEvent @event)
+            public override Task process(WatchedEvent @event)
             {
-                switch (@event.Type)
+                switch (@event.get_Type())
                 {
                     case EventType.NodeChildrenChanged:
                         {
@@ -88,6 +83,8 @@ namespace RuiJi.Net.Node.Extractor
                             break;
                         }
                 }
+
+                return Task.CompletedTask;
             }
         }
     }

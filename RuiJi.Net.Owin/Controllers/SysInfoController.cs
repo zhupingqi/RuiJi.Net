@@ -101,18 +101,19 @@ namespace RuiJi.Net.Owin.Controllers
             restRequest.JsonSerializer = new NewtonJsonSerializer();
             restRequest.AddHeader("Referer", "https://github.com/zhupingqi/RuiJi.Net/pulse");
 
-            object response = new object();
-            var resetEvent = new ManualResetEvent(false);
+            //object response = new object();
+            //var resetEvent = new ManualResetEvent(false);
 
-            var handle = client.ExecuteAsync(restRequest, (restResponse) =>
-            {
-                response = JsonConvert.DeserializeObject<object>(restResponse.Content);
-                resetEvent.Set();
-            });
+            //var handle = client.ExecuteAsync(restRequest, (restResponse) =>
+            //{
+            //    response = JsonConvert.DeserializeObject<object>(restResponse.Content);
+            //    resetEvent.Set();
+            //});
 
-            resetEvent.WaitOne();
+            //resetEvent.WaitOne();
 
-            return response;
+            var res = client.Execute(restRequest);
+            return JsonConvert.DeserializeObject<object>(res.Content);
         }
 
         [HttpGet]
