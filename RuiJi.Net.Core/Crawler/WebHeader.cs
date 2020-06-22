@@ -63,7 +63,7 @@ namespace RuiJi.Net.Core.Crawler
             return hs;
         }
 
-        public static List<WebHeader> FromDictionary(Dictionary<string,object> dictionary)
+        public static List<WebHeader> FromDictionary(Dictionary<string,string> dictionary)
         {
             var hs = new List<WebHeader>();
 
