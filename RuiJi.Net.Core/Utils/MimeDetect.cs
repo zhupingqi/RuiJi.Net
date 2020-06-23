@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -17,7 +18,8 @@ namespace RuiJi.Net.Core.Utils
 
         static MimeDetect()
         {
-            mimes = File.ReadAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory , "text_mime.dat")).ToList();
+            var path = new FileInfo(typeof(MimeDetect).Assembly.Location).Directory.FullName;
+            mimes = File.ReadAllLines(Path.Combine(path, "text_mime.dat")).ToList();
         }
 
         public static bool IsRaw(string contentType)
