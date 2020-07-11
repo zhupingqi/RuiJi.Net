@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
     <Version>1.1.8</Version>
     <Authors>zhupingqi</Authors>
     <Company>zhupingqi</Company>
@@ -16,6 +15,7 @@
     <FileVersion>1.1.8.0</FileVersion>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <TargetFrameworks>netstandard2.0;netcoreapp2.1</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
