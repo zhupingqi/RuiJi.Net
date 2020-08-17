@@ -58,6 +58,9 @@ RuiJi.Net support ip polling that using the server public network address and pr
 Building
 [http://doc.ruijihg.com/](http://doc.ruijihg.com/)
 
+## Demo
+[http://118.31.61.230:36000/](http://118.31.61.230:36000/)
+
 ## Features
 
 #### Crawler
