@@ -58,6 +58,10 @@ namespace RuiJi.Net.Core.Extractor.Enum
         /// <summary>
         /// external processing function
         /// </summary>
-        FUNCTION
+        FUNCTION,
+        /// <summary>
+        /// url wildcard
+        /// </summary>
+        WILDCARD
     }
 }

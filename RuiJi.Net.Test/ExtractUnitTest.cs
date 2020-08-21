@@ -210,7 +210,8 @@ css #listnav a:[href]";
 
 [paging]
 css .a-page
-css a:[href]";
+css a:[href]
+";
 
             var block = RuiJiBlockParser.ParserBlock(exp);
             var result = RuiJiExtractor.Extract(content, block);

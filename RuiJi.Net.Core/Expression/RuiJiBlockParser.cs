@@ -490,6 +490,14 @@ namespace RuiJi.Net.Core.Expression
 
                         return selector;
                     }
+                case "wildcard":
+                    {
+                        var selector = new WildcardSelector();
+                        selector.Remove = remove;
+                        selector.Pattern = p;
+
+                        return selector;
+                    }
             }
 
             return null;

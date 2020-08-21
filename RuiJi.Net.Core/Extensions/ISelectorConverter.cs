@@ -77,6 +77,10 @@ namespace RuiJi.Net.Core.Extensions
                     {
                         return JsonConvert.DeserializeObject<FunctionSelector>(json);
                     }
+                case "12":
+                    {
+                        return JsonConvert.DeserializeObject<WildcardSelector>(json);
+                    }
             }
 
             return null;
