@@ -45,5 +45,32 @@ namespace RuiJi.Net.Test
 
             Assert.True(pr.Content.IndexOf(">>") == -1);
         }
+
+        [Fact]
+        public void TestWildcar()
+        {
+            var crawler = new RuiJiCrawler();
+            var request = new Request("https://so.csdn.net/so/search/s.do?q=%E7%89%A9%E8%81%94%E7%BD%91&t=&u=");
+
+            var response = crawler.Request(request);
+            var content = response.Data.ToString();
+
+            var p = new CssProcessor();
+            var s = new CssSelector();
+            s.Selector = "a";
+            s.AttrName = "href";
+            s.Type = Core.Extractor.Enum.CssTypeEnum.ATTR;
+
+            var pr = new ProcessResult();
+            pr.Matches.Add(content);
+
+            pr = p.ProcessNeed(s, pr);
+
+            var pp = new WildcardProcessor();
+            var ps = new WildcardSelector("https://blog.csdn.net/*/article/details/*");
+            pr = pp.ProcessNeed(ps, pr);
+
+            Assert.True(pr.Content.IndexOf(">>") == -1);
+        }
     }
 }
