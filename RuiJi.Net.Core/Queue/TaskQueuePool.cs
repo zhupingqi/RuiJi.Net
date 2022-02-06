@@ -123,6 +123,12 @@ namespace RuiJi.Net.Core.Queue
 
         public void WaitAll()
         {
+            Task.Run(() => {
+                while (!base.IsEmpty || currentTasks > 0)
+                {
+                    Thread.Sleep(100);
+                }
+            }).Wait();
         }
     }
 }

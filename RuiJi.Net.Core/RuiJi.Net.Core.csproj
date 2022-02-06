@@ -2,20 +2,25 @@
 
   <PropertyGroup>
     <TargetFrameworks>net472;netstandard2.1</TargetFrameworks>
-    <Version>1.2.1</Version>
+    <Version>1.2.2</Version>
     <Authors>zhupingqi</Authors>
-    <Company>zhupingqi</Company>
+    <Company>www.iotsys.net</Company>
     <Product>RuiJi.Net</Product>
-    <Description>crawler framework , distributed crawler extractor.</Description>
+    <Description>crawler framework , distributed crawler extractor.
+try ruiji scraper --- chrome web crawler
+https://chrome.google.com/webstore/detail/ruiji-scraper/klhahkhllngppofpkjdlbmnglnmnbbol?hl=zh-CN&amp;authuser=0</Description>
     <Copyright>LGPL-3.0</Copyright>
     <PackageLicenseUrl>https://github.com/zhupingqi/RuiJi.Net/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/zhupingqi/RuiJi.Net</PackageProjectUrl>
-    <PackageIconUrl>https://en.gravatar.com/userimage/140719246/b6e863263e40477530620ea2ddde0aac.jpg</PackageIconUrl>
+    <PackageIconUrl></PackageIconUrl>
     <PackageTags>crawler extractor scraper</PackageTags>
-    <AssemblyVersion>1.2.1.0</AssemblyVersion>
-    <FileVersion>1.2.1.0</FileVersion>
+    <AssemblyVersion>1.2.2.0</AssemblyVersion>
+    <FileVersion>1.2.2.0</FileVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes>url wildcard match
+</PackageReleaseNotes>
+    <PackageIcon>logo3.png</PackageIcon>
   </PropertyGroup>
 	
   <ItemGroup>
@@ -84,6 +89,10 @@
     </None>
     <None Update="text_mime.dat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\..\..\设计\logo3.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
     </None>
   </ItemGroup>
 

@@ -21,8 +21,6 @@ namespace RuiJi.Net.Test
                 Debug.WriteLine(" current tasks : " + pool.CurrentTasks);
             },"first");
 
-            Thread.Sleep(1000);
-
             for (int i = 0; i < 10; i++)
             {
                 pool.QueueAction((index) => {
@@ -41,8 +39,6 @@ namespace RuiJi.Net.Test
                 }, i);
             }
 
-            Thread.Sleep(10000);
-
             for (int i = 20; i < 50; i++)
             {
                 pool.QueueAction((index) => {
@@ -52,7 +48,10 @@ namespace RuiJi.Net.Test
                 }, i);
             }
 
-            Thread.Sleep(1000000);
+            pool.WaitAll();
+            Debug.WriteLine("pool left " + pool.CurrentTasks);
+
+            Thread.Sleep(500000000);
             Assert.True(true);
         }
     }

@@ -29,6 +29,7 @@ namespace RuiJi.Net.Core.Extractor.Processor
             processors.Add(SelectorTypeEnum.JPATH, new JsonPathProcessor());
             processors.Add(SelectorTypeEnum.CLEAR, new ClearTagProcessor());
             processors.Add(SelectorTypeEnum.FUNCTION, new FunctionProcessor());
+            processors.Add(SelectorTypeEnum.WILDCARD, new WildcardProcessor());
         }
 
         /// <summary>
