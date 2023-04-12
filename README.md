@@ -1,4 +1,11 @@
-﻿[![Nuget](https://buildstats.info/nuget/RuiJi.Net.Core?includePreReleases=true)](https://www.nuget.org/packages/RuiJi.Net.Core)
+﻿[广告]
+
+年级大了, 熬不动了，卖卖茶叶，喜欢喝茶的猿人们，来看看如何泡出一杯美味的茶吧 
+![泡泡茶](https://www.paopaocha.top/images/ad/paopaocha.jpg "泡泡茶")
+
+[泡泡茶 https://www.paopaocha.top/](https://www.paopaocha.top/)
+
+[![Nuget](https://buildstats.info/nuget/RuiJi.Net.Core?includePreReleases=true)](https://www.nuget.org/packages/RuiJi.Net.Core)
 [![Build status](https://ci.appveyor.com/api/projects/status/6hs9a47tftkv1yeo?svg=true)](https://ci.appveyor.com/project/zhupingqi/ruiji-net)
 ![CodeFactor](https://www.codefactor.io/repository/github/zhupingqi/ruiji.net/badge)
 
