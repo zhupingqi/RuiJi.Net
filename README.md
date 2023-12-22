@@ -3,6 +3,8 @@
 年级大了, 熬不动了，卖卖茶叶，喜欢喝茶的猿人们，来看看如何泡出一杯美味的茶吧 
 ![泡泡茶](https://www.paopaocha.top/images/ad/paopaocha.jpg "泡泡茶")
 
+![支持我的店铺](https://www.paopaocha.top/images/ad/taote-ad.jpg "支持我的店铺")
+
 [泡泡茶 https://www.paopaocha.top/](https://www.paopaocha.top/)
 
 [![Nuget](https://buildstats.info/nuget/RuiJi.Net.Core?includePreReleases=true)](https://www.nuget.org/packages/RuiJi.Net.Core)
@@ -19,39 +21,13 @@ RuiJi Scraper is a RuiJi expression based browser plug-in that uses visual rule 
 
 [chrome](https://chrome.google.com/webstore/detail/ruiji-scraper/klhahkhllngppofpkjdlbmnglnmnbbol)
 
-#### Contributors
+#### Attention
 
-This project exists thanks to all the people who contribute. 
-<a href="graphs/contributors"><img src="https://opencollective.com/ruijinet/contributors.svg?width=890&button=false" /></a>
-
-
-#### Backers
-
-Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/ruijinet#backer)]
-
-<a href="https://opencollective.com/ruijinet#backers" target="_blank"><img src="https://opencollective.com/ruijinet/backers.svg?width=890"></a>
-
-#### Sponsors
-
-Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/ruijinet#sponsor)]
-
-<a href="https://opencollective.com/ruijinet/sponsor/0/website" target="_blank"><img src="https://opencollective.com/ruijinet/sponsor/0/avatar.svg"></a>
-<a href="https://opencollective.com/ruijinet/sponsor/1/website" target="_blank"><img src="https://opencollective.com/ruijinet/sponsor/1/avatar.svg"></a>
-<a href="https://opencollective.com/ruijinet/sponsor/2/website" target="_blank"><img src="https://opencollective.com/ruijinet/sponsor/2/avatar.svg"></a>
-<a href="https://opencollective.com/ruijinet/sponsor/3/website" target="_blank"><img src="https://opencollective.com/ruijinet/sponsor/3/avatar.svg"></a>
-<a href="https://opencollective.com/ruijinet/sponsor/4/website" target="_blank"><img src="https://opencollective.com/ruijinet/sponsor/4/avatar.svg"></a>
-<a href="https://opencollective.com/ruijinet/sponsor/5/website" target="_blank"><img src="https://opencollective.com/ruijinet/sponsor/5/avatar.svg"></a>
-<a href="https://opencollective.com/ruijinet/sponsor/6/website" target="_blank"><img src="https://opencollective.com/ruijinet/sponsor/6/avatar.svg"></a>
-<a href="https://opencollective.com/ruijinet/sponsor/7/website" target="_blank"><img src="https://opencollective.com/ruijinet/sponsor/7/avatar.svg"></a>
-<a href="https://opencollective.com/ruijinet/sponsor/8/website" target="_blank"><img src="https://opencollective.com/ruijinet/sponsor/8/avatar.svg"></a>
-<a href="https://opencollective.com/ruijinet/sponsor/9/website" target="_blank"><img src="https://opencollective.com/ruijinet/sponsor/9/avatar.svg"></a>
-
+We cannot withdraw donations from open collective, so we have to shut down the presentation and document servers of ruiji.net
 
 #### Support us
 
-https://www.scraperapi.com/?fp_ref=ruijinet
-
-https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=r1bio67c&utm_source=r1bio67c
+If you would like to restart the donation support project, please contact us by email 416803633@qq.com
 
 ## About RuiJi.Net
 RuiJi.Net is a distributed crawl framework written in netcore.
@@ -60,12 +36,12 @@ RuiJi.Net is a self host webapi written using Microsoft.AspNetCore.Owin. Major f
 
 RuiJi.Net support ip polling that using the server public network address and proxy server.
 
-## Documentation
+## Documentation(closed)
 
 Building
 [http://doc.ruijihg.com/](https://gitee.com/zhupingqi/RuiJi.Net/wikis/%E4%BB%8B%E7%BB%8D)]
 
-## Demo
+## Demo(closed)
 [http://118.31.61.230:36000/](http://118.31.61.230:36000/)
 
 ## Features
