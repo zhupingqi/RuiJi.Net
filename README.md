@@ -1,9 +1,3 @@
-﻿[open-collective]
- 
-The handling fee is amazing
-
-![The handling fee is amazing](https://www.paopaocha.top/images/open-collective.png "The handling fee is amazing")
-
 [![Nuget](https://buildstats.info/nuget/RuiJi.Net.Core?includePreReleases=true)](https://www.nuget.org/packages/RuiJi.Net.Core)
 [![Build status](https://ci.appveyor.com/api/projects/status/6hs9a47tftkv1yeo?svg=true)](https://ci.appveyor.com/project/zhupingqi/ruiji-net)
 ![CodeFactor](https://www.codefactor.io/repository/github/zhupingqi/ruiji.net/badge)
